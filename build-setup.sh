@@ -69,7 +69,8 @@ FROM ubuntu:latest
 
 ${PROXY}
 
-RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get upgrade -y
+RUN apt-get update
+#RUN DEBIAN_FRONTEND=noninteractive apt-get upgrade -y
 RUN DEBIAN_FRONTEND=noninteractive apt-get install -y build-essential git subversion diffstat texinfo \
   chrpath wget libthread-queue-any-perl libdata-dumper-simple-perl python libsdl1.2-dev gawk socat debianutils
 
@@ -94,14 +95,14 @@ export PROXY_HOST=${http_proxy/#http*:\/\/}
 export PROXY_HOST=${PROXY_HOST/%:[0-9]*}
 export PROXY_PORT=${http_proxy/#http*:\/\/*:}
 
-mkdir -p ${WORKSPACE/scratch/var\/lib}
+mkdir -p ${WORKSPACE}
 
-cat > "${WORKSPACE/scratch/var\/lib}"/build.sh << EOF_SCRIPT
+cat > "${WORKSPACE}"/build.sh << EOF_SCRIPT
 #!/bin/bash
 
 set -x
 
-cd ${WORKSPACE/scratch/var\/lib}
+cd ${WORKSPACE}
 
 # Go into the openbmc directory (the openbmc script will put us in a build subdir)
 cd openbmc
@@ -111,12 +112,12 @@ export ftp_proxy=${http_proxy}
 export http_proxy=${http_proxy}
 export https_proxy=${http_proxy}
 
-mkdir -p ${WORKSPACE/scratch/var\/lib}/bin
+mkdir -p ${WORKSPACE}/bin
 
 # Configure proxies for bitbake
 if [[ -n "${http_proxy}" ]]; then
 
-  cat > ${WORKSPACE/scratch/var\/lib}/bin/git-proxy << EOF_GIT
+  cat > ${WORKSPACE}/bin/git-proxy << EOF_GIT
 #!/bin/bash
 # \$1 = hostname, \$2 = port
 PROXY=${PROXY_HOST}
@@ -124,8 +125,8 @@ PROXY_PORT=${PROXY_PORT}
 exec socat STDIO PROXY:\${PROXY}:\${1}:\${2},proxyport=\${PROXY_PORT}
 EOF_GIT
 
-  chmod a+x ${WORKSPACE/scratch/var\/lib}/bin/git-proxy
-  export PATH=${WORKSPACE/scratch/var\/lib}/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:${PATH}
+  chmod a+x ${WORKSPACE}/bin/git-proxy
+  export PATH=${WORKSPACE}/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:${PATH}
   git config core.gitProxy git-proxy
 
   mkdir -p ~/.subversion
@@ -159,8 +160,8 @@ EOF_SCRIPT
 chmod a+x ${WORKSPACE}/build.sh
 
 # Run the docker container, execute the build script we just built
-docker run --cap-add=sys_admin --net=host --rm=true -e WORKSPACE=${WORKSPACE/scratch/var\/lib} --user="${USER}" \
-  -w "${HOME}" -v "${HOME}":"${HOME}" -t openbmc/${distro} ${WORKSPACE/scratch/var\/lib}/build.sh
+docker run --cap-add=sys_admin --net=host --rm=true -e WORKSPACE=${WORKSPACE} --user="${USER}" \
+  -w "${HOME}" -v "${HOME}":"${HOME}" -t openbmc/${distro} ${WORKSPACE}/build.sh
 
 # Create link to images for archiving
 ln -sf ${WORKSPACE}/openbmc/build/tmp/deploy/images ${WORKSPACE}/images
