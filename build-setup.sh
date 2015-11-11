@@ -69,8 +69,8 @@ FROM ubuntu:latest
 
 ${PROXY}
 
-RUN apt-get update
-#RUN DEBIAN_FRONTEND=noninteractive apt-get upgrade -y
+RUN echo $(date +%s) && apt-get update
+RUN DEBIAN_FRONTEND=noninteractive apt-get upgrade -y
 RUN DEBIAN_FRONTEND=noninteractive apt-get install -y build-essential git subversion diffstat texinfo \
   chrpath wget libthread-queue-any-perl libdata-dumper-simple-perl python libsdl1.2-dev gawk socat debianutils
 
