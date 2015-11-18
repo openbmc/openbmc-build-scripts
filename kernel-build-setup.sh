@@ -92,6 +92,9 @@ else
   CROSS_COMPILER="arm-none-eabi-"
 fi
 
+# Record the version in the logs
+$\{CROSS_COMPILER} --version
+
 ARCH=arm CROSS_COMPILE=\${CROSS_COMPILER} make aspeed_defconfig
 ARCH=arm CROSS_COMPILE=\${CROSS_COMPILER} make -j$(($(nproc) / 4))
 
