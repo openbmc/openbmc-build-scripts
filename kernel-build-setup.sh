@@ -93,7 +93,7 @@ else
 fi
 
 # Record the version in the logs
-$\{CROSS_COMPILER} --version
+$\{CROSS_COMPILER}gcc --version
 
 ARCH=arm CROSS_COMPILE=\${CROSS_COMPILER} make aspeed_defconfig
 ARCH=arm CROSS_COMPILE=\${CROSS_COMPILER} make -j$(($(nproc) / 4))
