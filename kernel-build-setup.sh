@@ -86,16 +86,16 @@ cd ${WORKSPACE}
 cd linux-aspeed
 
 # Configure a build
-make aspeed_defconfig
-make -j 8
+ARCH=arm CROSS_COMPILE=arm-linux-gnu- make aspeed_defconfig
+ARCH=arm CROSS_COMPILE=arm-linux-gnu- make -j 8
 
 # Build barreleye image
-make aspeed-bmc-opp-barreleye.dtb
+ARCH=arm CROSS_COMPILE=arm-linux-gnu- make aspeed-bmc-opp-barreleye.dtb
 cat arch/arm/boot/zImage arch/arm/boot/dts/aspeed-bmc-opp-barreleye.dtb > barreleye-zimage
 ./scripts/mkuboot.sh -A arm -O linux -C none  -T kernel -a 0x40008000 -e 0x40008000 -d-e 0x40008000 -n obmc-beye-`date +%Y%m%d%H%M` -d aspeed-zimage uImage.barreleye
 
 # build palmetto image
-make aspeed-bmc-opp-palmetto.dtb
+ARCH=arm CROSS_COMPILE=arm-linux-gnu- make aspeed-bmc-opp-palmetto.dtb
 cat arch/arm/boot/zImage arch/arm/boot/dts/aspeed-bmc-opp-palmetto.dtb > palmetto-zimage
 ./scripts/mkuboot.sh -A arm -O linux -C none  -T kernel -a 0x40008000 -e 0x40008000 -d-e 0x40008000 -n obmc-palm-`date +%Y%m%d%H%M` -d aspeed-zimage uImage.palmetto
 
