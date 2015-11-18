@@ -30,7 +30,7 @@ FROM fedora:latest
 ${PROXY}
 
 RUN dnf --refresh upgrade -y
-RUN dnf install -y git gcc make uboot-tools gcc-arm-linux-gnu
+RUN dnf install -y bc findutils git gcc gcc-arm-linux-gnu hostname make uboot-tools xz
 RUN groupadd -g ${GROUPS} ${USER} && useradd -d ${HOME} -m -u ${UID} -g ${GROUPS} ${USER}
 
 USER ${USER}
@@ -49,9 +49,9 @@ FROM ubuntu:latest
 
 ${PROXY}
 
-RUN echo $(date +%s) && apt-get update
+RUN apt-get update
 RUN DEBIAN_FRONTEND=noninteractive apt-get upgrade -yy
-RUN DEBIAN_FRONTEND=noninteractive apt-get install -yy build-essential git gcc-arm-none-eabi u-boot-tools
+RUN DEBIAN_FRONTEND=noninteractive apt-get install -yy bc build-essential git gcc-arm-none-eabi u-boot-tools
 RUN groupadd -g ${GROUPS} ${USER} && useradd -d ${HOME} -m -u ${UID} -g ${GROUPS} ${USER}
 
 USER ${USER}
@@ -86,18 +86,24 @@ cd ${WORKSPACE}
 cd linux-aspeed
 
 # Configure a build
-ARCH=arm CROSS_COMPILE=arm-linux-gnu- make aspeed_defconfig
-ARCH=arm CROSS_COMPILE=arm-linux-gnu- make -j 8
+if [ "${distro}" == "fedora" ]; then
+  CROSS_COMPILER="arm-linux-gnu-"
+else
+  CROSS_COMPILER="arm-none-eabi-"
+fi
+
+ARCH=arm CROSS_COMPILE=\${CROSS_COMPILER} make aspeed_defconfig
+ARCH=arm CROSS_COMPILE=\${CROSS_COMPILER} make -j$(($(nproc) / 4))
 
 # Build barreleye image
-ARCH=arm CROSS_COMPILE=arm-linux-gnu- make aspeed-bmc-opp-barreleye.dtb
+ARCH=arm CROSS_COMPILE=\${CROSS_COMPILER} make aspeed-bmc-opp-barreleye.dtb
 cat arch/arm/boot/zImage arch/arm/boot/dts/aspeed-bmc-opp-barreleye.dtb > barreleye-zimage
-./scripts/mkuboot.sh -A arm -O linux -C none  -T kernel -a 0x40008000 -e 0x40008000 -d-e 0x40008000 -n obmc-beye-`date +%Y%m%d%H%M` -d aspeed-zimage uImage.barreleye
+./scripts/mkuboot.sh -A arm -O linux -C none  -T kernel -a 0x40008000 -e 0x40008000 -d-e 0x40008000 -n obmc-beye-\$(date +%Y%m%d%H%M) -d barreleye-zimage uImage.barreleye
 
 # build palmetto image
-ARCH=arm CROSS_COMPILE=arm-linux-gnu- make aspeed-bmc-opp-palmetto.dtb
+ARCH=arm CROSS_COMPILE=\${CROSS_COMPILER} make aspeed-bmc-opp-palmetto.dtb
 cat arch/arm/boot/zImage arch/arm/boot/dts/aspeed-bmc-opp-palmetto.dtb > palmetto-zimage
-./scripts/mkuboot.sh -A arm -O linux -C none  -T kernel -a 0x40008000 -e 0x40008000 -d-e 0x40008000 -n obmc-palm-`date +%Y%m%d%H%M` -d aspeed-zimage uImage.palmetto
+./scripts/mkuboot.sh -A arm -O linux -C none  -T kernel -a 0x40008000 -e 0x40008000 -d-e 0x40008000 -n obmc-palm-\$(date +%Y%m%d%H%M) -d palmetto-zimage uImage.palmetto
 
 EOF_SCRIPT
 
