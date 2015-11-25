@@ -143,12 +143,11 @@ ${BITBAKE_CMD}
 
 # Custom bitbake config settings
 cat >> conf/local.conf << EOF_CONF
-BB_NUMBER_THREADS = "$(($(nproc) / 4))"
-PARALLEL_MAKE = "-j$(($(nproc) / 4))"
+BB_NUMBER_THREADS = "$(nproc)"
+PARALLEL_MAKE = "-j$(nproc)"
 INHERIT += "rm_work"
 BB_GENERATE_MIRROR_TARBALLS = "1"
 DL_DIR="${HOME}/bitbake_downloads"
-SSTATE_DIR="${HOME}/bitbake_sharedstatecache"
 USER_CLASSES += "buildstats"
 EOF_CONF
 
