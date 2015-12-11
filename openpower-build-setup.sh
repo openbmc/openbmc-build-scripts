@@ -76,10 +76,10 @@ cd ${WORKSPACE}/op-build
 . op-build-env
 
 # Configure
-make ${target}_defconfig
+op-build ${target}_defconfig
 
 # Kick off a build
-make
+op-build
 
 EOF_SCRIPT
 
