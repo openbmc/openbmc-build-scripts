@@ -46,7 +46,8 @@ RUN echo $(date +%s) && apt-get update && \
 	apt-get install -y \
 	cscope ctags libz-dev libexpat-dev python language-pack-en texinfo \
 	build-essential g++ git bison flex unzip libxml-simple-perl \
-	libxml-sax-perl libxml2-dev libxml2-utils xsltproc wget cpio bc
+	libxml-sax-perl libxml2-dev libxml2-utils xsltproc wget cpio bc \
+	vim-common
 RUN groupadd -g ${GROUPS} ${USER} && useradd -d ${HOME} -m -u ${UID} -g ${GROUPS} ${USER}
 
 USER ${USER}
