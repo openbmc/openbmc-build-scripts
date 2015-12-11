@@ -70,6 +70,10 @@ cat > "${WORKSPACE}"/build.sh << EOF_SCRIPT
 
 set -x
 
+# This ensures that the alias set in op-build-env is
+# avalaible in this script
+shopt -s expand_aliases
+
 cd ${WORKSPACE}/op-build
 
 # Source our build env
