@@ -64,6 +64,7 @@ cat > configs/powerpc64_openpower_defconfig << EOF_BUILDROOT
 BR2_powerpc64le=y
 BR2_TARGET_ROOTFS_CPIO=y
 BR2_TARGET_ROOTFS_CPIO_XZ=y
+BR2_TARGET_GENERIC_GETTY_PORT="hvc0"
 EOF_BUILDROOT
 
 # Build buildroot
