@@ -65,7 +65,21 @@ BR2_powerpc64le=y
 BR2_TARGET_ROOTFS_CPIO=y
 BR2_TARGET_ROOTFS_CPIO_XZ=y
 BR2_TARGET_GENERIC_GETTY_PORT="hvc0"
+BR2_ROOTFS_POST_BUILD_SCRIPT="./fix_inittab.sh"
 EOF_BUILDROOT
+
+# Create overlay inittab to start tty on boot
+cat > fix_inittab.sh << EOF_INITTAB
+#!/bin/bash
+# The BR2_TARGET_GENERIC_GETTY=y option doesn't seem to be enabling
+# a terminal on boot in /etc/inittab (as it should).
+#
+# We change the setting rather than writing a new file via overlay
+# that way we get any other changes in the future, including if it
+# starts working again
+sed -i 's|^#ttyS0::.*|hvc0::respawn:/sbin/getty -L hvc0 115200 vt100 # GENERIC_SERIAL|' \\\${TARGET_DIR}/etc/inittab
+EOF_INITTAB
+chmod u+x fix_inittab.sh
 
 # Build buildroot
 export BR2_DL_DIR=${HOME}/buildroot_downloads
