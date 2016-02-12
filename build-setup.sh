@@ -7,8 +7,8 @@
 #   distro = fedora|ubuntu
 #   WORKSPACE = 
 
-# Trace bash processing
-set -x
+# Trace bash processing. Set -e so when a step fails, we fail the build
+set -xeuo pipefail
 
 # Default variables
 target=${target:-qemu}
@@ -86,10 +86,6 @@ fi
 
 # Build the docker container
 docker build -t openbmc/${distro} - <<< "${Dockerfile}"
-if [[ "$?" -ne 0 ]]; then
-  echo "Failed to build docker container."
-  exit 1
-fi
 
 # Create the docker run script
 export PROXY_HOST=${http_proxy/#http*:\/\/}
@@ -101,7 +97,7 @@ mkdir -p ${WORKSPACE}
 cat > "${WORKSPACE}"/build.sh << EOF_SCRIPT
 #!/bin/bash
 
-set -x
+set -xeuo pipefail
 
 cd ${WORKSPACE}
 
