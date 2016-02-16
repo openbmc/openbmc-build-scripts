@@ -8,7 +8,7 @@
 #   WORKSPACE = 
 
 # Trace bash processing. Set -e so when a step fails, we fail the build
-set -xeuo pipefail
+set -xeo pipefail
 
 # Default variables
 target=${target:-qemu}
@@ -98,7 +98,7 @@ mkdir -p ${WORKSPACE}
 cat > "${WORKSPACE}"/build.sh << EOF_SCRIPT
 #!/bin/bash
 
-set -xeuo pipefail
+set -xeo pipefail
 
 cd ${WORKSPACE}
 
