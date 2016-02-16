@@ -15,6 +15,7 @@ target=${target:-qemu}
 distro=${distro:-ubuntu}
 WORKSPACE=${WORKSPACE:-${HOME}/${RANDOM}${RANDOM}}
 http_proxy=${http_proxy:-}
+PROXY=""
 
 # Timestamp for job
 echo "Build started, $(date)"
