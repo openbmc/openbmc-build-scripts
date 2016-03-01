@@ -52,7 +52,8 @@ RUN dnf --refresh upgrade -y
 RUN dnf install -y git subversion gcc gcc-c++ make perl-Thread-Queue perl-Data-Dumper diffstat texinfo \
 chrpath wget SDL-devel patch bzip2 tar cpio findutils socat which python-devel perl-bignum
 
-RUN groupadd -g ${GROUPS} ${USER} && useradd -d ${HOME} -m -u ${UID} -g ${GROUPS} ${USER}
+RUN grep -q ${GROUPS} /etc/group || groupadd -g ${GROUPS} ${USER}
+RUN grep -q ${UID} /etc/passwd || useradd -d ${HOME} -m -u ${UID} -g ${GROUPS} ${USER}
 
 USER ${USER}
 ENV HOME ${HOME}
@@ -76,7 +77,9 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get upgrade -y
 RUN DEBIAN_FRONTEND=noninteractive apt-get install -y build-essential git subversion diffstat texinfo \
   chrpath wget libthread-queue-any-perl libdata-dumper-simple-perl python libsdl1.2-dev gawk socat debianutils
 
-RUN groupadd -g ${GROUPS} ${USER} && useradd -d ${HOME} -m -u ${UID} -g ${GROUPS} ${USER}
+RUN grep -q ${GROUPS} /etc/group || groupadd -g ${GROUPS} ${USER}
+RUN grep -q ${UID} /etc/passwd || useradd -d ${HOME} -m -u ${UID} -g ${GROUPS} ${USER}
+
 
 USER ${USER}
 ENV HOME ${HOME}
@@ -115,7 +118,7 @@ mkdir -p ${WORKSPACE}/bin
 # Configure proxies for bitbake
 if [[ -n "${http_proxy}" ]]; then
 
-  cat > ${WORKSPACE}/bin/git-proxy << EOF_GIT
+  cat > ${WORKSPACE}/bin/git-proxy << \EOF_GIT
 #!/bin/bash
 # \$1 = hostname, \$2 = port
 PROXY=${PROXY_HOST}
