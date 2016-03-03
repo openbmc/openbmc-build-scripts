@@ -23,9 +23,16 @@ FROM ubuntu:15.10
 
 ${PROXY}
 
-RUN echo $(date +%s) && apt-get update
+# If we need to fetch new apt repo data, update the timestamp
+RUN echo 201603031716 && apt-get update
 RUN DEBIAN_FRONTEND=noninteractive apt-get upgrade -yy
 RUN DEBIAN_FRONTEND=noninteractive apt-get install -yy bc build-essential git gcc-powerpc64le-linux-gnu
+RUN DEBIAN_FRONTEND=noninteractive apt-get install -yy software-properties-common
+RUN apt-add-repository -y multiverse
+# If we need to fetch new apt repo data, update the timestamp
+RUN echo 201603031716 && apt-get update
+RUN apt-get update
+RUN DEBIAN_FRONTEND=noninteractive apt-get install -yy dwarves sparse
 RUN groupadd -g ${GROUPS} ${USER} && useradd -d ${HOME} -m -u ${UID} -g ${GROUPS} ${USER}
 
 USER ${USER}
@@ -61,9 +68,18 @@ cd linux
 # Record the version in the logs
 powerpc64le-linux-gnu-gcc --version || exit 1
 
-# Build kernel
+# Build kernel prep
 ARCH=powerpc CROSS_COMPILE=powerpc64le-linux-gnu- make clean || exit 1
 ARCH=powerpc CROSS_COMPILE=powerpc64le-linux-gnu- make mrproper || exit 1
+
+# Build kernel with debug
+ARCH=powerpc CROSS_COMPILE=powerpc64le-linux-gnu- make pseries_le_defconfig || exit 1
+echo "CONFIG_DEBUG_INFO=y" >> .config
+ARCH=powerpc CROSS_COMPILE=powerpc64le-linux-gnu- make olddefconfig || exit 1
+ARCH=powerpc CROSS_COMPILE=powerpc64le-linux-gnu- make -j$(nproc) -s C=2 CF=-D__CHECK_ENDIAN__ 2>&1 | gzip > sparse.log.gz
+pahole vmlinux 2>&1 | gzip > structs.dump.gz
+
+# Build kernel
 ARCH=powerpc CROSS_COMPILE=powerpc64le-linux-gnu- make pseries_le_defconfig || exit 1
 ARCH=powerpc CROSS_COMPILE=powerpc64le-linux-gnu- make -j$(nproc) || exit 1
 
