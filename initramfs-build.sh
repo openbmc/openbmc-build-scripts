@@ -24,7 +24,7 @@ FROM ubuntu:15.10
 ${PROXY}
 
 ENV DEBIAN_FRONTEND noninteractive
-RUN apt-get update && apt-get upgrade -yy && apt-get install -yy \
+RUN apt-get update && apt-get install -yy \
 	bc \
 	build-essential \
 	cpio \

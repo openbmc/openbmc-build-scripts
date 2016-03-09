@@ -25,18 +25,39 @@ if [[ "${distro}" == fedora ]];then
   Dockerfile=$(cat << EOF
 FROM fedora:latest
 
-RUN dnf --refresh upgrade -y && dnf install -y \
-	vim \
-	gcc-c++ \
-	flex \
+RUN dnf --refresh repolist && dnf install -y \
+	bc \
 	bison \
-	git \
-	ctags \
+	bzip2 \
+	cpio \
   	cscope \
+	ctags \
 	expat-devel \
+	findutils \
+	flex \
+	gcc-c++ \
+	git \
+	libxml2-devel \
+	ncurses-devel \
 	patch \
+	perl \
+	perl-bignum \
+	"perl(Digest::SHA1)" \
+	perl(Env)" \
+	"perl(Fatal)" \
+	"perl(Thread::Queue)" \
+	"perl(XML::SAX)" \
+	"perl(XML::Simple)" \
+	"perl(YAML)" \
+	"perl(XML::LibXML)" \
+	python \
+	tar \
+	unzip \
+	vim \
+	wget \
+	which \
 	zlib-devel \
-	zlib-static perl
+	zlib-static
 
 RUN grep -q ${GROUPS} /etc/group || groupadd -g ${GROUPS} ${USER}
 RUN grep -q ${UID} /etc/passwd || useradd -d ${HOME} -m -u ${UID} -g ${GROUPS} ${USER}
@@ -53,7 +74,7 @@ elif [[ "${distro}" == ubuntu ]]; then
 FROM ubuntu:15.10
 
 ENV DEBIAN_FRONTEND noninteractive
-RUN apt-get update && apt-get upgrade -yy && apt-get install -yy \
+RUN apt-get update && apt-get install -yy \
 	bc \
 	bison \
 	build-essential \

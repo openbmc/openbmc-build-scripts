@@ -29,7 +29,7 @@ FROM fedora:latest
 
 ${PROXY}
 
-RUN dnf --refresh upgrade -y && dnf install -y \
+RUN dnf --refresh install -y \
 	bc \
 	findutils \
 	git \
@@ -59,7 +59,7 @@ FROM ubuntu:latest
 ${PROXY}
 
 ENV DEBIAN_FRONTEND noninteractive
-RUN apt-get update && apt-get upgrade -yy && apt-get install -yy \
+RUN apt-get update && apt-get install -yy \
 	bc \
 	build-essential \
 	git \
