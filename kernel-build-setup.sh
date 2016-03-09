@@ -29,7 +29,8 @@ FROM fedora:latest
 
 ${PROXY}
 
-RUN dnf --refresh upgrade -y
+# update datestamp below to force a cache refresh
+RUN echo 201603091439 && dnf --refresh upgrade -y
 RUN dnf install -y bc findutils git gcc gcc-arm-linux-gnu hostname make uboot-tools xz
 RUN groupadd -g ${GROUPS} ${USER} && useradd -d ${HOME} -m -u ${UID} -g ${GROUPS} ${USER}
 
@@ -49,7 +50,8 @@ FROM ubuntu:latest
 
 ${PROXY}
 
-RUN apt-get update
+# update datestamp below to force a cache refresh
+RUN echo 201603091439 && apt-get update
 RUN DEBIAN_FRONTEND=noninteractive apt-get upgrade -yy
 RUN DEBIAN_FRONTEND=noninteractive apt-get install -yy bc build-essential git gcc-arm-none-eabi u-boot-tools
 RUN groupadd -g ${GROUPS} ${USER} && useradd -d ${HOME} -m -u ${UID} -g ${GROUPS} ${USER}

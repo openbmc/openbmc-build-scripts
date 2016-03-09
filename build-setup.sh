@@ -48,7 +48,8 @@ FROM fedora:latest
 
 ${PROXY}
 
-RUN dnf --refresh upgrade -y
+# change datestamp below to force a cache refresh
+RUN echo 201603091439 && dnf --refresh upgrade -y
 RUN dnf install -y git subversion gcc gcc-c++ make perl-Thread-Queue perl-Data-Dumper diffstat texinfo \
 chrpath wget SDL-devel patch bzip2 tar cpio findutils socat which python-devel perl-bignum
 
@@ -71,8 +72,8 @@ FROM ubuntu:latest
 
 ${PROXY}
 
-#RUN echo $(date +%s) && apt-get update
-RUN apt-get update
+# update datestamp below to force a cache refresh
+RUN echo 201603091439 && apt-get update
 RUN DEBIAN_FRONTEND=noninteractive apt-get upgrade -y
 RUN DEBIAN_FRONTEND=noninteractive apt-get install -y build-essential git subversion diffstat texinfo \
   chrpath wget libthread-queue-any-perl libdata-dumper-simple-perl python libsdl1.2-dev gawk socat debianutils

@@ -42,8 +42,9 @@ elif [[ "${distro}" == ubuntu ]]; then
 FROM ubuntu:15.10
 
 ENV DEBIAN_FRONTEND noninteractive
-RUN echo $(date +%s) && apt-get update && \
-	apt-get install -y \
+# update datestamp below to force a cache refresh
+RUN echo 201603091439 && apt-get update
+RUN apt-get install -y \
 	cscope ctags libz-dev libexpat-dev python language-pack-en texinfo \
 	build-essential g++ git bison flex unzip libxml-simple-perl \
 	libxml-sax-perl libxml2-dev libxml2-utils xsltproc wget cpio bc \

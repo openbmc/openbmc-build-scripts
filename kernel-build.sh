@@ -23,8 +23,8 @@ FROM ubuntu:15.10
 
 ${PROXY}
 
-# If we need to fetch new apt repo data, update the timestamp
-RUN echo 201603031716 && apt-get update
+# update datestamp below to force a cache refresh
+RUN echo 201603091439 && apt-get update
 RUN DEBIAN_FRONTEND=noninteractive apt-get upgrade -yy
 RUN DEBIAN_FRONTEND=noninteractive apt-get install -yy bc build-essential git gcc-powerpc64le-linux-gnu
 RUN DEBIAN_FRONTEND=noninteractive apt-get install -yy software-properties-common
