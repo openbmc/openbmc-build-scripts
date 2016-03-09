@@ -29,10 +29,18 @@ FROM fedora:latest
 
 ${PROXY}
 
-# update datestamp below to force a cache refresh
-RUN echo 201603091439 && dnf --refresh upgrade -y
-RUN dnf install -y bc findutils git gcc gcc-arm-linux-gnu hostname make uboot-tools xz
-RUN groupadd -g ${GROUPS} ${USER} && useradd -d ${HOME} -m -u ${UID} -g ${GROUPS} ${USER}
+RUN dnf --refresh upgrade -y && dnf install -y \
+	bc \
+	findutils \
+	git \
+	gcc \
+	gcc-arm-linux-gnu \
+	hostname \
+	make \
+	uboot-tools xz
+
+RUN grep -q ${GROUPS} /etc/group || groupadd -g ${GROUPS} ${USER}
+RUN grep -q ${UID} /etc/passwd || useradd -d ${HOME} -m -u ${UID} -g ${GROUPS} ${USER}
 
 USER ${USER}
 ENV HOME ${HOME}
@@ -50,11 +58,16 @@ FROM ubuntu:latest
 
 ${PROXY}
 
-# update datestamp below to force a cache refresh
-RUN echo 201603091439 && apt-get update
-RUN DEBIAN_FRONTEND=noninteractive apt-get upgrade -yy
-RUN DEBIAN_FRONTEND=noninteractive apt-get install -yy bc build-essential git gcc-arm-none-eabi u-boot-tools
-RUN groupadd -g ${GROUPS} ${USER} && useradd -d ${HOME} -m -u ${UID} -g ${GROUPS} ${USER}
+ENV DEBIAN_FRONTEND noninteractive
+RUN apt-get update && apt-get upgrade -yy && apt-get install -yy \
+	bc \
+	build-essential \
+	git \
+	gcc-arm-none-eabi \
+	u-boot-tools
+
+RUN grep -q ${GROUPS} /etc/group || groupadd -g ${GROUPS} ${USER}
+RUN grep -q ${UID} /etc/passwd || useradd -d ${HOME} -m -u ${UID} -g ${GROUPS} ${USER}
 
 USER ${USER}
 ENV HOME ${HOME}

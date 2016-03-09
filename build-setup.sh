@@ -48,10 +48,28 @@ FROM fedora:latest
 
 ${PROXY}
 
-# change datestamp below to force a cache refresh
-RUN echo 201603091439 && dnf --refresh upgrade -y
-RUN dnf install -y git subversion gcc gcc-c++ make perl-Thread-Queue perl-Data-Dumper diffstat texinfo \
-chrpath wget SDL-devel patch bzip2 tar cpio findutils socat which python-devel perl-bignum
+RUN dnf --refresh upgrade -y && dnf install -y \
+	bzip2 \
+	chrpath \
+	cpio \
+	diffstat \
+	findutils \
+	gcc \
+	gcc-c++ \
+	git \
+	make \
+	patch \
+	perl-bignum \
+	perl-Data-Dumper \
+	perl-Thread-Queue \
+	python-devel \
+	SDL-devel \
+	socat \
+	subversion \
+	tar \
+	texinfo \
+	wget \
+	which
 
 RUN grep -q ${GROUPS} /etc/group || groupadd -g ${GROUPS} ${USER}
 RUN grep -q ${UID} /etc/passwd || useradd -d ${HOME} -m -u ${UID} -g ${GROUPS} ${USER}
@@ -72,15 +90,25 @@ FROM ubuntu:latest
 
 ${PROXY}
 
-# update datestamp below to force a cache refresh
-RUN echo 201603091439 && apt-get update
-RUN DEBIAN_FRONTEND=noninteractive apt-get upgrade -y
-RUN DEBIAN_FRONTEND=noninteractive apt-get install -y build-essential git subversion diffstat texinfo \
-  chrpath wget libthread-queue-any-perl libdata-dumper-simple-perl python libsdl1.2-dev gawk socat debianutils
+ENV DEBIAN_FRONTEND noninteractive
+RUN apt-get update && apt-get upgrade -yy && apt-get install -yy \
+	build-essential \
+	chrpath \
+	debianutils \
+	diffstat \
+	gawk \
+	git \
+	libdata-dumper-simple-perl \
+	libsdl1.2-dev \
+	libthread-queue-any-perl \
+	python \
+	socat \
+	subversion \
+	texinfo \
+	wget
 
 RUN grep -q ${GROUPS} /etc/group || groupadd -g ${GROUPS} ${USER}
 RUN grep -q ${UID} /etc/passwd || useradd -d ${HOME} -m -u ${UID} -g ${GROUPS} ${USER}
-
 
 USER ${USER}
 ENV HOME ${HOME}

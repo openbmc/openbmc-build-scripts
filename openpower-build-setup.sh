@@ -25,10 +25,21 @@ if [[ "${distro}" == fedora ]];then
   Dockerfile=$(cat << EOF
 FROM fedora:latest
 
-RUN dnf --refresh upgrade -y && \
-	dnf install -y vim gcc-c++ flex bison git ctags cscope expat-devel \
-	patch zlib-devel zlib-static perl
-RUN groupadd -g ${GROUPS} ${USER} && useradd -d ${HOME} -m -u ${UID} -g ${GROUPS} ${USER}
+RUN dnf --refresh upgrade -y && dnf install -y \
+	vim \
+	gcc-c++ \
+	flex \
+	bison \
+	git \
+	ctags \
+  	cscope \
+	expat-devel \
+	patch \
+	zlib-devel \
+	zlib-static perl
+
+RUN grep -q ${GROUPS} /etc/group || groupadd -g ${GROUPS} ${USER}
+RUN grep -q ${UID} /etc/passwd || useradd -d ${HOME} -m -u ${UID} -g ${GROUPS} ${USER}
 
 USER ${USER}
 ENV HOME ${HOME}
@@ -42,14 +53,32 @@ elif [[ "${distro}" == ubuntu ]]; then
 FROM ubuntu:15.10
 
 ENV DEBIAN_FRONTEND noninteractive
-# update datestamp below to force a cache refresh
-RUN echo 201603091439 && apt-get update
-RUN apt-get install -y \
-	cscope ctags libz-dev libexpat-dev python language-pack-en texinfo \
-	build-essential g++ git bison flex unzip libxml-simple-perl \
-	libxml-sax-perl libxml2-dev libxml2-utils xsltproc wget cpio bc \
-	vim-common
-RUN groupadd -g ${GROUPS} ${USER} && useradd -d ${HOME} -m -u ${UID} -g ${GROUPS} ${USER}
+RUN apt-get update && apt-get upgrade -yy && apt-get install -yy \
+	bc \
+	bison \
+	build-essential \
+	cscope \
+       	cpio \
+	ctags \
+	flex \
+	g++ \
+	git \
+	libexpat-dev \
+	libz-dev \
+	libxml-sax-perl \
+	libxml-simple-perl \
+	libxml2-dev \
+	libxml2-utils \
+	language-pack-en \
+	python \
+	texinfo \
+	unzip \
+	vim-common \
+	wget\
+	xsltproc
+
+RUN grep -q ${GROUPS} /etc/group || groupadd -g ${GROUPS} ${USER}
+RUN grep -q ${UID} /etc/passwd || useradd -d ${HOME} -m -u ${UID} -g ${GROUPS} ${USER}
 
 USER ${USER}
 ENV HOME ${HOME}
