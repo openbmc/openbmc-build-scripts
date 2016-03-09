@@ -23,11 +23,19 @@ FROM ubuntu:15.10
 
 ${PROXY}
 
-#RUN echo $(date +%s) && apt-get update
-RUN apt-get update
-RUN DEBIAN_FRONTEND=noninteractive apt-get upgrade -yy
-RUN DEBIAN_FRONTEND=noninteractive apt-get install -yy bc build-essential cpio git python unzip wget
-RUN groupadd -g ${GROUPS} ${USER} && useradd -d ${HOME} -m -u ${UID} -g ${GROUPS} ${USER}
+ENV DEBIAN_FRONTEND noninteractive
+RUN apt-get update && apt-get install -yy \
+	bc \
+	build-essential \
+	cpio \
+	git \
+	python \
+	unzip \
+	wget
+
+RUN grep -q ${GROUPS} /etc/group || groupadd -g ${GROUPS} ${USER}
+RUN grep -q ${UID} /etc/passwd || useradd -d ${HOME} -m -u ${UID} -g ${GROUPS} ${USER}
+
 RUN locale-gen en_AU.utf8
 
 USER ${USER}

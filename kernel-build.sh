@@ -23,17 +23,20 @@ FROM ubuntu:15.10
 
 ${PROXY}
 
-# If we need to fetch new apt repo data, update the timestamp
-RUN echo 201603031716 && apt-get update
-RUN DEBIAN_FRONTEND=noninteractive apt-get upgrade -yy
-RUN DEBIAN_FRONTEND=noninteractive apt-get install -yy bc build-essential git gcc-powerpc64le-linux-gnu
-RUN DEBIAN_FRONTEND=noninteractive apt-get install -yy software-properties-common
-RUN apt-add-repository -y multiverse
-# If we need to fetch new apt repo data, update the timestamp
-RUN echo 201603031716 && apt-get update
-RUN apt-get update
-RUN DEBIAN_FRONTEND=noninteractive apt-get install -yy dwarves sparse
-RUN groupadd -g ${GROUPS} ${USER} && useradd -d ${HOME} -m -u ${UID} -g ${GROUPS} ${USER}
+ENV DEBIAN_FRONTEND noninteractive 
+RUN apt-get update && apt-get install -yy \
+	bc \
+	build-essential \
+	git \
+	gcc-powerpc64le-linux-gnu \
+	software-properties-common
+
+RUN apt-add-repository -y multiverse && apt-get update && apt-get install -yy \
+	dwarves \
+	sparse
+
+RUN grep -q ${GROUPS} /etc/group || groupadd -g ${GROUPS} ${USER}
+RUN grep -q ${UID} /etc/passwd || useradd -d ${HOME} -m -u ${UID} -g ${GROUPS} ${USER}
 
 USER ${USER}
 ENV HOME ${HOME}
