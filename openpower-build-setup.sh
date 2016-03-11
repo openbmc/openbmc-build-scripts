@@ -43,7 +43,7 @@ RUN dnf --refresh repolist && dnf install -y \
 	perl \
 	perl-bignum \
 	"perl(Digest::SHA1)" \
-	perl(Env)" \
+	"perl(Env)" \
 	"perl(Fatal)" \
 	"perl(Thread::Queue)" \
 	"perl(XML::SAX)" \
