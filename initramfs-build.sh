@@ -63,6 +63,10 @@ cat > "${WORKSPACE}"/build.sh << EOF_SCRIPT
 
 set -x
 
+export http_proxy=${http_proxy}
+export https_proxy=${http_proxy}
+export ftp_proxy=${http_proxy}
+
 cd ${WORKSPACE}
 
 # Go into the linux directory (the script will put us in a build subdir)
