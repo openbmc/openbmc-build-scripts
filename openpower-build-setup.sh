@@ -8,7 +8,7 @@
 #   WORKSPACE =
 
 # Trace bash processing
-set -x
+set -xeo pipefail
 
 # Default variables
 target=${target:-palmetto}
