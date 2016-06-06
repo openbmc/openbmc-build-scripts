@@ -178,6 +178,7 @@ PARALLEL_MAKE = "-j$(nproc)"
 INHERIT += "rm_work"
 BB_GENERATE_MIRROR_TARBALLS = "1"
 DL_DIR="${HOME}/bitbake_downloads"
+SSTATE_DIR="${HOME}/bitbake_sharedstatecache"
 USER_CLASSES += "buildstats"
 EOF_CONF
 
