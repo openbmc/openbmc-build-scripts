@@ -22,10 +22,6 @@ FROM ubuntu:16.04
 
 ${PROXY}
 
-RUN echo "deb http://au.archive.ubuntu.com/ubuntu/ xenial main" > \
-    /etc/apt/sources.list
-
-
 ENV DEBIAN_FRONTEND noninteractive
 RUN apt-get update && apt-get install -yy --no-install-recommends \
 	flex bison \
@@ -33,7 +29,6 @@ RUN apt-get update && apt-get install -yy --no-install-recommends \
 	libglib2.0-dev \
 	libfdt-dev \
 	make python-yaml gcc libc6-dev
-
 
 RUN grep -q ${GROUPS} /etc/group || groupadd -g ${GROUPS} ${USER}
 RUN grep -q ${UID} /etc/passwd || useradd -d ${HOME} -m -u ${UID} -g ${GROUPS} ${USER}
