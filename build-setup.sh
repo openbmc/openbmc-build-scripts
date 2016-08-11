@@ -192,6 +192,7 @@ BB_GENERATE_MIRROR_TARBALLS = "1"
 DL_DIR="${HOME}/bitbake_downloads"
 SSTATE_DIR="${HOME}/bitbake_sharedstatecache"
 USER_CLASSES += "buildstats"
+INHERIT_remove = "uninative"
 EOF_CONF
 
 # Kick off a build
