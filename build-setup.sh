@@ -3,9 +3,9 @@
 # This build script is for running the Jenkins builds using docker.
 #
 # It expects a few variables which are part of Jenkins build job matrix:
-#   target = barreleye|palmetto|qemu
-#   distro = fedora|ubuntu
-#   WORKSPACE = 
+#   target = barreleye|palmetto|qemu    (default qemu)
+#   distro = fedora|ubuntu              (default ubuntu)
+#   WORKSPACE = <location of base openbmc/openbmc repo>
 
 # Trace bash processing. Set -e so when a step fails, we fail the build
 set -xeo pipefail
@@ -16,6 +16,13 @@ distro=${distro:-ubuntu}
 WORKSPACE=${WORKSPACE:-${HOME}/${RANDOM}${RANDOM}}
 http_proxy=${http_proxy:-}
 PROXY=""
+
+# Determine our architecture, ppc64le or the other one
+if [ $(uname -m) == "ppc64le" ]; then
+    DOCKER_BASE="ppc64le/"
+else
+    DOCKER_BASE=""
+fi
 
 # Timestamp for job
 echo "Build started, $(date)"
@@ -56,7 +63,7 @@ if [[ "${distro}" == fedora ]];then
   fi
 
   Dockerfile=$(cat << EOF
-FROM fedora:latest
+FROM ${DOCKER_BASE}fedora:latest
 
 ${PROXY}
 
@@ -98,7 +105,7 @@ elif [[ "${distro}" == ubuntu ]]; then
   fi
 
   Dockerfile=$(cat << EOF
-FROM ubuntu:latest
+FROM ${DOCKER_BASE}ubuntu:latest
 
 ${PROXY}
 
@@ -117,6 +124,7 @@ RUN apt-get update && apt-get install -yy \
 	socat \
 	subversion \
 	texinfo \
+	cpio \
 	wget
 
 RUN grep -q ${GROUPS} /etc/group || groupadd -g ${GROUPS} ${USER}
