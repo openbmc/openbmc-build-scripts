@@ -3,9 +3,10 @@
 # This build script is for running the Jenkins builds using docker.
 #
 # It expects a few variables which are part of Jenkins build job matrix:
-#   target = barreleye|palmetto|qemu
-#   distro = fedora|ubuntu
-#   WORKSPACE = 
+#   target = barreleye|palmetto|qemu    (default qemu)
+#   distro = fedora|ubuntu              (default ubuntu)
+#   obmcdir = <name of openbmc src dir> (default openbmc)
+#   WORKSPACE = <location of base openbmc/openbmc repo>
 
 # Trace bash processing. Set -e so when a step fails, we fail the build
 set -xeo pipefail
@@ -13,12 +14,26 @@ set -xeo pipefail
 # Default variables
 target=${target:-qemu}
 distro=${distro:-ubuntu}
+obmcdir=${obmcdir:-openbmc}
 WORKSPACE=${WORKSPACE:-${HOME}/${RANDOM}${RANDOM}}
 http_proxy=${http_proxy:-}
 PROXY=""
 
+# Determine our architecture, ppc64le or the other one
+arch=`uname -a`
+if grep -q 'ppc64le' <<< $arch ; then
+    DOCKER_BASE="ppc64le/"
+else
+    DOCKER_BASE="" 
+fi
+
 # Timestamp for job
 echo "Build started, $(date)"
+
+# If there's no openbmc dir in WORKSPACE then just clone in master
+if [ ! -d ${WORKSPACE}/${obmcdir} ]; then
+    git clone https://github.com/openbmc/openbmc ${WORKSPACE}/${obmcdir}
+fi
 
 # Work out what build target we should be running and set bitbake command
 case ${target} in
@@ -56,7 +71,7 @@ if [[ "${distro}" == fedora ]];then
   fi
 
   Dockerfile=$(cat << EOF
-FROM fedora:latest
+FROM ${DOCKER_BASE}fedora:latest
 
 ${PROXY}
 
@@ -98,7 +113,7 @@ elif [[ "${distro}" == ubuntu ]]; then
   fi
 
   Dockerfile=$(cat << EOF
-FROM ubuntu:latest
+FROM ${DOCKER_BASE}ubuntu:latest
 
 ${PROXY}
 
@@ -117,6 +132,7 @@ RUN apt-get update && apt-get install -yy \
 	socat \
 	subversion \
 	texinfo \
+	cpio \
 	wget
 
 RUN grep -q ${GROUPS} /etc/group || groupadd -g ${GROUPS} ${USER}
@@ -147,7 +163,7 @@ set -xeo pipefail
 cd ${WORKSPACE}
 
 # Go into the openbmc directory (the openbmc script will put us in a build subdir)
-cd openbmc
+cd ${obmcdir}
 
 # Set up proxies
 export ftp_proxy=${http_proxy}
@@ -192,6 +208,7 @@ BB_GENERATE_MIRROR_TARBALLS = "1"
 DL_DIR="${HOME}/bitbake_downloads"
 SSTATE_DIR="${HOME}/bitbake_sharedstatecache"
 USER_CLASSES += "buildstats"
+INHERIT_remove = "uninative"
 EOF_CONF
 
 # Kick off a build
