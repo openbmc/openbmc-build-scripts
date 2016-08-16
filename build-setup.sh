@@ -5,7 +5,8 @@
 # It expects a few variables which are part of Jenkins build job matrix:
 #   target = barreleye|palmetto|qemu
 #   distro = fedora|ubuntu
-#   WORKSPACE = 
+#   obmcdir = <name of openbmc src dir> (default openbmc)
+#   WORKSPACE =
 
 # Trace bash processing. Set -e so when a step fails, we fail the build
 set -xeo pipefail
@@ -13,12 +14,19 @@ set -xeo pipefail
 # Default variables
 target=${target:-qemu}
 distro=${distro:-ubuntu}
+obmcdir=${obmcdir:-openbmc}
 WORKSPACE=${WORKSPACE:-${HOME}/${RANDOM}${RANDOM}}
 http_proxy=${http_proxy:-}
 PROXY=""
 
 # Timestamp for job
 echo "Build started, $(date)"
+
+# If there's no openbmc dir in WORKSPACE then just clone in master
+if [ ! -d ${WORKSPACE}/${obmcdir} ]; then
+    echo "Clone in openbmc master to ${WORKSPACE}/${obmcdir}"
+    git clone https://github.com/openbmc/openbmc ${WORKSPACE}/${obmcdir}
+fi
 
 # Work out what build target we should be running and set bitbake command
 case ${target} in
@@ -147,7 +155,7 @@ set -xeo pipefail
 cd ${WORKSPACE}
 
 # Go into the openbmc directory (the openbmc script will put us in a build subdir)
-cd openbmc
+cd ${obmcdir}
 
 # Set up proxies
 export ftp_proxy=${http_proxy}
