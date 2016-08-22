@@ -10,7 +10,7 @@
 set -uo pipefail
 
 QEMU_RUN_TIMER=300
-WORKSPACE=${WORKSPACE:-${HOME}}/${RANDOM}${RANDOM}
+WORKSPACE=${WORKSPACE:-${HOME}/${RANDOM}${RANDOM}}
 DOCKER_IMG_NAME="openbmc/ubuntu-robot-qemu"
 
 # Get base directory of our repo so we can find the scripts later
