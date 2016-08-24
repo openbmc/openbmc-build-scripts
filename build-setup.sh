@@ -4,7 +4,7 @@
 #
 # It expects a few variables which are part of Jenkins build job matrix:
 #   target = barreleye|palmetto|qemu
-#   distro = fedora|ubuntu
+#   distro = fedora|ubuntu|ubuntu:14.04|ubuntu:16.04
 #   obmcdir = <name of openbmc src dir> (default openbmc)
 #   WORKSPACE = <location of base openbmc/openbmc repo>
 
@@ -33,6 +33,11 @@ echo "Build started, $(date)"
 if [ ! -d ${WORKSPACE}/${obmcdir} ]; then
     echo "Clone in openbmc master to ${WORKSPACE}/${obmcdir}"
     git clone https://github.com/openbmc/openbmc ${WORKSPACE}/${obmcdir}
+fi
+
+# if user just passed in ubuntu then use latest
+if [[ $distro == "ubuntu" ]]; then
+    distro="ubuntu:latest"
 fi
 
 # Work out what build target we should be running and set bitbake command
@@ -107,13 +112,13 @@ RUN /bin/bash
 EOF
 )
 
-elif [[ "${distro}" == ubuntu ]]; then
+elif [[ "${distro}" == "ubuntu"* ]]; then
   if [[ -n "${http_proxy}" ]]; then
     PROXY="RUN echo \"Acquire::http::Proxy \\"\"${http_proxy}/\\"\";\" > /etc/apt/apt.conf.d/000apt-cacher-ng-proxy"
   fi
 
   Dockerfile=$(cat << EOF
-FROM ${DOCKER_BASE}ubuntu:latest
+FROM ${DOCKER_BASE}${distro}
 
 ${PROXY}
 
