@@ -11,10 +11,13 @@
 #  Optional env variable
 #   ROBOT_CODE_HOME  Location to extract the code
 #                    Default will be a temp location in /tmp/
+#   ROBOT_TEST_CMD   Command to execute from within obmc robot test framework
+#                    Default will be "tox -e qemu -- --include CI tests"
 
 # we don't want to fail on bad rc since robot tests may fail
 
 ROBOT_CODE_HOME=${ROBOT_CODE_HOME:-/tmp/$(whoami)/${RANDOM}/obmc-robot/}
+ROBOT_TEST_CMD=${ROBOT_TEST_CMD:-"tox -e qemu -- --include CI tests"}
 
 git clone https://github.com/openbmc/openbmc-test-automation.git \
         ${ROBOT_CODE_HOME}
@@ -28,7 +31,7 @@ export OPENBMC_HOST=${IP_ADDR}
 export SSH_PORT=${SSH_PORT}
 export HTTPS_PORT=${HTTPS_PORT}
 
-tox -e qemu -- --include CI tests
+"$($ROBOT_TEST_CMD)"
 
 cp ${ROBOT_CODE_HOME}/*.xml ${HOME}/
 cp ${ROBOT_CODE_HOME}/*.html ${HOME}/
