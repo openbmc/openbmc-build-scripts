@@ -86,12 +86,14 @@ cp $DIR/scripts/run-robot.sh ${WORKSPACE}
 
 # Run the docker container to execute the robot test cases
 # The test results will be put in ${WORKSPACE}
+# tox puts some cache files in $HOME that don't play well with the volume
+# so pass in /root/ as HOME for the robot tests
 docker run --user root \
-           --env HOME=${HOME} \
+           --env HOME=/root/ \
            --env IP_ADDR=${DOCKER_QEMU_IP_ADDR} \
            --env SSH_PORT=${DOCKER_SSH_PORT} \
            --env HTTPS_PORT=${DOCKER_HTTPS_PORT} \
-           --workdir ${HOME} \
+           --workdir /root/ \
            --volume ${WORKSPACE}:${HOME} \
            --tty \
            ${DOCKER_IMG_NAME} ${HOME}/run-robot.sh
