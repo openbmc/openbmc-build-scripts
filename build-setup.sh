@@ -7,6 +7,7 @@
 #   distro = fedora|ubuntu|ubuntu:14.04|ubuntu:16.04
 #   obmcdir = <name of openbmc src dir> (default openbmc)
 #   WORKSPACE = <location of base openbmc/openbmc repo>
+#   BUILD_SDK = <optional, set to "-c populate_sdk" to build sdk>
 
 # Trace bash processing. Set -e so when a step fails, we fail the build
 set -xeo pipefail
@@ -217,7 +218,7 @@ INHERIT_remove = "uninative"
 EOF_CONF
 
 # Kick off a build
-bitbake obmc-phosphor-image
+bitbake ${BUILD_SDK} obmc-phosphor-image
 
 EOF_SCRIPT
 
