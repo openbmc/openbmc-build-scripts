@@ -23,6 +23,7 @@
 #        repositories
 ###############################################################################
 
+import argparse
 import logging
 import os
 import re
@@ -36,16 +37,39 @@ import git
 # @param i_args : Command line arguments
 ###############################################################################
 def main(i_args):
-    if 3 != len(i_args):
-        print usage()
-        exit(1)
+    # Parse the arguments
+    l_args_obj = parse_arguments(i_args)
 
-    l_repo_path = i_args[0]
-    l_begin_commit = i_args[1]
-    l_end_commit = i_args[2]
+    # Print every commit
+    print 'Getting commits for ' + l_args_obj.repo_dir[0]
+    print_commits(l_args_obj.repo_dir[0], l_args_obj.latest_commit[0],
+                  l_args_obj.earliest_commit[0])
 
-    print 'Getting commits for ' + l_repo_path
-    print_commits(l_repo_path, l_begin_commit, l_end_commit)
+###############################################################################
+# @brief Parses the arguments from the command line
+#
+# @param i_args : The list of arguments from the command line, excluding the
+#                 name of the script
+#
+# @return An object representin the parsed arguments
+###############################################################################
+def parse_arguments(i_args):
+    l_parser = argparse.ArgumentParser(
+        description='Prints commit information from the given repo and all ' \
+                    +'sub-repos specified with SRC_REV, starting from the ' \
+                    +'most recent commit specified going back to the ' \
+                    +'earliest commit specified.')
+    l_parser.add_argument(
+        'repo_dir',
+        help='The directory of the repo to get commit information for')
+    l_parser.add_argument(
+        'latest_commit',
+        help='A reference (branch name, HEAD, SHA, etc.) to the most ' \
+             +'recent commit to get information for')
+    l_parser.add_argument(
+        'earliest_commit',
+        help='A reference to the earliest commit to get information for')
+    return l_parser.parse_args(i_args)
 
 ###############################################################################
 # @brief Prints all the commits from this repo and commits from
@@ -195,22 +219,6 @@ def print_commit_info(i_repo_path, i_commit, i_level):
     # Print out the line describing this commit
     print ('  ' * i_level) + RED + i_repo_path + ENDC  + ' ' + BLUE \
         + l_name_rev + ENDC + ' ' + re.sub('\s+', ' ', i_commit.summary)
-
-###############################################################################
-# @brief Prints out the usage for this script
-###############################################################################
-def usage():
-    print 'Usage: commit-tracker <repo_dir> <begin_rev> <end_rev>\n' \
-        + '  Prints commit information from the given repo and all\n' \
-        + '  sub-repos specified with SRC_REV, starting from the most \n' \
-        + '  recent commit specified going back to the earliest commit \n' \
-        + '  specified.\n' \
-        + '    repo_name - The directory of the repo to get commit\n' \
-        + '                information for\n' \
-        + '    begin_rev - A reference (branch name, HEAD, SHA, etc.) to\n' \
-        + '                the most recent commit to get information for\n' \
-        + '    end_rev   - A reference to the earliest commit to get\n' \
-        + '                information for'
 
 # Only run main if run as a script
 if __name__ == '__main__':
