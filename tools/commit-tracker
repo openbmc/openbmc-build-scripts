@@ -41,11 +41,19 @@ def main(i_args):
     # Parse the arguments
     l_args_obj = parse_arguments(i_args)
 
-    # Print every commit
-    print 'Getting commits for ' + l_args_obj.repo_dir
+    # Set the logger level
+    logging.basicConfig(level=logging.ERROR)
+
+    # Open the file and write the header
+    l_html_file = open(l_args_obj.html_file, 'w+')
+    l_html_file.write('<html><body>\n')
+
+    # Print commits and get overall info
+    print 'Getting commits for ' + l_args_obj.repo_uri
     l_insertions, l_deletions, l_closed_issues \
-        = print_commits(l_args_obj.repo_dir, l_args_obj.latest_commit,
-                        l_args_obj.earliest_commit)
+        = print_commits(l_args_obj.repo_uri, l_args_obj.repo_dir,
+                        l_args_obj.latest_commit, l_args_obj.earliest_commit,
+                        l_html_file)
 
     # Print to the console
     print 'Closed ' + str(len(l_closed_issues)) + ' issues'
@@ -53,6 +61,23 @@ def main(i_args):
         print '  ' + l_issue[0] + ' ' + l_issue[1]
     print 'Total Insertions: ' + str(l_insertions)
     print 'Total Deletions: ' + str(l_deletions)
+
+    # Write to the HTML file
+    l_html_file.write('<div>Closed ' + str(len(l_closed_issues))
+                      + ' issues</div>\n')
+    for l_issue in l_closed_issues:
+        l_issue_link = 'http://www.github.com/' \
+                       + re.sub('#', '/issues/', l_issue[0])
+        l_html_file.write('<div style="margin-left: 20px"><a href="' \
+                          + l_issue_link + '" target="_blank">' + l_issue[0] \
+                          + '</a> ' + l_issue[1] + '</div>\n')
+    l_html_file.write(
+        '<div>Total Insertions: ' + str(l_insertions) + '</div>\n' \
+        + '<div>Total Deletions: ' + str(l_deletions) + '</div>\n')
+    l_html_file.write('</body></html>\n')
+
+    # Close the HTML file
+    l_html_file.close()
 
 ###############################################################################
 # @brief Parses the arguments from the command line
@@ -69,6 +94,9 @@ def parse_arguments(i_args):
                     +'most recent commit specified going back to the ' \
                     +'earliest commit specified.')
     l_parser.add_argument(
+        'repo_uri',
+        help='The URI of the repo to get commit information for')
+    l_parser.add_argument(
         'repo_dir',
         help='The directory of the repo to get commit information for')
     l_parser.add_argument(
@@ -78,6 +106,11 @@ def parse_arguments(i_args):
     l_parser.add_argument(
         'earliest_commit',
         help='A reference to the earliest commit to get information for')
+    l_parser.add_argument(
+        '--html_file',
+        default='/dev/null',
+        help='If set to a file path, this script will write an HTML ' \
+             + 'version of the console output to the file path given')
     return l_parser.parse_args(i_args)
 
 ###############################################################################
@@ -85,18 +118,23 @@ def parse_arguments(i_args):
 #        subrepos between the given references
 #
 # @param i_repo_path    : The path to the repo to print commits for
-# @param i_begin_commit : A reference to the most recent commit. What
+# @param i_begin_commit : A references to the most recent commit. What
 #                         commit to start printing at
-# @param i_end_commit   : A reference to the commit farthest in the
+# @param i_end_commit   : A references to the commit farthest in the
 #                         past. The commit to stop print at
+# @param i_html_file    : The HTML file to print to
 #
-# @param A three-tuple containing the number of insertions, deletions, and
+# @return A three-tuple containing the number of insertions, deletions, and
 #         list of issues closed
 ###############################################################################
-def print_commits(i_repo_path, i_begin_commit, i_end_commit, i_level=0):
+def print_commits(i_repo_uri, i_repo_path, i_begin_commit, i_end_commit,
+                  i_html_file, i_level=0):
     l_total_insertions = 0
     l_total_deletions = 0
     l_all_closed_issues = []
+
+    # Get the repo that the user requested
+    clone_or_update(i_repo_uri, i_repo_path)
 
     try:
         l_repo = git.Repo(i_repo_path)
@@ -107,10 +145,13 @@ def print_commits(i_repo_path, i_begin_commit, i_end_commit, i_level=0):
     # Get commits between the beginning and end references
     try:
         l_commits = l_repo.iter_commits(rev=(i_begin_commit + '...'
-        + i_end_commit))
+                                             + i_end_commit))
         # Go through each commit
         for l_commit in l_commits:
+            # Print to the console and HTML file
             print_commit_info(i_repo_path, l_commit, i_level)
+            print_to_html(i_html_file, i_repo_uri, i_repo_path,
+                          l_commit, i_level)
 
             # Get the insertion and deletion line counts
             l_insertions, l_deletions = get_line_count(
@@ -130,14 +171,15 @@ def print_commits(i_repo_path, i_begin_commit, i_end_commit, i_level=0):
                 if l_diff.a_path and l_diff.b_path:
                     # ... get info about the change, log it...
                     l_subrepo_uri, l_subrepo_new_hash, l_subrepo_old_hash \
-                        = get_bumped_repo(l_repo, str(l_commit.hexsha),                                                  i_repo_path + '/' + l_diff.b_path)
+                        = get_bumped_repo(l_repo, str(l_commit.hexsha),
+                                          i_repo_path, l_diff.b_path)
                     logging.debug('Found diff...')
                     logging.debug('  Subrepo URI: ' + str(l_subrepo_uri))
                     logging.debug('  Subrepo new hash: '
                                   + str(l_subrepo_new_hash))
                     logging.debug('  Subrepo old hash: '
                                   + str(l_subrepo_old_hash))
-                    logging.debug('  Found in: ' + str(l_diff.a_path))
+                    logging.debug('  Found in: ' + str(l_diff.b_path))
                     # ... and print the commits for the subrepo if this was a
                     #     version bump
                     if (l_subrepo_new_hash
@@ -146,10 +188,10 @@ def print_commits(i_repo_path, i_begin_commit, i_end_commit, i_level=0):
                             and l_subrepo_uri.startswith('git')):
                         logging.debug('  Bumped')
                         l_subrepo_path = l_subrepo_uri.split('/')[-1]
-                        clone_or_update(l_subrepo_uri, l_subrepo_path)
                         l_insertions, l_deletions, l_closed_issues \
                             = print_commits(
                                       l_subrepo_uri,
+                                      l_subrepo_path,
                                       l_subrepo_new_hash,
                                       l_subrepo_old_hash,
                                       i_html_file,
@@ -162,36 +204,40 @@ def print_commits(i_repo_path, i_begin_commit, i_end_commit, i_level=0):
         logging.error(e)
         logging.error(str(i_begin_commit) + ' and ' + str(i_end_commit)
                       + ' are invalid revisions')
-
     return l_total_insertions, l_total_deletions, l_all_closed_issues
 
 ###############################################################################
 # @brief Gets the repo URI, the updated SHA, and the old SHA from a
 #        given repo, commit SHA and file
 #
-# @param i_repo      : The Repo object to get version bump information
+# @param i_repo      : The Repo object to get bump information
 #                      from
-# @param i_file      : The path to the file to search for version
-#                      bumps
 # @param i_hexsha    : The hex hash for the commit to search for
 #                      version bumps
+# @param i_file      : The path to the file to search for version
+#                      bumps
 #
 # @return Returns the repo URI, the updated SHA, and the old SHA in
 #         a tuple in that order
 ###############################################################################
-def get_bumped_repo(i_repo, i_hexsha, i_file):
+def get_bumped_repo(i_repo, i_hexsha, i_repo_path, i_file):
     # Checkout the old repo
     i_repo.git.checkout(i_hexsha)
     # Get the diff text
     l_diff_text = i_repo.git.diff(i_hexsha, i_hexsha + '~1', '--', i_file)
+    logging.debug('Hash: ' + i_hexsha)
+    logging.debug('File: ' + i_repo_path + '/' + i_file)
+    logging.debug('Diff Text: ' + l_diff_text)
 
     # SRCREV sets the SHA for the version of the other repo to use when
     # building openbmc. SHAs should be stored in the file in a format
     # like  SRCRV =? "<SHA>". Find both the new '+' and old '-' ones
     l_old_hash = None
     l_new_hash = None
-    l_old_hash_match = re.search('-SRCREV[+=? ]+"([a-f0-9]+)"', l_diff_text)
-    l_new_hash_match = re.search('\+SRCREV[+=? ]+"([a-f0-9]+)"', l_diff_text)
+    l_old_hash_match = re.search('-[A-Z_]*SRCREV[+=? ]+"([a-f0-9]+)"',
+                                 l_diff_text)
+    l_new_hash_match = re.search('\+[A-Z_]*SRCREV[+=? ]+"([a-f0-9]+)"',
+                                 l_diff_text)
     if l_old_hash_match:
         l_old_hash = l_old_hash_match.group(1)
     if l_new_hash_match:
@@ -199,8 +245,8 @@ def get_bumped_repo(i_repo, i_hexsha, i_file):
 
     # Get the URI of the subrepo
     l_uri = None
-    if os.path.isfile(i_file):
-        l_changed_file = open(i_file, 'r')
+    if os.path.isfile(i_repo_path + '/' + i_file):
+        l_changed_file = open(i_repo_path + '/' + i_file, 'r')
         for l_line in l_changed_file:
             # URIs should be stored in a format similar to
             # SRC_URI ?= "git://github.com/<path to repo>"
@@ -279,6 +325,31 @@ def print_commit_info(i_repo_path, i_commit, i_level):
     # Print out the line describing this commit
     print ('  ' * i_level) + RED + i_repo_path + ENDC  + ' ' + BLUE \
         + l_name_rev + ENDC + ' ' + re.sub('\s+', ' ', i_commit.summary)
+
+###############################################################################
+# @brief Prints commit information to the given HTML file
+#
+# @param i_html_file   : The HTML file to print to
+# @param i_repo_uri    : The web URI for this repo
+# @param i_repo_path   : The path for the repo
+# @param i_commit      : The commit to print
+# @param i_level       : The indentation level to print with
+###############################################################################
+def print_to_html(i_html_file, i_repo_uri, i_repo_path, i_commit, i_level):
+    # Take the first seven digits in the hash
+    l_name_rev = to_prefix_name_rev(i_commit.name_rev)
+    l_repo_url = re.sub('git://', 'http://', i_repo_uri)
+
+    # Write to the html file
+    i_html_file.write(
+        '<div style="margin-left: ' + str(i_level * 20) + 'px">'
+            + '<a href="' + l_repo_url + '" target="_blank" ' \
+                + 'style="color: red">' + i_repo_path + '</a>&nbsp;'
+            + '<a href="' + l_repo_url + '/commit/' + str(i_commit.hexsha) \
+                + '" target="_blank" style="color: blue">' + l_name_rev \
+                + '</a>&nbsp;'
+            + '<span>' + re.sub('\s+', ' ', i_commit.summary) + '</span>'
+        + '</div>\n')
 
 ###############################################################################
 # @brief Gets closed issues from the commit message
