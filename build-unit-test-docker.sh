@@ -13,6 +13,11 @@ set -uo pipefail
 DOCKER_IMG_NAME=${1:-"openbmc/ubuntu-unit-test"}
 DISTRO=${2:-"ubuntu:latest"}
 
+# Disable autom4te cache as workaround to permission issue
+AUTOM4TE_CFG="/root/.autom4te.cfg"
+AUTOM4TE="begin-language: \"Autoconf-without-aclocal-m4\"\nargs: --no-cache\n\
+end-language: \"Autoconf-without-aclocal-m4\""
+
 # Determine our architecture, ppc64le or the other one
 if [ $(uname -m) == "ppc64le" ]; then
     DOCKER_BASE="ppc64le/"
@@ -38,6 +43,7 @@ RUN apt-get update && apt-get install -yy \
     cmake \
     python \
     python-dev \
+    python-git \
     python-setuptools \
     pkg-config \
     libsystemd-dev \
@@ -54,6 +60,8 @@ RUN cd /usr/src/gtest && cmake . && make && mv libg* /usr/lib/
 
 RUN grep -q ${GROUPS} /etc/group || groupadd -g ${GROUPS} ${USER}
 RUN grep -q ${UID} /etc/passwd || useradd -d ${HOME} -m -u ${UID} -g ${GROUPS} ${USER}
+
+RUN echo '${AUTOM4TE}' > ${AUTOM4TE_CFG}
 
 RUN /bin/bash
 EOF
