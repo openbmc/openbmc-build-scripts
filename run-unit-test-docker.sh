@@ -57,7 +57,6 @@ echo "Executing docker image"
 docker run --cap-add=sys_admin --rm=true \
     -e WORKSPACE=${WORKSPACE}/ \
     -e UNIT_TEST_PKG=${UNIT_TEST_PKG} \
-    -e EXIT_USER=${USER} \
     -w "${WORKSPACE}" -v "${WORKSPACE}":"${WORKSPACE}" \
     -t ${DOCKER_IMG_NAME} ${WORKSPACE}/${UNIT_TEST_PY}
 
