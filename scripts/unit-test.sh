@@ -15,7 +15,38 @@ cp -R ${WORKSPACE} ${WORKDIR}
 cd ${WORKDIR}/${PKG}
 
 # TEMP Make sure in a valid repository
-if [ -e "bootstrap.sh" ]; then
+if [ -e "configure.ac" ]; then
+    # Determine dependencies from configure.ac
+    # TODO - Need this functionalized to be called recursively
+    while read config; do
+      if [[ $config == "AC_CHECK_LIB"* ]]; then
+        if [[ $config == *"mapper"* ]]; then
+            echo "Install openbmc/phosphor-objmgr"
+            cd ${WORKDIR}
+            git clone https://github.com/openbmc/phosphor-objmgr.git
+            cd ${WORKDIR}/phosphor-objmgr
+            ./bootstrap.sh
+            ./configure --enable-unpatched-systemd
+            make && make install
+            cd ${WORKDIR}/${PKG}
+        fi
+      elif [[ $config == "AC_CHECK_HEADER"* ]]; then
+        if [[ $config == *"host-ipmid/ipmid-api.h"* ]]; then
+            echo "Install openbmc/phosphor-host-ipmid"
+            cd ${WORKDIR}
+            git clone https://github.com/openbmc/phosphor-host-ipmid.git
+            cd ${WORKDIR}/phosphor-host-ipmid
+            ./bootstrap.sh
+            ./configure
+            make && make install
+            cd ${WORKDIR}
+        elif [[ $config == *"linux/bt-bmc.h"* ]]; then
+            echo "Install uapi linux/bt-bmc.h"
+            # Handled within btbridge's configure.ac
+        fi
+      fi
+    done < configure.ac
+
     # Configure package
     ./bootstrap.sh
     ./configure
