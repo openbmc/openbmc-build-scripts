@@ -64,6 +64,23 @@ class CommitReport:
             l_cl_string += '\n' + l_report.to_cl_string(i_level + 1)
         return l_cl_string
 
+    def to_html(self, i_level=0):
+        l_repo_url = re.sub('git://', 'http://', self.repo_uri)
+        # Get HTML for this commit
+        l_html = \
+            '<div style="margin-left: ' + str(i_level * 20) + 'px">' \
+            + '<a href="' + l_repo_url + '" target="_blank" ' \
+            + 'style="color: red">' + self.repo_name + '</a>&nbsp;' \
+            + '<a href="' + l_repo_url + '/commit/' + self.sha \
+            + '" target="_blank" style="color: blue">' + self.nice_name \
+            + '</a>&nbsp;' \
+            + '<span>' + re.sub('\s+', ' ', self.summary) + '</span>' \
+            + '</div>\n'
+        # Get the HTML for all subcommits
+        for l_commit in self.subreports:
+            l_html += l_commit.to_html(i_level + 1)
+        return l_html
+
     def get_total_insertions(self):
         l_insertions = self.insertions
         for l_commit in self.subreports:
@@ -89,15 +106,18 @@ class CommitReport:
 ###############################################################################
 def main(i_args):
     # Parse the arguments
-    l_args_obj = parse_arguments(i_args)
+    l_args = parse_arguments(i_args)
 
-    # Print every commit
-    print 'Getting report for ' + l_args_obj.repo_dir
+    # Set the logger level
+    logging.basicConfig(level=logging.ERROR)
+
+    # Generate the commit reports
+    print 'Getting report for ' + l_args.repo_dir
     l_reports = generate_commit_reports(
-        l_args_obj.repo_uri,
-        l_args_obj.repo_dir,
-        l_args_obj.latest_commit,
-        l_args_obj.earliest_commit)
+        l_args.repo_uri,
+        l_args.repo_dir,
+        l_args.latest_commit,
+        l_args.earliest_commit)
 
     # Compile issues, insertions, and deletions
     l_issues = []
@@ -109,15 +129,34 @@ def main(i_args):
         l_issues.extend(l_report.get_all_closed_issues())
 
     # Print commit information to the console
-    print 'Commits'
+    print 'Commits...'
     for l_report in l_reports:
         print l_report.to_cl_string()
     print 'Closed issues...'
     for l_issue in l_issues:
         print '  ' + str(l_issue[0]) + ' ' + str(l_issue[1])
-    print 'Insertions and Deletions'
+    print 'Insertions and deletions...'
     print str(l_total_insertions) + ' insertions'
     print str(l_total_deletions) + ' deletions'
+
+    # Write to the HTML file if the user set the flag
+    if l_args.html_file:
+        print 'Writing to HTML file...'
+        l_html_file = open(l_args.html_file, 'w+')
+        l_html_file.write('<html><body>\n')
+        for l_report in l_reports:
+            l_html_file.write(l_report.to_html())
+        l_html_file.write('<p>' + str(l_total_insertions) \
+                          + ' insertions and ' + str(l_total_deletions) \
+                          + ' deletions</p>')
+        l_html_file.write('<div>Closed Issues</div>')
+        for l_issue in l_issues:
+            l_html_file.write('<div><a href="http://www.github.com/' \
+                              + re.sub('#', '/issues/', l_issue[0]) \
+                              + '" target="_blank">' + l_issue[0] + '</a> ' \
+                              + l_issue[1] + '</div>')
+        l_html_file.write('</body></html>')
+        l_html_file.close()
 
 ###############################################################################
 # @brief Parses the arguments from the command line
@@ -146,6 +185,11 @@ def parse_arguments(i_args):
     l_parser.add_argument(
         'earliest_commit',
         help='A reference to the earliest commit to get information for')
+    l_parser.add_argument(
+        '--html_file',
+        default=None,
+        help='If set to a file path, this script will write an HTML ' \
+             +'version of the console output to the file path given')
     return l_parser.parse_args(i_args)
 
 ###############################################################################
