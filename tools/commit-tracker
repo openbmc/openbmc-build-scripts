@@ -25,12 +25,17 @@
 
 import argparse
 import git
+import json
 import logging
 import os
 import re
 import requests
 import sys
 import time
+
+class CommitReportEncoder(json.JSONEncoder):
+    def default(self, i_obj):
+        return i_obj.__dict__
 
 ###############################################################################
 # @class CommitReport
@@ -158,6 +163,13 @@ def main(i_args):
         l_html_file.write('</body></html>')
         l_html_file.close()
 
+    # Write to the JSON file if the user set the flag
+    if l_args.json_file:
+        print 'Writing to JSON file...'
+        l_json_file = open(l_args.json_file, 'w+')
+        l_json_file.write(CommitReportEncoder().encode(l_reports))
+        l_json_file.close()
+
 ###############################################################################
 # @brief Parses the arguments from the command line
 #
@@ -190,6 +202,11 @@ def parse_arguments(i_args):
         default=None,
         help='If set to a file path, this script will write an HTML ' \
              +'version of the console output to the file path given')
+    l_parser.add_argument(
+        '--json_file',
+        default=None,
+        help='If set to a file path, this script will write a JSON version ' \
+            +'of the generated report to the file path given')
     return l_parser.parse_args(i_args)
 
 ###############################################################################
@@ -259,10 +276,10 @@ def generate_commit_reports(i_repo_uri, i_repo_path, i_begin_commit,
                     logging.debug('  Found in: ' + str(l_diff.b_path))
                     # ... and print the commits for the subrepo if this was a
                     #     version bump
-                    if (l_subrepo_new_hash
-                            and l_subrepo_old_hash
-                            and l_subrepo_uri
-                            and l_subrepo_uri.startswith('git')):
+                    if l_subrepo_new_hash \
+                            and l_subrepo_old_hash \
+                            and l_subrepo_uri \
+                            and l_subrepo_uri.startswith('git'):
                         logging.debug('  Bumped')
                         l_subrepo_path = l_subrepo_uri.split('/')[-1]
                         l_subreports = generate_commit_reports(
@@ -284,7 +301,7 @@ def generate_commit_reports(i_repo_uri, i_repo_path, i_begin_commit,
 ###############################################################################
 # @brief Gets the repo URI, the updated SHA, and the old SHA from a
 #        given repo, commit SHA and file
-#
+# 
 # @param i_repo      : The Repo object to get version bump information
 #                      from
 # @param i_hexsha    : The hex hash for the commit to search for
@@ -294,7 +311,7 @@ def generate_commit_reports(i_repo_uri, i_repo_path, i_begin_commit,
 # @param i_file      : The path, starting at the base of the repo,
 #                      to the file to get bump information from
 #
-# @return Returns the repo URI, the updated SHA, and the old SHA in
+# @return Returns the repo URI, the updatedS SHA, and the old SHA in
 #         a tuple in that order
 ###############################################################################
 def get_bump_info(i_repo, i_hexsha, i_repo_path, i_file):
@@ -306,9 +323,7 @@ def get_bump_info(i_repo, i_hexsha, i_repo_path, i_file):
     logging.debug('File: ' + i_repo_path + '/' + i_file)
     logging.debug('Diff Text: ' + l_diff_text)
 
-    # SRCREV sets the SHA for the version of the other repo to use when
-    # building openbmc. SHAs should be stored in the file in a format
-    # like  SRCRV =? "<SHA>". Find both the new '+' and old '-' ones
+    # Get the new and old version hashes
     l_old_hash = None
     l_new_hash = None
     l_old_hash_match = re.search('-[A-Z_]*SRCREV[+=? ]+"([a-f0-9]+)"',
@@ -325,8 +340,6 @@ def get_bump_info(i_repo, i_hexsha, i_repo_path, i_file):
     if os.path.isfile(i_repo_path + '/' + i_file):
         l_changed_file = open(i_repo_path + '/' + i_file, 'r')
         for l_line in l_changed_file:
-            # URIs should be stored in a format similar to
-            # SRC_URI ?= "git://github.com/<path to repo>"
             l_uri_match = re.search('_URI[+=? ]+"([-a-zA-Z0-9/:\.]+)"', l_line)
             if l_uri_match:
                 l_uri = l_uri_match.group(1)
