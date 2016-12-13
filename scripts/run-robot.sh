@@ -35,5 +35,6 @@ export HTTPS_PORT=${HTTPS_PORT}
 
 cp ${ROBOT_CODE_HOME}/*.xml ${HOME}/
 cp ${ROBOT_CODE_HOME}/*.html ${HOME}/
+cp ${ROBOT_CODE_HOME}/*.txt ${HOME}/
 
 #rm -rf ${ROBOT_CODE_HOME}
