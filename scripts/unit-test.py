@@ -3,6 +3,7 @@
 # Execute the given repository's unit tests
 #
 
+from subprocess import check_call, call
 import os
 import sys
 
@@ -37,7 +38,8 @@ if EXIT_USER is None:
 def clone_pkg(pkg):
     pkg_repo = "https://gerrit.openbmc-project.xyz/openbmc/"+pkg
     os.chdir(WORKSPACE)
-    os.system("git clone "+pkg_repo)  # TODO Replace with subprocess call
+    print WORKSPACE+"> git clone "+pkg_repo
+    subprocess.check_call(['git', 'clone', pkg_repo])
 
 
 # For each package(pkg), starting with the package to be unit tested,
@@ -49,7 +51,15 @@ def build_depends(pkg=None, pkgdir=None, deps=None):
     try:
         # Open package's configure.ac
         with open("configure.ac", "rt") as infile:
-            for line in infile:  # TODO Handle line breaks
+            line = ""
+            for cfg_line in infile:
+                cfg_line = cfg_line.rstrip()  # Remove whitespace & newline
+                if cfg_line.endswith('\\'):
+                    line += str(cfg_line[:-1])
+                    continue
+                else:
+                    line = line+cfg_line
+
                 # Find any defined dependency
                 for macro_key in DEPENDENCIES:
                     if line.startswith(macro_key):
@@ -77,6 +87,7 @@ def build_depends(pkg=None, pkgdir=None, deps=None):
                                         # Cyclic dependency failure
                                         raise Exception("Cyclic dependencies \
                                                found in "+pkg)
+                line = ""
 
         # Build & install this package
         if deps[pkg] == 0:
@@ -85,9 +96,15 @@ def build_depends(pkg=None, pkgdir=None, deps=None):
             # Add any necessary configure flags for package
             for pkg_key in CONFIGURE_FLAGS:
                 if pkg == pkg_key:
-                    conf_flags = conf_flags+CONFIGURE_FLAGS[pkg_key]+" "
-            os.system("./bootstrap.sh && ./configure " +
-                      conf_flags + "&& make && make install")
+                    conf_flags = conf_flags+CONFIGURE_FLAGS[pkg_key]
+            print pkgdir+"> ./bootstrap.sh"
+            subprocess.check_call(['./bootstrap.sh'])
+            print pkgdir+"> ./configure "+conf_flags
+            subprocess.check_call(['./configure', conf_flags])
+            print pkgdir+"> make"
+            subprocess.check_call(['make'])
+            print pkgdir+"> make install"
+            subprocess.check_call(['make', 'install'])
             deps[pkg] = 1
 
     except IOError:
@@ -107,7 +124,8 @@ def main():
                              deps)
         os.chdir(os.path.join(WORKSPACE, UNIT_TEST_PKG))
         # Run package unit tests
-        os.system("make check")  # TODO Verify all fails halt Jenkins
+        print os.path.join(WORKSPACE, UNIT_TEST_PKG)+"> make check"
+        subprocess.check_call(['make', 'check'])
     else:
         raise Exception("Unit test package workspace directory " +
                         os.path.join(WORKSPACE, UNIT_TEST_PKG) + " not found")
@@ -118,9 +136,11 @@ if __name__ == '__main__':
         main()
     except Exception as e:
         print type(e)
+        print e.args
         print e
         rc = -1
     # Must update all files' ownership to Jenkins' EXIT_USER before exit
     if EXIT_USER is not None:
-        os.system("chown -R "+EXIT_USER+" "+WORKSPACE)
+        print "> chown -R "+EXIT_USER+" "+WORKSPACE
+        subprocess.call(['chown', '-R', EXIT_USER, WORKSPACE])
     sys.exit(rc)
