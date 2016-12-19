@@ -3,6 +3,7 @@
 # Execute the given repository's unit tests
 #
 
+from git import Repo
 from subprocess import call
 import os
 import sys
@@ -38,9 +39,9 @@ if EXIT_USER is None:
 
 def clone_pkg(pkg):
     pkg_repo = "https://gerrit.openbmc-project.xyz/openbmc/"+pkg
-    os.chdir(WORKSPACE)
-    print WORKSPACE+"> git clone "+pkg_repo
-    subprocess.check_call(['git', 'clone', pkg_repo])
+    os.mkdir(os.path.join(WORKSPACE, pkg))
+    print os.path.join(WORKSPACE, pkg)+"> git clone "+pkg_repo+" ./"
+    return Repo.clone_from(pkg_repo, os.path.join(WORKSPACE, pkg))
 
 
 # For each package(pkg), starting with the package to be unit tested,
@@ -71,14 +72,12 @@ def build_depends(pkg=None, pkgdir=None, deps=None):
                                 if deps.get(dep_pkg) is None:
                                     # Dependency package not installed
                                     deps[dep_pkg] = 0
-                                    clone_pkg(dep_pkg)
+                                    dep_repo = clone_pkg(dep_pkg)
                                     # Determine this dependency package's
                                     # dependencies and install them before
                                     # returning to install this package
-                                    dep_pkgdir = os.path.join(WORKSPACE,
-                                                              dep_pkg)
                                     deps = build_depends(dep_pkg,
-                                                         dep_pkgdir,
+                                                         dep_repo.working_dir,
                                                          deps)
                                 else:
                                     # Dependency package known and installed

@@ -38,6 +38,7 @@ RUN apt-get update && apt-get install -yy \
     cmake \
     python \
     python-dev \
+    python-git \
     python-setuptools \
     pkg-config \
     libsystemd-dev \
