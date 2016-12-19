@@ -7,6 +7,7 @@ these dependencies. Then the given package is configured, built, and installed
 prior to executing its unit tests.
 """
 
+from git import Repo
 from urlparse import urljoin
 from subprocess import check_call, call
 import os
@@ -36,8 +37,9 @@ def clone_pkg(pkg):
     pkg                 Name of the package to clone
     """
     pkg_repo = urljoin('https://gerrit.openbmc-project.xyz/openbmc/', pkg)
-    os.chdir(WORKSPACE)
-    check_call_cmd(WORKSPACE, 'git', 'clone', pkg_repo)
+    os.mkdir(os.path.join(WORKSPACE, pkg))
+    printline(os.path.join(WORKSPACE, pkg), "> git clone", pkg_repo, "./")
+    return Repo.clone_from(pkg_repo, os.path.join(WORKSPACE, pkg))
 
 
 def get_deps(configure_ac):
@@ -94,12 +96,13 @@ def build_depends(pkg, pkgdir, dep_installed):
             if dep_installed.get(dep_pkg) is None:
                 # Dependency package not installed
                 dep_installed[dep_pkg] = False
-                clone_pkg(dep_pkg)
+                dep_repo = clone_pkg(dep_pkg)
                 # Determine this dependency package's
                 # dependencies and install them before
                 # returning to install this package
                 dep_pkgdir = os.path.join(WORKSPACE, dep_pkg)
-                dep_installed = build_depends(dep_pkg, dep_pkgdir,
+                dep_installed = build_depends(dep_pkg,
+                                              dep_repo.working_dir,
                                               dep_installed)
             else:
                 # Dependency package known and installed
