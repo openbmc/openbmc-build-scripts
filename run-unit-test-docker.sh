@@ -43,10 +43,9 @@ echo "Building docker image with build-unit-test-docker.sh"
 # Run the docker unit test container with the unit test execution script
 echo "Executing docker image"
 docker run --cap-add=sys_admin --rm=true \
-    -e WORKSPACE=${WORKSPACE}/ \
-    -e UNIT_TEST_PKG=${UNIT_TEST_PKG} \
     -w "${WORKSPACE}" -v "${WORKSPACE}":"${WORKSPACE}" \
-    -t ${DOCKER_IMG_NAME} ${WORKSPACE}/${UNIT_TEST_PY}
+    -t ${DOCKER_IMG_NAME} \
+    "${WORKSPACE}/${UNIT_TEST_PY} -w ${WORKSPACE} -p ${UNIT_TEST_PKG} -v"
 
 # Timestamp for build
 echo "Unit test build completed, $(date)"
