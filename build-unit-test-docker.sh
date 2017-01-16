@@ -49,6 +49,7 @@ RUN apt-get update && apt-get install -yy \
     python \
     python-dev \
     python-git \
+    python-yaml \
     python-setuptools \
     pkg-config \
     autoconf \
