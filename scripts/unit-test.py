@@ -137,9 +137,11 @@ if __name__ == '__main__':
     # DEPENDENCIES = [MACRO]:[library/header]:[GIT REPO]
     DEPENDENCIES = {
         'AC_CHECK_LIB': {'mapper': 'phosphor-objmgr'},
-        'AC_CHECK_HEADER': {'host-ipmid/ipmid-api.h': 'phosphor-host-ipmid'},
-        'AC_CHECK_HEADER': {'sdbusplus/server.hpp': 'sdbusplus'},
-        'AC_CHECK_HEADER': {'log.hpp': 'phosphor-logging'}
+        'AC_CHECK_HEADER': {
+            'host-ipmid': 'phosphor-host-ipmid',
+            'sdbusplus': 'sdbusplus',
+            'log.hpp': 'phosphor-logging'
+        }
     }
 
     # Set command line arguments
