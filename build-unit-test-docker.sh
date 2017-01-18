@@ -50,6 +50,7 @@ RUN apt-get update && apt-get install -yy \
     python-dev \
     python-git \
     python-yaml \
+    python-mako \
     python-setuptools \
     pkg-config \
     autoconf \
