@@ -141,6 +141,9 @@ if __name__ == '__main__':
             'host-ipmid': 'phosphor-host-ipmid',
             'sdbusplus': 'sdbusplus',
             'log.hpp': 'phosphor-logging'
+        },
+        'PKG_CHECK_MODULES': {
+            'phosphor-dbus-interfaces': 'phosphor-dbus-interfaces'
         }
     }
 
