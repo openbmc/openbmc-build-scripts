@@ -143,7 +143,8 @@ if __name__ == '__main__':
             'log.hpp': 'phosphor-logging'
         },
         'PKG_CHECK_MODULES': {
-            'phosphor-dbus-interfaces': 'phosphor-dbus-interfaces'
+            'phosphor-dbus-interfaces': 'phosphor-dbus-interfaces',
+            'sdbusplus': 'sdbusplus'
         }
     }
 
