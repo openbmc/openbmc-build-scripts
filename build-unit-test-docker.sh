@@ -55,6 +55,7 @@ RUN apt-get update && apt-get install -yy \
     pkg-config \
     autoconf \
     libsystemd-dev \
+    libssl-dev \
     sudo \
     wget \
     git
