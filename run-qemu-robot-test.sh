@@ -36,8 +36,7 @@ cp $DIR/scripts/boot-qemu* ${UPSTREAM_WORKSPACE}
 
 # Start QEMU docker instance
 # root in docker required to open up the https/ssh ports
-obmc_qemu_docker=$(docker run --rm \
-                              --detach \
+obmc_qemu_docker=$(docker run --detach \
                               --user root \
                               --env HOME=${HOME} \
                               --env QEMU_RUN_TIMER=${QEMU_RUN_TIMER} \
