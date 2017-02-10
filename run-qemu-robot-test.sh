@@ -36,8 +36,7 @@ cp $DIR/scripts/boot-qemu* ${UPSTREAM_WORKSPACE}
 
 # Start QEMU docker instance
 # root in docker required to open up the https/ssh ports
-obmc_qemu_docker=$(docker run --rm \
-                              --detach \
+obmc_qemu_docker=$(docker run --detach \
                               --user root \
                               --env HOME=${HOME} \
                               --env QEMU_RUN_TIMER=${QEMU_RUN_TIMER} \
@@ -87,8 +86,7 @@ cp $DIR/scripts/run-robot.sh ${WORKSPACE}
 
 # Run the docker container to execute the robot test cases
 # The test results will be put in ${WORKSPACE}
-docker run --rm \
-           --user root \
+docker run --user root \
            --env HOME=${HOME} \
            --env IP_ADDR=${DOCKER_QEMU_IP_ADDR} \
            --env SSH_PORT=${DOCKER_SSH_PORT} \
