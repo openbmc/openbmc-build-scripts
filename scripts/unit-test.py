@@ -51,7 +51,7 @@ def get_deps(configure_ac):
     configure_ac        Opened 'configure.ac' file object
     """
     line = ""
-    dep_pkgs = []
+    dep_pkgs = set()
     for cfg_line in configure_ac:
         # Remove whitespace & newline
         cfg_line = cfg_line.rstrip()
@@ -62,16 +62,16 @@ def get_deps(configure_ac):
         line = line+cfg_line
 
         # Find any defined dependency
-        for macro_key in DEPENDENCIES:
-            if not line.startswith(macro_key):
-                continue
-            for dep_key in DEPENDENCIES[macro_key]:
-                if line.find(dep_key) == -1:
-                    continue
-                dep_pkgs += [DEPENDENCIES[macro_key][dep_key]]
+        line_has = lambda x: x if x in line else None
+        macros = set(filter(line_has, DEPENDENCIES.iterkeys()))
+        if len(macros) == 1:
+            macro = ''.join(macros)
+            deps = filter(line_has, DEPENDENCIES[macro].iterkeys())
+            dep_pkgs.update(map(lambda x: DEPENDENCIES[macro][x], deps))
+
         line = ""
 
-    return dep_pkgs
+    return list(dep_pkgs)
 
 
 def build_depends(pkg, pkgdir, dep_installed):
@@ -140,12 +140,14 @@ if __name__ == '__main__':
         'AC_CHECK_HEADER': {
             'host-ipmid': 'phosphor-host-ipmid',
             'sdbusplus': 'sdbusplus',
-            'log.hpp': 'phosphor-logging'
+            'log.hpp': 'phosphor-logging',
         },
+        'AC_PATH_PROG': {'sdbus++': 'sdbusplus'},
         'PKG_CHECK_MODULES': {
             'phosphor-dbus-interfaces': 'phosphor-dbus-interfaces',
-            'sdbusplus': 'sdbusplus'
-        }
+            'sdbusplus': 'sdbusplus',
+            'phosphor-logging': 'phosphor-logging',
+        },
     }
 
     # Set command line arguments
