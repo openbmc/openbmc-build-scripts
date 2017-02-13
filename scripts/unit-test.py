@@ -131,7 +131,9 @@ def build_depends(pkg, pkgdir, dep_installed):
 if __name__ == '__main__':
     # CONFIGURE_FLAGS = [GIT REPO]:[CONFIGURE FLAGS]
     CONFIGURE_FLAGS = {
+        'phosphor-dbus-interfaces': ['--enable-transaction']
         'phosphor-objmgr': ['--enable-unpatched-systemd']
+        'sdbusplus': ['--enable-transaction']
     }
 
     # DEPENDENCIES = [MACRO]:[library/header]:[GIT REPO]
