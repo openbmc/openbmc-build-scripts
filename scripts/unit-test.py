@@ -141,7 +141,7 @@ if __name__ == '__main__':
         'AC_CHECK_HEADER': {
             'host-ipmid': 'phosphor-host-ipmid',
             'sdbusplus': 'sdbusplus',
-            'log.hpp': 'phosphor-logging',
+            'phosphor-logging/log.hpp': 'phosphor-logging',
         },
         'AC_PATH_PROG': {'sdbus++': 'sdbusplus'},
         'PKG_CHECK_MODULES': {
