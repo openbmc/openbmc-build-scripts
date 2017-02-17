@@ -178,5 +178,9 @@ if __name__ == '__main__':
                                   dep_installed)
     os.chdir(os.path.join(WORKSPACE, UNIT_TEST_PKG))
     # Run package unit tests
-    check_call_cmd(os.path.join(WORKSPACE, UNIT_TEST_PKG), 'make', 'check')
+    if args.verbose:
+        check_call_cmd(os.path.join(WORKSPACE, UNIT_TEST_PKG), 'make', 'check',
+                       'VERBOSE=1')
+    else:
+        check_call_cmd(os.path.join(WORKSPACE, UNIT_TEST_PKG), 'make', 'check')
     os.umask(prev_umask)
