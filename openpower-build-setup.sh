@@ -4,8 +4,8 @@
 #
 # It expects a few variables which are part of Jenkins build job matrix:
 #   target = palmetto|qemu|habanero|firestone|garrison
-#   distro = ubuntu
-#   WORKSPACE =
+#   distro = ubuntu|fedora
+#   WORKSPACE = Random Number by Default
 
 # Trace bash processing
 set -x
@@ -19,11 +19,24 @@ http_proxy=${http_proxy:-}
 # Timestamp for job
 echo "Build started, $(date)"
 
+# if there is no open-power directory clone in master
+if [ ! -e ${WORKSPACE}/op-build ]; then
+        echo "Clone in openpower master to ${WORKSPACE}/op-build"
+        git clone --recursive https://github.com/open-power/op-build ${WORKSPACE}/op-build
+fi
+
+# Determine our architecture, ppc64le or the other one
+if [ $(uname -m) == "ppc64le" ]; then
+    DOCKER_BASE="ppc64le/"
+else
+    DOCKER_BASE=""
+fi
+
 # Configure docker build
 if [[ "${distro}" == fedora ]];then
 
   Dockerfile=$(cat << EOF
-FROM fedora:latest
+FROM ${DOCKER_BASE}fedora:latest
 
 RUN dnf --refresh repolist && dnf install -y \
 	bc \
@@ -71,7 +84,7 @@ EOF
 elif [[ "${distro}" == ubuntu ]]; then
 
   Dockerfile=$(cat << EOF
-FROM ubuntu:15.10
+FROM ${DOCKER_BASE}ubuntu:latest
 
 ENV DEBIAN_FRONTEND noninteractive
 RUN apt-get update && apt-get install -yy \
@@ -150,3 +163,4 @@ ln -sf ${WORKSPACE}/op-build/output/images ${WORKSPACE}/images
 
 # Timestamp for build
 echo "Build completed, $(date)"
+
