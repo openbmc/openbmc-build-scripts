@@ -4,8 +4,8 @@
 #
 # It expects a few variables which are part of Jenkins build job matrix:
 #   target = palmetto|qemu|habanero|firestone|garrison
-#   distro = ubuntu
-#   WORKSPACE =
+#   distro = ubuntu|fedora
+#   WORKSPACE = Random Number by Default
 
 # Trace bash processing
 set -x
@@ -14,23 +14,45 @@ set -x
 target=${target:-palmetto}
 distro=${distro:-ubuntu}
 WORKSPACE=${WORKSPACE:-${HOME}/${RANDOM}${RANDOM}}
-http_proxy=${http_proxy:-}
 
 # Timestamp for job
 echo "Build started, $(date)"
+
+# if there is no open-power directory clone in master into workspace
+if [ ! -e ${WORKSPACE}/op-build ]; then
+        echo "Clone in openpower master to ${WORKSPACE}/op-build"
+        git clone --recursive https://github.com/open-power/op-build ${WORKSPACE}/op-build
+fi
+
+# Determine the architecture
+ARCH=$(uname -m)
+
+# Determine the prefix of the Dockerfile's base image
+case ${ARCH} in
+    "ppc64le")
+        DOCKER_BASE="ppc64le/"
+        ;;
+    "x86_64")
+        DOCKER_BASE=""
+        ;;
+    *)
+        echo "Unsupported system architecture(${ARCH}) found for docker image"
+        exit 1
+esac
+
 
 # Configure docker build
 if [[ "${distro}" == fedora ]];then
 
   Dockerfile=$(cat << EOF
-FROM fedora:latest
+FROM ${DOCKER_BASE}fedora:latest
 
 RUN dnf --refresh repolist && dnf install -y \
 	bc \
 	bison \
 	bzip2 \
 	cpio \
-  	cscope \
+	cscope \
 	ctags \
 	expat-devel \
 	findutils \
@@ -71,7 +93,7 @@ EOF
 elif [[ "${distro}" == ubuntu ]]; then
 
   Dockerfile=$(cat << EOF
-FROM ubuntu:15.10
+FROM ${DOCKER_BASE}ubuntu:latest
 
 ENV DEBIAN_FRONTEND noninteractive
 RUN apt-get update && apt-get install -yy \
@@ -79,7 +101,7 @@ RUN apt-get update && apt-get install -yy \
 	bison \
 	build-essential \
 	cscope \
-       	cpio \
+	cpio \
 	ctags \
 	flex \
 	g++ \
