@@ -1,11 +1,11 @@
-#/bin/bash
+#!/bin/bash
 
 # This build script is for running the Jenkins builds using docker.
 #
 # It expects a few variables which are part of Jenkins build job matrix:
 #   target = palmetto|qemu|habanero|firestone|garrison
 #   distro = ubuntu|fedora|debian|centos*
-#   WORKSPACE = random number
+#   WORKSPACE = random number by default
 #       *Not available for ppcle64
 
 # Trace bash processing
@@ -14,7 +14,7 @@ set -x
 # Default variables
 target=${target:-palmetto}
 distro=${distro:-ubuntu}
-WORKSPACE=${WORKSPACE:-${HOME}/opbuildtest}
+WORKSPACE=${WORKSPACE:-${HOME}/${RANDOM}${RANDOM}}
 http_proxy=${http_proxy:-}
 
 # Timestamp for job
