@@ -177,6 +177,8 @@ if __name__ == '__main__':
                                   os.path.join(WORKSPACE, UNIT_TEST_PKG),
                                   dep_installed)
     os.chdir(os.path.join(WORKSPACE, UNIT_TEST_PKG))
+    # Refresh dynamic linker run time bindings for dependencies
+    check_call_cmd(os.path.join(WORKSPACE, UNIT_TEST_PKG), 'ldconfig')
     # Run package unit tests
     if args.verbose:
         check_call_cmd(os.path.join(WORKSPACE, UNIT_TEST_PKG), 'make', 'check',
