@@ -47,7 +47,8 @@ RUN apt-get update && apt-get install -yy \
     unzip \
     diffstat \
     expect \
-    curl
+    curl \
+    ipmitool
 
 RUN easy_install \
     tox \
