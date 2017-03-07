@@ -4,6 +4,7 @@
 #
 # It uses a few variables which are part of Jenkins build job matrix:
 #   distro = fedora|ubuntu|ubuntu:14.04|ubuntu:16.04
+#   dbus_sys_config_file = <path of the dbus config file>
 #   WORKSPACE = <location of unit test execution script>
 
 # Trace bash processing. Set -e so when a step fails, we fail the build
@@ -16,6 +17,8 @@ WORKSPACE=${WORKSPACE:-${TMP}/unit-test${RANDOM}}
 OBMC_BUILD_SCRIPTS="openbmc-build-scripts"
 UNIT_TEST_PY_DIR="scripts"
 UNIT_TEST_PY="unit-test.py"
+DBUS_DIR="/tmp/dbus"
+DBUS_SYS_CONFIG_FILE=${dbus_sys_config_file:-"/usr/share/dbus-1/system.conf"}
 
 # Timestamp for job
 echo "Unit test build started, $(date)"
@@ -55,6 +58,11 @@ echo "Building docker image with build-unit-test-docker.sh"
 # Run the docker unit test container with the unit test execution script
 echo "Executing docker image"
 docker run --cap-add=sys_admin --rm=true \
+    --privileged=true \
+    -v ${DBUS_DIR} \
+    -v /usr/share/dbus-1:/usr/share/dbus-1 \
+    -v /usr/bin:/usr/bin \
+    -e DBUS_STARTER_BUS_TYPE=session \
     -w "${WORKSPACE}" -v "${WORKSPACE}":"${WORKSPACE}" \
     -t ${DOCKER_IMG_NAME} \
     ${WORKSPACE}/${UNIT_TEST_PY} -w ${WORKSPACE} -p ${UNIT_TEST_PKG} -v

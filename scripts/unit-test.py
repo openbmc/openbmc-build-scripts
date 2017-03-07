@@ -9,10 +9,49 @@ prior to executing its unit tests.
 
 from git import Repo
 from urlparse import urljoin
-from subprocess import check_call, call
+from subprocess import check_call, call, check_output
 import os
 import sys
 import argparse
+import re
+
+def launch_session_dbus():
+    """
+    Launches a session debus using a modified config file and
+    sets the DBUS_SESSION_BUS_ADDRESS environment variable
+    """
+    if os.path.isfile('/tmp/dbus/pid'):
+        os.remove('/tmp/dbus/pid')
+    dbus_config_file = '/usr/share/dbus-1/system.conf'
+    if 'DBUS_CONFIG_FILE' in os.environ:
+        dbus_config_file = os.environ['DBUS_CONFIG_FILE']
+    with open(dbus_config_file) as infile, open('/tmp/dbus/system-local.conf', 'w') as outfile:
+        for line in infile:
+            line = re.sub('<type>.*</type>','<type>session</type>', line, flags=re.DOTALL) 
+            line = re.sub('<pidfile>.*</pidfile>','<pidfile>/tmp/dbus/pid</pidfile>', line, flags=re.DOTALL)
+            line = re.sub('<listen>.*</listen>','<listen>unix:path=/tmp/dbus/system_bus_socket</listen>', line, flags=re.DOTALL)
+            line = re.sub('<deny','<allow', line)
+            outfile.write(line)
+    infile.close()
+    outfile.close()
+    out = check_output(['/usr/bin/dbus-launch', '--config-file=/tmp/dbus/system-local.conf']).splitlines()
+    for line in out:
+        p = re.compile('DBUS_SESSION_BUS_ADDRESS=(.*)')
+        matches = p.search(line)
+        BUS_ADDR = matches.group(1)
+        os.environ['DBUS_SESSION_BUS_ADDRESS'] = BUS_ADDR
+        break
+
+
+def dbus_cleanup():
+    if os.path.isfile('/tmp/dbus/pid'):
+        dbus_pid = open('/tmp/dbus/pid','r').read().replace('\n','')
+        check_call_cmd('/tmp/dbus', 'kill', dbus_pid)
+        os.remove('/tmp/dbus/pid')
+    if os.path.isfile('/tmp/dbus/system-local.conf'): 
+        os.remove('/tmp/dbus/system-local.conf')
+    if os.path.exists('/tmp/dbus/system_bus_socket'): 
+        os.remove('/tmp/dbus/system_bus_socket')
 
 
 def check_call_cmd(dir, *cmd):
@@ -171,6 +210,7 @@ if __name__ == '__main__':
         printline = lambda *l: None
 
     prev_umask = os.umask(000)
+    launch_session_dbus()
     # Determine dependencies and install them
     dep_installed = dict()
     dep_installed[UNIT_TEST_PKG] = False
@@ -187,3 +227,4 @@ if __name__ == '__main__':
     else:
         check_call_cmd(os.path.join(WORKSPACE, UNIT_TEST_PKG), 'make', 'check')
     os.umask(prev_umask)
+    dbus_cleanup()
