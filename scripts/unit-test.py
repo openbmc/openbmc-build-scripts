@@ -9,10 +9,70 @@ prior to executing its unit tests.
 
 from git import Repo
 from urlparse import urljoin
-from subprocess import check_call, call
+from subprocess import check_call, call, check_output
 import os
 import sys
 import argparse
+import re
+
+def launch_session_dbus(dbus_dir, dbus_config_file):
+    """
+    Launches a session debus using a modified config file and
+    sets the DBUS_SESSION_BUS_ADDRESS environment variable
+
+    Parameter descriptions:
+    dbus_dir            Directory location for generated files
+    dbus_config_file    File location of dbus sys config file
+    """
+    dbus_pid = os.path.join(dbus_dir,'pid')
+    dbus_socket = os.path.join(dbus_dir,'system_bus_socket')
+    dbus_local_conf = os.path.join(dbus_dir,'system-local.conf')
+    if os.path.isfile(dbus_pid):
+        os.remove(dbus_pid)
+    with open(dbus_config_file) as infile, \
+         open(dbus_local_conf, 'w') as outfile:
+        for line in infile:
+            line = re.sub('<type>.*</type>','<type>session</type>', \
+                          line, flags=re.DOTALL)
+            line = re.sub('<pidfile>.*</pidfile>', \
+                          '<pidfile>%s</pidfile>' % dbus_pid, \
+                          line, flags=re.DOTALL)
+            line = re.sub('<listen>.*</listen>', \
+                          '<listen>unix:path=%s</listen>' % dbus_socket, \
+                          line, flags=re.DOTALL)
+            line = re.sub('<deny','<allow', line)
+            outfile.write(line)
+    infile.close()
+    outfile.close()
+    command = ['dbus-launch', '--config-file=%s' % dbus_local_conf]
+    out = check_output(command).splitlines()
+    for line in out:
+        p = re.compile('DBUS_SESSION_BUS_ADDRESS=(.*)')
+        matches = p.search(line)
+        BUS_ADDR = matches.group(1)
+        os.environ['DBUS_SESSION_BUS_ADDRESS'] = BUS_ADDR
+        break
+
+
+def dbus_cleanup(dbus_dir):
+    """
+    Kills the dbus session started by launch_session_dbus
+    and removes the generated files.
+
+    Parameter descriptions:
+    dbus_dir            Directory location of generated files
+    """
+
+    dbus_pid = os.path.join(dbus_dir,'pid')
+    dbus_socket = os.path.join(dbus_dir,'system_bus_socket')
+    dbus_local_conf = os.path.join(dbus_dir,'system-local.conf')
+    if os.path.isfile(dbus_pid):
+        dbus_pid = open(dbus_pid,'r').read().replace('\n','')
+        check_call_cmd(dbus_dir, 'kill', dbus_pid)
+    if os.path.isfile(dbus_local_conf):
+        os.remove(dbus_local_conf)
+    if os.path.exists(dbus_socket):
+        os.remove(dbus_socket)
 
 
 def check_call_cmd(dir, *cmd):
@@ -159,9 +219,16 @@ if __name__ == '__main__':
                         help="OpenBMC package to be unit tested")
     parser.add_argument("-v", "--verbose", action="store_true",
                         help="Print additional package status messages")
+    parser.add_argument("-t", "--tempdbusdir", dest="DBUS_DIR", required=True,
+                        help="Temp dbus dir, must be unique")
+    parser.add_argument("-c", "--dbussysconfigfile",
+                        dest="DBUS_SYS_CONFIG_FILE",
+                        required=True, help="Dbus sys config file location")
     args = parser.parse_args(sys.argv[1:])
     WORKSPACE = args.WORKSPACE
     UNIT_TEST_PKG = args.PACKAGE
+    DBUS_DIR = args.DBUS_DIR
+    DBUS_SYS_CONFIG_FILE = args.DBUS_SYS_CONFIG_FILE
     if args.verbose:
         def printline(*line):
             for arg in line:
@@ -171,6 +238,7 @@ if __name__ == '__main__':
         printline = lambda *l: None
 
     prev_umask = os.umask(000)
+    launch_session_dbus(DBUS_DIR, DBUS_SYS_CONFIG_FILE)
     # Determine dependencies and install them
     dep_installed = dict()
     dep_installed[UNIT_TEST_PKG] = False
@@ -187,3 +255,4 @@ if __name__ == '__main__':
     else:
         check_call_cmd(os.path.join(WORKSPACE, UNIT_TEST_PKG), 'make', 'check')
     os.umask(prev_umask)
+    dbus_cleanup(DBUS_DIR)

@@ -58,7 +58,8 @@ RUN apt-get update && apt-get install -yy \
     libssl-dev \
     sudo \
     wget \
-    git
+    git \
+    dbus-x11
 
 RUN easy_install pip
 RUN pip install inflection
