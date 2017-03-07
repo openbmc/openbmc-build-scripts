@@ -13,6 +13,7 @@ from subprocess import check_call, call
 import os
 import sys
 import argparse
+import re
 
 
 def check_call_cmd(dir, *cmd):
@@ -171,6 +172,7 @@ if __name__ == '__main__':
         printline = lambda *l: None
 
     prev_umask = os.umask(000)
+
     # Determine dependencies and install them
     dep_installed = dict()
     dep_installed[UNIT_TEST_PKG] = False
