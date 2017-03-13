@@ -49,6 +49,8 @@ RUN apt-get update && apt-get install -yy \
     expect \
     curl
 
+RUN apt-get -y install build-essential
+
 RUN easy_install \
     tox \
     pip \
@@ -59,6 +61,13 @@ RUN pip install \
     robotframework-requests \
     robotframework-sshlibrary \
     robotframework-scplibrary
+
+RUN wget https://sourceforge.net/projects/ipmitool/files/ipmitool/1.8.18/ipmitool-1.8.18.tar.bz2
+RUN tar xvfj ipmitool-*.tar.bz2
+RUN ./ipmitool-1.8.18/configure
+RUN make
+RUN cp /src/ipmitool /usr/bin/
+RUN ipmitool -V
 
 RUN grep -q ${GROUPS} /etc/group || groupadd -g ${GROUPS} ${USER}
 RUN grep -q ${UID} /etc/passwd || useradd -d ${HOME} -m -u ${UID} -g ${GROUPS} \
