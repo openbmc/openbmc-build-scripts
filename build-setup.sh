@@ -103,6 +103,7 @@ RUN dnf --refresh install -y \
 	perl-Data-Dumper \
 	perl-Thread-Queue \
 	python-devel \
+	python3-devel \
 	SDL-devel \
 	socat \
 	subversion \
@@ -142,6 +143,7 @@ RUN apt-get update && apt-get install -yy \
 	libsdl1.2-dev \
 	libthread-queue-any-perl \
 	python \
+	python3 \
 	socat \
 	subversion \
 	texinfo \

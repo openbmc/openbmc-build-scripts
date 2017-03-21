@@ -28,7 +28,7 @@ RUN apt-get update && apt-get install -yy --no-install-recommends \
 	libpixman-1-dev \
 	libglib2.0-dev \
 	libfdt-dev \
-	make python-yaml gcc libc6-dev
+	make python-yaml python3-yaml gcc libc6-dev
 
 RUN grep -q ${GROUPS} /etc/group || groupadd -g ${GROUPS} ${USER}
 RUN grep -q ${UID} /etc/passwd || useradd -d ${HOME} -m -u ${UID} -g ${GROUPS} ${USER}

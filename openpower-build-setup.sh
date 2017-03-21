@@ -73,6 +73,7 @@ RUN dnf --refresh repolist && dnf install -y \
 	"perl(YAML)" \
 	"perl(XML::LibXML)" \
 	python \
+	python3 \
 	tar \
 	unzip \
 	vim \
@@ -114,6 +115,7 @@ RUN apt-get update && apt-get install -yy \
 	libxml2-utils \
 	language-pack-en \
 	python \
+	python3 \
 	texinfo \
 	unzip \
 	vim-common \

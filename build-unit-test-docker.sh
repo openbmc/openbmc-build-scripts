@@ -52,6 +52,11 @@ RUN apt-get update && apt-get install -yy \
     python-yaml \
     python-mako \
     python-setuptools \
+    python3 \
+    python3-dev\
+    python3-yaml \
+    python3-mako \
+    python3-setuptools \
     pkg-config \
     autoconf \
     libsystemd-dev \
