@@ -61,6 +61,7 @@ RUN dnf --refresh repolist && dnf install -y \
 	git \
 	libxml2-devel \
 	ncurses-devel \
+	openssl-devel \
 	patch \
 	perl \
 	perl-bignum \
@@ -107,6 +108,7 @@ RUN apt-get update && apt-get install -yy \
 	flex \
 	g++ \
 	git \
+	libssl-dev \
 	libexpat-dev \
 	libz-dev \
 	libxml-sax-perl \
