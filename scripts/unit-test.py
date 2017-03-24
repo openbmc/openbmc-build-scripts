@@ -42,6 +42,27 @@ def clone_pkg(pkg):
     return Repo.clone_from(pkg_repo, os.path.join(WORKSPACE, pkg))
 
 
+def add_phosphor_logging_dbus_interfaces_deps(deps):
+    """
+    Add dependency from phosphor-logging to *-dbus-interfaces if they
+    are in dependency list.
+
+    Parameter descriptions:
+    deps                Dependency list
+    """
+    PHOSPHOR_LOGGING_PKG = 'phosphor-logging'
+    if PHOSPHOR_LOGGING_PKG in deps:
+        phosphor_index = deps.index(PHOSPHOR_LOGGING_PKG)
+        last_dbus_interface_index = 0
+        for i in range(phosphor_index, len(deps)):
+            if re.match('\S+-dbus-interfaces$', deps[i]):
+                last_dbus_interface_index = i
+        # Move phosphor-logging to index after last *-dbus-interface
+        if last_dbus_interface_index > 0:
+            deps.remove(PHOSPHOR_LOGGING_PKG)
+            deps.insert(last_dbus_interface_index, PHOSPHOR_LOGGING_PKG)
+
+
 def get_deps(configure_ac):
     """
     Parse the given 'configure.ac' file for package dependencies and return
@@ -70,8 +91,10 @@ def get_deps(configure_ac):
             dep_pkgs.update(map(lambda x: DEPENDENCIES[macro][x], deps))
 
         line = ""
+    deps = list(dep_pkgs)
+    add_phosphor_logging_dbus_interfaces_deps(deps)
 
-    return list(dep_pkgs)
+    return deps
 
 
 def build_depends(pkg, pkgdir, dep_installed):
