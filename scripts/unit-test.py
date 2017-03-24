@@ -114,13 +114,13 @@ def build_depends(pkg, pkgdir, dep_installed):
 
     # Build & install this package
     if not dep_installed[pkg]:
-        conf_flags = ""
+        conf_flags = []
         os.chdir(pkgdir)
         # Add any necessary configure flags for package
         if CONFIGURE_FLAGS.get(pkg) is not None:
-            conf_flags = " ".join(CONFIGURE_FLAGS.get(pkg))
+            conf_flags.extend(CONFIGURE_FLAGS.get(pkg))
         check_call_cmd(pkgdir, './bootstrap.sh')
-        check_call_cmd(pkgdir, './configure', conf_flags)
+        check_call_cmd(pkgdir, './configure', *conf_flags)
         check_call_cmd(pkgdir, 'make')
         check_call_cmd(pkgdir, 'make', 'install')
         dep_installed[pkg] = True
@@ -132,7 +132,10 @@ if __name__ == '__main__':
     # CONFIGURE_FLAGS = [GIT REPO]:[CONFIGURE FLAGS]
     CONFIGURE_FLAGS = {
         'phosphor-objmgr': ['--enable-unpatched-systemd'],
-        'sdbusplus': ['--enable-transaction']
+        'sdbusplus': ['--enable-transaction'],
+        'phosphor-logging':
+        ['--enable-metadata-processing',
+         'YAML_DIR=/usr/local/share/phosphor-dbus-interfaces/yaml']
     }
 
     # DEPENDENCIES = [MACRO]:[library/header]:[GIT REPO]
