@@ -146,6 +146,7 @@ if __name__ == '__main__':
         'AC_PATH_PROG': {'sdbus++': 'sdbusplus'},
         'PKG_CHECK_MODULES': {
             'phosphor-dbus-interfaces': 'phosphor-dbus-interfaces',
+            'openpower-dbus-interfaces': 'openpower-dbus-interfaces',
             'sdbusplus': 'sdbusplus',
             'phosphor-logging': 'phosphor-logging',
         },
