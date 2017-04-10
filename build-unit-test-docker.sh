@@ -61,6 +61,7 @@ RUN apt-get update && apt-get install -yy \
     autoconf \
     libsystemd-dev \
     libssl-dev \
+    libevdev-dev \
     sudo \
     wget \
     git \
