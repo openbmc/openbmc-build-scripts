@@ -13,6 +13,9 @@ from subprocess import check_call, call
 import os
 import sys
 import argparse
+import collections
+import shutil
+import re
 
 
 def check_call_cmd(dir, *cmd):
@@ -42,25 +45,56 @@ def clone_pkg(pkg):
     return Repo.clone_from(pkg_repo, os.path.join(WORKSPACE, pkg))
 
 
-def add_phosphor_logging_dbus_interfaces_deps(deps):
+def add_deps(deps):
     """
-    Add dependency from phosphor-logging to *-dbus-interfaces if they
-    are in dependency list.
+    For each <package name>:<regex string> in DEPENDENCIES_REGEX,
+    add dependency from package to regex matches if they
+    are in dependency list, and set configure flag
+    for each match.
 
     Parameter descriptions:
     deps                Dependency list
     """
-    PHOSPHOR_LOGGING_PKG = 'phosphor-logging'
-    if PHOSPHOR_LOGGING_PKG in deps:
-        phosphor_index = deps.index(PHOSPHOR_LOGGING_PKG)
-        last_dbus_interface_index = 0
-        for i in range(phosphor_index, len(deps)):
-            if re.match('\S+-dbus-interfaces$', deps[i]):
-                last_dbus_interface_index = i
-        # Move phosphor-logging to index after last *-dbus-interface
-        if last_dbus_interface_index > 0:
-            deps.remove(PHOSPHOR_LOGGING_PKG)
-            deps.insert(last_dbus_interface_index, PHOSPHOR_LOGGING_PKG)
+    for pkg, value in DEPENDENCIES_REGEX.iteritems():
+        for regex_string, config_flag in value.iteritems():
+            if pkg in deps:
+                pkg_index = deps.index(pkg)
+                last_match_index = 0
+                for i in range(len(deps)):
+                    if re.match(regex_string, deps[i]):
+                        set_regex_config_flag(deps[i], config_flag)
+                        last_match_index = i
+                # Move pkg to index after last match
+                if last_match_index > 0:
+                    deps.remove(pkg)
+                    deps.insert(last_match_index, pkg)
+
+def is_same_flag(config_flag, item):
+    if config_flag == item:
+        return True
+    return ('=' in config_flag) and ('=' in item) and \
+       (config_flag.split('=')[0]) == (item.split('=')[0])
+
+def set_regex_config_flag(pkg, config_flag):
+    """
+    Set regex configure flag for  package CONFIGURE_FLAGS.
+
+    Parameter descriptions:
+    pkg                 Dbus Interface
+    config_flag         Config flag
+    """
+    CONFIG_FLAG = config_flag
+    if pkg in CONFIGURE_FLAGS:
+        has_config_flag = False
+        for index, item in enumerate(CONFIGURE_FLAGS[pkg]):
+            if is_same_config_flag(config_flag, item):
+                CONFIGURE_FLAGS[pkg][index] = CONFIG_FLAG
+                has_config_flag = True
+                break
+        if not has_config_flag:
+            CONFIGURE_FLAGS[pkg].append(CONFIG_FLAG)
+    else:
+        CONFIGURE_FLAGS[pkg] = [CONFIG_FLAG]
 
 
 def get_deps(configure_ac):
@@ -92,7 +126,6 @@ def get_deps(configure_ac):
 
         line = ""
     deps = list(dep_pkgs)
-    add_phosphor_logging_dbus_interfaces_deps(deps)
 
     return deps
 
@@ -151,6 +184,52 @@ def build_depends(pkg, pkgdir, dep_installed):
     return dep_installed
 
 
+def create_dep_list(pkg, pkgdir, dep_checked, repo_dirs):
+    """
+    For each package(pkg), starting with the package to be unit tested,
+    parse its 'configure.ac' file from within the package's directory(pkgdir)
+    for each package dependency defined recursively doing the same thing
+    on each package found as a dependency. This creates an ordered list of
+    dependencies without installing packages.
+
+    Parameter descriptions:
+    pkg                 Name of the package
+    pkgdir              Directory where package source is located
+    dep_checked       Current list of dependencies and installation status
+    repo_dirs         Current list of cloned repo directories
+    """
+    os.chdir(pkgdir)
+    # Open package's configure.ac
+    with open("configure.ac", "rt") as configure_ac:
+        # Retrieve dependency list from package's configure.ac
+        configure_ac_deps = get_deps(configure_ac)
+        for dep_pkg in configure_ac_deps:
+            # Dependency package not already known
+            if dep_checked.get(dep_pkg) is None:
+                # Dependency package not checked
+                dep_checked[dep_pkg] = False
+                dep_repo = clone_pkg(dep_pkg)
+                # Determine this dependency package's
+                # dependencies and check them
+                dep_pkgdir = os.path.join(WORKSPACE, dep_pkg)
+                dep_checked, repo_dirs = create_dep_list(dep_pkg,
+                                                      dep_repo.working_dir,
+                                                      dep_checked,
+                                                      repo_dirs)
+                repo_dirs.append(dep_repo.working_dir)
+            else:
+                # Dependency package known and installed
+                if dep_checked[dep_pkg]:
+                    continue
+                else:
+                    # Cyclic dependency failure
+                    raise Exception("Cyclic dependencies found in "+pkg)
+    if not dep_checked[pkg]:
+        dep_checked[pkg] = True
+    return dep_checked, repo_dirs
+
+
+
 if __name__ == '__main__':
     # CONFIGURE_FLAGS = [GIT REPO]:[CONFIGURE FLAGS]
     CONFIGURE_FLAGS = {
@@ -178,6 +257,14 @@ if __name__ == '__main__':
         },
     }
 
+    # DEPENDENCIES_REGEX = [GIT REPO]:[REGEX STRING]:[CONFIG_FLAG]
+    DEPENDENCIES_REGEX = {
+        'phosphor-logging': {
+             '\S+-dbus-interfaces$':
+                 'YAML_DIR=/usr/local/share/phosphor-dbus-interfaces/yaml'
+             },
+    }
+
     # Set command line arguments
     parser = argparse.ArgumentParser()
     parser.add_argument("-w", "--workspace", dest="WORKSPACE", required=True,
@@ -201,6 +288,19 @@ if __name__ == '__main__':
     # Determine dependencies and install them
     dep_installed = dict()
     dep_installed[UNIT_TEST_PKG] = False
+
+    dep_checked = collections.OrderedDict()
+    repo_dirs = list()
+    dep_checked[UNIT_TEST_PKG] = False
+    dep_list, repo_dirs = create_dep_list(UNIT_TEST_PKG,
+                                        os.path.join(WORKSPACE, UNIT_TEST_PKG),
+                                        dep_checked,
+                                        repo_dirs)
+    for repo_dir in repo_dirs:
+        shutil.rmtree(repo_dir)
+    ordered_list = dep_list.keys()
+    ordered_list.reverse()
+    add_deps(ordered_list)
     dep_installed = build_depends(UNIT_TEST_PKG,
                                   os.path.join(WORKSPACE, UNIT_TEST_PKG),
                                   dep_installed)
@@ -214,3 +314,4 @@ if __name__ == '__main__':
     else:
         check_call_cmd(os.path.join(WORKSPACE, UNIT_TEST_PKG), 'make', 'check')
     os.umask(prev_umask)
+
