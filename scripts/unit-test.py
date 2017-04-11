@@ -13,6 +13,9 @@ from subprocess import check_call, call
 import os
 import sys
 import argparse
+import collections
+import shutil
+import re
 
 
 def check_call_cmd(dir, *cmd):
@@ -40,27 +43,6 @@ def clone_pkg(pkg):
     os.mkdir(os.path.join(WORKSPACE, pkg))
     printline(os.path.join(WORKSPACE, pkg), "> git clone", pkg_repo, "./")
     return Repo.clone_from(pkg_repo, os.path.join(WORKSPACE, pkg))
-
-
-def add_phosphor_logging_dbus_interfaces_deps(deps):
-    """
-    Add dependency from phosphor-logging to *-dbus-interfaces if they
-    are in dependency list.
-
-    Parameter descriptions:
-    deps                Dependency list
-    """
-    PHOSPHOR_LOGGING_PKG = 'phosphor-logging'
-    if PHOSPHOR_LOGGING_PKG in deps:
-        phosphor_index = deps.index(PHOSPHOR_LOGGING_PKG)
-        last_dbus_interface_index = 0
-        for i in range(phosphor_index, len(deps)):
-            if re.match('\S+-dbus-interfaces$', deps[i]):
-                last_dbus_interface_index = i
-        # Move phosphor-logging to index after last *-dbus-interface
-        if last_dbus_interface_index > 0:
-            deps.remove(PHOSPHOR_LOGGING_PKG)
-            deps.insert(last_dbus_interface_index, PHOSPHOR_LOGGING_PKG)
 
 
 def get_deps(configure_ac):
@@ -92,7 +74,6 @@ def get_deps(configure_ac):
 
         line = ""
     deps = list(dep_pkgs)
-    add_phosphor_logging_dbus_interfaces_deps(deps)
 
     return deps
 
@@ -151,6 +132,7 @@ def build_depends(pkg, pkgdir, dep_installed):
     return dep_installed
 
 
+
 if __name__ == '__main__':
     # CONFIGURE_FLAGS = [GIT REPO]:[CONFIGURE FLAGS]
     CONFIGURE_FLAGS = {
@@ -178,6 +160,11 @@ if __name__ == '__main__':
         },
     }
 
+    # DEPENDENCIES_REGEX = [GIT REPO]:[REGEX STRING]
+    DEPENDENCIES_REGEX = {
+        'phosphor-logging': '\S+-dbus-interfaces$'
+    }
+
     # Set command line arguments
     parser = argparse.ArgumentParser()
     parser.add_argument("-w", "--workspace", dest="WORKSPACE", required=True,
@@ -199,11 +186,34 @@ if __name__ == '__main__':
 
     prev_umask = os.umask(000)
     # Determine dependencies and install them
-    dep_installed = dict()
+    dep_installed = collections.OrderedDict()
     dep_installed[UNIT_TEST_PKG] = False
     dep_installed = build_depends(UNIT_TEST_PKG,
                                   os.path.join(WORKSPACE, UNIT_TEST_PKG),
                                   dep_installed)
+    # Check for EGEX_DEPENDENCIES matches
+    for name, regex_str in DEPENDENCIES_REGEX.iteritems():
+        if name in dep_installed.keys():
+            name_index = dep_installed.keys().index(name)
+            max_index = 0
+            for i in range(name_index, len(dep_installed.keys())):
+                if re.match(regex_str, dep_installed.keys()[i]):
+                    max_index = i
+            # Reinstall pkg if there are regex matches installed after pkg
+            if (max_index > name_index) and (name != UNIT_TEST_PKG):
+                shutil.rmtree(name)
+                pkgdir = os.path.join(WORKSPACE, name)
+                conf_flags = []
+                os.chdir(pkgdir)
+                # Add any necessary configure flags for package
+                if CONFIGURE_FLAGS.get(name) is not None:
+                    conf_flags.extend(CONFIGURE_FLAGS.get(name))
+                check_call_cmd(pkgdir, './bootstrap.sh')
+                check_call_cmd(pkgdir, './configure', *conf_flags)
+                check_call_cmd(pkgdir, 'make')
+                check_call_cmd(pkgdir, 'make', 'install')
+                dep_installed[name] = True
+
     os.chdir(os.path.join(WORKSPACE, UNIT_TEST_PKG))
     # Refresh dynamic linker run time bindings for dependencies
     check_call_cmd(os.path.join(WORKSPACE, UNIT_TEST_PKG), 'ldconfig')
@@ -214,3 +224,4 @@ if __name__ == '__main__':
     else:
         check_call_cmd(os.path.join(WORKSPACE, UNIT_TEST_PKG), 'make', 'check')
     os.umask(prev_umask)
+
