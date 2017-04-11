@@ -13,6 +13,8 @@ from subprocess import check_call, call
 import os
 import sys
 import argparse
+import shutil
+import re
 
 
 def check_call_cmd(dir, *cmd):
@@ -42,25 +44,25 @@ def clone_pkg(pkg):
     return Repo.clone_from(pkg_repo, os.path.join(WORKSPACE, pkg))
 
 
-def add_phosphor_logging_dbus_interfaces_deps(deps):
+def add_regex_deps(deps):
     """
-    Add dependency from phosphor-logging to *-dbus-interfaces if they
-    are in dependency list.
+    Add regex dependency from pkg to regex match if they
+    are in dependency list
 
     Parameter descriptions:
     deps                Dependency list
     """
-    PHOSPHOR_LOGGING_PKG = 'phosphor-logging'
-    if PHOSPHOR_LOGGING_PKG in deps:
-        phosphor_index = deps.index(PHOSPHOR_LOGGING_PKG)
-        last_dbus_interface_index = 0
-        for i in range(phosphor_index, len(deps)):
-            if re.match('\S+-dbus-interfaces$', deps[i]):
-                last_dbus_interface_index = i
-        # Move phosphor-logging to index after last *-dbus-interface
-        if last_dbus_interface_index > 0:
-            deps.remove(PHOSPHOR_LOGGING_PKG)
-            deps.insert(last_dbus_interface_index, PHOSPHOR_LOGGING_PKG)
+    for pkg, regex_str in DEPENDENCIES_REGEX.iteritems():
+        if pkg in deps:
+            pkg_index = deps.index(pkg)
+            last_dep_index = 0
+            for i in range(pkg_index, len(deps)):
+                if re.match(regex_str, deps[i]):
+                    last_dbus_interface_index = i
+            # Move pkg to index after last regex match
+            if last_dep_index > 0:
+                deps.remove(pkg)
+                deps.insert(last_dep_index, pkg)
 
 
 def get_deps(configure_ac):
@@ -92,7 +94,7 @@ def get_deps(configure_ac):
 
         line = ""
     deps = list(dep_pkgs)
-    add_phosphor_logging_dbus_interfaces_deps(deps)
+    add_regex_deps(deps)
 
     return deps
 
@@ -151,6 +153,7 @@ def build_depends(pkg, pkgdir, dep_installed):
     return dep_installed
 
 
+
 if __name__ == '__main__':
     # CONFIGURE_FLAGS = [GIT REPO]:[CONFIGURE FLAGS]
     CONFIGURE_FLAGS = {
@@ -176,6 +179,11 @@ if __name__ == '__main__':
             'sdbusplus': 'sdbusplus',
             'phosphor-logging': 'phosphor-logging',
         },
+    }
+
+    # DEPENDENCIES_REGEX = [GIT REPO]:[REGEX STRING]
+    DEPENDENCIES_REGEX = {
+        'phosphor-logging': '\S+-dbus-interfaces$'
     }
 
     # Set command line arguments
@@ -214,3 +222,4 @@ if __name__ == '__main__':
     else:
         check_call_cmd(os.path.join(WORKSPACE, UNIT_TEST_PKG), 'make', 'check')
     os.umask(prev_umask)
+
