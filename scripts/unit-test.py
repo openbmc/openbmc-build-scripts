@@ -45,7 +45,8 @@ def clone_pkg(pkg):
 def add_phosphor_logging_dbus_interfaces_deps(deps):
     """
     Add dependency from phosphor-logging to *-dbus-interfaces if they
-    are in dependency list.
+    are in dependency list, and set configure flag YAML_DIR
+    to the phosphor-dbus-interfaces yaml dir for each dbus interface.
 
     Parameter descriptions:
     deps                Dependency list
@@ -56,11 +57,33 @@ def add_phosphor_logging_dbus_interfaces_deps(deps):
         last_dbus_interface_index = 0
         for i in range(phosphor_index, len(deps)):
             if re.match('\S+-dbus-interfaces$', deps[i]):
+                set_dbus_interfaces_yaml_config_flag(deps[i])
                 last_dbus_interface_index = i
         # Move phosphor-logging to index after last *-dbus-interface
         if last_dbus_interface_index > 0:
             deps.remove(PHOSPHOR_LOGGING_PKG)
             deps.insert(last_dbus_interface_index, PHOSPHOR_LOGGING_PKG)
+
+
+def set_dbus_interfaces_yaml_config_flag(dbus_interface):
+    """
+    Set YAML_DIR configure flag for dbus interface in CONFIGURE_FLAGS.
+
+    Parameter descriptions:
+    dbus_interface      Dbus Interface
+    """
+    YAML_DIR_FLAG = 'YAML_DIR=/usr/local/share/phosphor-dbus-interfaces/yaml'
+    if dbus_interface in CONFIGURE_FLAGS:
+        has_yaml_dir_flag = False
+        for index, item in enumerate(CONFIGURE_FLAGS[dbus_interface]):
+            if "YAML_DIR" in item:
+                CONFIGURE_FLAGS[dbus_interface][index] = YAML_DIR_FLAG
+                has_yaml_dir_flag = True
+                break
+        if not has_yaml_dir_flag:
+            CONFIGURE_FLAGS[dbus_interface].append(YAML_DIR_FLAG)
+    else:
+        CONFIGURE_FLAGS[dbus_interface] = [YAML_DIR_FLAG]
 
 
 def get_deps(configure_ac):
