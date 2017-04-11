@@ -13,6 +13,7 @@ from subprocess import check_call, call
 import os
 import sys
 import argparse
+import re
 
 
 def check_call_cmd(dir, *cmd):
@@ -42,34 +43,32 @@ def clone_pkg(pkg):
     return Repo.clone_from(pkg_repo, os.path.join(WORKSPACE, pkg))
 
 
-def add_phosphor_logging_dbus_interfaces_deps(deps):
+def add_regex_deps(deps, pkg, dep_installed):
     """
-    Add dependency from phosphor-logging to *-dbus-interfaces if they
-    are in dependency list.
+    If pkg is a key in DEPENDENCIES_REGEX, add regex matches that are in
+    dep_installed to deps.
 
     Parameter descriptions:
     deps                Dependency list
+    pkg                 Name of the package
+    dep_installed       Current list of dependencies and installation status
     """
-    PHOSPHOR_LOGGING_PKG = 'phosphor-logging'
-    if PHOSPHOR_LOGGING_PKG in deps:
-        phosphor_index = deps.index(PHOSPHOR_LOGGING_PKG)
-        last_dbus_interface_index = 0
-        for i in range(phosphor_index, len(deps)):
-            if re.match('\S+-dbus-interfaces$', deps[i]):
-                last_dbus_interface_index = i
-        # Move phosphor-logging to index after last *-dbus-interface
-        if last_dbus_interface_index > 0:
-            deps.remove(PHOSPHOR_LOGGING_PKG)
-            deps.insert(last_dbus_interface_index, PHOSPHOR_LOGGING_PKG)
+    if pkg in DEPENDENCIES_REGEX.keys():
+        regex_str = DEPENDENCIES_REGEX[pkg]
+        for dep in dep_installed:
+            if re.match(regex_str, dep) and (dep not in deps):
+                    deps.append(dep)
 
 
-def get_deps(configure_ac):
+def get_deps(configure_ac, pkg, dep_installed):
     """
     Parse the given 'configure.ac' file for package dependencies and return
     a list of the dependencies found.
 
     Parameter descriptions:
     configure_ac        Opened 'configure.ac' file object
+    pkg                 Name of the package
+    dep_installed       Current list of dependencies and installation status
     """
     line = ""
     dep_pkgs = set()
@@ -92,7 +91,7 @@ def get_deps(configure_ac):
 
         line = ""
     deps = list(dep_pkgs)
-    add_phosphor_logging_dbus_interfaces_deps(deps)
+    add_regex_deps(deps, pkg, dep_installed)
 
     return deps
 
@@ -113,7 +112,7 @@ def build_depends(pkg, pkgdir, dep_installed):
     # Open package's configure.ac
     with open("configure.ac", "rt") as configure_ac:
         # Retrieve dependency list from package's configure.ac
-        configure_ac_deps = get_deps(configure_ac)
+        configure_ac_deps = get_deps(configure_ac, pkg, dep_installed)
         for dep_pkg in configure_ac_deps:
             # Dependency package not already known
             if dep_installed.get(dep_pkg) is None:
@@ -176,6 +175,11 @@ if __name__ == '__main__':
             'sdbusplus': 'sdbusplus',
             'phosphor-logging': 'phosphor-logging',
         },
+    }
+
+    # DEPENDENCIES_REGEX = [GIT REPO]:[REGEX STRING]
+    DEPENDENCIES_REGEX = {
+        'phosphor-logging': '\S+-dbus-interfaces$'
     }
 
     # Set command line arguments
