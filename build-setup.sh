@@ -7,6 +7,7 @@
 #   distro = fedora|ubuntu
 #   imgtag = tag of the Ubuntu or Fedora image to use (default latest)
 #   obmcdir = <name of OpenBMC src dir> (default /tmp/openbmc)
+#   sscdir = directory that will be used for shared state cache
 #   WORKSPACE = <location of base OpenBMC/OpenBMC repo>
 #   BITBAKE_OPTS = <optional, set to "-c populate_sdk" or whatever other
 #                   BitBake options you'd like to pass into the build>
@@ -27,6 +28,7 @@ distro=${distro:-ubuntu}
 imgtag=${imgtag:-latest}
 ocache=${ocache:-/home/openbmc}
 obmcdir=${obmcdir:-/tmp/openbmc}
+sscdir=${sscdir:-${HOME}}
 WORKSPACE=${WORKSPACE:-${HOME}/${RANDOM}${RANDOM}}
 launch=${launch:-}
 http_proxy=${http_proxy:-}
@@ -247,8 +249,8 @@ BB_NUMBER_THREADS = "$(nproc)"
 PARALLEL_MAKE = "-j$(nproc)"
 INHERIT += "rm_work"
 BB_GENERATE_MIRROR_TARBALLS = "1"
-DL_DIR="${HOME}/bitbake_downloads"
-SSTATE_DIR="${HOME}/bitbake_sharedstatecache"
+DL_DIR="${sscdir}/bitbake_downloads"
+SSTATE_DIR="${sscdir}/bitbake_sharedstatecache"
 USER_CLASSES += "buildstats"
 INHERIT_remove = "uninative"
 EOF_CONF
@@ -272,6 +274,16 @@ if [[ "${launch}" == "" ]]; then
   # Build the Docker image
   docker build -t ${imgname} - <<< "${Dockerfile}"
 
+  # If ocache or sscdir are ${HOME} or a subdirectory they will not be mounted
+  mountocache="-v ""${ocache}"":""${ocache}"" "
+  mountsscdir="-v ""${sscdir}"":""${sscdir}"" "
+  if [[ "${ocache}" = "${HOME}/"* || "${ocache}" = "${HOME}" ]];then
+    mountocache=""
+  fi
+  if [[ "${sscdir}" = "${HOME}/"* || "${sscdir}" = "${HOME}" ]];then
+    mountsscdir=""
+  fi
+
   # Run the Docker container, execute the build.sh script
   docker run \
   --cap-add=sys_admin \
@@ -280,7 +292,8 @@ if [[ "${launch}" == "" ]]; then
   -e WORKSPACE=${WORKSPACE} \
   -w "${HOME}" \
   -v "${HOME}":"${HOME}" \
-  -v "${ocache}":"${ocache}" \
+  ${mountocache} \
+  ${mountsscdir} \
   -t ${imgname} \
   ${WORKSPACE}/build.sh
 
