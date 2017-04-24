@@ -42,13 +42,7 @@ case ${ARCH} in
         exit 1
 esac
 
-# If there's no openbmc dir in WORKSPACE then just clone in master
-if [ ! -d ${WORKSPACE}/${obmcdir} ]; then
-    echo "Clone in openbmc master to ${WORKSPACE}/${obmcdir}"
-    git clone https://github.com/openbmc/openbmc ${WORKSPACE}/${obmcdir}
-fi
-
-# Work out what build target we should be running and set bitbake command
+# Determine the build target and set the bitbake command
 case ${target} in
   barreleye)
     BITBAKE_CMD="TEMPLATECONF=meta-openbmc-machines/meta-openpower/meta-rackspace/meta-barreleye/conf source oe-init-build-env"
@@ -124,10 +118,15 @@ RUN dnf --refresh install -y \
 	wget \
 	which
 
-RUN grep -q ${GROUPS} /etc/group || groupadd -g ${GROUPS} ${USER}
-RUN grep -q ${UID} /etc/passwd || useradd -d ${HOME} -m -u ${UID} -g ${GROUPS} ${USER}
+RUN grep -q ${GROUPS} /etc/group || groupadd -g ${GROUPS} jenkins
+RUN grep -q ${UID} /etc/passwd || useradd -d ${HOME} -m -u ${UID} -g ${GROUPS} jenkins
 
-USER ${USER}
+RUN mkdir -p ${WORKSPACE}
+RUN mkdir ${obmcdir}
+RUN chown jenkins:jenkins ${obmcdir}
+USER jenkins
+RUN git clone https://github.com/openbmc/openbmc ${obmcdir}
+
 ENV HOME ${HOME}
 RUN /bin/bash
 EOF
@@ -144,13 +143,6 @@ FROM ${DOCKER_BASE}${distro}:${imgtag}
 ${PROXY}
 
 ENV DEBIAN_FRONTEND noninteractive
-
-# Set the locale
-RUN locale-gen en_US.UTF-8
-ENV LANG en_US.UTF-8
-ENV LANGUAGE en_US:en
-ENV LC_ALL en_US.UTF-8
-
 RUN apt-get update && apt-get install -yy \
 	build-essential \
 	chrpath \
@@ -161,6 +153,7 @@ RUN apt-get update && apt-get install -yy \
 	libdata-dumper-simple-perl \
 	libsdl1.2-dev \
 	libthread-queue-any-perl \
+	locales \
 	python \
 	python3 \
 	socat \
@@ -169,10 +162,21 @@ RUN apt-get update && apt-get install -yy \
 	cpio \
 	wget
 
-RUN grep -q ${GROUPS} /etc/group || groupadd -g ${GROUPS} ${USER}
-RUN grep -q ${UID} /etc/passwd || useradd -d ${HOME} -m -u ${UID} -g ${GROUPS} ${USER}
+# Set Locales
+RUN locale-gen en_US.UTF-8  
+ENV LANG en_US.UTF-8  
+ENV LANGUAGE en_US:en  
+ENV LC_ALL en_US.UTF-8 
 
-USER ${USER}
+RUN grep -q ${GROUPS} /etc/group || groupadd -g ${GROUPS} jenkins
+RUN grep -q ${UID} /etc/passwd || useradd -d ${HOME} -m -u ${UID} -g ${GROUPS} jenkins
+
+RUN mkdir -p ${WORKSPACE}
+RUN mkdir ${obmcdir}
+RUN chown jenkins:jenkins ${obmcdir}
+USER jenkins
+RUN git clone https://github.com/openbmc/openbmc ${obmcdir}
+
 ENV HOME ${HOME}
 RUN /bin/bash
 EOF
