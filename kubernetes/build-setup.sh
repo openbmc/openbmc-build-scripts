@@ -1,15 +1,15 @@
 #!/bin/bash
 
-# This build script is for running the Jenkins builds using docker.
+# This build script is for running the Jenkins builds using Docker.
 #
 # It expects a few variables which are part of Jenkins build job matrix:
 #   target = barreleye|palmetto|qemu
 #   distro = fedora|ubuntu
 #   imgtag = tag of the ubuntu or fedora image to use default latest
-#   obmcdir = <name of openbmc src dir> (default openbmc)
-#   WORKSPACE = <location of base openbmc/openbmc repo>
+#   obmcdir = <name of OpenBMC src dir> (default openbmc)
+#   WORKSPACE = <location of base OpenBMC/OpenBMC repo>
 #   BITBAKE_OPTS = <optional, set to "-c populate_sdk" or whatever other
-#                   bitbake options you'd like to pass into the build>
+#                   BitBake options you'd like to pass into the build>
 
 # Trace bash processing. Set -e so when a step fails, we fail the build
 set -xeo pipefail
@@ -31,24 +31,24 @@ ARCH=$(uname -m)
 
 # Determine the prefix of the Dockerfile's base image
 case ${ARCH} in
-    "ppc64le")
-        DOCKER_BASE="ppc64le/"
-        ;;
-    "x86_64")
-        DOCKER_BASE=""
-        ;;
-    *)
-        echo "Unsupported system architecture(${ARCH}) found for docker image"
-        exit 1
+  "ppc64le")
+    DOCKER_BASE="ppc64le/"
+    ;;
+  "x86_64")
+    DOCKER_BASE=""
+    ;;
+  *)
+    echo "Unsupported system architecture(${ARCH}) found for docker image"
+    exit 1
 esac
 
 # If there's no openbmc dir in WORKSPACE then just clone in master
 if [ ! -d ${WORKSPACE}/${obmcdir} ]; then
-    echo "Clone in openbmc master to ${WORKSPACE}/${obmcdir}"
-    git clone https://github.com/openbmc/openbmc ${WORKSPACE}/${obmcdir}
+  echo "Clone in openbmc master to ${WORKSPACE}/${obmcdir}"
+  git clone https://github.com/openbmc/openbmc ${WORKSPACE}/${obmcdir}
 fi
 
-# Work out what build target we should be running and set bitbake command
+# Work out what build target we should be running and set BitBake command
 case ${target} in
   barreleye)
     BITBAKE_CMD="TEMPLATECONF=meta-openbmc-machines/meta-openpower/meta-rackspace/meta-barreleye/conf source oe-init-build-env"
@@ -82,7 +82,7 @@ case ${target} in
     ;;
 esac
 
-# Configure docker build
+# Configure Docker build
 if [[ "${distro}" == fedora ]];then
 
   if [[ -n "${http_proxy}" ]]; then
@@ -90,48 +90,48 @@ if [[ "${distro}" == fedora ]];then
   fi
 
   Dockerfile=$(cat << EOF
-FROM ${DOCKER_BASE}${distro}:${imgtag}
+  FROM ${DOCKER_BASE}${distro}:${imgtag}
 
-${PROXY}
+  ${PROXY}
 
-# Set the locale
-RUN locale-gen en_US.UTF-8
-ENV LANG en_US.UTF-8
-ENV LANGUAGE en_US:en
-ENV LC_ALL en_US.UTF-8
+  # Set the locale
+  RUN locale-gen en_US.UTF-8
+  ENV LANG en_US.UTF-8
+  ENV LANGUAGE en_US:en
+  ENV LC_ALL en_US.UTF-8
 
-RUN dnf --refresh install -y \
-	bzip2 \
-	chrpath \
-	cpio \
-	diffstat \
-	findutils \
-	gcc \
-	gcc-c++ \
-	git \
-	make \
-	patch \
-	perl-bignum \
-	perl-Data-Dumper \
-	perl-Thread-Queue \
-	python-devel \
-	python3-devel \
-	SDL-devel \
-	socat \
-	subversion \
-	tar \
-	texinfo \
-	wget \
-	which
+  RUN dnf --refresh install -y \
+      bzip2 \
+      chrpath \
+      cpio \
+      diffstat \
+      findutils \
+      gcc \
+      gcc-c++ \
+      git \
+      make \
+      patch \
+      perl-bignum \
+      perl-Data-Dumper \
+      perl-Thread-Queue \
+      python-devel \
+      python3-devel \
+      SDL-devel \
+      socat \
+      subversion \
+      tar \
+      texinfo \
+      wget \
+      which
 
-RUN grep -q ${GROUPS} /etc/group || groupadd -g ${GROUPS} ${USER}
-RUN grep -q ${UID} /etc/passwd || useradd -d ${HOME} -m -u ${UID} -g ${GROUPS} ${USER}
+  RUN grep -q ${GROUPS} /etc/group || groupadd -g ${GROUPS} ${USER}
+  RUN grep -q ${UID} /etc/passwd || useradd -d ${HOME} -m -u ${UID} -g ${GROUPS} ${USER}
 
-USER ${USER}
-ENV HOME ${HOME}
-RUN /bin/bash
-EOF
-)
+  USER ${USER}
+  ENV HOME ${HOME}
+  RUN /bin/bash
+  EOF
+  )
 
 elif [[ "${distro}" == ubuntu ]]; then
   if [[ -n "${http_proxy}" ]]; then
@@ -139,48 +139,48 @@ elif [[ "${distro}" == ubuntu ]]; then
   fi
 
   Dockerfile=$(cat << EOF
-FROM ${DOCKER_BASE}${distro}:${imgtag}
+  FROM ${DOCKER_BASE}${distro}:${imgtag}
 
-${PROXY}
+  ${PROXY}
 
-ENV DEBIAN_FRONTEND noninteractive
+  ENV DEBIAN_FRONTEND noninteractive
 
-# Set the locale
-RUN locale-gen en_US.UTF-8
-ENV LANG en_US.UTF-8
-ENV LANGUAGE en_US:en
-ENV LC_ALL en_US.UTF-8
+  # Set the locale
+  RUN locale-gen en_US.UTF-8
+  ENV LANG en_US.UTF-8
+  ENV LANGUAGE en_US:en
+  ENV LC_ALL en_US.UTF-8
 
-RUN apt-get update && apt-get install -yy \
-	build-essential \
-	chrpath \
-	debianutils \
-	diffstat \
-	gawk \
-	git \
-	libdata-dumper-simple-perl \
-	libsdl1.2-dev \
-	libthread-queue-any-perl \
-	python \
-	python3 \
-	socat \
-	subversion \
-	texinfo \
-	cpio \
-	wget
+  RUN apt-get update && apt-get install -yy \
+      build-essential \
+      chrpath \
+      debianutils \
+      diffstat \
+      gawk \
+      git \
+      libdata-dumper-simple-perl \
+      libsdl1.2-dev \
+      libthread-queue-any-perl \
+      python \
+      python3 \
+      socat \
+      subversion \
+      texinfo \
+      cpio \
+      wget
 
-RUN grep -q ${GROUPS} /etc/group || groupadd -g ${GROUPS} ${USER}
-RUN grep -q ${UID} /etc/passwd || useradd -d ${HOME} -m -u ${UID} -g ${GROUPS} ${USER}
+  RUN grep -q ${GROUPS} /etc/group || groupadd -g ${GROUPS} ${USER}
+  RUN grep -q ${UID} /etc/passwd || useradd -d ${HOME} -m -u ${UID} -g ${GROUPS} ${USER}
 
-USER ${USER}
-ENV HOME ${HOME}
-RUN /bin/bash
-EOF
-)
+  USER ${USER}
+  ENV HOME ${HOME}
+  RUN /bin/bash
+  EOF
+  )
 fi
 
 # Build the docker container
-docker build -t openbmc/${distro}:${tag} - <<< "${Dockerfile}"
+docker build -t openbmc/${distro}:${imgtag} - <<< "${Dockerfile}"
 
 # Create the docker run script
 export PROXY_HOST=${http_proxy/#http*:\/\/}
@@ -210,12 +210,12 @@ mkdir -p ${WORKSPACE}/bin
 if [[ -n "${http_proxy}" ]]; then
 
   cat > ${WORKSPACE}/bin/git-proxy << \EOF_GIT
-#!/bin/bash
-# \$1 = hostname, \$2 = port
-PROXY=${PROXY_HOST}
-PROXY_PORT=${PROXY_PORT}
-exec socat STDIO PROXY:\${PROXY}:\${1}:\${2},proxyport=\${PROXY_PORT}
-EOF_GIT
+  #!/bin/bash
+  # \$1 = hostname, \$2 = port
+  PROXY=${PROXY_HOST}
+  PROXY_PORT=${PROXY_PORT}
+  exec socat STDIO PROXY:\${PROXY}:\${1}:\${2},proxyport=\${PROXY_PORT}
+  EOF_GIT
 
   chmod a+x ${WORKSPACE}/bin/git-proxy
   export PATH=${WORKSPACE}/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:${PATH}
@@ -224,10 +224,10 @@ EOF_GIT
   mkdir -p ~/.subversion
 
   cat > ~/.subversion/servers << EOF_SVN
-[global]
-http-proxy-host = ${PROXY_HOST}
-http-proxy-port = ${PROXY_PORT}
-EOF_SVN
+  [global]
+  http-proxy-host = ${PROXY_HOST}
+  http-proxy-port = ${PROXY_PORT}
+  EOF_SVN
 fi
 
 # Source our build env
@@ -254,7 +254,7 @@ chmod a+x ${WORKSPACE}/build.sh
 
 # Run the docker container, execute the build script we just built
 docker run --cap-add=sys_admin --net=host --rm=true -e WORKSPACE=${WORKSPACE} --user="${USER}" \
-  -w "${HOME}" -v "${HOME}":"${HOME}" -t openbmc/${distro} ${WORKSPACE}/build.sh
+  -w "${HOME}" -v "${HOME}":"${HOME}" -t openbmc/${distro}:${imgtag} ${WORKSPACE}/build.sh
 
 # Create link to images for archiving
 ln -sf ${WORKSPACE}/openbmc/build/tmp/deploy/images ${WORKSPACE}/images
@@ -262,3 +262,4 @@ ln -sf ${WORKSPACE}/openbmc/build/tmp/deploy/images ${WORKSPACE}/images
 # Timestamp for build
 echo "Build completed, $(date)"
 
+#trying to fix conflict
