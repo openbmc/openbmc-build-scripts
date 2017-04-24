@@ -6,10 +6,17 @@
 #   target = barreleye|palmetto|qemu
 #   distro = fedora|ubuntu
 #   imgtag = tag of the Ubuntu or Fedora image to use (default latest)
-#   obmcdir = <name of OpenBMC src dir> (default openbmc)
+#   obmcdir = <name of OpenBMC src dir> (default /tmp/openbmc)
 #   WORKSPACE = <location of base OpenBMC/OpenBMC repo>
 #   BITBAKE_OPTS = <optional, set to "-c populate_sdk" or whatever other
 #                   BitBake options you'd like to pass into the build>
+#
+# There are some optional variables that are related to launching the build
+#   launch = job|pod, what way the build container will be launched. If left
+#            blank launches user docker run, job or pod will launch the
+#            appropriate kind to kubernetes via kubernetes-launch.sh
+#   imgname = defaults to a relatively long but descriptive name, can be
+#             changed or passed to give a specific name to created image
 
 # Trace bash processing. Set -e so when a step fails, we fail the build
 set -xeo pipefail
@@ -21,6 +28,7 @@ imgtag=${imgtag:-latest}
 ocache=${ocache:-/home/openbmc}
 obmcdir=${obmcdir:-/tmp/openbmc}
 WORKSPACE=${WORKSPACE:-${HOME}/${RANDOM}${RANDOM}}
+launch=${launch:-}
 http_proxy=${http_proxy:-}
 PROXY=""
 
@@ -181,9 +189,6 @@ EOF
 )
 fi
 
-# Build the Docker container
-docker build -t openbmc/${distro}:${imgtag}-${ARCH} - <<< "${Dockerfile}"
-
 # Create the Docker run script
 export PROXY_HOST=${http_proxy/#http*:\/\/}
 export PROXY_HOST=${PROXY_HOST/%:[0-9]*}
@@ -258,10 +263,35 @@ EOF_SCRIPT
 
 chmod a+x ${WORKSPACE}/build.sh
 
-# Run the Docker container, execute the build script we just built
-docker run --cap-add=sys_admin --net=host --rm=true -e WORKSPACE=${WORKSPACE} --user="${USER}" \
-  -w "${HOME}" -v "${HOME}":"${HOME}" -v "${ocache}":"${ocache}" \
-  -t openbmc/${distro}:${imgtag}-${ARCH} ${WORKSPACE}/build.sh
+# Determine if the build container will be launched with Docker or Kubernetes
+if [[ "${launch}" == "" ]]; then
+
+  # Give the Docker image a name based on the distro,tag,arch,and target
+  imgname=${imgname:-openbmc/${distro}:${imgtag}-${target}-${ARCH}}
+
+  # Build the Docker image
+  docker build -t ${imgname} - <<< "${Dockerfile}"
+
+  # Run the Docker container, execute the build.sh script
+  docker run \
+  --cap-add=sys_admin \
+  --net=host \
+  --rm=true \
+  -e WORKSPACE=${WORKSPACE} \
+  -w "${HOME}" \
+  -v "${HOME}":"${HOME}" \
+  -v "${ocache}":"${ocache}" \
+  -t ${imgname} \
+  ${WORKSPACE}/build.sh
+
+elif [[ "${launch}" == "job" || "${launch}" == "pod" ]]; then
+
+  # Source and run the helper script to launch the pod or job
+  . kubernetes/kubernetes-launch.sh
+
+else
+  echo "Launch Parameter is invalid"
+fi
 
 # Timestamp for build
 echo "Build completed, $(date)"
