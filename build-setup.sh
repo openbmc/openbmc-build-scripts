@@ -1,14 +1,35 @@
 #!/bin/bash
-
-# This build script is for running the Jenkins builds using docker.
+###############################################################################
 #
-# It expects a few variables which are part of Jenkins build job matrix:
-#   target = barreleye|palmetto|qemu
-#   distro = fedora|ubuntu|ubuntu:14.04|ubuntu:16.04
-#   obmcdir = <name of openbmc src dir> (default openbmc)
-#   WORKSPACE = <location of base openbmc/openbmc repo>
-#   BITBAKE_OPTS = <optional, set to "-c populate_sdk" or whatever other
-#                   bitbake options you'd like to pass into the build>
+# This build script is for running the OpenBMC builds as containers with the
+# option of launching the containers with Docker or Kubernetes.
+#
+###############################################################################
+#
+# Variables used for Jenkins build job matrix:
+#  target       = barreleye|palmetto|witherspoon|firestone|garrison|evb-ast2500
+#                 zaius|romulus|qemu
+#  distro       = fedora|ubuntu|
+#  imgtag       = varies by distro, latest; 16.04|14.04|trusty|xenial; 23|24|25
+#  ocache       = path of the OpenBMC repo cache that is used to speed up git
+#                 clones, default directory location "/home/openbmc"
+#  obmcdir      = path of the OpenBMC directory, where the build occurs inside
+#                 the container cannot be placed on external storage default
+#                 directory location "/tmp/openbmc"
+#  sscdir       = path of the BitBake shared-state cache directoy, will default
+#                 to directory "/home/sstate-cache", used to speed up builds
+#  WORKSPACE    = path of the workspace directory where some intermediate files
+#                 and the images will be saved to
+#
+# Optional Variables:
+#  launch       = job|pod, can be left blank to launch via Docker if not using
+#                 Kubernetes to launch the container
+#  imgname      = defaults to a relatively long but descriptive name, can be
+#                 changed or passed to give a specific name to created image
+#  BITBAKE_OPTS = set to "-c populate_sdk" or whatever other bitbake options
+#                 you'd like to pass into the build
+#
+###############################################################################
 
 # Trace bash processing. Set -e so when a step fails, we fail the build
 set -xeo pipefail
