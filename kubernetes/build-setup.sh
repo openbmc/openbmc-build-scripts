@@ -10,6 +10,14 @@
 #   WORKSPACE = <location of base openbmc/openbmc repo>
 #   BITBAKE_OPTS = <optional, set to "-c populate_sdk" or whatever other
 #                   bitbake options you'd like to pass into the build>
+#
+# Variables used to create Kubernetes Job:
+#  namespace = The namespace to be used within the kubernetes cluster
+#  pvcname = name of the persistent volume claim (pvc)
+#  mountpath = the path onto which the pvc will be mounted to withing the
+#              build container
+#  registry = The registry to used to pull and push images
+#  imgplsec = The image pull secret used to access registry
 
 # Trace bash processing. Set -e so when a step fails, we fail the build
 set -xeo pipefail
@@ -18,10 +26,18 @@ set -xeo pipefail
 target=${target:-qemu}
 distro=${distro:-ubuntu}
 imgtag=${imgtag:-latest}
-obmcdir=${obmcdir:-openbmc}
+obmcdir=${obmcdir:-/openbmc}
 WORKSPACE=${WORKSPACE:-${HOME}/${RANDOM}${RANDOM}}
 http_proxy=${http_proxy:-}
 PROXY=""
+
+# Kubernetes variables
+namespace=${namespace:-openbmc}
+pvcname=${pvcname:-work-volume}
+mountpath=${mountpath:-/home}
+registry=${registry:-master.cfc:8500/openbmc/}
+imgplsec=${imgplsec:-regkey}
+
 
 # Timestamp for job
 echo "Build started, $(date)"
@@ -183,8 +199,9 @@ EOF
 )
 fi
 
-# Build the docker container
-docker build -t openbmc/${distro}:${tag} - <<< "${Dockerfile}"
+# Build Image and push to registry
+docker build -t ${registry}${distro}:${imgtag} - <<< "${Dockerfile}"
+docker push ${registry}${distro}:${imgtag}
 
 # Create the docker run script
 export PROXY_HOST=${http_proxy/#http*:\/\/}
@@ -256,8 +273,54 @@ EOF_SCRIPT
 
 chmod a+x ${WORKSPACE}/build.sh
 
+# Create the kubernetes job in yaml format
+  Job=$(cat << EOF
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: openbmc-${target}
+  namespace: ${namespace}
+  labels:
+    app: openbmc
+    stage: build
+spec:
+  template:
+    metadata:
+      labels:
+        target: ${target}
+    spec:
+      nodeSelector:
+        worker: "true"
+        arch: ${ARCH}
+      volumes:
+      - persistentVolumeClaim:
+          claimName: ${pvcname}
+        name: home
+      restartPolicy: Never
+      hostNetwork: True
+      containers:
+      - image: ${registry}${distro}:${tag}
+        name: builder
+        command: ["${WORKSPACE}/build.sh"]
+        args: []
+        workingDir: /home/jenkins
+        env:
+        - name: WORKSPACE
+          value: ${WORKSPACE}
+        securityContext:
+          capabilities:
+            add:
+            - SYS_ADMIN
+        volumeMounts:
+        - name: home
+          mountPath: ${mountpath}
+      imagePullSecrets:
+      - name: ${imgplsec}   
+EOF
+)
+
 # Run the docker container, execute the build script we just built
-docker run --cap-add=sys_admin --net=host --rm=true -e WORKSPACE=${WORKSPACE} --user="${USER}" \
+docker run --cap-add=sys_admin --net=host --rm=true -e WORKSPACE=${WORKSPACE}\
   -w "${HOME}" -v "${HOME}":"${HOME}" -t openbmc/${distro} ${WORKSPACE}/build.sh
 
 # Create link to images for archiving
