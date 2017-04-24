@@ -267,6 +267,9 @@ EOF_CONF
 # Kick off a build
 bitbake ${BITBAKE_OPTS} obmc-phosphor-image
 
+# copy the artifacts to NFS
+cp -R ${obmcdir}/build/tmp/deploy/images ${WORKSPACE}/images/
+
 EOF_SCRIPT
 
 chmod a+x ${WORKSPACE}/build.sh
@@ -317,12 +320,8 @@ spec:
 EOF
 )
 
-# Run the docker container, execute the build script we just built
-docker run --cap-add=sys_admin --net=host --rm=true -e WORKSPACE=${WORKSPACE} \
-  -w "${HOME}" -v "${HOME}":"${HOME}" -t openbmc/${distro}:${imgtag} ${WORKSPACE}/build.sh
-
-# Create link to images for archiving
-ln -sf ${WORKSPACE}/openbmc/build/tmp/deploy/images ${WORKSPACE}/images
+# Create the Kubernetes Job
+kubectl create -f - <<< "${Job}"
 
 # Timestamp for build
 echo "Build completed, $(date)"
