@@ -1,26 +1,45 @@
 #!/bin/bash
-
-# This build script is for running the Jenkins builds using docker.
+###############################################################################
 #
-# It expects a few variables which are part of Jenkins build job matrix:
-#   target = barreleye|palmetto|qemu
-#   distro = fedora|ubuntu
-#   imgtag = tag of the ubuntu or fedora image to use default latest
-#   obmcdir = <name of openbmc src dir> (default openbmc)
-#   WORKSPACE = <location of base openbmc/openbmc repo>
-#   BITBAKE_OPTS = <optional, set to "-c populate_sdk" or whatever other
-#                   bitbake options you'd like to pass into the build>
+# This build script is for running the openbmc builds using kubernetes to 
+# create the build contianers as kubernetes jobs
+# 
+###############################################################################
 #
+# Requirements:
+#  - Docker login credentials defined inside ~/.docker/config.json
+#  - Kubectl installed and configured on machine running the script
+#  - Access to a Kubernetes Cluster using v1.5.2 or newer
+#  - NFS directory to which user running script has access rwx
+#  - Persistent Volume and Claim created and mounted to NFS directory
+#  - Image pull secret exists for image pulls in kubernetes cluster namespace
+#
+###############################################################################
+#
+# Variables used for jenkins build job matrix:
+#  target	= barreleye|palmetto|witherspoon|firestone|garrison|evb-ast2500
+#		  zaius|romulus|qemu
+#  distro	= fedora|ubuntu|ubuntu|ubuntu
+#  imgtag	= Varies by distro, latest;16.04|14.04|trusty|xenial; 23|24|25
+#  obmcdir	= path of the openbmc directory, where the build occurs cannot
+#		  be placed on external storage
+#  WORKSPACE	= path of the workspace directory where some intermediate files
+#		  and the images will be saved to
+#  BITBAKE_OPTS	= optional, set to "-c populate_sdk" or whatever other bitbake
+#		  options you'd like to pass into the build
+#                 
 # Variables used to create Kubernetes Job:
-#  namespace = The namespace to be used within the kubernetes cluster
-#  pvcname = name of the persistent volume claim (pvc)
-#  mountpath = the path onto which the pvc will be mounted to withing the
-#              build container
-#  sscdir = path of the shared state cache directory
-#  registry = The registry to used to pull and push images
-#  imgplsec = The image pull secret used to access registry
-#  timeout = The amount of time in seconds that the build will wait for
-#            the pod to start running on the cluster
+#  namespace 	= The namespace to be used within the kubernetes cluster
+#  pvcname	= name of the persistent volume claim (pvc)
+#  mountpath 	= the path onto which the pvc will be mounted to withing the
+#		  build container
+#  sscdir	= path of the shared state cache directory
+#  registry 	= The registry to used to pull and push images
+#  imgplsec 	= The image pull secret used to access registry
+#  timeout	= The amount of time in seconds that the build will wait for
+# 		  the pod to start running on the cluster
+#
+###############################################################################
 
 # Trace bash processing. Set -e so when a step fails, we fail the build
 set -xeo pipefail
@@ -42,8 +61,6 @@ sscdir=${sscdir:-/home/sstate-cache}
 registry=${registry:-master.cfc:8500/openbmc/}
 imgplsec=${imgplsec:-regkey}
 timeout=${timeout:-25}
-
-
 
 # Timestamp for job
 echo "Build started, $(date)"
