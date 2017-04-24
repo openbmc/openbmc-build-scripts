@@ -18,7 +18,8 @@ set -xeo pipefail
 target=${target:-qemu}
 distro=${distro:-ubuntu}
 imgtag=${imgtag:-latest}
-obmcdir=${obmcdir:-openbmc}
+ocache=${ocache:-/home/openbmc}
+obmcdir=${obmcdir:-/openbmc}
 WORKSPACE=${WORKSPACE:-${HOME}/${RANDOM}${RANDOM}}
 http_proxy=${http_proxy:-}
 PROXY=""
@@ -42,10 +43,10 @@ esac
 # Timestamp for job
 echo "Build started, $(date)"
 
-# If there's no openbmc dir in WORKSPACE then just clone in master
-if [ ! -d ${WORKSPACE}/${obmcdir} ]; then
-  echo "Clone in openbmc master to ${WORKSPACE}/${obmcdir}"
-  git clone https://github.com/openbmc/openbmc ${WORKSPACE}/${obmcdir}
+# If the ocache directory doesn't exist clone it in, ocache will be used as a cache for git clones
+if [ ! -d ${ocache} ]; then
+  echo "Clone in openbmc master to ${ocache} to act as cache for future builds"
+  git clone https://github.com/openbmc/openbmc ${ocache}
 fi
 
 # Work out what build target we should be running and set BitBake command
@@ -127,6 +128,9 @@ if [[ "${distro}" == fedora ]];then
   RUN grep -q ${GROUPS} /etc/group || groupadd -g ${GROUPS} ${USER}
   RUN grep -q ${UID} /etc/passwd || useradd -d ${HOME} -m -u ${UID} -g ${GROUPS} ${USER}
 
+  RUN mkdir -p ${obmcdir} && \
+      chown -R ${USER}:${USER} ${obmcdir}
+
   USER ${USER}
   ENV HOME ${HOME}
   RUN /bin/bash
@@ -173,6 +177,9 @@ elif [[ "${distro}" == ubuntu ]]; then
   RUN grep -q ${GROUPS} /etc/group || groupadd -g ${GROUPS} ${USER}
   RUN grep -q ${UID} /etc/passwd || useradd -d ${HOME} -m -u ${UID} -g ${GROUPS} ${USER}
 
+  RUN mkdir -p ${obmcdir} && \
+      chown -R ${USER}:${USER} ${obmcdir}
+
   USER ${USER}
   ENV HOME ${HOME}
   RUN /bin/bash
@@ -195,7 +202,8 @@ cat > "${WORKSPACE}"/build.sh << EOF_SCRIPT
 
 set -xeo pipefail
 
-cd ${WORKSPACE}
+# Use the mounted repo cache to make an internal repo not mounted externally
+git clone --reference ${ocache} --dissociate https://github.com/openbmc/openbmc ${obmcdir}
 
 # Go into the OpenBMC directory (the openbmc script will put us in a build subdir)
 cd ${obmcdir}
@@ -249,16 +257,17 @@ EOF_CONF
 # Kick off a build
 bitbake ${BITBAKE_OPTS} obmc-phosphor-image
 
+# Copy images out of internal obmcdir into workspace directory
+cp -R ${obmcdir}/build/tmp/deploy/images ${WORKSPACE}/images/
+
 EOF_SCRIPT
 
 chmod a+x ${WORKSPACE}/build.sh
 
 # Run the Docker container, execute the build script we just built
 docker run --cap-add=sys_admin --net=host --rm=true -e WORKSPACE=${WORKSPACE} --user="${USER}" \
-  -w "${HOME}" -v "${HOME}":"${HOME}" -t openbmc/${distro}:${imgtag}-${ARCH} ${WORKSPACE}/build.sh
-
-# Create link to images for archiving
-ln -sf ${WORKSPACE}/openbmc/build/tmp/deploy/images ${WORKSPACE}/images
+  -w "${HOME}" -v "${HOME}":"${HOME}" -v "${ocache}":"${ocache}" \
+  -t openbmc/${distro}:${imgtag}-${ARCH} ${WORKSPACE}/build.sh
 
 # Timestamp for build
 echo "Build completed, $(date)"
