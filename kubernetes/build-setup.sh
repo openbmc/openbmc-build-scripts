@@ -15,8 +15,11 @@
 #  pvcname = name of the persistent volume claim (PVC)
 #  mountpath = the path onto which the pvc will be mounted to withing the
 #              build container
+#  sscdir = path of the shared state cache directory
 #  registry = The registry to used to pull and push images
 #  imgplsec = The image pull secret used to access registry
+#  timeout = The amount of time in seconds that the build will wait for
+#            the pod to start running on the cluster
 
 # Trace bash processing. Set -e so when a step fails, we fail the build
 set -xeo pipefail
@@ -34,8 +37,10 @@ PROXY=""
 namespace=${namespace:-openbmc}
 pvcname=${pvcname:-work-volume}
 mountpath=${mountpath:-/home}
+sscdir=${sscdir:-/home/sstate-cache}
 registry=${registry:-master.cfc:8500/openbmc/}
 imgplsec=${imgplsec:-regkey}
+timeout=${timeout:-25}
 
 # Timestamp for job
 echo "Build started, $(date)"
@@ -56,7 +61,7 @@ case ${ARCH} in
     exit 1
 esac
 
-# Work out what build target we should be running and set BitBake command
+# Determine the build target and set the bitbake command
 case ${target} in
   barreleye)
     BITBAKE_CMD="TEMPLATECONF=meta-openbmc-machines/meta-openpower/meta-rackspace/meta-barreleye/conf source oe-init-build-env"
@@ -258,8 +263,8 @@ BB_NUMBER_THREADS = "$(nproc)"
 PARALLEL_MAKE = "-j$(nproc)"
 INHERIT += "rm_work"
 BB_GENERATE_MIRROR_TARBALLS = "1"
-DL_DIR="${HOME}/bitbake_downloads"
-SSTATE_DIR="${HOME}/bitbake_sharedstatecache"
+DL_DIR="${sscdir}/bitbake_downloads"
+SSTATE_DIR="${ssdir}/bitbake_sharedstatecache"
 USER_CLASSES += "buildstats"
 INHERIT_remove = "uninative"
 EOF_CONF
@@ -322,6 +327,27 @@ EOF
 
 # Create the Kubernetes Job
 kubectl create -f - <<< "${Job}"
+
+# Save its name
+POD=$(kubectl get pods | grep ${target} | cut -d " " -f1)
+
+# Wait for Pod to be running before tailing log file
+while [ -z "$(kubectl describe pod ${POD}| grep Status: | grep Running)" ]; do
+  if [ ${timeout} -lt 0 ];then
+    kubectl delete -f - <<< "${Job}"
+    echo "Timeout Occured: Job failed to start running in time"
+    exit 1
+  else
+    sleep 1  
+    let timeout-=1
+  fi
+done
+
+# Once pod is running track logs
+kubectl logs -f ${POD}
+ 
+# When job is completed wipe the job
+kubectl delete -f - <<< "${Job}"
 
 # Timestamp for build
 echo "Build completed, $(date)"
