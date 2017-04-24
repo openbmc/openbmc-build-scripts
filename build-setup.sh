@@ -4,7 +4,8 @@
 #
 # It expects a few variables which are part of Jenkins build job matrix:
 #   target = barreleye|palmetto|qemu
-#   distro = fedora|ubuntu|ubuntu:14.04|ubuntu:16.04
+#   distro = fedora|ubuntu
+#   imgtag = tag of the Ubuntu or Fedora image to use (default latest)
 #   obmcdir = <name of OpenBMC src dir> (default openbmc)
 #   WORKSPACE = <location of base OpenBMC/OpenBMC repo>
 #   BITBAKE_OPTS = <optional, set to "-c populate_sdk" or whatever other
@@ -16,17 +17,27 @@ set -xeo pipefail
 # Default variables
 target=${target:-qemu}
 distro=${distro:-ubuntu}
+imgtag=${imgtag:-latest}
 obmcdir=${obmcdir:-openbmc}
 WORKSPACE=${WORKSPACE:-${HOME}/${RANDOM}${RANDOM}}
 http_proxy=${http_proxy:-}
 PROXY=""
 
-# Determine our architecture, ppc64le or the other one
-if [ $(uname -m) == "ppc64le" ]; then
-  DOCKER_BASE="ppc64le/"
-else
-  DOCKER_BASE=""
-fi
+# Determine the architecture
+ARCH=$(uname -m)
+
+# Determine the prefix of the Dockerfile's base image
+case ${ARCH} in
+  "ppc64le")
+    DOCKER_BASE="ppc64le/"
+    ;;
+  "x86_64")
+    DOCKER_BASE=""
+    ;;
+  *)
+    echo "Unsupported system architecture(${ARCH}) found for docker image"
+    exit 1
+esac
 
 # Timestamp for job
 echo "Build started, $(date)"
@@ -35,11 +46,6 @@ echo "Build started, $(date)"
 if [ ! -d ${WORKSPACE}/${obmcdir} ]; then
   echo "Clone in openbmc master to ${WORKSPACE}/${obmcdir}"
   git clone https://github.com/openbmc/openbmc ${WORKSPACE}/${obmcdir}
-fi
-
-# if user just passed in ubuntu then use latest
-if [[ $distro == "ubuntu" ]]; then
-  distro="ubuntu:latest"
 fi
 
 # Work out what build target we should be running and set BitBake command
@@ -84,7 +90,7 @@ if [[ "${distro}" == fedora ]];then
   fi
 
   Dockerfile=$(cat << EOF
-  FROM ${DOCKER_BASE}fedora:latest
+  FROM ${DOCKER_BASE}${distro}:${imgtag}
 
   ${PROXY}
 
@@ -127,13 +133,14 @@ if [[ "${distro}" == fedora ]];then
 EOF
 )
 
-elif [[ "${distro}" == "ubuntu"* ]]; then
+elif [[ "${distro}" == ubuntu ]]; then
+
   if [[ -n "${http_proxy}" ]]; then
     PROXY="RUN echo \"Acquire::http::Proxy \\"\"${http_proxy}/\\"\";\" > /etc/apt/apt.conf.d/000apt-cacher-ng-proxy"
   fi
 
   Dockerfile=$(cat << EOF
-  FROM ${DOCKER_BASE}${distro}
+  FROM ${DOCKER_BASE}${distro}:${imgtag}
 
   ${PROXY}
 
@@ -174,7 +181,7 @@ EOF
 fi
 
 # Build the Docker container
-docker build -t openbmc/${distro} - <<< "${Dockerfile}"
+docker build -t openbmc/${distro}:${imgtag}-${ARCH} - <<< "${Dockerfile}"
 
 # Create the Docker run script
 export PROXY_HOST=${http_proxy/#http*:\/\/}
@@ -248,7 +255,7 @@ chmod a+x ${WORKSPACE}/build.sh
 
 # Run the Docker container, execute the build script we just built
 docker run --cap-add=sys_admin --net=host --rm=true -e WORKSPACE=${WORKSPACE} --user="${USER}" \
-  -w "${HOME}" -v "${HOME}":"${HOME}" -t openbmc/${distro} ${WORKSPACE}/build.sh
+  -w "${HOME}" -v "${HOME}":"${HOME}" -t openbmc/${distro}:${imgtag}-${ARCH} ${WORKSPACE}/build.sh
 
 # Create link to images for archiving
 ln -sf ${WORKSPACE}/openbmc/build/tmp/deploy/images ${WORKSPACE}/images
