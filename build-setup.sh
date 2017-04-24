@@ -1,23 +1,41 @@
 #!/bin/bash
-
-# This build script is for running the Jenkins builds using Docker.
+###############################################################################
 #
-# It expects a few variables which are part of Jenkins build job matrix:
-#   target = barreleye|palmetto|qemu
-#   distro = fedora|ubuntu
-#   imgtag = tag of the Ubuntu or Fedora image to use (default latest)
-#   obmcdir = <name of OpenBMC src dir> (default /tmp/openbmc)
-#   sscdir = directory that will be used for shared state cache
-#   WORKSPACE = <location of base OpenBMC/OpenBMC repo>
-#   BITBAKE_OPTS = <optional, set to "-c populate_sdk" or whatever other
-#                   BitBake options you'd like to pass into the build>
+# This build script is for running the OpenBMC builds as containers with the
+# option of launching the containers with Docker or Kubernetes.
 #
-# There are some optional variables that are related to launching the build
-#   launch = job|pod, what way the build container will be launched if left
-#            blank launches user docker run, job or pod will launch the
-#            appropriate kind to kubernetes via kubernetes-launch.sh
-#   imgname = defaults to a relatively long but descriptive name, can be
-#             changed or passed to give a specific name to created image
+###############################################################################
+#
+# Variables used for Jenkins build job matrix:
+#  target       = barreleye|palmetto|witherspoon|firestone|garrison|evb-ast2500
+#                 zaius|romulus|qemu
+#  distro       = fedora|ubuntu
+#  imgtag       = Varies by distro. latest|16.04|14.04|trusty|xenial; 23|24|25
+#  ocache       = Path of the OpenBMC repo cache that is used to speed up git
+#                 clones, default directory location "/home/openbmc"
+#  obmcdir      = Path of the OpenBMC directory, where the build occurs inside
+#                 the container cannot be placed on external storage default
+#                 directory location "/tmp/openbmc"
+#  sscdir       = Path of the BitBake shared-state cache directoy, will default
+#                 to directory "/home/${USER}", used to speed up builds.
+#  WORKSPACE    = Path of the workspace directory where some intermediate files
+#                 and the images will be saved to.
+#
+# Optional Variables:
+#  launch       = job|pod
+#                 Can be left blank to launch via Docker if not using
+#                 Kubernetes to launch the container.
+#                 Job lets you keep a copy of job and container logs on the
+#                 api, can be useful if not using Jenkins as you can run the
+#                 job again via the api without needing this script.
+#                 Pod launches a container which runs to completion without
+#                 saving anything to the api when it completes.
+#  imgname      = Defaults to a relatively long but descriptive name, can be
+#                 changed or passed to give a specific name to created image.
+#  BITBAKE_OPTS = Set to "-c populate_sdk" or whatever other bitbake options
+#                 you'd like to pass into the build.
+#
+###############################################################################
 
 # Trace bash processing. Set -e so when a step fails, we fail the build
 set -xeo pipefail
@@ -28,7 +46,7 @@ distro=${distro:-ubuntu}
 imgtag=${imgtag:-latest}
 ocache=${ocache:-/home/openbmc}
 obmcdir=${obmcdir:-/tmp/openbmc}
-sscdir=${sscdir:-/home/sstate-cache}
+sscdir=${sscdir:-${HOME}}
 WORKSPACE=${WORKSPACE:-${HOME}/${RANDOM}${RANDOM}}
 launch=${launch:-}
 http_proxy=${http_proxy:-}
@@ -274,10 +292,28 @@ if [[ "${launch}" == "" ]]; then
   # Build the Docker image
   docker build -t ${imgname} - <<< "${Dockerfile}"
 
+  # If ocache or sscdir are ${HOME} or a subdirectory they will not be mounted
+  mountocache="-v ""${ocache}"":""${ocache}"" "
+  mountsscdir="-v ""${sscdir}"":""${sscdir}"" "
+  if [[ "${ocache}" = "${HOME}/*" || "${ocache}" = "${HOME}" ]];then
+    mountocache=""
+  fi
+  if [[ "${sscdir}" = "${HOME}/*" || "${sscdir}" = "${HOME}" ]];then
+    mountsscdir=""
+  fi
+
   # Run the Docker container, execute the build.sh script
-  docker run --cap-add=sys_admin --net=host --rm=true -e WORKSPACE=${WORKSPACE} -w "${HOME}" \
-  -v "${HOME}":"${HOME}" -v "${ocache}":"${ocache}" -v "${sscdir}":"${sscdir}" \
-  -t ${imgname} ${WORKSPACE}/build.sh
+  docker run \
+  --cap-add=sys_admin \
+  --net=host \
+  --rm=true \
+  -e WORKSPACE=${WORKSPACE} \
+  -w "${HOME}" \
+  -v "${HOME}":"${HOME}" \
+  ${mountocache} \
+  ${mountsscdir} \
+  -t ${imgname} \
+  ${WORKSPACE}/build.sh
 
 elif [[ "${launch}" == "job" || "${launch}" == "pod" ]]; then
 
