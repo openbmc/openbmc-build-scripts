@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# This build script is for running the Jenkins builds using Docker.
+# This build script is for running the Jenkins builds using Docker or Kubernetes.
 #
 # It expects a few variables which are part of Jenkins build job matrix:
 #   target = barreleye|palmetto|qemu
@@ -12,7 +12,7 @@
 #                   BitBake options you'd like to pass into the build>
 #
 # There are some optional variables that are related to launching the build
-#   launch = job|pod, what way the build container will be launched if left
+#   launch = job|pod, what way the build container will be launched. If left
 #            blank launches user docker run, job or pod will launch the
 #            appropriate kind to kubernetes via kubernetes-launch.sh
 #   imgname = defaults to a relatively long but descriptive name, can be
@@ -273,8 +273,16 @@ if [[ "${launch}" == "" ]]; then
   docker build -t ${imgname} - <<< "${Dockerfile}"
 
   # Run the Docker container, execute the build.sh script
-  docker run --cap-add=sys_admin --net=host --rm=true -e WORKSPACE=${WORKSPACE} -w "${HOME}" \
-  -v "${HOME}":"${HOME}" -v "${ocache}":"${ocache}" -t ${imgname} ${WORKSPACE}/build.sh
+  docker run \
+  --cap-add=sys_admin \
+  --net=host \
+  --rm=true \
+  -e WORKSPACE=${WORKSPACE} \
+  -w "${HOME}" \
+  -v "${HOME}":"${HOME}" \
+  -v "${ocache}":"${ocache}" \
+  -t ${imgname} \
+  ${WORKSPACE}/build.sh
 
 elif [[ "${launch}" == "job" || "${launch}" == "pod" ]]; then
 
