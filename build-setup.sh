@@ -1,14 +1,15 @@
 #!/bin/bash
 
-# This build script is for running the Jenkins builds using docker.
+# This build script is for running the Jenkins builds using Docker.
 #
 # It expects a few variables which are part of Jenkins build job matrix:
 #   target = barreleye|palmetto|qemu
-#   distro = fedora|ubuntu|ubuntu:14.04|ubuntu:16.04
-#   obmcdir = <name of openbmc src dir> (default openbmc)
-#   WORKSPACE = <location of base openbmc/openbmc repo>
+#   distro = fedora|ubuntu
+#   imgtag = tag of the Ubuntu or Fedora image to use (default latest)
+#   obmcdir = <name of OpenBMC src dir> (default openbmc)
+#   WORKSPACE = <location of base OpenBMC/OpenBMC repo>
 #   BITBAKE_OPTS = <optional, set to "-c populate_sdk" or whatever other
-#                   bitbake options you'd like to pass into the build>
+#                   BitBake options you'd like to pass into the build>
 
 # Trace bash processing. Set -e so when a step fails, we fail the build
 set -xeo pipefail
@@ -16,33 +17,39 @@ set -xeo pipefail
 # Default variables
 target=${target:-qemu}
 distro=${distro:-ubuntu}
-obmcdir=${obmcdir:-openbmc}
+imgtag=${imgtag:-latest}
+ocache=${ocache:-/home/openbmc} 
+obmcdir=${obmcdir:-/openbmc}
 WORKSPACE=${WORKSPACE:-${HOME}/${RANDOM}${RANDOM}}
 http_proxy=${http_proxy:-}
 PROXY=""
 
-# Determine our architecture, ppc64le or the other one
-if [ $(uname -m) == "ppc64le" ]; then
+# Determine the architecture
+ARCH=$(uname -m)
+
+# Determine the prefix of the Dockerfile's base image
+case ${ARCH} in
+  "ppc64le")
     DOCKER_BASE="ppc64le/"
-else
+    ;;
+  "x86_64")
     DOCKER_BASE=""
-fi
+    ;;
+  *)
+    echo "Unsupported system architecture(${ARCH}) found for docker image"
+    exit 1
+esac
 
 # Timestamp for job
 echo "Build started, $(date)"
 
 # If there's no openbmc dir in WORKSPACE then just clone in master
-if [ ! -d ${WORKSPACE}/${obmcdir} ]; then
-    echo "Clone in openbmc master to ${WORKSPACE}/${obmcdir}"
-    git clone https://github.com/openbmc/openbmc ${WORKSPACE}/${obmcdir}
+if [ ! -d ${ocache} ]; then
+  echo "Clone in openbmc master to ${ocache} to act as cache for future builds"
+  git clone https://github.com/openbmc/openbmc ${ocache}
 fi
 
-# if user just passed in ubuntu then use latest
-if [[ $distro == "ubuntu" ]]; then
-    distro="ubuntu:latest"
-fi
-
-# Work out what build target we should be running and set bitbake command
+# Work out what build target we should be running and set BitBake command
 case ${target} in
   barreleye)
     BITBAKE_CMD="TEMPLATECONF=meta-openbmc-machines/meta-openpower/meta-rackspace/meta-barreleye/conf source oe-init-build-env"
@@ -76,7 +83,7 @@ case ${target} in
     ;;
 esac
 
-# Configure docker build
+# Configure Docker build
 if [[ "${distro}" == fedora ]];then
 
   if [[ -n "${http_proxy}" ]]; then
@@ -84,99 +91,106 @@ if [[ "${distro}" == fedora ]];then
   fi
 
   Dockerfile=$(cat << EOF
-FROM ${DOCKER_BASE}fedora:latest
+  FROM ${DOCKER_BASE}${distro}:${imgtag}
 
-${PROXY}
+  ${PROXY}
 
-# Set the locale
-RUN locale-gen en_US.UTF-8
-ENV LANG en_US.UTF-8
-ENV LANGUAGE en_US:en
-ENV LC_ALL en_US.UTF-8
+  # Set the locale
+  RUN locale-gen en_US.UTF-8
+  ENV LANG en_US.UTF-8
+  ENV LANGUAGE en_US:en
+  ENV LC_ALL en_US.UTF-8
 
-RUN dnf --refresh install -y \
-	bzip2 \
-	chrpath \
-	cpio \
-	diffstat \
-	findutils \
-	gcc \
-	gcc-c++ \
-	git \
-	make \
-	patch \
-	perl-bignum \
-	perl-Data-Dumper \
-	perl-Thread-Queue \
-	python-devel \
-	python3-devel \
-	SDL-devel \
-	socat \
-	subversion \
-	tar \
-	texinfo \
-	wget \
-	which
+  RUN dnf --refresh install -y \
+      bzip2 \
+      chrpath \
+      cpio \
+      diffstat \
+      findutils \
+      gcc \
+      gcc-c++ \
+      git \
+      make \
+      patch \
+      perl-bignum \
+      perl-Data-Dumper \
+      perl-Thread-Queue \
+      python-devel \
+      python3-devel \
+      SDL-devel \
+      socat \
+      subversion \
+      tar \
+      texinfo \
+      wget \
+      which
 
-RUN grep -q ${GROUPS} /etc/group || groupadd -g ${GROUPS} ${USER}
-RUN grep -q ${UID} /etc/passwd || useradd -d ${HOME} -m -u ${UID} -g ${GROUPS} ${USER}
+  RUN grep -q ${GROUPS} /etc/group || groupadd -g ${GROUPS} ${USER}
+  RUN grep -q ${UID} /etc/passwd || useradd -d ${HOME} -m -u ${UID} -g ${GROUPS} ${USER}
 
-USER ${USER}
-ENV HOME ${HOME}
-RUN /bin/bash
+  RUN mkdir -p ${obmcdir} && \
+      chown -R ${USER}:${USER} ${obmcdir}
+
+  USER ${USER}
+  ENV HOME ${HOME}
+  RUN /bin/bash
 EOF
 )
 
-elif [[ "${distro}" == "ubuntu"* ]]; then
+elif [[ "${distro}" == ubuntu ]]; then
+
   if [[ -n "${http_proxy}" ]]; then
     PROXY="RUN echo \"Acquire::http::Proxy \\"\"${http_proxy}/\\"\";\" > /etc/apt/apt.conf.d/000apt-cacher-ng-proxy"
   fi
 
   Dockerfile=$(cat << EOF
-FROM ${DOCKER_BASE}${distro}
+  FROM ${DOCKER_BASE}${distro}:${imgtag}
 
-${PROXY}
+  ${PROXY}
 
-ENV DEBIAN_FRONTEND noninteractive
+  ENV DEBIAN_FRONTEND noninteractive
 
-# Set the locale
-RUN locale-gen en_US.UTF-8
-ENV LANG en_US.UTF-8
-ENV LANGUAGE en_US:en
-ENV LC_ALL en_US.UTF-8
+  # Set the locale
+  RUN locale-gen en_US.UTF-8
+  ENV LANG en_US.UTF-8
+  ENV LANGUAGE en_US:en
+  ENV LC_ALL en_US.UTF-8
 
-RUN apt-get update && apt-get install -yy \
-	build-essential \
-	chrpath \
-	debianutils \
-	diffstat \
-	gawk \
-	git \
-	libdata-dumper-simple-perl \
-	libsdl1.2-dev \
-	libthread-queue-any-perl \
-	python \
-	python3 \
-	socat \
-	subversion \
-	texinfo \
-	cpio \
-	wget
+  RUN apt-get update && apt-get install -yy \
+      build-essential \
+      chrpath \
+      debianutils \
+      diffstat \
+      gawk \
+      git \
+      libdata-dumper-simple-perl \
+      libsdl1.2-dev \
+      libthread-queue-any-perl \
+      python \
+      python3 \
+      socat \
+      subversion \
+      texinfo \
+      cpio \
+      wget
 
-RUN grep -q ${GROUPS} /etc/group || groupadd -g ${GROUPS} ${USER}
-RUN grep -q ${UID} /etc/passwd || useradd -d ${HOME} -m -u ${UID} -g ${GROUPS} ${USER}
+  RUN grep -q ${GROUPS} /etc/group || groupadd -g ${GROUPS} ${USER}
+  RUN grep -q ${UID} /etc/passwd || useradd -d ${HOME} -m -u ${UID} -g ${GROUPS} ${USER}
 
-USER ${USER}
-ENV HOME ${HOME}
-RUN /bin/bash
+  RUN mkdir -p ${obmcdir} && \
+      chown -R ${USER}:${USER} ${obmcdir}
+
+  USER ${USER}
+  ENV HOME ${HOME}
+  RUN /bin/bash
 EOF
 )
 fi
 
-# Build the docker container
-docker build -t openbmc/${distro} - <<< "${Dockerfile}"
+# Build the Docker container
+docker build -t openbmc/${distro}:${imgtag}-${ARCH} - <<< "${Dockerfile}"
 
-# Create the docker run script
+# Create the Docker run script
 export PROXY_HOST=${http_proxy/#http*:\/\/}
 export PROXY_HOST=${PROXY_HOST/%:[0-9]*}
 export PROXY_PORT=${http_proxy/#http*:\/\/*:}
@@ -188,9 +202,10 @@ cat > "${WORKSPACE}"/build.sh << EOF_SCRIPT
 
 set -xeo pipefail
 
-cd ${WORKSPACE}
+# Use the mounted repo cache to make an internal repo not mounted externally
+git clone --reference ${obmccache} --dissociate https://github.com/openbmc/openbmc ${obmcdir}
 
-# Go into the openbmc directory (the openbmc script will put us in a build subdir)
+# Go into the OpenBMC directory (the openbmc script will put us in a build subdir)
 cd ${obmcdir}
 
 # Set up proxies
@@ -200,15 +215,15 @@ export https_proxy=${http_proxy}
 
 mkdir -p ${WORKSPACE}/bin
 
-# Configure proxies for bitbake
+# Configure proxies for BitBake
 if [[ -n "${http_proxy}" ]]; then
 
   cat > ${WORKSPACE}/bin/git-proxy << \EOF_GIT
-#!/bin/bash
-# \$1 = hostname, \$2 = port
-PROXY=${PROXY_HOST}
-PROXY_PORT=${PROXY_PORT}
-exec socat STDIO PROXY:\${PROXY}:\${1}:\${2},proxyport=\${PROXY_PORT}
+  #!/bin/bash
+  # \$1 = hostname, \$2 = port
+  PROXY=${PROXY_HOST}
+  PROXY_PORT=${PROXY_PORT}
+  exec socat STDIO PROXY:\${PROXY}:\${1}:\${2},proxyport=\${PROXY_PORT}
 EOF_GIT
 
   chmod a+x ${WORKSPACE}/bin/git-proxy
@@ -218,16 +233,16 @@ EOF_GIT
   mkdir -p ~/.subversion
 
   cat > ~/.subversion/servers << EOF_SVN
-[global]
-http-proxy-host = ${PROXY_HOST}
-http-proxy-port = ${PROXY_PORT}
+  [global]
+  http-proxy-host = ${PROXY_HOST}
+  http-proxy-port = ${PROXY_PORT}
 EOF_SVN
 fi
 
 # Source our build env
 ${BITBAKE_CMD}
 
-# Custom bitbake config settings
+# Custom BitBake config settings
 cat >> conf/local.conf << EOF_CONF
 BB_NUMBER_THREADS = "$(nproc)"
 PARALLEL_MAKE = "-j$(nproc)"
@@ -242,17 +257,17 @@ EOF_CONF
 # Kick off a build
 bitbake ${BITBAKE_OPTS} obmc-phosphor-image
 
+# Copy images out of internal obmcdir into workspace directory
+cp -R ${obmcdir}/build/tmp/deploy/images ${WORKSPACE}/images/
+
 EOF_SCRIPT
 
 chmod a+x ${WORKSPACE}/build.sh
 
-# Run the docker container, execute the build script we just built
+# Run the Docker container, execute the build script we just built
 docker run --cap-add=sys_admin --net=host --rm=true -e WORKSPACE=${WORKSPACE} --user="${USER}" \
-  -w "${HOME}" -v "${HOME}":"${HOME}" -t openbmc/${distro} ${WORKSPACE}/build.sh
-
-# Create link to images for archiving
-ln -sf ${WORKSPACE}/openbmc/build/tmp/deploy/images ${WORKSPACE}/images
+  -w "${HOME}" -v "${HOME}":"${HOME}" -v "${obmccache}":"${obmccache}" \
+  -t openbmc/${distro}:${imgtag}-${ARCH} ${WORKSPACE}/build.sh
 
 # Timestamp for build
 echo "Build completed, $(date)"
-
