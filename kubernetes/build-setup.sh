@@ -255,4 +255,3 @@ ln -sf ${WORKSPACE}/openbmc/build/tmp/deploy/images ${WORKSPACE}/images
 
 # Timestamp for build
 echo "Build completed, $(date)"
-
