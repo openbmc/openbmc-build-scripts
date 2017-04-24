@@ -1,19 +1,18 @@
 #!/bin/bash
 
-# This build script is for running the Jenkins builds using docker.
+# This build script is for running the Jenkins builds using Docker.
 #
 # It expects a few variables which are part of Jenkins build job matrix:
 #   target = barreleye|palmetto|qemu
 #   distro = fedora|ubuntu
 #   imgtag = tag of the ubuntu or fedora image to use default latest
-#   obmcdir = <name of openbmc src dir> (default openbmc)
-#   WORKSPACE = <location of base openbmc/openbmc repo>
+#   obmcdir = <name of OpenBMC src dir> (default openbmc)
+#   WORKSPACE = <location of base OpenBMC/OpenBMC repo>
 #   BITBAKE_OPTS = <optional, set to "-c populate_sdk" or whatever other
-#                   bitbake options you'd like to pass into the build>
-#
+#                   BitBake options you'd like to pass into the build>
 # Variables used to create Kubernetes Job:
-#  namespace = The namespace to be used within the kubernetes cluster
-#  pvcname = name of the persistent volume claim (pvc)
+#  namespace = The namespace to be used within the Kubernetes cluster
+#  pvcname = name of the persistent volume claim (PVC)
 #  mountpath = the path onto which the pvc will be mounted to withing the
 #              build container
 #  registry = The registry to used to pull and push images
@@ -26,7 +25,7 @@ set -xeo pipefail
 target=${target:-qemu}
 distro=${distro:-ubuntu}
 imgtag=${imgtag:-latest}
-obmcdir=${obmcdir:-/openbmc}
+obmcdir=${obmcdir:-openbmc}
 WORKSPACE=${WORKSPACE:-${HOME}/${RANDOM}${RANDOM}}
 http_proxy=${http_proxy:-}
 PROXY=""
@@ -38,7 +37,6 @@ mountpath=${mountpath:-/home}
 registry=${registry:-master.cfc:8500/openbmc/}
 imgplsec=${imgplsec:-regkey}
 
-
 # Timestamp for job
 echo "Build started, $(date)"
 
@@ -47,18 +45,18 @@ ARCH=$(uname -m)
 
 # Determine the prefix of the Dockerfile's base image
 case ${ARCH} in
-    "ppc64le")
-        DOCKER_BASE="ppc64le/"
-        ;;
-    "x86_64")
-        DOCKER_BASE=""
-        ;;
-    *)
-        echo "Unsupported system architecture(${ARCH}) found for docker image"
-        exit 1
+  "ppc64le")
+    DOCKER_BASE="ppc64le/"
+    ;;
+  "x86_64")
+    DOCKER_BASE=""
+    ;;
+  *)
+    echo "Unsupported system architecture(${ARCH}) found for docker image"
+    exit 1
 esac
 
-# Determine the build target and set the bitbake command
+# Work out what build target we should be running and set BitBake command
 case ${target} in
   barreleye)
     BITBAKE_CMD="TEMPLATECONF=meta-openbmc-machines/meta-openpower/meta-rackspace/meta-barreleye/conf source oe-init-build-env"
@@ -92,7 +90,7 @@ case ${target} in
     ;;
 esac
 
-# Configure docker build
+# Configure Docker build
 if [[ "${distro}" == fedora ]];then
 
   if [[ -n "${http_proxy}" ]]; then
@@ -100,53 +98,53 @@ if [[ "${distro}" == fedora ]];then
   fi
 
   Dockerfile=$(cat << EOF
-FROM ${DOCKER_BASE}${distro}:${imgtag}
+  FROM ${DOCKER_BASE}${distro}:${imgtag}
 
-${PROXY}
+  ${PROXY}
 
-# Set the locale
-RUN locale-gen en_US.UTF-8
-ENV LANG en_US.UTF-8
-ENV LANGUAGE en_US:en
-ENV LC_ALL en_US.UTF-8
+  # Set the locale
+  RUN locale-gen en_US.UTF-8
+  ENV LANG en_US.UTF-8
+  ENV LANGUAGE en_US:en
+  ENV LC_ALL en_US.UTF-8
 
-RUN dnf --refresh install -y \
-	bzip2 \
-	chrpath \
-	cpio \
-	diffstat \
-	findutils \
-	gcc \
-	gcc-c++ \
-	git \
-	make \
-	patch \
-	perl-bignum \
-	perl-Data-Dumper \
-	perl-Thread-Queue \
-	python-devel \
-	python3-devel \
-	SDL-devel \
-	socat \
-	subversion \
-	tar \
-	texinfo \
-	wget \
-	which
+  RUN dnf --refresh install -y \
+      bzip2 \
+      chrpath \
+      cpio \
+      diffstat \
+      findutils \
+      gcc \
+      gcc-c++ \
+      git \
+      make \
+      patch \
+      perl-bignum \
+      perl-Data-Dumper \
+      perl-Thread-Queue \
+      python-devel \
+      python3-devel \
+      SDL-devel \
+      socat \
+      subversion \
+      tar \
+      texinfo \
+      wget \
+      which
 
-RUN grep -q ${GROUPS} /etc/group || groupadd -g ${GROUPS} jenkins
-RUN grep -q ${UID} /etc/passwd || useradd -d ${HOME} -m -u ${UID} -g ${GROUPS} jenkins
+  RUN grep -q ${GROUPS} /etc/group || groupadd -g ${GROUPS} jenkins
+  RUN grep -q ${UID} /etc/passwd || useradd -d ${HOME} -m -u ${UID} -g ${GROUPS} jenkins
 
-RUN mkdir -p ${WORKSPACE}
-RUN mkdir ${obmcdir}
-RUN chown jenkins:jenkins ${obmcdir}
-USER jenkins
-RUN git clone https://github.com/openbmc/openbmc ${obmcdir}
+  RUN mkdir -p ${WORKSPACE}
+  RUN mkdir ${obmcdir}
+  RUN chown jenkins:jenkins ${obmcdir}
+  USER jenkins
+  RUN git clone https://github.com/openbmc/openbmc ${obmcdir}
 
-ENV HOME ${HOME}
-RUN /bin/bash
-EOF
-)
+  ENV HOME ${HOME}
+  RUN /bin/bash
+  EOF
+  )
 
 elif [[ "${distro}" == ubuntu ]]; then
   if [[ -n "${http_proxy}" ]]; then
@@ -154,52 +152,52 @@ elif [[ "${distro}" == ubuntu ]]; then
   fi
 
   Dockerfile=$(cat << EOF
-FROM ${DOCKER_BASE}${distro}:${imgtag}
+  FROM ${DOCKER_BASE}${distro}:${imgtag}
 
-${PROXY}
+  ${PROXY}
 
-ENV DEBIAN_FRONTEND noninteractive
-RUN apt-get update && apt-get install -yy \
-	build-essential \
-	chrpath \
-	debianutils \
-	diffstat \
-	gawk \
-	git \
-	libdata-dumper-simple-perl \
-	libsdl1.2-dev \
-	libthread-queue-any-perl \
-	locales \
-	python \
-	python3 \
-	socat \
-	subversion \
-	texinfo \
-	cpio \
-	wget
+  ENV DEBIAN_FRONTEND noninteractive
+  RUN apt-get update && apt-get install -yy \
+      build-essential \
+      chrpath \
+      debianutils \
+      diffstat \
+      gawk \
+      git \
+      libdata-dumper-simple-perl \
+      libsdl1.2-dev \
+      libthread-queue-any-perl \
+      locales \
+      python \
+      python3 \
+      socat \
+      subversion \
+      texinfo \
+      cpio \
+      wget
 
-# Set Locales
-RUN locale-gen en_US.UTF-8  
-ENV LANG en_US.UTF-8  
-ENV LANGUAGE en_US:en  
-ENV LC_ALL en_US.UTF-8 
+  # Set Locales
+  RUN locale-gen en_US.UTF-8
+  ENV LANG en_US.UTF-8
+  ENV LANGUAGE en_US:en
+  ENV LC_ALL en_US.UTF-8
 
-RUN grep -q ${GROUPS} /etc/group || groupadd -g ${GROUPS} jenkins
-RUN grep -q ${UID} /etc/passwd || useradd -d ${HOME} -m -u ${UID} -g ${GROUPS} jenkins
+  RUN grep -q ${GROUPS} /etc/group || groupadd -g ${GROUPS} jenkins
+  RUN grep -q ${UID} /etc/passwd || useradd -d ${HOME} -m -u ${UID} -g ${GROUPS} jenkins
 
-RUN mkdir -p ${WORKSPACE}
-RUN mkdir ${obmcdir}
-RUN chown jenkins:jenkins ${obmcdir}
-USER jenkins
-RUN git clone https://github.com/openbmc/openbmc ${obmcdir}
+  RUN mkdir -p ${WORKSPACE}
+  RUN mkdir ${obmcdir}
+  RUN chown jenkins:jenkins ${obmcdir}
+  USER jenkins
+  RUN git clone https://github.com/openbmc/openbmc ${obmcdir}
 
-ENV HOME ${HOME}
-RUN /bin/bash
-EOF
-)
+  ENV HOME ${HOME}
+  RUN /bin/bash
+  EOF
+  )
 fi
 
-# Build Image and push to registry
+# Build the image and push to registry
 docker build -t ${registry}${distro}:${imgtag} - <<< "${Dockerfile}"
 docker push ${registry}${distro}:${imgtag}
 
@@ -231,12 +229,12 @@ mkdir -p ${WORKSPACE}/bin
 if [[ -n "${http_proxy}" ]]; then
 
   cat > ${WORKSPACE}/bin/git-proxy << \EOF_GIT
-#!/bin/bash
-# \$1 = hostname, \$2 = port
-PROXY=${PROXY_HOST}
-PROXY_PORT=${PROXY_PORT}
-exec socat STDIO PROXY:\${PROXY}:\${1}:\${2},proxyport=\${PROXY_PORT}
-EOF_GIT
+  #!/bin/bash
+  # \$1 = hostname, \$2 = port
+  PROXY=${PROXY_HOST}
+  PROXY_PORT=${PROXY_PORT}
+  exec socat STDIO PROXY:\${PROXY}:\${1}:\${2},proxyport=\${PROXY_PORT}
+  EOF_GIT
 
   chmod a+x ${WORKSPACE}/bin/git-proxy
   export PATH=${WORKSPACE}/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:${PATH}
@@ -245,10 +243,10 @@ EOF_GIT
   mkdir -p ~/.subversion
 
   cat > ~/.subversion/servers << EOF_SVN
-[global]
-http-proxy-host = ${PROXY_HOST}
-http-proxy-port = ${PROXY_PORT}
-EOF_SVN
+  [global]
+  http-proxy-host = ${PROXY_HOST}
+  http-proxy-port = ${PROXY_PORT}
+  EOF_SVN
 fi
 
 # Source our build env
@@ -276,7 +274,7 @@ EOF_SCRIPT
 
 chmod a+x ${WORKSPACE}/build.sh
 
-# Create the kubernetes job in yaml format
+# Create the Kubernetes job in YAML format
   Job=$(cat << EOF
 apiVersion: batch/v1
 kind: Job
@@ -318,7 +316,7 @@ spec:
         - name: home
           mountPath: ${mountpath}
       imagePullSecrets:
-      - name: ${imgplsec}   
+      - name: ${imgplsec}
 EOF
 )
 
@@ -327,4 +325,3 @@ kubectl create -f - <<< "${Job}"
 
 # Timestamp for build
 echo "Build completed, $(date)"
-
