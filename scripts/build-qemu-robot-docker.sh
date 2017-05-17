@@ -59,6 +59,7 @@ RUN easy_install \
     requests
 
 RUN pip install \
+    json2yaml \
     robotframework \
     robotframework-requests \
     robotframework-sshlibrary \
