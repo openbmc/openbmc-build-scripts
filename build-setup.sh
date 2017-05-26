@@ -175,12 +175,6 @@ elif [[ "${distro}" == ubuntu ]]; then
 
   ENV DEBIAN_FRONTEND noninteractive
 
-  # Set the locale
-  RUN locale-gen en_US.UTF-8
-  ENV LANG en_US.UTF-8
-  ENV LANGUAGE en_US:en
-  ENV LC_ALL en_US.UTF-8
-
   RUN apt-get update && apt-get install -yy \
       build-essential \
       chrpath \
@@ -191,6 +185,7 @@ elif [[ "${distro}" == ubuntu ]]; then
       libdata-dumper-simple-perl \
       libsdl1.2-dev \
       libthread-queue-any-perl \
+      locales \
       python \
       python3 \
       socat \
@@ -198,6 +193,12 @@ elif [[ "${distro}" == ubuntu ]]; then
       texinfo \
       cpio \
       wget
+
+  # Set the locale
+  RUN locale-gen en_US.UTF-8
+  ENV LANG en_US.UTF-8
+  ENV LANGUAGE en_US:en
+  ENV LC_ALL en_US.UTF-8
 
   RUN grep -q ${GROUPS} /etc/group || groupadd -g ${GROUPS} ${USER}
   RUN grep -q ${UID} /etc/passwd || useradd -d ${HOME} -m -u ${UID} -g ${GROUPS} ${USER}
