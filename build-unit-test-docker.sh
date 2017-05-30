@@ -74,11 +74,15 @@ RUN wget http://ftpmirror.gnu.org/autoconf-archive/autoconf-archive-2016.09.16.t
 RUN tar -xJf autoconf-archive-2016.09.16.tar.xz
 RUN cd autoconf-archive-2016.09.16 && ./configure --prefix=/usr && make && make install
 
-RUN wget https://github.com/google/googletest/archive/release-1.7.0.tar.gz
-RUN tar -xzf release-1.7.0.tar.gz
-RUN cd googletest-release-1.7.0 && cmake -DBUILD_SHARED_LIBS=ON . && make && \
-cp -a include/gtest /usr/include && \
-cp -a libgtest_main.so libgtest.so /usr/lib/
+RUN wget https://github.com/google/googletest/archive/release-1.8.0.tar.gz
+RUN tar -xzf release-1.8.0.tar.gz
+RUN cd googletest-release-1.8.0 && cmake -DBUILD_SHARED_LIBS=ON . && make && \
+cp -a googletest/include/gtest /usr/include && \
+cp -a googlemock/include/gmock /usr/include && \
+cp -a googlemock/gtest/libgtest.so /usr/lib/ && \
+cp -a googlemock/gtest/libgtest_main.so /usr/lib/ && \
+cp -a googlemock/libgmock.so /usr/lib/ && \
+cp -a googlemock/libgmock_main.so /usr/lib/
 
 RUN grep -q ${GROUPS} /etc/group || groupadd -g ${GROUPS} ${USER}
 RUN grep -q ${UID} /etc/passwd || useradd -d ${HOME} -m -u ${UID} -g ${GROUPS} ${USER}
