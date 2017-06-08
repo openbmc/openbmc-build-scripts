@@ -350,7 +350,7 @@ if __name__ == '__main__':
         'sdbusplus': ['--enable-transaction'],
         'phosphor-logging':
         ['--enable-metadata-processing',
-         'YAML_DIR=/usr/local/share/phosphor-dbus-interfaces/yaml']
+         'YAML_DIR=/usr/local/share/phosphor-dbus-yaml/yaml']
     }
 
     # DEPENDENCIES = [MACRO]:[library/header]:[GIT REPO]
