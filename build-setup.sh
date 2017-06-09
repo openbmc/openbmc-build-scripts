@@ -10,8 +10,9 @@
 #                 zaius|romulus|qemu
 #  distro       = fedora|ubuntu
 #  imgtag       = Varies by distro. latest|16.04|14.04|trusty|xenial; 23|24|25
-#  ocache       = Path of the OpenBMC repo cache that is used to speed up git
-#                 clones, default directory location "${WORKSPACE}/openbmc"
+#  obmcext      = Path of the OpenBMC repo directory used in creating a copy
+#                 inside the container that is not mounted to external storage
+#                 default directory location "${WORKSPACE}/openbmc"
 #  obmcdir      = Path of the OpenBMC directory, where the build occurs inside
 #                 the container cannot be placed on external storage default
 #                 directory location "/tmp/openbmc"
@@ -47,7 +48,7 @@ imgtag=${imgtag:-latest}
 obmcdir=${obmcdir:-/tmp/openbmc}
 sscdir=${sscdir:-${HOME}}
 WORKSPACE=${WORKSPACE:-${HOME}/${RANDOM}${RANDOM}}
-ocache=${ocache:-${WORKSPACE}/openbmc}
+obmcext=${obmcext:-${WORKSPACE}/openbmc}
 launch=${launch:-}
 http_proxy=${http_proxy:-}
 PROXY=""
@@ -71,10 +72,10 @@ esac
 # Timestamp for job
 echo "Build started, $(date)"
 
-# If the ocache directory doesn't exist clone it in, ocache will be used as a cache for git clones
-if [ ! -d ${ocache} ]; then
-  echo "Clone in openbmc master to ${ocache} to act as cache for future builds"
-  git clone https://github.com/openbmc/openbmc ${ocache}
+# If the obmcext directory doesn't exist clone it in
+if [ ! -d ${obmcext} ]; then
+  echo "Clone in openbmc master to ${obmcext}"
+  git clone https://github.com/openbmc/openbmc ${obmcext}
 fi
 
 # Work out what build target we should be running and set BitBake command
@@ -223,7 +224,7 @@ cat > "${WORKSPACE}"/build.sh << EOF_SCRIPT
 set -xeo pipefail
 
 # Use the mounted repo cache to make an internal repo not mounted externally
-git clone --reference ${ocache} --dissociate https://github.com/openbmc/openbmc ${obmcdir}
+cp -R ${obmcext} ${obmcdir}
 
 # Go into the OpenBMC directory (the openbmc script will put us in a build subdir)
 cd ${obmcdir}
@@ -293,11 +294,11 @@ if [[ "${launch}" == "" ]]; then
   # Build the Docker image
   docker build -t ${imgname} - <<< "${Dockerfile}"
 
-  # If ocache or sscdir are ${HOME} or a subdirectory they will not be mounted
-  mountocache="-v ""${ocache}"":""${ocache}"" "
+  # If obmcext or sscdir are ${HOME} or a subdirectory they will not be mounted
+  mountobmcext="-v ""${obmcext}"":""${obmcext}"" "
   mountsscdir="-v ""${sscdir}"":""${sscdir}"" "
-  if [[ "${ocache}" = "${HOME}/"* || "${ocache}" = "${HOME}" ]];then
-    mountocache=""
+  if [[ "${obmcext}" = "${HOME}/"* || "${obmcext}" = "${HOME}" ]];then
+    mountobmcext=""
   fi
   if [[ "${sscdir}" = "${HOME}/"* || "${sscdir}" = "${HOME}" ]];then
     mountsscdir=""
@@ -311,7 +312,7 @@ if [[ "${launch}" == "" ]]; then
   -e WORKSPACE=${WORKSPACE} \
   -w "${HOME}" \
   -v "${HOME}":"${HOME}" \
-  ${mountocache} \
+  ${mountobmcext} \
   ${mountsscdir} \
   -t ${imgname} \
   ${WORKSPACE}/build.sh
