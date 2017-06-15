@@ -71,10 +71,19 @@ gcc --version
 # Go into the source directory (the script will put us in a build subdir)
 cd qemu
 # disable anything that requires us to pull in X
-./configure --target-list=arm-softmmu \
-	--disable-spice --disable-docs --disable-gtk --disable-smartcard \
-	--disable-usb-redir --disable-libusb --disable-sdl --disable-gnutls \
-	--disable-vte --disable-vnc --disable-vnc-png
+./configure \
+    --target-list=arm-softmmu \
+    --disable-spice \
+    --disable-docs \
+    --disable-gtk \
+    --disable-smartcard \
+    --disable-usb-redir \
+    --disable-libusb \
+    --disable-sdl \
+    --disable-gnutls \
+    --disable-vte \
+    --disable-vnc \
+    --disable-vnc-png
 make -j4
 
 EOF_SCRIPT
@@ -82,5 +91,10 @@ EOF_SCRIPT
 chmod a+x ${WORKSPACE}/build.sh
 
 # Run the docker container, execute the build script we just built
-docker run --rm=true -e WORKSPACE=${WORKSPACE} --user="${USER}" \
-  -w "${HOME}" -v "${HOME}":"${HOME}" -t qemu-build/ubuntu ${WORKSPACE}/build.sh
+docker run \
+    --rm=true \
+    -e WORKSPACE=${WORKSPACE} \
+    -w "${HOME}" \
+    -v "${HOME}":"${HOME}" \
+    -t qemu-build/ubuntu \
+    ${WORKSPACE}/build.sh
