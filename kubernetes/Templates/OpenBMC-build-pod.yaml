@@ -1,0 +1,43 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: ${podname}
+  namespace: ${namespace}
+spec:
+  nodeSelector:
+    worker: \"true\"
+    arch: ${ARCH}
+  volumes:
+  - name: home
+    persistentVolumeClaim:
+      claimName: ${hclaim}
+  - name: sscdir
+    persistentVolumeClaim:
+      claimName: ${sclaim}
+  - name: obmccache
+    persistentVolumeClaim:
+      claimName: ${oclaim}
+  hostNetwork: True
+  containers:
+  - image: ${imgname}
+    name: builder
+    command: [\"${WORKSPACE}/build.sh\"]
+    workingDir: ${HOME}
+    env:
+    - name: WORKSPACE
+      value: ${WORKSPACE}
+    - name: obmcdir
+      value: ${obmcdir}
+    securityContext:
+      capabilities:
+        add:
+        - SYS_ADMIN
+    volumeMounts:
+    - name: home
+      mountPath: ${HOME}
+    - name: sscdir
+      mountPath: ${sscdir}
+    - name: obmccache
+      mountPath: ${obmcext}
+  imagePullSecrets:
+  - name: ${imgplsec}
