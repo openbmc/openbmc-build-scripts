@@ -320,7 +320,7 @@ if [[ "${launch}" == "" ]]; then
 elif [[ "${launch}" == "job" || "${launch}" == "pod" ]]; then
 
   # Source and run the helper script to launch the pod or job
-  . kubernetes/kubernetes-launch.sh
+  . kubernetes/kubernetes-launch.sh OpenBMC-build true true
 
 else
   echo "Launch Parameter is invalid"
