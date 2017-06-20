@@ -1,6 +1,31 @@
 #!/bin/bash
-
-# This build script is for running the Jenkins builds using docker.
+###############################################################################
+#
+# This build script is for running the QEMU build as a container with the
+# option of launching the container with Docker or Kubernetes.
+#
+###############################################################################
+#
+# Variables used for in the build:
+#  WORKSPACE    = Path of the workspace directory where some intermediate files
+#                 and the images will be saved to.
+#  qemudir      = Path of the QEMU directory where the build will be done, if
+#                 none exists will clone in the OpenBMC/QEMU repo to WORKSPACE.
+#
+# Optional Variables:
+#  launch       = job|pod
+#                 Can be left blank to launch via Docker if not using
+#                 Kubernetes to launch the container.
+#                 Job lets you keep a copy of job and container logs on the
+#                 api, can be useful if not using Jenkins as you can run the
+#                 job again via the api without needing this script.
+#                 Pod launches a container which runs to completion without
+#                 saving anything to the api when it completes.
+#  imgname      = Defaults to qemu-build with the arch as its tag, can be
+#                 changed or passed to give a specific name to created image.
+#  http_proxy   = The HTTP address for the proxy server you wish to connect to.
+#
+###############################################################################
 
 # Trace bash processing
 set -x
@@ -9,6 +34,9 @@ set -x
 WORKSPACE=${WORKSPACE:-${HOME}/${RANDOM}${RANDOM}}
 http_proxy=${http_proxy:-}
 launch=${launch:-}
+qemudir=${qemudir:-${WORKSPACE}/qemu}
+ARCH=$(uname -m)
+imgname=${imgname:-qemu-build:${ARCH}}
 
 # Timestamp for job
 echo "Build started, $(date)"
@@ -17,8 +45,6 @@ echo "Build started, $(date)"
 if [[ -n "${http_proxy}" ]]; then
 PROXY="RUN echo \"Acquire::http::Proxy \\"\"${http_proxy}/\\"\";\" > /etc/apt/apt.conf.d/000apt-cacher-ng-proxy"
 fi
-
-ARCH=$(uname -m)
 
 # Determine the prefix of the Dockerfile's base image
 case ${ARCH} in
@@ -33,6 +59,12 @@ case ${ARCH} in
     exit 1
 esac
 
+# If there is no qemu directory, git clone in the openbmc mirror
+if [ ! -d ${qemudir} ]; then
+  echo "Clone in openbmc master to ${qemudir}"
+  git clone https://github.com/openbmc/qemu ${qemudir}
+fi
+
 # Create the docker run script
 export PROXY_HOST=${http_proxy/#http*:\/\/}
 export PROXY_HOST=${PROXY_HOST/%:[0-9]*}
@@ -45,12 +77,10 @@ cat > "${WORKSPACE}"/build.sh << EOF_SCRIPT
 
 set -x
 
-cd ${WORKSPACE}
+# Go into the source directory (the script will put us in a build subdir)
+cd ${qemudir}
 
 gcc --version
-
-# Go into the source directory (the script will put us in a build subdir)
-cd qemu
 git submodule update --init dtc
 # disable anything that requires us to pull in X
 ./configure \
@@ -99,9 +129,6 @@ ENV HOME ${HOME}
 EOF
 )
 
-# Build the docker container
-imgname=${imgname:-qemu-build:${ARCH}}
-
 # If Launch is left empty will create a docker container
 if [[ "${launch}" == "" ]]; then
 
@@ -110,12 +137,16 @@ if [[ "${launch}" == "" ]]; then
     echo "Failed to build docker container."
     exit 1
   fi
-
+  mountqemu="-v ""${qemudir}"":""${qemudir}"" "
+  if [[ "${qemudir}" = "${HOME}/"* || "${qemudir}" = "${HOME}" ]];then
+    mountqemu=""
+  fi
   docker run \
       --rm=true \
       -e WORKSPACE=${WORKSPACE} \
       -w "${HOME}" \
       -v "${HOME}":"${HOME}" \
+      ${mountqemu} \
       -t ${imgname} \
       ${WORKSPACE}/build.sh
 
