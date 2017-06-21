@@ -84,6 +84,10 @@ cp -a googlemock/gtest/libgtest_main.so /usr/lib/ && \
 cp -a googlemock/libgmock.so /usr/lib/ && \
 cp -a googlemock/libgmock_main.so /usr/lib/
 
+RUN wget https://github.com/USCiLab/cereal/archive/v1.2.2.tar.gz
+RUN tar -xzf v1.2.2.tar.gz
+RUN cp -a cereal-1.2.2/include/cereal/ /usr/include/
+
 RUN grep -q ${GROUPS} /etc/group || groupadd -g ${GROUPS} ${USER}
 RUN grep -q ${UID} /etc/passwd || useradd -d ${HOME} -m -u ${UID} -g ${GROUPS} ${USER}
 
