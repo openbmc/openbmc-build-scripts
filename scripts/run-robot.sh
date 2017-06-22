@@ -39,4 +39,7 @@ if [ -d logs ] ; then
     cp -Rf ${ROBOT_CODE_HOME}/logs ${HOME}/ ;
 fi
 
+if [ -e CombinedLogReport.html ] ; then
+    cp -f ${ROBOT_CODE_HOME}/CombinedLogReport.html ${HOME}/ ;
+fi
 #rm -rf ${ROBOT_CODE_HOME}
