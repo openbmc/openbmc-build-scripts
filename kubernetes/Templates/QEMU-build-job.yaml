@@ -1,0 +1,42 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: qemubuild${BUILD_ID}
+  namespace: ${namespace}
+  labels:
+    app: qemu
+    stage: build
+spec:
+  template:
+    metadata:
+      name: ${podname}
+    spec:
+      nodeSelector:
+        worker: \"true\"
+        arch: ${ARCH}
+      volumes:
+      - name: home
+        persistentVolumeClaim:
+          claimName: ${hclaim}
+      - name: qemudir
+        persistentVolumeClaim:
+          claimName: ${qclaim}
+      restartPolicy: Never
+      hostNetwork: True
+      containers:
+      - image: ${imgname}
+        name: builder
+        command: [\"${WORKSPACE}/build.sh\"]
+        workingDir: ${HOME}
+        env:
+        - name: WORKSPACE
+          value: ${WORKSPACE}
+        - name: qemudir
+          value: ${qemudir}
+        volumeMounts:
+        - name: home
+          mountPath: ${HOME}
+        - name: qemudir
+          mountPath: ${qemudir}
+      imagePullSecrets:
+      - name: ${imgplsec}
