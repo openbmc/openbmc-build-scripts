@@ -63,6 +63,10 @@ case ${invoker} in
     podname=${podname:-openbmc${BUILD_ID}-${target}-builder}
     ;;
   QEMU-build)
+    podname=${podname:-qemubuild${BUILD_ID}}
+    hclaim=${hclaim:-jenkins}
+    qclaim=${qclaim:-qemu-repo}
+    imgname="${imgrepo}${imgname}"
     ;;
   QEMU-launch)
     ;;
