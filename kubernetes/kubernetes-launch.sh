@@ -63,6 +63,10 @@ case ${invoker} in
     podname=${podname:-openbmc${BUILD_ID}-${target}-builder}
     ;;
   QEMU-build)
+    podname=${podname:-qemubuild${BUILD_ID}}
+    hclaim=${hclaim:-jenkins}
+    qclaim=${qclaim:-qemu-repo}
+    imgname="${imgrepo}${imgname}"
     ;;
   QEMU-launch)
     ;;
@@ -82,7 +86,7 @@ docker build -t ${imgname} - <<< "${Dockerfile}"
 # Push the image that was built to the image repository
 docker push ${imgname}
 
-yamlfile=$(eval "echo \"$(<./Templates/${invoker}-${launch}.yaml)\"" )
+yamlfile=$(eval "echo \"$(<./kubernetes/Templates/${invoker}-${launch}.yaml)\"" )
 kubectl create -f - <<< "${yamlfile}"
 
 # Once pod is running track logs

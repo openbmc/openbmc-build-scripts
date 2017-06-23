@@ -138,7 +138,7 @@ if [[ "${launch}" == "" ]]; then
     exit 1
   fi
   mountqemu="-v ""${qemudir}"":""${qemudir}"" "
-  if [[ "${qemudir}" = "${HOME}/"* || "${qemudir}" = "${HOME}" ]];then
+  if [[ "${qemudir}" = "${HOME}/"* || "${qemudir}" = "${HOME}" ]]; then
     mountqemu=""
   fi
   docker run \
@@ -149,7 +149,8 @@ if [[ "${launch}" == "" ]]; then
       ${mountqemu} \
       -t ${imgname} \
       ${WORKSPACE}/build.sh
-
+elif [[ "${launch}" == "pod" || "${launch}" == "job" ]]; then
+  . ./kubernetes/kubernetes-launch.sh QEMU-build true true
 else
   echo "Launch Parameter is invalid"
 fi
