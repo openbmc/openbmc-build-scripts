@@ -9,8 +9,11 @@
 # Variables used for in the build:
 #  WORKSPACE    = Path of the workspace directory where some intermediate files
 #                 and the images will be saved to.
-#  qemudir      = Path of the QEMU directory where the build will be done, if
-#                 none exists will clone in the OpenBMC/QEMU repo to WORKSPACE.
+#  qemudir      = Path of the directory that holds the QEMU repo, if none
+#                 exists will clone in the OpenBMC/QEMU repo to WORKSPACE.
+#  builddir     = Path of the directory that is created within the docker
+#                 container where the build is actually done. Done this way to
+#                 allow external volumes to be used for the qemudir.
 #
 # Optional Variables:
 #  launch       = job|pod
@@ -35,6 +38,7 @@ WORKSPACE=${WORKSPACE:-${HOME}/${RANDOM}${RANDOM}}
 http_proxy=${http_proxy:-}
 launch=${launch:-}
 qemudir=${qemudir:-${WORKSPACE}/qemu}
+builddir=${builddir:-/tmp/qemu}
 ARCH=$(uname -m)
 imgname=${imgname:-qemu-build:${ARCH}}
 
@@ -77,8 +81,11 @@ cat > "${WORKSPACE}"/build.sh << EOF_SCRIPT
 
 set -x
 
-# Go into the source directory (the script will put us in a build subdir)
-cd ${qemudir}
+# create a copy of the qemudir in /qemu to use as the build directory
+cp -a ${qemudir}/. ${builddir}
+
+# Go into the build directory
+cd ${builddir}
 
 gcc --version
 git submodule update --init dtc
@@ -98,6 +105,7 @@ git submodule update --init dtc
     --disable-vnc-png
 make -j4
 
+cp -a ${builddir}/arm-softmmu/. ${WORKSPACE}/arm-softmmu/
 EOF_SCRIPT
 
 chmod a+x ${WORKSPACE}/build.sh
@@ -125,6 +133,7 @@ RUN apt-get update && apt-get install -yy --no-install-recommends \
 RUN grep -q ${GROUPS} /etc/group || groupadd -g ${GROUPS} ${USER}
 RUN grep -q ${UID} /etc/passwd || useradd -d ${HOME} -m -u ${UID} -g ${GROUPS} ${USER}
 USER ${USER}
+RUN mkdir ${builddir}
 ENV HOME ${HOME}
 EOF
 )
