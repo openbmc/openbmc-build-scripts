@@ -77,8 +77,11 @@ cat > "${WORKSPACE}"/build.sh << EOF_SCRIPT
 
 set -x
 
+# create a copy of the qemudir in /qemu to use as the build directory
+cp -a ${qemudir}/. /tmp/qemu/
+
 # Go into the source directory (the script will put us in a build subdir)
-cd ${qemudir}
+cd /tmp/qemu
 
 gcc --version
 git submodule update --init dtc
@@ -98,6 +101,7 @@ git submodule update --init dtc
     --disable-vnc-png
 make -j4
 
+cp -a /tmp/qemu/arm-softmmu/. ${WORKSPACE}/arm-softmmu/
 EOF_SCRIPT
 
 chmod a+x ${WORKSPACE}/build.sh
@@ -125,6 +129,7 @@ RUN apt-get update && apt-get install -yy --no-install-recommends \
 RUN grep -q ${GROUPS} /etc/group || groupadd -g ${GROUPS} ${USER}
 RUN grep -q ${UID} /etc/passwd || useradd -d ${HOME} -m -u ${UID} -g ${GROUPS} ${USER}
 USER ${USER}
+RUN mkdir /tmp/qemu 
 ENV HOME ${HOME}
 EOF
 )
