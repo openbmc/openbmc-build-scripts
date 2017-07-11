@@ -1,19 +1,35 @@
-Running OpenBMC Builds on Kubernetes
+Running Builds Script with Kubernetes
 =====================================
-To do a run of an OpenBMC build in the Kubernetes cloud it is a good idea to understand containers
-and to get some understanding of Kubernetes. Kubernetes clusters can be created on most cloud
-service providers and are currently in beta on Bluemix. They can also exist as VM's and Bare Metal
-machines.
 
-Steps required to do an OpenBMC build on Kubernetes:
-1. Obtain Access to a Kubernetes Cluster
-2. Install Kubectl to the machine you are running the script from
-3. Login/Configure the Kubectl to connect to your cluster
-4. Ensure NFS mount exists for the build container to use (see [./storage-setup.sh](https://github.com/openbmc/openbmc-build-scripts/kubernetes/storage-setup.sh))
-   best to mount one directory and have one subdirectory for work and another for shared-state cache
-5. Run the [./build-setup.sh](https://github.com/openbmc/openbmc-build-scripts/kubernetes/storage-setup.sh)
-   to launch the build container as a Kubernetes job
-6. Stream the log using "kubectl logs -f ${Name of Pod}"
+The following are required to run scripts with Kubernetes integration:
+- Access to a Kubernetes cluster.
+- External storage that is mountable to the Kubernetes cluster.
+- Kubectl installed and configured on the machine running the scripts.
+
+All the scripts use a similar formula to launch to kubernetes:
+1. The script is run with a valid launch variable in the environment.
+2. The script then invokes the [kubernetes-launch.sh](https://github.com/openbmc/openbmc-build-scripts/tree/master/kubernetes/kubernetes-launch.sh)
+   script by sourcing it.
+3. The launch script then uses the template to generate the appropriate YAML file.
+4. The generated YAML is then used to launch the object into the specified Kubernetes cluster.
+5. Once launched script will end or will do optional tailling of the logs or deletion of object.
+
+The steps to run the script with Kubernetes integration are also similar for all scripts:
+1. Look over the variables used by the script and by the templates.
+2. Export the variables that you would like to be different from the defaults in the script,
+   kubernetes-launch-script, and template. Alternatively you can edit the defaults in the files
+   locally.
+3. Run the script.
+
+## OpenBMC Build
+- Script: [build-setup.sh](https://github.com/openbmc/openbmc-build-scripts/blob/master/build-setup.sh)
+- Templates: [OpenBMC-build-Job](https://github.com/openbmc/openbmc-build-scripts/tree/master/kubernetes/Templates/OpenBMC-build-job.yaml)
+  or [OpenBMC-build-Pod](https://github.com/openbmc/openbmc-build-scripts/tree/master/kubernetes/Templates/OpenBMC-build-pod.yaml)
+
+## QEMU build
+- Script: [qemu-build.sh](https://github.com/openbmc/openbmc-build-scripts/blob/master/qemu-build.sh)
+- Templates: [QEMU-build-job.yaml](https://github.com/openbmc/openbmc-build-scripts/tree/master/kubernetes/Templates/QEMU-build-job.yaml)
+  or [QEMU-build-pod.yaml](https://github.com/openbmc/openbmc-build-scripts/tree/master/kubernetes/Templates/OpenBMC-build-pod.yaml)
 
 ## Useful links:
 Kubernetes (K8s) is an open source container orchestration system.
@@ -35,4 +51,3 @@ There is one caveat to using external storage mounts, the folders used to do the
 be mounted to an external file system.
 - [Persitent Volume (pv)](https://kubernetes.io/docs/concepts/storage/persistent-volumes/#persistent-volumes)
 - [Persistent Volume Claim (pvc)](https://kubernetes.io/docs/concepts/storage/persistent-volumes/#persistentvolumeclaims)
-
