@@ -278,8 +278,8 @@ EOF_CONF
 # Kick off a build
 bitbake ${BITBAKE_OPTS} obmc-phosphor-image
 
-# Copy images out of internal obmcdir into workspace directory
-cp -R ${obmcdir}/build/tmp/deploy ${WORKSPACE}/deploy/
+# Copy build directory of internal obmcdir into workspace directory
+cp -a ${obmcdir}/build/. ${WORKSPACE}/build/
 
 EOF_SCRIPT
 
