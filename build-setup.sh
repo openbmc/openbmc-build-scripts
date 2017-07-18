@@ -278,8 +278,8 @@ EOF_CONF
 # Kick off a build
 bitbake ${BITBAKE_OPTS} obmc-phosphor-image
 
-# Copy images out of internal obmcdir into workspace directory
-cp -R ${obmcdir}/build/tmp/deploy ${WORKSPACE}/deploy/
+# Copy build directory of internal obmcdir into workspace directory
+cp -a ${obmcdir}/build/. ${WORKSPACE}/build/
 
 EOF_SCRIPT
 
@@ -325,6 +325,9 @@ elif [[ "${launch}" == "job" || "${launch}" == "pod" ]]; then
 else
   echo "Launch Parameter is invalid"
 fi
+
+# To maintain function of things that used an older path, added a link
+ln -sf ${WORKSPACE}/build/tmp/deploy ${WORKSPACE}/deploy
 
 # Timestamp for build
 echo "Build completed, $(date)"
