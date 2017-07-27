@@ -1,3 +1,4 @@
+#!/bin/bash
 ###############################################################################
 #
 # This build script is for running the OpenBMC builds as containers with the
