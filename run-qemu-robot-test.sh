@@ -3,51 +3,62 @@
 # This script is for starting QEMU against the input build and running
 #  the robot CI test suite against it.
 #
+
+#
 #  Parameters:
 #   UPSTREAM_WORKSPACE = <required, base dir of QEMU image>
 #   WORKSPACE =          <optional, temp dir for robot script>
 
 set -uo pipefail
 
-QEMU_RUN_TIMER=300
-WORKSPACE=${WORKSPACE:-${HOME}/${RANDOM}${RANDOM}}
-DOCKER_IMG_NAME="openbmc/ubuntu-robot-qemu"
+QEMU_RUN_TIMER=${QEMU_RUN_TIMER:-300}
+WORKSPACE=${WORKSPACE:-${HOME}/qemu-launch}
+DOCKER_IMG_NAME=${DOCKER_IMG_NAME:-openbmc/ubuntu-robot-qemu}
+OBMC_BUILD_DIR=${OBMC_BUILD_DIR:-/tmp/openbmc/build}
+UPSTREAM_WORKSPACE=${UPSTREAM_WORKSPACE:-/home/alanny/buildopenbmc/build}
 
-# Get base directory of our repo so we can find the scripts later
-DIR="${BASH_SOURCE%/*}"
-if [[ ! -d "$DIR" || "$DIR" == "." ]]; then DIR="$PWD"; fi
+# Determine the architecture
+ARCH=$(uname -m)
 
-cd ${UPSTREAM_WORKSPACE}
-
-# Determine our architecture, ppc64le or the other one
-if [ $(uname -m) == "ppc64le" ]; then
+# Determine the prefix of the Dockerfile's base image and the QEMU_ARCH variable
+case ${ARCH} in
+  "ppc64le")
     DOCKER_BASE="ppc64le/"
     QEMU_ARCH="ppc64le-linux"
-else
+    ;;
+  "x86_64")
     DOCKER_BASE=""
     QEMU_ARCH="x86_64-linux"
-fi
+    ;;
+  *)
+    echo "Unsupported system architecture(${ARCH}) found for docker image"
+    exit 1
+esac
 
-# Create the docker image that QEMU and Robot will run in
+# Get base directory openbmc-scripts-repo so we can return later
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+
+cp $DIR/scripts/* ${UPSTREAM_WORKSPACE}
+
+# Move into the Upstream Workspace Directory
+cd ${UPSTREAM_WORKSPACE}
+
+# Create the base docker image for qemu
 . "$DIR/scripts/build-qemu-robot-docker.sh" "$DOCKER_IMG_NAME"
-
-# Copy the scripts to start and verify QEMU in the workspace
-cp $DIR/scripts/boot-qemu* ${UPSTREAM_WORKSPACE}
 
 # Start QEMU docker instance
 # root in docker required to open up the https/ssh ports
 obmc_qemu_docker=$(docker run --detach \
                               --user root \
-                              --env HOME=${HOME} \
+                              --env HOME=${OBMC_BUILD_DIR} \
                               --env QEMU_RUN_TIMER=${QEMU_RUN_TIMER} \
                               --env QEMU_ARCH=${QEMU_ARCH} \
-                              --workdir "${HOME}"           \
-                              --volume "${UPSTREAM_WORKSPACE}":"${HOME}" \
+                              --workdir "${OBMC_BUILD_DIR}"           \
+                              --volume "${UPSTREAM_WORKSPACE}":"${OBMC_BUILD_DIR}" \
                               --tty \
-                              ${DOCKER_IMG_NAME} ${HOME}/boot-qemu-test.exp)
+                              ${DOCKER_IMG_NAME} ${OBMC_BUILD_DIR}/boot-qemu-test.exp)
 
-# We can use default ports because we're going to have the 2
-# docker instances talk over their private network
+
 DOCKER_SSH_PORT=22
 DOCKER_HTTPS_PORT=443
 DOCKER_QEMU_IP_ADDR="$(docker inspect $obmc_qemu_docker |  \
