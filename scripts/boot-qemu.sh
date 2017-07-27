@@ -26,18 +26,21 @@ fi
 
 cd ${BASE_DIR}
 
-./tmp/sysroots/${QEMU_ARCH}/usr/bin/qemu-system-arm \
-    -nographic \
-    -kernel ./tmp/deploy/images/qemuarm/zImage-qemuarm.bin \
-    -machine versatilepb \
-    -drive file=./tmp/deploy/images/qemuarm/obmc-phosphor-image-qemuarm.ext4,format=raw \
-    -no-reboot \
-    -show-cursor \
-    -usb \
-    -usbdevice wacom-tablet \
-    -no-reboot -m 128 \
-    -redir tcp:22::22 \
-    -redir tcp:443::443 \
-    --append \
-    "root=/dev/sda rw console=ttyAMA0,115200 console=tty mem=128M highres=off \
-    rootfstype=ext4 console=ttyS0"
+DRIVE=$(ls ./tmp/deploy/images/qemuarm | grep rootfs.ext4)
+./tmp/sysroots/x86_64-linux/usr/bin/qemu-system-arm \
+     -redir tcp:443::443 \
+     -redir tcp:80::80 \
+     -redir tcp:22::22 \
+     -machine versatilepb \
+     -m 256 \
+     -drive file=./tmp/deploy/images/qemuarm/${DRIVE},if=virtio,format=raw \
+     -show-cursor \
+     -usb \
+     -usbdevice tablet \
+     -device virtio-rng-pci \
+     -serial mon:vc \
+     -serial mon:stdio \
+     -serial null \
+     -kernel ./tmp/deploy/images/qemuarm/zImage \
+     -append 'root=/dev/vda rw highres=off  console=ttyS0 mem=256M ip=dhcp console=ttyAMA0,115200 console=tty'\
+     -dtb ./tmp/deploy/images/qemuarm/zImage-versatile-pb.dtb
