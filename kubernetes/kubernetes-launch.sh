@@ -59,14 +59,14 @@ case ${invoker} in
     hclaim=${hclaim:-jenkins}
     sclaim=${sclaim:-shared-state-cache}
     oclaim=${oclaim:-openbmc-reference-repo}
-    imgname=${imgname:-${imgrepo}${distro}:${imgtag}-${ARCH}}
+    newimgname=${newimgname:-${imgrepo}${distro}:${imgtag}-${ARCH}}
     podname=${podname:-openbmc${BUILD_ID}-${target}-builder}
     ;;
   QEMU-build)
     podname=${podname:-qemubuild${BUILD_ID}}
     hclaim=${hclaim:-jenkins}
     qclaim=${qclaim:-qemu-repo}
-    imgname="${imgrepo}${imgname}"
+    newimgname="${imgrepo}${imgname}"
     ;;
   QEMU-launch)
     ;;
@@ -80,8 +80,9 @@ case ${invoker} in
 esac
 
 
-# Build the Docker image, using the Dockerfile carried from build-setup.sh
-docker build -t ${imgname} - <<< "${Dockerfile}"
+# Tag the image created by the invoker with the new image name that includes the imgrepo
+docker tag ${imgname} ${newimgname}
+imgname=${newimgname}
 
 # Push the image that was built to the image repository
 docker push ${imgname}
@@ -92,7 +93,8 @@ kubectl create -f - <<< "${yamlfile}"
 # Once pod is running track logs
 if [[ "${log}" == true ]]; then
   # Wait for Pod to be running
-  while [ -z "$(kubectl describe pod ${podname} -n ${namespace} | grep Status: | grep Running)" ]; do
+  while [ -z "$(kubectl describe pod ${podname} -n ${namespace} | grep Status: | grep Running)" ]
+  do
     if [ ${timeout} -lt 0 ];then
       kubectl delete -f - <<< "${yamlfile}"
       echo "Timeout Occured: Job failed to start running in time"
