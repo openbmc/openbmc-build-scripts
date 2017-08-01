@@ -138,10 +138,10 @@ ENV HOME ${HOME}
 EOF
 )
 
+docker build -t ${imgname} - <<< "${Dockerfile}"
 # If Launch is left empty will create a docker container
 if [[ "${launch}" == "" ]]; then
 
-  docker build -t ${imgname} - <<< "${Dockerfile}"
   if [[ "$?" -ne 0 ]]; then
     echo "Failed to build docker container."
     exit 1
