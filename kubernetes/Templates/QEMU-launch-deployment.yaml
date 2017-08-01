@@ -1,0 +1,60 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: ${deployname}
+  namespace: ${namespace}
+spec:
+  replicas: ${replicas}
+  selector:
+    matchLabels:
+      app: ${deployname}
+  template:
+    metadata:
+      labels:
+        app: ${deployname}
+    spec:
+      volumes:
+      - name: home
+        persistentVolumeClaim:
+          claimName: ${hclaim}
+      nodeSelector:
+        beta.kubernetes.io/arch: ${ARCH}
+      containers:
+      - image: ${imgname}
+        name: ${podname}
+        command: [\"${OBMC_BUILD_DIR}/run-robot.sh\"]
+        tty: true
+        workingDir: ${OBMC_BUILD_DIR}
+        env:
+        - name: QEMU_RUN_TIME
+          value: \"${QEMU_RUN_TIMER}\"
+        - name: QEMU_ARCH
+          value: \"${QEMU_ARCH}\"
+        - name: HOME
+          value: \"${OBMC_BUILD_DIR}\"
+        ports:
+        - containerPort: 443
+          name: https
+          protocol: TCP
+        - containerPort: 80
+          name: http
+          protocol: TCP
+        - containerPort: 4000
+          name: rest-api
+          protocol: TCP
+        - containerPort: 22
+          name: ssh
+          protocol: TCP
+        resources:
+          requests:
+            memory: "600Mi"
+            cpu: "400m"
+          limits:
+            memory: "1Gi"
+            cpu: "1000m"
+        volumeMounts:
+        - name: home
+          subPath: ${jenkins_subpath}
+          mountPath: ${OBMC_BUILD_DIR}
+      imagePullSecrets:
+      - name: ${imgplsec}
