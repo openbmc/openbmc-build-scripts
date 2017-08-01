@@ -25,8 +25,12 @@
 #  imgplsec     = the image pull secret used to access registry if needed
 #  timeout      = the amount of time in seconds that the build will wait for
 #                 the pod to start running on the cluster
-#  imgname      = the name the image will be given when built, must include
-#                 the repo in name for the push command to work.
+#  imgname      = the name the image that will be passed to the kubernetes api
+#                 to build the containers. The image with the tag imgname will
+#                 be built in the invoker script. This script will then tag it
+#                 to include the registry in the name, push it, and update the
+#                 imgname to be what was pushed to the registry. Users should
+#                 not include the registry in the original imgname.
 #  podname      = the name of the pod, will be needed to trace down the logs
 #
 ###############################################################################
@@ -59,14 +63,14 @@ case ${invoker} in
     hclaim=${hclaim:-jenkins}
     sclaim=${sclaim:-shared-state-cache}
     oclaim=${oclaim:-openbmc-reference-repo}
-    imgname=${imgname:-${imgrepo}${distro}:${imgtag}-${ARCH}}
+    newimgname=${newimgname:-${imgrepo}${distro}:${imgtag}-${ARCH}}
     podname=${podname:-openbmc${BUILD_ID}-${target}-builder}
     ;;
   QEMU-build)
     podname=${podname:-qemubuild${BUILD_ID}}
     hclaim=${hclaim:-jenkins}
     qclaim=${qclaim:-qemu-repo}
-    imgname="${imgrepo}${imgname}"
+    newimgname="${imgrepo}${imgname}"
     ;;
   QEMU-launch)
     ;;
@@ -80,8 +84,9 @@ case ${invoker} in
 esac
 
 
-# Build the Docker image, using the Dockerfile carried from build-setup.sh
-docker build -t ${imgname} - <<< "${Dockerfile}"
+# Tag the image created by the invoker with the new image name that includes the imgrepo
+docker tag ${imgname} ${newimgname}
+imgname=${newimgname}
 
 # Push the image that was built to the image repository
 docker push ${imgname}
@@ -92,7 +97,8 @@ kubectl create -f - <<< "${yamlfile}"
 # Once pod is running track logs
 if [[ "${log}" == true ]]; then
   # Wait for Pod to be running
-  while [ -z "$(kubectl describe pod ${podname} -n ${namespace} | grep Status: | grep Running)" ]; do
+  while [ -z "$(kubectl describe pod ${podname} -n ${namespace} | grep Status: | grep Running)" ]
+  do
     if [ ${timeout} -lt 0 ];then
       kubectl delete -f - <<< "${yamlfile}"
       echo "Timeout Occured: Job failed to start running in time"

@@ -286,14 +286,14 @@ EOF_SCRIPT
 
 chmod a+x ${WORKSPACE}/build.sh
 
+# Give the Docker image a name based on the distro,tag,arch,and target
+imgname=${imgname:-openbmc/${distro}:${imgtag}-${target}-${ARCH}}
+
+# Build the Docker image
+docker build -t ${imgname} - <<< "${Dockerfile}"
+
 # Determine if the build container will be launched with Docker or Kubernetes
 if [[ "${launch}" == "" ]]; then
-
-  # Give the Docker image a name based on the distro,tag,arch,and target
-  imgname=${imgname:-openbmc/${distro}:${imgtag}-${target}-${ARCH}}
-
-  # Build the Docker image
-  docker build -t ${imgname} - <<< "${Dockerfile}"
 
   # If obmcext or sscdir are ${HOME} or a subdirectory they will not be mounted
   mountobmcext="-v ""${obmcext}"":""${obmcext}"" "
