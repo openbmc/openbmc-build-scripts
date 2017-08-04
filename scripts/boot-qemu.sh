@@ -45,11 +45,16 @@ cd ${BASE_DIR}
 # Find the correct drive file, and save its name
 DRIVE=$(ls ./tmp/deploy/images/qemuarm | grep rootfs.ext4)
 
+# Obtain IP from /etc/hosts if IP is not valid set to localhost
+IP=$(awk 'END{print $1}' /etc/hosts)
+if [[ "$IP" != *.*.*.* ]]; then
+  IP=127.0.0.1
+fi
+
 # Launch QEMU using the qemu-system-arm
 ./tmp/sysroots/${QEMU_ARCH}/usr/bin/qemu-system-arm \
-    -redir tcp:443::443 \
-    -redir tcp:80::80 \
-    -redir tcp:22::22 \
+    -device virtio-net,netdev=mynet \
+    -netdev user,id=mynet,hostfwd=tcp:${IP}:22-:22,hostfwd=tcp:${IP}:443-:443,hostfwd=tcp:${IP}:80-:80 \
     -machine versatilepb \
     -m 256 \
     -drive file=./tmp/deploy/images/qemuarm/${DRIVE},if=virtio,format=raw \
