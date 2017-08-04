@@ -13,10 +13,6 @@ spec:
       labels:
         app: ${deployname}
     spec:
-      volumes:
-      - name: home
-        persistentVolumeClaim:
-          claimName: ${hclaim}
       nodeSelector:
         arch: ${ARCH}
       containers:
@@ -52,9 +48,5 @@ spec:
           limits:
             memory: "1Gi"
             cpu: "1000m"
-        volumeMounts:
-        - name: home
-          subPath: ${jenkins_subpath}
-          mountPath: ${OBMC_BUILD_DIR}
       imagePullSecrets:
       - name: ${imgplsec}
