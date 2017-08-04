@@ -19,6 +19,8 @@ spec:
           claimName: ${hclaim}
       nodeSelector:
         arch: ${ARCH}
+      securityContext:
+        runAsUser: 0
       containers:
       - image: ${imgname}
         name: ${podname}
