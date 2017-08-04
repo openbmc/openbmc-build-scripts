@@ -146,9 +146,21 @@ if [[ ${LAUNCH} == "local" ]]; then
   docker stop $obmc_qemu_docker
 
 elif [[ ${LAUNCH} == "k8s" ]]; then
-  # Package the Upstream into an image based off the one created by the build-qemu-robot.sh
-  # Dockerfile = $( cat << EOF
-  imgname=$DOCKER_IMG_NAME
+
+  # Package the Upstream Workspace's tmp directory into the container
+  cd ${UPSTREAM_WORKSPACE}
+  rm Dockerfile
+  cat >> Dockerfile << EOF
+  FROM ${DOCKER_IMG_NAME}
+  RUN mkdir -p ${OBMC_BUILD_DIR}
+  COPY tmp ${OBMC_BUILD_DIR}/tmp/
+  RUN ls ${OBMC_BUILD_DIR}/tmp/
+EOF
+
+  # Build the image loaded with the tmp directory
+  imgname=${DOCKER_IMG_NAME}-loaded
+  docker build -t ${imgname} .
+
   cd $DIR
   source ./kubernetes/kubernetes-launch.sh QEMU-launch false false deployment
 

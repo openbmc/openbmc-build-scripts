@@ -72,8 +72,6 @@ case ${invoker} in
     deployname=${deployname:-qemu-launch-deployment}
     podname=${podname:-qemu-instance}
     replicas=${replicas:-5}
-    hclaim=${hclaim:-jenkins}
-    jenkins_subpath=${jenkins_subpath:-workspace/Openbmc-Build/build}
     newimgname="${imgrepo}${imgname}"
     ;;
   XCAT-launch)
