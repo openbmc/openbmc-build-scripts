@@ -5,8 +5,7 @@ metadata:
   namespace: ${namespace}
 spec:
   nodeSelector:
-    worker: \"true\"
-    arch: ${ARCH}
+    beta.kubernetes.io/arch: ${ARCH}
   volumes:
   - name: home
     persistentVolumeClaim:
@@ -14,9 +13,6 @@ spec:
   - name: sscdir
     persistentVolumeClaim:
       claimName: ${sclaim}
-  - name: obmccache
-    persistentVolumeClaim:
-      claimName: ${oclaim}
   hostNetwork: True
   containers:
   - image: ${imgname}
@@ -37,7 +33,6 @@ spec:
       mountPath: ${HOME}
     - name: sscdir
       mountPath: ${sscdir}
-    - name: obmccache
-      mountPath: ${obmcext}
+  restartPolicy: Never
   imagePullSecrets:
   - name: ${imgplsec}

@@ -288,7 +288,9 @@ EOF_CONF
 bitbake ${BITBAKE_OPTS} obmc-phosphor-image
 
 # Copy build directory of internal obmcdir into workspace directory
-cp -r ${builddir}/* ${extraction}
+ls ${extraction}
+ls ${builddir}
+#cp -r ${builddir}/* ${extraction}
 EOF_SCRIPT
 
 chmod a+x ${WORKSPACE}/build.sh
