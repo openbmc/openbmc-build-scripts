@@ -18,7 +18,7 @@ spec:
         persistentVolumeClaim:
           claimName: ${hclaim}
       nodeSelector:
-        arch: ${ARCH}
+        beta.kubernetes.io/arch: ${ARCH}
       securityContext:
         runAsUser: 0
       containers:
