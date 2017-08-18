@@ -78,7 +78,7 @@ case ${invoker} in
     replicas=${replicas:-5}
     hclaim=${hclaim:-jenkins}
     jenkins_subpath=${jenkins_subpath:-workspace/Openbmc-Build/build}
-    newimgname="${imgrepo}${imgname}"
+    newimgname="${imgrepo}qemu-instance"
     ;;
   XCAT-launch)
     ;;
@@ -97,6 +97,9 @@ imgname=${newimgname}
 # Push the image that was built to the image repository
 docker push ${imgname}
 
+if [[ "$ARCH" == x86_64 ]]; then
+  ARCH=amd64
+fi
 yamlfile=$(eval "echo \"$(<./kubernetes/Templates/${invoker}-${launch}.yaml)\"" )
 kubectl create -f - <<< "${yamlfile}"
 
