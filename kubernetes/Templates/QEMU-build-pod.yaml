@@ -5,8 +5,7 @@ metadata:
   namespace: ${namespace}
 spec:
   nodeSelector:
-    worker: \"true\"
-    arch: ${ARCH}
+    beta.kubernetes.io/arch: ${ARCH}
   volumes:
   - name: home
     persistentVolumeClaim:
