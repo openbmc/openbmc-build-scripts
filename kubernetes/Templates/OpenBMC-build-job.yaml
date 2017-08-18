@@ -14,8 +14,7 @@ spec:
         target: ${target}
     spec:
       nodeSelector:
-        worker: \"true\"
-        arch: ${ARCH}
+        beta.kubernetes.io/arch: ${ARCH}
       volumes:
       - name: home
         persistentVolumeClaim:
@@ -23,9 +22,6 @@ spec:
       - name: sscdir
         persistentVolumeClaim:
           claimName: ${sclaim}
-      - name: obmccache
-        persistentVolumeClaim:
-          claimName: ${oclaim}
       restartPolicy: Never
       hostNetwork: True
       containers:
@@ -47,7 +43,5 @@ spec:
           mountPath: ${HOME}
         - name: sscdir
           mountPath: ${sscdir}
-        - name: obmccache
-          mountPath: ${obmcext}
       imagePullSecrets:
       - name: ${imgplsec}
