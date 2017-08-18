@@ -60,7 +60,7 @@ launch=${launch:-${4}}
 # Other variables in the template not declared here are expected to be declared by invoker.
 case ${invoker} in
   OpenBMC-build)
-    hclaim=${hclaim:-jenkins}
+    hclaim=${hclaim:-jenkins-slave-space}
     sclaim=${sclaim:-shared-state-cache}
     oclaim=${oclaim:-openbmc-reference-repo}
     newimgname=${newimgname:-${imgrepo}${distro}:${imgtag}-${ARCH}}
@@ -68,7 +68,7 @@ case ${invoker} in
     ;;
   QEMU-build)
     podname=${podname:-qemubuild${BUILD_ID}}
-    hclaim=${hclaim:-jenkins}
+    hclaim=${hclaim:-jenkins-slave-space}
     qclaim=${qclaim:-qemu-repo}
     newimgname="${imgrepo}${imgname}"
     ;;
@@ -76,9 +76,9 @@ case ${invoker} in
     deployname=${deployname:-qemu-launch-deployment}
     podname=${podname:-qemu-instance}
     replicas=${replicas:-5}
-    hclaim=${hclaim:-jenkins}
+    hclaim=${hclaim:-jenkins-slave-space}
     jenkins_subpath=${jenkins_subpath:-workspace/Openbmc-Build/build}
-    newimgname="${imgrepo}${imgname}"
+    newimgname="${imgrepo}qemu-instance"
     ;;
   XCAT-launch)
     ;;
@@ -97,6 +97,9 @@ imgname=${newimgname}
 # Push the image that was built to the image repository
 docker push ${imgname}
 
+if [[ "$ARCH" == x86_64 ]]; then
+  ARCH=amd64
+fi
 yamlfile=$(eval "echo \"$(<./kubernetes/Templates/${invoker}-${launch}.yaml)\"" )
 kubectl create -f - <<< "${yamlfile}"
 
