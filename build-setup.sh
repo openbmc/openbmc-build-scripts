@@ -48,8 +48,9 @@ distro=${distro:-ubuntu}
 imgtag=${imgtag:-latest}
 obmcdir=${obmcdir:-/tmp/openbmc}
 sscdir=${sscdir:-${HOME}}
-WORKSPACE=${WORKSPACE:-${HOME}/${RANDOM}${RANDOM}}
+WORKSPACE=${WORKSPACE:-${HOME}/localopenbmc}
 obmcext=${obmcext:-${WORKSPACE}/openbmc}
+extraction=${extraction:-${obmcext}/build/tmp}
 launch=${launch:-}
 http_proxy=${http_proxy:-}
 PROXY=""
@@ -78,6 +79,13 @@ if [ ! -d ${obmcext} ]; then
   echo "Clone in openbmc master to ${obmcext}"
   git clone https://github.com/openbmc/openbmc ${obmcext}
 fi
+
+# Make the extracted directory chowned to avoid permission errors
+if [ ! -d ${extraction} ]; then
+  mkdir -p ${extraction}
+fi
+chown ${UID}:${GROUPS} ${extraction}
+ls -la ${extraction}
 
 # Work out what build target we should be running and set BitBake command
 case ${target} in
@@ -225,10 +233,9 @@ cat > "${WORKSPACE}"/build.sh << EOF_SCRIPT
 set -xeo pipefail
 
 # Use the mounted repo cache to make an internal repo not mounted externally
-cp -R ${obmcext} ${obmcdir}
 
 # Go into the OpenBMC directory (the openbmc script will put us in a build subdir)
-cd ${obmcdir}
+cd ${obmcext}
 
 # Set up proxies
 export ftp_proxy=${http_proxy}
@@ -274,26 +281,26 @@ DL_DIR="${sscdir}/bitbake_downloads"
 SSTATE_DIR="${sscdir}/bitbake_sharedstatecache"
 USER_CLASSES += "buildstats"
 INHERIT_remove = "uninative"
+TMPDIR="${obmcdir}"
 EOF_CONF
 
 # Kick off a build
 bitbake ${BITBAKE_OPTS} obmc-phosphor-image
 
 # Copy build directory of internal obmcdir into workspace directory
-cp -a ${obmcdir}/build/. ${WORKSPACE}/build/
-
+cp -r ${obmcdir}/* ${extraction}
 EOF_SCRIPT
 
 chmod a+x ${WORKSPACE}/build.sh
 
-# Give the Docker image a name based on the distro,tag,arch,and target
-imgname=${imgname:-openbmc/${distro}:${imgtag}-${target}-${ARCH}}
-
-# Build the Docker image
-docker build -t ${imgname} - <<< "${Dockerfile}"
-
 # Determine if the build container will be launched with Docker or Kubernetes
 if [[ "${launch}" == "" ]]; then
+
+  # Give the Docker image a name based on the distro,tag,arch,and target
+  imgname=${imgname:-openbmc/${distro}:${imgtag}-${target}-${ARCH}}
+
+  # Build the Docker image
+  docker build -t ${imgname} - <<< "${Dockerfile}"
 
   # If obmcext or sscdir are ${HOME} or a subdirectory they will not be mounted
   mountobmcext="-v ""${obmcext}"":""${obmcext}"" "
@@ -328,7 +335,7 @@ else
 fi
 
 # To maintain function of resources that used an older path, add a link
-ln -sf ${WORKSPACE}/build/tmp/deploy ${WORKSPACE}/deploy
+ln -sf ${extraction}/deploy ${WORKSPACE}/deploy
 
 # Timestamp for build
 echo "Build completed, $(date)"
