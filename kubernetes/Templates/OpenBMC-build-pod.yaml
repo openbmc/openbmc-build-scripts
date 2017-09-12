@@ -26,8 +26,8 @@ spec:
     env:
     - name: WORKSPACE
       value: ${WORKSPACE}
-    - name: obmcdir
-      value: ${obmcdir}
+    - name: builddir
+      value: ${builddir}
     securityContext:
       capabilities:
         add:
