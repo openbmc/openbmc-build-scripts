@@ -1,7 +1,7 @@
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: openbmc${BUILD_ID}-${target}
+  name: ${jobname}
   namespace: ${namespace}
   labels:
     app: openbmc
@@ -27,7 +27,8 @@ spec:
       containers:
       - image: ${imgname}
         name: builder
-        command: [\"${WORKSPACE}/build.sh\"]
+        command: ["/bin/bash","-c"]
+        args: ["sleep 50m"]
         workingDir: ${HOME}
         env:
         - name: WORKSPACE
