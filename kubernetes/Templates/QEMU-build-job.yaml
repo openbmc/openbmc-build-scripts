@@ -1,7 +1,7 @@
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: qemubuild${BUILD_ID}
+  name: ${podname}
   namespace: ${namespace}
   labels:
     app: qemu
