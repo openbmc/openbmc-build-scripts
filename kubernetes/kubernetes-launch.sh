@@ -43,7 +43,8 @@
 #  purge        = set to true delete the created object once script completes
 #  launch       = used to determine the template for YAML file, Usually brought
 #                 in by sourcing from another script but can be declared
-#
+#  workaround   = set to true if we are using the workaround to kubernetes
+#                 version issues
 ###############################################################################
 
 # Kubernetes Variables
@@ -58,6 +59,7 @@ invoker=${invoker:-${1}}
 log=${log:-${2}}
 purge=${purge:-${3}}
 launch=${launch:-${4}}
+workaround=${workaround:-${log}}
 
 # Set the variables for the specific invoker to fill in the YAML template
 # Other variables in the template not declared here are declared by invoker
@@ -103,7 +105,13 @@ if [[ "$ARCH" == x86_64 ]]; then
   ARCH=amd64
 fi
 
-yamlfile=$(eval "echo \"$(<./kubernetes/Templates/${invoker}-${launch}.yaml)\"")
+if [[ "${workaround}" == "true" ]]; then
+  extras="-v2"
+else
+  extras=""
+fi
+
+yamlfile=$(eval "echo \"$(<./kubernetes/Templates/${invoker}-${launch}${extras}.yaml)\"")
 kubectl create -f - <<< "${yamlfile}"
 
 # If launch is a job we have to find the podname with identifiers
@@ -142,7 +150,11 @@ if [[ "${log}" == true ]]; then
     status=$( ${checkstatus} | grep Status: )
   done
   # Tail the logs of the pod
-  kubectl logs -f ${podname} -n ${namespace}
+  if [[ "${workaround}" == "true" ]]; then
+    kubectl exec -it ${podname} -n ${namespace} ${WORKSPACE}/build.sh
+  else
+    kubectl logs -f ${podname} -n ${namespace}
+  fi
 fi
 
 # Delete the object if purge is true
