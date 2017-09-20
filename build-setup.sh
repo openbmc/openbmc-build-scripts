@@ -329,8 +329,13 @@ if [[ "${launch}" == "" ]]; then
 
 elif [[ "${launch}" == "job" || "${launch}" == "pod" ]]; then
 
-  # Source and run the helper script to launch the pod or job
+  # Source the launch script and set logging, and purging to true
   . ./kubernetes/kubernetes-launch.sh OpenBMC-build true true
+
+elif [[ "${launch}" == "pod" ]]; then
+
+  # When run as a pod logging should be disabled, pod will be auto-purged by k8s
+  . ./kubernetes/kubernetes-launch.sh OpenBMC-build false false
 
 else
   echo "Launch Parameter is invalid"
