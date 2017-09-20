@@ -158,8 +158,12 @@ if [[ "${launch}" == "" ]]; then
       ${mountqemu} \
       -t ${imgname} \
       ${WORKSPACE}/build.sh
-elif [[ "${launch}" == "pod" || "${launch}" == "job" ]]; then
+elif [[ "${launch}" == "job" ]]; then
+  # job will start logging, and remove the job object when script completes
   . ./kubernetes/kubernetes-launch.sh QEMU-build true true
+elif [[ "${launch}" == "pod" ]]; then
+  # pods cause errors if logged, and will be auto-removed on completion
+  . ./kubernetes/kubernetes-launch.sh QEMU-build false false
 else
   echo "Launch Parameter is invalid"
 fi
