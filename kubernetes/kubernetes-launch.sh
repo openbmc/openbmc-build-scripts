@@ -48,7 +48,7 @@
 namespace=${namespace:-openbmc}
 imgrepo=${imgrepo:-master.cfc:8500/openbmc/}
 imgplsec=${imgplsec:-regkey}
-timeout=${timeout:-60}
+timeout=${timeout:-180}
 
 # Options which decide script behavior
 invoker=${invoker:-${1}}
@@ -64,7 +64,7 @@ case ${invoker} in
     sclaim=${sclaim:-shared-state-cache}
     oclaim=${oclaim:-openbmc-reference-repo}
     newimgname=${newimgname:-${imgrepo}${distro}:${imgtag}-${ARCH}}
-    podname=${podname:-openbmc${BUILD_ID}-${target}-builder}
+    podname=${podname:-openbmc${BUILD_ID}-${target}}
     ;;
   QEMU-build)
     podname=${podname:-qemubuild${BUILD_ID}}
@@ -100,24 +100,46 @@ docker push ${imgname}
 if [[ "$ARCH" == x86_64 ]]; then
   ARCH=amd64
 fi
+
 yamlfile=$(eval "echo \"$(<./kubernetes/Templates/${invoker}-${launch}.yaml)\"" )
 kubectl create -f - <<< "${yamlfile}"
+
+# If launch is a job we have to find the podname with identifiers
+if [[ "${launch}" == "job" ]]; then
+  while [ -z ${replace} ]
+  do
+    if [ ${jobtimeout} -lt 0 ]; then
+      kubectl delete -f - <<< "${yamlfile}"
+      echo "Timeout occured before job was present in the API"
+      exit 1
+    else
+      sleep 1
+      let jobtimeout-=1
+    fi
+    replace=$(kubectl get pods -n ${namespaces} | grep ${podname} | awk 'print $1')
+  done
+  podname=${replace}
+fi
 
 # Once pod is running track logs
 if [[ "${log}" == true ]]; then
   # Wait for Pod to be running
-  while [ -z "$(kubectl describe pod ${podname} -n ${namespace} | grep Status: | grep Running)" ]
+  checkstatus="kubectl describe pod ${podname} -n ${namespace}"
+  status=$( ${checkstatus} | grep Status: )
+  while [ -z "$( echo ${status} | grep Running)" ]
   do
-    if [ ${timeout} -lt 0 ];then
+    if [ ${podtimeout} -lt 0 ]; then
       kubectl delete -f - <<< "${yamlfile}"
-      echo "Timeout Occured: Job failed to start running in time"
+      echo "Timeout occured before pod was Running"
       exit 1
     else
       sleep 1
-      let timeout-=1
+      let podtimeout-=1
     fi
+    status=$( ${checkstatus} | grep Status: )
   done
-  kubectl logs -f ${podname} -n ${namespace}
+  # Exec the script so we can keep the logs
+  kubectl exec -it ${podname} -n ${namespace} ${WORKSPACE}/build.sh
 fi
 
 # Delete the object if purge is true
