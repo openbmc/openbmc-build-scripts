@@ -1,0 +1,48 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: openbmc${BUILD_ID}-${target}
+  namespace: ${namespace}
+  labels:
+    app: openbmc
+    stage: build
+spec:
+  template:
+    metadata:
+      name: ${podname}
+      labels:
+        target: ${target}
+    spec:
+      nodeSelector:
+        beta.kubernetes.io/arch: ${ARCH}
+      volumes:
+      - name: home
+        persistentVolumeClaim:
+          claimName: ${hclaim}
+      - name: sscdir
+        persistentVolumeClaim:
+          claimName: ${sclaim}
+      restartPolicy: Never
+      hostNetwork: True
+      containers:
+      - image: ${imgname}
+        name: builder
+        command: ["/bin/bash","-c"]
+        args: ["sleep 60m"]
+        workingDir: ${HOME}
+        env:
+        - name: WORKSPACE
+          value: ${WORKSPACE}
+        - name: builddir
+          value: ${builddir}
+        securityContext:
+          capabilities:
+            add:
+            - SYS_ADMIN
+        volumeMounts:
+        - name: home
+          mountPath: ${HOME}
+        - name: sscdir
+          mountPath: ${sscdir}
+      imagePullSecrets:
+      - name: ${imgplsec}
