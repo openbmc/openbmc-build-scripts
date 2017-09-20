@@ -43,7 +43,13 @@
 #  purge        = set to true delete the created object once script completes
 #  launch       = used to determine the template for YAML file, Usually brought
 #                 in by sourcing from another script but can be declared
-#
+#  workaround   = Used to enable the logging workaround, when set will launch a
+#                 modified template that waits for a command. In most cases it
+#                 will be waiting to have a script run via kubectl exec. Needed
+#                 when using a version of Kubernetes that has known issues that
+#                 impact the retrieval of container logs when using kubectl.
+#                 Defaulting to be true whenever logging is enabled until ICP
+#                 upgrades their Kubernetes version.
 ###############################################################################
 
 # Kubernetes Variables
@@ -58,6 +64,7 @@ invoker=${invoker:-${1}}
 log=${log:-${2}}
 purge=${purge:-${3}}
 launch=${launch:-${4}}
+workaround=${workaround:-${log}}
 
 # Set the variables for the specific invoker to fill in the YAML template
 # Other variables in the template not declared here are declared by invoker
@@ -103,7 +110,12 @@ if [[ "$ARCH" == x86_64 ]]; then
   ARCH=amd64
 fi
 
-yamlfile=$(eval "echo \"$(<./kubernetes/Templates/${invoker}-${launch}.yaml)\"")
+extras=""
+if [[ "${workaround}" == "true" ]]; then
+  extras+="-v2"
+fi
+
+yamlfile=$(eval "echo \"$(<./kubernetes/Templates/${invoker}-${launch}${extras}.yaml)\"")
 kubectl create -f - <<< "${yamlfile}"
 
 # If launch is a job we have to find the podname with identifiers
@@ -141,8 +153,12 @@ if [[ "${log}" == true ]]; then
     fi
     status=$( ${checkstatus} | grep Status: )
   done
-  # Tail the logs of the pod
-  kubectl logs -f ${podname} -n ${namespace}
+  # Tail the logs of the pod, if workaround enabled start executing build script instead.
+  if [[ "${workaround}" == "true" ]]; then
+    kubectl exec -it ${podname} -n ${namespace} ${WORKSPACE}/build.sh
+  else
+    kubectl logs -f ${podname} -n ${namespace}
+  fi
 fi
 
 # Delete the object if purge is true
