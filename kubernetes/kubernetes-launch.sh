@@ -48,7 +48,7 @@
 namespace=${namespace:-openbmc}
 imgrepo=${imgrepo:-master.cfc:8500/openbmc/}
 imgplsec=${imgplsec:-regkey}
-timeout=${timeout:-60}
+timeout=${timeout:-180}
 
 # Options which decide script behavior
 invoker=${invoker:-${1}}
@@ -64,7 +64,7 @@ case ${invoker} in
     sclaim=${sclaim:-shared-state-cache}
     oclaim=${oclaim:-openbmc-reference-repo}
     newimgname=${newimgname:-${imgrepo}${distro}:${imgtag}-${ARCH}}
-    podname=${podname:-openbmc${BUILD_ID}-${target}-builder}
+    podname=${podname:-openbmc${BUILD_ID}-${target}}
     ;;
   QEMU-build)
     podname=${podname:-qemubuild${BUILD_ID}}
@@ -100,8 +100,27 @@ docker push ${imgname}
 if [[ "$ARCH" == x86_64 ]]; then
   ARCH=amd64
 fi
+
 yamlfile=$(eval "echo \"$(<./kubernetes/Templates/${invoker}-${launch}.yaml)\"" )
 kubectl create -f - <<< "${yamlfile}"
+
+# need to find the pod with its identifiers if it is a job's pod
+if [[ "${launch}" == job ]]; then
+  timeout2=${timeout}
+  while [ -z $replace ]
+  do
+    if [ ${timeout2} -lt 0 ]; then
+      kubectl delete -f - <<< "${yamlfile}"
+      echo "Timeout Occured: Job failed to start running in time"
+      exit 1
+    else
+      sleep 1
+      let timeout-=1
+    fi
+    replace=$(kubectl get pods -n ${namespace} | grep ${jobname} | cut -d " " -f1)
+  done
+  podname=${replace}
+fi
 
 # Once pod is running track logs
 if [[ "${log}" == true ]]; then
@@ -117,7 +136,8 @@ if [[ "${log}" == true ]]; then
       let timeout-=1
     fi
   done
-  kubectl logs -f ${podname} -n ${namespace}
+  kubectl exec -it ${podname} -n ${namespace} ${WORKSPACE}/build.sh
+  echo "Logging Complete"
 fi
 
 # Delete the object if purge is true
