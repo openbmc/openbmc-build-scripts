@@ -34,15 +34,12 @@ repo was used and "launch script" refers to the kubernetes-launch.sh.
   script.
 - **sclaim**: The "shared-state" PVC, the external mount for the shared state cache directory used
   to reduce the time it takes to do the build using cache. Defined in the launch script.
-- **oclaim**: The "openbmc-cache" PVC, the external mount for the OpenBMC directory that is used for
-  the build. This is done to allow for us to use this for testing were we use a specific checkout of
-  a git repo. Defined in the launch script.
-- **obmcdir**: The OpenBMC directory path that is used internally in the container to do the build.
+- **builddir**: The OpenBMC directory path that is used internally in the container to do the build.
   Defined in the build-setup.sh script.
 - **sscdir**: The shared state cache directory used to speed up build times. Defined in the
   build-setup.sh script. This is where the container will mount the sclaim.
-- **obmcext**: The OpenBMC directory path that is used to create the internal copy. This is the path
-  to which the oclaim will be mounted to. Defined in the build-setup.sh script.
+- **obmcext**: The directory path that is used to store the OpenBMC repo. This is the path that
+  will normally be mounted to the NFS mount. Defined in the build-setup.sh script.
 
 ##QEMU-Build
 - **hclaim**: The "home" PVC, the external mount for the home directory. Defined in the launch
