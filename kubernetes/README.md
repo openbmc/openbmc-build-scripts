@@ -22,6 +22,14 @@ The steps to run the script with Kubernetes integration are also similar for all
    locally.
 3. Run the script.
 
+## Pod vs. Job
+The main difference between these two is the way in which kubernetes treats them as objects, when
+a pod completes it will either be restarted, or be deleted in our template the pod is set to never
+restart as it leads to errors if the workspace is not clean when the build is run. Pods are great
+if you just want the run to happen. Jobs can be useful if you want to do the run multiple times
+perhaps or if you want to have the kubernetes side logging to keep a copy of the runs after the run
+of the pod completes. With a normal pod once it dies the logs are not going to be recoverable.
+
 ## OpenBMC Build
 - Script: [build-setup.sh](https://github.com/openbmc/openbmc-build-scripts/blob/master/build-setup.sh)
 - Templates: [OpenBMC-build-job.yaml](https://github.com/openbmc/openbmc-build-scripts/tree/master/kubernetes/Templates/OpenBMC-build-job.yaml)
