@@ -64,10 +64,12 @@ case ${invoker} in
     sclaim=${sclaim:-shared-state-cache}
     oclaim=${oclaim:-openbmc-reference-repo}
     newimgname=${newimgname:-${imgrepo}${distro}:${imgtag}-${ARCH}}
-    podname=${podname:-openbmc${BUILD_ID}-${target}-builder}
+    jobname=${jobname:-openbmc${BUILD_ID}-${target}}
+    podname=${podname:-${jobname}-builder}
     ;;
   QEMU-build)
-    podname=${podname:-qemubuild${BUILD_ID}}
+    jobname=${jobname:-qemubuild${BUILD_ID}}
+    podname=${podname:-${jobname}}
     hclaim=${hclaim:-jenkins-slave-space}
     qclaim=${qclaim:-qemu-repo}
     newimgname="${imgrepo}${imgname}"
@@ -103,6 +105,11 @@ fi
 yamlfile=$(eval "echo \"$(<./kubernetes/Templates/${invoker}-${launch}.yaml)\"" )
 kubectl create -f - <<< "${yamlfile}"
 
+# need to find the pod with its identifiers if it is a job's pod
+if [[ "${launch}" == job ]]; then
+  podname=$(kubectl get pods -n ${namespace} | grep ${jobname} | cut -d " " -f1)
+fi
+
 # Once pod is running track logs
 if [[ "${log}" == true ]]; then
   # Wait for Pod to be running
@@ -118,6 +125,7 @@ if [[ "${log}" == true ]]; then
     fi
   done
   kubectl logs -f ${podname} -n ${namespace}
+  echo "Logging Complete"
 fi
 
 # Delete the object if purge is true
