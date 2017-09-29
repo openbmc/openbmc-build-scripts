@@ -57,7 +57,7 @@ purge=${purge:-${3}}
 launch=${launch:-${4}}
 
 # Set the variables for the specific invoker to fill in the YAML template
-# Other variables in the template not declared here are expected to be declared by invoker.
+# Other variables in the template not declared here are declared by invoker
 case ${invoker} in
   OpenBMC-build)
     hclaim=${hclaim:-jenkins-slave-space}
@@ -89,8 +89,7 @@ case ${invoker} in
     ;;
 esac
 
-
-# Tag the image created by the invoker with the new image name that includes the imgrepo
+# Tag the image created by the invoker with a name that includes the imgrepo
 docker tag ${imgname} ${newimgname}
 imgname=${newimgname}
 
@@ -100,23 +99,47 @@ docker push ${imgname}
 if [[ "$ARCH" == x86_64 ]]; then
   ARCH=amd64
 fi
-yamlfile=$(eval "echo \"$(<./kubernetes/Templates/${invoker}-${launch}.yaml)\"" )
+
+yamlfile=$(eval "echo \"$(<./kubernetes/Templates/${invoker}-${launch}.yaml)\"")
 kubectl create -f - <<< "${yamlfile}"
 
-# Once pod is running track logs
-if [[ "${log}" == true ]]; then
-  # Wait for Pod to be running
-  while [ -z "$(kubectl describe pod ${podname} -n ${namespace} | grep Status: | grep Running)" ]
+# If launch is a job we have to find the podname with identifiers
+if [[ "${launch}" == "job" ]]; then
+  while [ -z ${replace} ]
   do
-    if [ ${timeout} -lt 0 ];then
+    if [ ${timeout} -lt 0 ]; then
       kubectl delete -f - <<< "${yamlfile}"
-      echo "Timeout Occured: Job failed to start running in time"
+      echo "Timeout occured before pod was Running or ContainerCreating"
       exit 1
     else
       sleep 1
       let timeout-=1
     fi
+    replace=$(kubectl get pods -n ${namespaces} | grep ${podname} | awk 'print $1')
   done
+  podname=${replace}
+fi
+
+# Once pod is running track logs
+if [[ "${log}" == true ]]; then
+  # Wait for Pod to be running
+  checkstatus="kubectl describe pod ${podname} -n ${namespace}| grep Status:"
+  status=$( ${checkstatus} )
+  while [ -z "$( echo ${status} | grep Running)" ]
+  do
+    if [ $( echo ${status} | grep ContainerCreating ) ]; then
+      sleep 1
+    elif [ ${timeout} -lt 0 ]; then
+      kubectl delete -f - <<< "${yamlfile}"
+      echo "Timeout occured before pod was Running or ContainerCreating"
+      exit 1
+    else
+      sleep 1
+      let timeout-=1
+    fi
+    status=$( ${checkstatus} )
+  done
+  # Tail the logs of the pod
   kubectl logs -f ${podname} -n ${namespace}
 fi
 
