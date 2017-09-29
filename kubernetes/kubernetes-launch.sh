@@ -23,8 +23,10 @@
 #  namespace    = the namespace to be used within the Kubernetes cluster
 #  registry     = the registry to use to pull and push images
 #  imgplsec     = the image pull secret used to access registry if needed
-#  timeout      = the amount of time in seconds that the build will wait for
-#                 the pod to start running on the cluster
+#  jobtimeout   = the amount of time in seconds that the build will wait for
+#                 the job to be created in the api of the cluster.
+#  podtimeout   = the amount of time in seconds that the build will wait for
+#                 the pod to start running on the cluster.
 #  imgname      = the name the image that will be passed to the kubernetes api
 #                 to build the containers. The image with the tag imgname will
 #                 be built in the invoker script. This script will then tag it
@@ -48,7 +50,8 @@
 namespace=${namespace:-openbmc}
 imgrepo=${imgrepo:-master.cfc:8500/openbmc/}
 imgplsec=${imgplsec:-regkey}
-timeout=${timeout:-60}
+jobtimeout=${jobtimeout:-60}
+podtimeout=${podtimeout:-600}
 
 # Options which decide script behavior
 invoker=${invoker:-${1}}
@@ -57,7 +60,7 @@ purge=${purge:-${3}}
 launch=${launch:-${4}}
 
 # Set the variables for the specific invoker to fill in the YAML template
-# Other variables in the template not declared here are expected to be declared by invoker.
+# Other variables in the template not declared here are declared by invoker
 case ${invoker} in
   OpenBMC-build)
     hclaim=${hclaim:-jenkins-slave-space}
@@ -89,8 +92,7 @@ case ${invoker} in
     ;;
 esac
 
-
-# Tag the image created by the invoker with the new image name that includes the imgrepo
+# Tag the image created by the invoker with a name that includes the imgrepo
 docker tag ${imgname} ${newimgname}
 imgname=${newimgname}
 
@@ -100,23 +102,46 @@ docker push ${imgname}
 if [[ "$ARCH" == x86_64 ]]; then
   ARCH=amd64
 fi
-yamlfile=$(eval "echo \"$(<./kubernetes/Templates/${invoker}-${launch}.yaml)\"" )
+
+yamlfile=$(eval "echo \"$(<./kubernetes/Templates/${invoker}-${launch}.yaml)\"")
 kubectl create -f - <<< "${yamlfile}"
+
+# If launch is a job we have to find the podname with identifiers
+if [[ "${launch}" == "job" ]]; then
+  while [ -z ${replace} ]
+  do
+    if [ ${jobtimeout} -lt 0 ]; then
+      kubectl delete -f - <<< "${yamlfile}"
+      echo "Timeout occured before job was present in the API"
+      exit 1
+    else
+      sleep 1
+      let jobtimeout-=1
+    fi
+    replace=$(kubectl get pods -n ${namespaces} | grep ${podname} | awk 'print $1')
+  done
+  podname=${replace}
+fi
+
 
 # Once pod is running track logs
 if [[ "${log}" == true ]]; then
   # Wait for Pod to be running
-  while [ -z "$(kubectl describe pod ${podname} -n ${namespace} | grep Status: | grep Running)" ]
+  checkstatus="kubectl describe pod ${podname} -n ${namespace} | grep Status:"
+  status=$( ${checkstatus} )
+  while [ -z "$( echo ${status} | grep Running)" ]
   do
-    if [ ${timeout} -lt 0 ];then
+    if [ ${podtimeout} -lt 0 ]; then
       kubectl delete -f - <<< "${yamlfile}"
-      echo "Timeout Occured: Job failed to start running in time"
+      echo "Timeout occured before pod was Running"
       exit 1
     else
       sleep 1
-      let timeout-=1
+      let podtimeout-=1
     fi
+    status=$( ${checkstatus} )
   done
+  # Tail the logs of the pod
   kubectl logs -f ${podname} -n ${namespace}
 fi
 
