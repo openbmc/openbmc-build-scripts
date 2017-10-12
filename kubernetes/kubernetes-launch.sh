@@ -127,8 +127,8 @@ fi
 # Once pod is running track logs
 if [[ "${log}" == true ]]; then
   # Wait for Pod to be running
-  checkstatus="kubectl describe pod ${podname} -n ${namespace} | grep Status:"
-  status=$( ${checkstatus} )
+  checkstatus="kubectl describe pod ${podname} -n ${namespace}"
+  status=$( ${checkstatus} | grep Status: )
   while [ -z "$( echo ${status} | grep Running)" ]
   do
     if [ ${podtimeout} -lt 0 ]; then
@@ -139,7 +139,7 @@ if [[ "${log}" == true ]]; then
       sleep 1
       let podtimeout-=1
     fi
-    status=$( ${checkstatus} )
+    status=$( ${checkstatus} | grep Status: )
   done
   # Tail the logs of the pod
   kubectl logs -f ${podname} -n ${namespace}
