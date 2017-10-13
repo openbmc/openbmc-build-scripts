@@ -80,7 +80,7 @@ case ${invoker} in
     podname=${podname:-qemu-instance}
     replicas=${replicas:-5}
     hclaim=${hclaim:-jenkins-slave-space}
-    jenkins_subpath=${jenkins_subpath:-workspace/Openbmc-Build/build}
+    jenkins_subpath=${jenkins_subpath:-workspace/Openbmc-Build/openbmc/build}
     newimgname="${imgrepo}qemu-instance"
     ;;
   XCAT-launch)
