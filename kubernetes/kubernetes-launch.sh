@@ -69,6 +69,13 @@ workaround=${workaround:-${log}}
 # Set the variables for the specific invoker to fill in the YAML template
 # Other variables in the template not declared here are declared by invoker
 case ${invoker} in
+  Jenkis)
+    name=${name:-jenkins-master}
+    hclaim=${hclaim:-jenkins-home}
+    newimgname="${imgrepo}/${imgname}"
+    http_expose=${http_expose:32222}
+    agent_expose=${agent_expose:32223}
+    ;;
   OpenBMC-build)
     hclaim=${hclaim:-jenkins-slave-space}
     sclaim=${sclaim:-shared-state-cache}
@@ -110,6 +117,7 @@ if [[ "$ARCH" == x86_64 ]]; then
   ARCH=amd64
 fi
 
+# Set modifiers extras that are used to specify templates
 extras=""
 if [[ "${workaround}" == "true" ]]; then
   extras+="-v2"
