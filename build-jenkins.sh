@@ -16,9 +16,12 @@
 #  home_mnt           The directory on the host used as the Jenkins home
 #                     Default: "${WORKSPACE}/jenkins_home"
 #  host_import_mnt    The directory on the host used to import extra files
-#                     Default: "${WORKSPACE}/jenkins_import"
+#                     Default: "", variable ignored by default
 #  cont_import_mnt    The directory on the container used to import extra files
-#                     Default: "/mnt/jenkins_import"
+#                     Default: "/mnt/jenkins_import", will be ignored by default
+#  options            What will be passed as the environment variable for the
+#                     JENKINS_OPTS environment variable.
+#                     Default: "--prefix=/jenkins"
 #
 # Build Variables:
 #  img_tag            The tag for the OpenJDK image used to build the Dockerfile
@@ -37,7 +40,7 @@
 #  j_gif              Jenkins group ID the container will use to run Jenkins
 #                     Default: "1000"
 #  j_home             Directory used as the Jenkins Home in the container
-#                     Default: "${WORKSPACE}/jenkins_home"
+#                     Default: "/var/jenkins_home"
 #  http_port          The port used as Jenkins UI port
 #                     Default: "8080"
 #  agent_port         The port used as the Jenkins slave agent port
@@ -54,8 +57,9 @@ ARCH=$(uname -m)
 workspace=${workspace:-${HOME}/jenkins-build-${RANDOM}}
 launch=${launch:-docker}
 home_mnt=${home_mnt:-${workspace}/jenkins_home}
-host_import_mnt=${host_import_mnt:-${workspace}/jenkins_import}
+host_import_mnt=${host_import_mnt:-}
 cont_import_mnt=${cont_import_mnt:-/mnt/jenkins_import}
+options="--prefix=/jenkins"
 
 # Dockerfile Variables
 img_tag=${img_tag:-8-jdk}
@@ -66,9 +70,9 @@ j_group=${j_group:-jenkins}
 j_uid=${j_uid:-1000}
 j_gid=${j_gid:-1000}
 j_home=${j_home:-/var/jenkins_home}
-agent_port=${http_port:-8080}
+http_port=${http_port:-8080}
 agent_port=${agent_port:-50000}
-out_img=${out_img:-openbmc/jenkins-master-${ARCH}:${JENKINS_VRSN}}
+out_img=${out_img:-openbmc/jenkins-master-${ARCH}:${j_vrsn}}
 
 # Save the Jenkins.war URL to a variable and SHA if we care about verification
 j_url=https://repo.jenkins-ci.org/public/org/jenkins-ci/main/jenkins-war/${j_vrsn}/jenkins-war-${j_vrsn}.war
@@ -183,14 +187,15 @@ EOF
 ################################################################################
 
 # Build the image
-docker build --pull -t ${out_img} .
+docker build -t ${out_img} .
 
 if [[ ${launch} == "docker" ]]; then
 
   # Ensure directories that will be mounted exist
-  if [[ ! -d ${host_import_mnt} ]]; then
-    mkdir -p ${host_import_mnt}
+  if [[ ! -z ${host_import_mnt} && ! -d ${host_import_mnt} ]]; then
+      mkdir -p ${host_import_mnt}
   fi
+
   if [[ ! -d ${home_mnt} ]]; then
     mkdir -p ${home_mnt}
   fi
@@ -200,16 +205,18 @@ if [[ ${launch} == "docker" ]]; then
     echo "Not running as root:"
     echo "Checking if jgid and juid are the owners of mounted directories"
     test1=$(ls -nd ${home_mnt} | awk '{print $3 " " $4}')
-    test2=$(ls -nd ${host_import_mnt} | awk '{print $3 " " $4}' )
     if [[ "${test1}" != "${j_uid} ${j_gid}" ]]; then
       echo "Owner of ${home_mnt} is not the jenkins user"
       echo "${test1} != ${j_uid} ${j_gid}"
       willfail=1
     fi
-    if [[ "${test2}" != "${j_uid} ${j_gid}" ]]; then
-      echo "Owner of ${host_import_mnt} is not the jenkins user"
-      echo "${test2} != ${j_uid} ${j_gid}"
-      willfail=1
+    if [[ ! -z "${host_import_mnt}" ]]; then
+      test2=$(ls -nd ${host_import_mnt} | awk '{print $3 " " $4}' )
+      if [[ "${test2}" != "${j_uid} ${j_gid}" ]]; then
+        echo "Owner of ${host_import_mnt} is not the jenkins user"
+        echo "${test2} != ${j_uid} ${j_gid}"
+        willfail=1
+      fi
     fi
     if [[ "${willfail}" == 1 ]]; then
       echo "Failing before attempting to launch container"
@@ -217,16 +224,23 @@ if [[ ${launch} == "docker" ]]; then
       exit 1
     fi
   else
-    chown -R ${j_uid}:${j_gid} ${host_import_mnt}
+    if [[ ! -z ${host_import_mnt} ]]; then
+      chown -R ${j_uid}:${j_gid} ${host_import_mnt}
+    fi
     chown -R ${j_uid}:${j_gid} ${home_mnt}
   fi
 
+  #If we don't have import mount don't add to docker command
+  if [[ ! -z ${host_import_mnt} ]]; then
+   importvolcmd="-v ${host_import_mnt}:${cont_import_mnt}"
+  fi
   # Launch the jenkins image with Docker
   docker run -d \
-    -v ${host_import_mnt}:${cont_import_mnt} \
+    ${importvolcmd} \
     -v ${home_mnt}:${j_home} \
     -p ${http_port}:8080 \
     -p ${agent_port}:${agent_port} \
+    --env JENKINS_OPTS=\"${options}\" \
     ${out_img}
 
 elif [[ ${launch} == "k8s" ]]; then
