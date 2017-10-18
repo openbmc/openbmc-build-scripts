@@ -1,0 +1,57 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: ${name}
+  namespace: ${namespace}
+  labels:
+    app: ${name}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ${name}
+  template:
+    metadata:
+      labels:
+        app: ${name}
+    spec:
+      volumes:
+      - name: config
+        persistentVolumeClaim:
+          claimName: ${hclaim}
+      nodeSelector: ${ARCH}
+      containers:
+      - name: ${name}-pod
+        image: ${imgname}
+        ports:
+        - containerPort: ${http_port}
+          protocol: TCP
+          name: ui
+        - containerPort: ${agent_port}
+          protocol: TCP
+          name: slave-listener
+        volumeMounts:
+        - name: config
+          mountPath: /"${j_home}/"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: ${name}
+  name: ${name}
+  namespace: ${namespace}
+spec:
+  ports:
+  - name: ui
+    port: ${http_port}
+    nodePort: ${http_expose}
+    protocol: TCP
+  - name: slave-listener
+    port: ${agent_port}
+    nodePort: ${agent_expose}
+    protocol: TCP
+  selector:
+    app: ${name}
+  sessionAffinity: None
+  type: NodePort
