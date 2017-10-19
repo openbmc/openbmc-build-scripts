@@ -7,9 +7,9 @@ spec:
   nodeSelector:
     beta.kubernetes.io/arch: ${ARCH}
   volumes:
-  - name: home
+  - name: workspace
     persistentVolumeClaim:
-      claimName: ${hclaim}
+      claimName: ${wclaim}
   - name: qemudir
     persistentVolumeClaim:
       claimName: ${qclaim}
@@ -26,8 +26,8 @@ spec:
     - name: qemudir
       value: ${qemudir}
     volumeMounts:
-    - name: home
-      mountPath: ${HOME}
+    - name: workspace
+      mountPath: ${WORKSPACE}
     - name: qemudir
       mountPath: ${qemudir}
   imagePullSecrets:

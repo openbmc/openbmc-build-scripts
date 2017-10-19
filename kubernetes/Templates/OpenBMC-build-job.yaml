@@ -16,9 +16,9 @@ spec:
       nodeSelector:
         beta.kubernetes.io/arch: ${ARCH}
       volumes:
-      - name: home
+      - name: workspace
         persistentVolumeClaim:
-          claimName: ${hclaim}
+          claimName: ${wclaim}
       - name: sscdir
         persistentVolumeClaim:
           claimName: ${sclaim}
@@ -39,8 +39,8 @@ spec:
             add:
             - SYS_ADMIN
         volumeMounts:
-        - name: home
-          mountPath: ${HOME}
+        - name: workspace
+          mountPath: ${WORKSPACE}
         - name: sscdir
           mountPath: ${sscdir}
       imagePullSecrets:
