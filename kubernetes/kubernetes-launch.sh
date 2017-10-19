@@ -71,13 +71,13 @@ workaround=${workaround:-${log}}
 case ${invoker} in
   Jenkis)
     name=${name:-jenkins-master}
-    hclaim=${hclaim:-jenkins-home}
+    wclaim=${wclaim:-jenkins-home}
     newimgname="${imgrepo}openbmc-jenkins-${ARCH}:${j_vrsn}"
     http_expose=${http_expose:32222}
     agent_expose=${agent_expose:32223}
     ;;
   OpenBMC-build)
-    hclaim=${hclaim:-jenkins-slave-space}
+    wclaim=${wclaim:-jenkins-slave-space}
     sclaim=${sclaim:-shared-state-cache}
     oclaim=${oclaim:-openbmc-reference-repo}
     newimgname=${newimgname:-${imgrepo}${distro}:${imgtag}-${ARCH}}
@@ -85,7 +85,7 @@ case ${invoker} in
     ;;
   QEMU-build)
     podname=${podname:-qemubuild${BUILD_ID}}
-    hclaim=${hclaim:-jenkins-slave-space}
+    wclaim=${wclaim:-jenkins-slave-space}
     qclaim=${qclaim:-qemu-repo}
     newimgname="${imgrepo}${imgname}"
     ;;
@@ -93,8 +93,8 @@ case ${invoker} in
     deployname=${deployname:-qemu-launch-deployment}
     podname=${podname:-qemu-instance}
     replicas=${replicas:-5}
-    hclaim=${hclaim:-jenkins-slave-space}
-    jenkins_subpath=${jenkins_subpath:-workspace/Openbmc-Build/openbmc/build}
+    wclaim=${wclaim:-jenkins-slave-space}
+    jenkins_subpath=${jenkins_subpath:-Openbmc-Build/openbmc/build}
     newimgname="${imgrepo}qemu-instance"
     ;;
   XCAT-launch)
