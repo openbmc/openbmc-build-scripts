@@ -14,9 +14,9 @@ spec:
         app: ${deployname}
     spec:
       volumes:
-      - name: home
+      - name: workspace
         persistentVolumeClaim:
-          claimName: ${hclaim}
+          claimName: ${wclaim}
       nodeSelector:
         beta.kubernetes.io/arch: ${ARCH}
       securityContext:
@@ -55,7 +55,7 @@ spec:
             memory: "1Gi"
             cpu: "1000m"
         volumeMounts:
-        - name: home
+        - name: workspace
           subPath: ${jenkins_subpath}
           mountPath: ${OBMC_BUILD_DIR}
       imagePullSecrets:
