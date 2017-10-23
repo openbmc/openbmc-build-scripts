@@ -65,7 +65,8 @@ RUN apt-get update && apt-get install -yy \
     sudo \
     wget \
     git \
-    dbus
+    dbus \
+    iputils-ping
 
 RUN easy_install pip
 RUN pip install inflection
