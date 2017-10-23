@@ -81,7 +81,8 @@ RUN dnf --refresh repolist && dnf install -y \
 	wget \
 	which \
 	zlib-devel \
-	zlib-static
+	zlib-static \
+	iputils-ping
 
 RUN grep -q ${GROUPS} /etc/group || groupadd -g ${GROUPS} ${USER}
 RUN grep -q ${UID} /etc/passwd || useradd -d ${HOME} -m -u ${UID} -g ${GROUPS} ${USER}
@@ -123,7 +124,8 @@ RUN apt-get update && apt-get install -yy \
 	vim-common \
 	wget\
 	xsltproc \
-        libssl-dev
+        libssl-dev \
+	iputils-ping
 
 RUN grep -q ${GROUPS} /etc/group || groupadd -g ${GROUPS} ${USER}
 RUN grep -q ${UID} /etc/passwd || useradd -d ${HOME} -m -u ${UID} -g ${GROUPS} ${USER}
