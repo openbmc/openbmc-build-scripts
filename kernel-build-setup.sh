@@ -37,6 +37,7 @@ RUN dnf --refresh install -y \
 	gcc-arm-linux-gnu \
 	hostname \
 	make \
+        iputils-ping \
 	uboot-tools xz
 
 RUN grep -q ${GROUPS} /etc/group || groupadd -g ${GROUPS} ${USER}

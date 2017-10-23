@@ -29,7 +29,8 @@ RUN apt-get update && apt-get install -yy \
 	build-essential \
 	git \
 	gcc-powerpc64le-linux-gnu \
-	software-properties-common
+	software-properties-common \
+        iputils-ping
 
 RUN apt-add-repository -y multiverse && apt-get update && apt-get install -yy \
 	dwarves \

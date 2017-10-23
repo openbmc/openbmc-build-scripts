@@ -163,7 +163,8 @@ if [[ "${distro}" == fedora ]];then
       tar \
       texinfo \
       wget \
-      which
+      which \
+      iputils-ping
 
   RUN grep -q ${GROUPS} /etc/group || groupadd -g ${GROUPS} ${USER}
   RUN grep -q ${UID} /etc/passwd || useradd -d ${HOME} -m -u ${UID} -g ${GROUPS} ${USER}
@@ -204,7 +205,8 @@ elif [[ "${distro}" == ubuntu ]]; then
       subversion \
       texinfo \
       cpio \
-      wget
+      wget \
+      iputils-ping
 
   # Set the locale
   RUN locale-gen en_US.UTF-8
