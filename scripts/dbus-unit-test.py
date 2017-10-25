@@ -3,7 +3,7 @@
 """
 This script launches a dbus session, sets the DBUS_SESSION_BUS_ADDRESS
 and DBUS_STARTER_BUS_TYPE Eenvironment variables and puts the generated files
-in the dbus dir location passed as a paramter. It then runs the unit test
+in the dbus dir location passed as a parameter. It then runs the unit test
 script, and then cleans up the generated dbus files.
 """
 

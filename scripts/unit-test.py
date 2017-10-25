@@ -411,7 +411,7 @@ if __name__ == '__main__':
     if args.verbose:
         dep_tree.PrintTree()
     install_list = dep_tree.GetInstallList()
-    # install reordered depdendencies
+    # install reordered dependencies
     install_deps(install_list)
     os.chdir(os.path.join(WORKSPACE, UNIT_TEST_PKG))
     # Refresh dynamic linker run time bindings for dependencies

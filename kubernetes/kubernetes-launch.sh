@@ -112,7 +112,7 @@ if [[ "${launch}" == "job" ]]; then
   do
     if [ ${jobtimeout} -lt 0 ]; then
       kubectl delete -f - <<< "${yamlfile}"
-      echo "Timeout occured before job was present in the API"
+      echo "Timeout occurred before job was present in the API"
       exit 1
     else
       sleep 1
@@ -133,7 +133,7 @@ if [[ "${log}" == true ]]; then
   do
     if [ ${podtimeout} -lt 0 ]; then
       kubectl delete -f - <<< "${yamlfile}"
-      echo "Timeout occured before pod was Running"
+      echo "Timeout occurred before pod was Running"
       exit 1
     else
       sleep 1
