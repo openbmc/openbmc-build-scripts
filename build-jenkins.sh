@@ -50,21 +50,21 @@
 #
 ################################################################################
 
-set -xeo pipefail
 ARCH=$(uname -m)
 
 # Launch Variables
-workspace=${workspace:-${HOME}/jenkins-build-${RANDOM}}
+workspace=${workspace:-/Users/alannylopez/jenkins}
 launch=${launch:-docker}
 home_mnt=${home_mnt:-${workspace}/jenkins_home}
 host_import_mnt=${host_import_mnt:-}
 cont_import_mnt=${cont_import_mnt:-/mnt/jenkins_import}
-options="--prefix=/jenkins"
+jenkins_options="--prefix=/jenkins"
+java_options="-Xmx4096m"
 
 # Dockerfile Variables
 img_tag=${img_tag:-8-jdk}
 tini_vrsn=${tini_vrsn:-0.16.1}
-j_vrsn=${j_vrsn:-2.60.3}
+j_vrsn=${j_vrsn:-2.73.3}
 j_user=${j_user:-jenkins}
 j_group=${j_group:-jenkins}
 j_uid=${j_uid:-1000}
@@ -118,7 +118,7 @@ RUN apt-get update && apt-get install -y git curl
 ENV JENKINS_HOME ${j_home}
 ENV JENKINS_SLAVE_AGENT_PORT ${agent_port}
 
-# Jenkins will default to run with user `jenkins`, uid = 1000
+# Jenkins will default to run with user jenkins, uid = 1000
 # If you bind mount a volume from the host or a data container,
 # ensure you use the same uid
 RUN groupadd -g ${j_gid} ${j_group} && \
@@ -128,7 +128,7 @@ RUN groupadd -g ${j_gid} ${j_group} && \
 # can be persisted and survive image upgrades
 VOLUME ${j_home}
 
-# `/usr/share/jenkins/ref/` contains all reference configuration we want
+# /usr/share/jenkins/ref/ contains all reference configuration we want
 # to set on a fresh new installation. Use it to bundle additional plugins
 # or config file with your custom jenkins Docker image.
 RUN mkdir -p /usr/share/jenkins/ref/init.groovy.d
@@ -161,7 +161,7 @@ COPY jenkins-support /usr/local/bin/jenkins-support
 COPY jenkins.sh /usr/local/bin/jenkins.sh
 ENTRYPOINT ["/bin/tini", "--", "/usr/local/bin/jenkins.sh"]
 
-# from a derived Dockerfile, can use `RUN plugins.sh active.txt` to setup /usr/share/jenkins/ref/plugins from a support bundle
+# from a derived Dockerfile, can use RUN plugins.sh active.txt to setup /usr/share/jenkins/ref/plugins from a support bundle
 COPY plugins.sh /usr/local/bin/plugins.sh
 COPY install-plugins.sh /usr/local/bin/install-plugins.sh
 
@@ -240,7 +240,8 @@ if [[ ${launch} == "docker" ]]; then
     -v ${home_mnt}:${j_home} \
     -p ${http_port}:8080 \
     -p ${agent_port}:${agent_port} \
-    --env JENKINS_OPTS=\"${options}\" \
+    --env JAVA_OPTS=\"${java_options}\" \
+    --env JENKINS_OPTS=\"${jenkins_options}\" \
     ${out_img}
 
 elif [[ ${launch} == "k8s" ]]; then
