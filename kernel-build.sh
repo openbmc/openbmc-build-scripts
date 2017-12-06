@@ -19,7 +19,7 @@ PROXY="RUN echo \"Acquire::http::Proxy \\"\"${http_proxy}/\\"\";\" > /etc/apt/ap
 fi
 
 Dockerfile=$(cat << EOF
-FROM ubuntu:15.10
+FROM ubuntu:latest
 
 ${PROXY}
 
