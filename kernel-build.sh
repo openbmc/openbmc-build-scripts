@@ -30,6 +30,7 @@ RUN apt-get update && apt-get install -yy \
 	git \
 	gcc-powerpc64le-linux-gnu \
 	software-properties-common \
+	libssl-dev \
 	iputils-ping
 
 RUN apt-add-repository -y multiverse && apt-get update && apt-get install -yy \
