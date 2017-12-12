@@ -75,7 +75,6 @@ cd linux
 powerpc64le-linux-gnu-gcc --version
 
 # Build kernel prep
-ARCH=powerpc CROSS_COMPILE=powerpc64le-linux-gnu- make clean
 ARCH=powerpc CROSS_COMPILE=powerpc64le-linux-gnu- make mrproper
 
 # Build kernel
