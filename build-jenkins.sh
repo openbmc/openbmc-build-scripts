@@ -54,7 +54,7 @@
 
 set -xeo pipefail
 ARCH=$(uname -m)
-build_scripts_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+build_scripts_dir=${build_scripts_dir:-"$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"}
 
 # Launch Variables
 workspace=${workspace:-${HOME}/jenkins-build-${RANDOM}}

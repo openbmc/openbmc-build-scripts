@@ -15,15 +15,15 @@
 ###############################################################################
 #
 # The script expects a few variables which are needed to define PV's and PVC's
-#  NS      = Namespace under which to create the mounts on the cluster
-#  NFSIP   = Server IP for NFS server that will be used
-#  NFSPATH = Path of the directory that will be mounted from NFS server
-#  SIZE    = The size of the volume, numeric value followed by Gi or Mi
-#  NAME    = The name of the PV and PVC that will be used by the Kubernetes
+#  ns      = Namespace under which to create the mounts on the cluster
+#  nfsip   = Server IP for NFS server that will be used
+#  nfspath = Path of the directory that will be mounted from NFS server
+#  size    = The size of the volume, numeric value followed by Gi or Mi
+#  name    = The name of the PV and PVC that will be used by the Kubernetes
 #            system to refer to PV/PVC
-#  MODE    = ReadWriteOnce|ReadOnlyMany|ReadWriteMany
+#  mode    = ReadWriteOnce|ReadOnlyMany|ReadWriteMany
 #            Access Mode used by NFS normally uses ReadWriteMany
-#  RECLAIM = recycle|delete|retain
+#  reclaim = recycle|delete|retain
 #            The policy, defines what occurs when claim on PV is released, can
 #            be either: recycle, delete, or retain.
 #
@@ -32,13 +32,13 @@
 #
 ###############################################################################
 
-NS=${NS:-openbmc}
-NFSIP=${NFSIP:-NFS-Server}
-NFSPATH=${NFSPATH:-/san/dir}
-SIZE=${SIZE:-10Gi}
-NAME=${NAME:-placeholder}
-MODE=${MODE:-ReadWriteMany}
-RECLAIM=${RECLAIM:-Retain}
+ns=${ns:-openbmc}
+nfsip=${nfsip:-NFS-Server}
+nfspath=${nfspath:-/san/dir}
+size=${size:-10Gi}
+name=${name:-placeholder}
+mode=${mode:-ReadWriteMany}
+reclaim=${reclaim:-Retain}
 
 # Generate the PV
 pv=$(cat << EOF
@@ -46,24 +46,24 @@ apiVersion: v1
 kind: PersistentVolume
 metadata:
   labels:
-    app: ${NS}
-  name: ${NAME}
-  namespace: ${NS}
+    app: ${name}
+  name: ${name}
+  namespace: ${ns}
 spec:
   accessModes:
-  - ${MODE}
+  - ${mode}
   capacity:
-    storage: ${SIZE}
+    storage: ${size}
   nfs:
-    path: ${NFSPATH}
-    server: ${NFSIP}
-  persistentVolumeReclaimPolicy: ${RECLAIM}
+    path: ${nfspath}
+    server: ${nfsip}
+  persistentVolumeReclaimPolicy: ${reclaim}
 EOF
 )
 
 # create the volume
-if [ -z $(kubectl get pv --namespace=${NS} | grep '^'${NAME}' ' | cut -d " " -f1) ];then
-  echo "Creating Persistent Volume ${NAME}"
+if [ -z $(kubectl get pv --namespace=${ns} | grep '^'${name}' ' | cut -d " " -f1) ];then
+  echo "Creating Persistent Volume ${name}"
   kubectl create -f - <<< "${pv}"
 else
   echo "Persistent Volume already Exists"
@@ -75,23 +75,23 @@ pvc=$(cat << EOF
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: ${NAME}
-  namespace: ${NS}
+  name: ${name}
+  namespace: ${ns}
 spec:
   accessModes:
-  - ${MODE}
+  - ${mode}
   resources:
     requests:
-      storage: ${SIZE}
+      storage: ${size}
   selector:
     matchLabels:
-      app: ${NS}
+      app: ${name}
 EOF
 )
 
 # create PVC's to bind the PV's
-if [ -z $(kubectl get pvc --namespace=${NS} | grep '^'${NAME}' ' | cut -d " " -f1) ];then
-  echo "Creating Persistent Volume Claim ${NAME}"
+if [ -z $(kubectl get pvc --namespace=${ns} | grep '^'${name}' ' | cut -d " " -f1) ];then
+  echo "Creating Persistent Volume Claim ${name}"
   kubectl create -f - <<< "${pvc}"
 else
   echo "Persistent volume claim already exists."
