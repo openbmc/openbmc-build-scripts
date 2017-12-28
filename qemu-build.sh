@@ -32,6 +32,7 @@
 
 # Trace bash processing
 set -x
+build_script_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 # Default variables
 WORKSPACE=${WORKSPACE:-${HOME}/${RANDOM}${RANDOM}}
@@ -160,9 +161,7 @@ if [[ "${launch}" == "" ]]; then
       -t ${imgname} \
       ${WORKSPACE}/build.sh
 elif [[ "${launch}" == "pod" || "${launch}" == "job" ]]; then
-  . ./kubernetes/kubernetes-launch.sh QEMU-build true true
+  . ${build_scripts_dir}/kubernetes/kubernetes-launch.sh QEMU-build true true
 else
   echo "Launch Parameter is invalid"
 fi
-
-
