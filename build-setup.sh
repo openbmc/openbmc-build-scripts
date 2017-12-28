@@ -44,6 +44,7 @@
 
 # Trace bash processing. Set -e so when a step fails, we fail the build
 set -xeo pipefail
+build_script_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 # Default variables
 target=${target:-qemu}
@@ -330,7 +331,7 @@ if [[ "${launch}" == "" ]]; then
 elif [[ "${launch}" == "job" || "${launch}" == "pod" ]]; then
 
   # Source and run the helper script to launch the pod or job
-  . ./kubernetes/kubernetes-launch.sh OpenBMC-build true true
+  . ${build_scripts_dir}/kubernetes/kubernetes-launch.sh OpenBMC-build true true
 
 else
   echo "Launch Parameter is invalid"

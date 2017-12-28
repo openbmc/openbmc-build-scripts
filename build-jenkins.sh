@@ -47,17 +47,18 @@
 #                     Default: "8080"
 #  agent_port         The port used as the Jenkins slave agent port
 #                     Default: "50000"
-#  out_img            The name given to the Docker image when it is built
+#  imgname            The name given to the Docker image when it is built
 #                     Default: "openbmc/jenkins-master-${ARCH}:${JENKINS_VRSN}"
 #
 ################################################################################
 
 set -xeo pipefail
 ARCH=$(uname -m)
+build_scripts_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 # Launch Variables
 workspace=${workspace:-${HOME}/jenkins-build-${RANDOM}}
-launch=${launch:-docker}
+launch=${launch:-k8s}
 home_mnt=${home_mnt:-${workspace}/jenkins_home}
 host_import_mnt=${host_import_mnt:-}
 cont_import_mnt=${cont_import_mnt:-/mnt/jenkins_import}
@@ -75,7 +76,7 @@ j_gid=${j_gid:-1000}
 j_home=${j_home:-/var/jenkins_home}
 http_port=${http_port:-8080}
 agent_port=${agent_port:-50000}
-out_img=${out_img:-openbmc/jenkins-master-${ARCH}:${j_vrsn}}
+imgname=${imgname:-openbmc/jenkins-master-${ARCH}:${j_vrsn}}
 
 # Save the Jenkins.war URL to a variable and SHA if we care about verification
 j_url=https://repo.jenkins-ci.org/public/org/jenkins-ci/main/jenkins-war/${j_vrsn}/jenkins-war-${j_vrsn}.war
@@ -190,7 +191,7 @@ EOF
 ################################################################################
 
 # Build the image
-docker build -t ${out_img} .
+docker build -t ${imgname} .
 
 if [[ ${launch} == "docker" ]]; then
 
@@ -245,11 +246,9 @@ if [[ ${launch} == "docker" ]]; then
     -p ${agent_port}:${agent_port} \
     --env JAVA_OPTS=\"${java_options}\" \
     --env JENKINS_OPTS=\"${jenkins_options}\" \
-    ${out_img}
+    ${imgname}
 
 elif [[ ${launch} == "k8s" ]]; then
   # launch using the k8s template
-  echo "Not yet Implemented"
-  exit 1
-  source ./kubernetes/kubernetes-launch.sh Build-Jenkins false false
+  source ${build_scripts_dir}/kubernetes/kubernetes-launch.sh Build-Jenkins false false
 fi

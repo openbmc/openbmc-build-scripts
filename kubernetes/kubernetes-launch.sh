@@ -51,6 +51,7 @@
 #                 Defaulting to be true whenever logging is enabled until ICP
 #                 upgrades their Kubernetes version.
 ###############################################################################
+build_scripts_dir=${build_scripts_dir:-"$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )/.."}
 
 # Kubernetes Variables
 namespace=${namespace:-openbmc}
@@ -90,6 +91,15 @@ case ${invoker} in
     jenkins_subpath=${jenkins_subpath:-Openbmc-Build/openbmc/build}
     newimgname="${imgrepo}qemu-instance"
     ;;
+  Build-Jenkins)
+    deployname=${deployname:-jenkins-master}
+    podname=${podname:-jenkins-master-pod}
+    newimgname="${imgrepo}jenkins-master-${ARCH}:${j_vrsn}"
+    hclaim=${hclaim:-jenkins-home}
+    clusterip=${clusterip:-10.0.0.175}
+    http_nodeport=${http_nodeport:-32222}
+    agent_nodeport=${agent_nodeport:-32223}
+    ;;
   XCAT-launch)
     ;;
   generic)
@@ -115,7 +125,7 @@ if [[ "${workaround}" == "true" ]]; then
   extras+="-v2"
 fi
 
-yamlfile=$(eval "echo \"$(<./kubernetes/Templates/${invoker}-${launch}${extras}.yaml)\"")
+yamlfile=$(eval "echo \"$(<${build_scripts_dir}/kubernetes/Templates/${invoker}-${launch}${extras}.yaml)\"")
 kubectl create -f - <<< "${yamlfile}"
 
 # If launch is a job we have to find the podname with identifiers
