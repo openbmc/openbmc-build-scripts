@@ -47,13 +47,17 @@
 #                     Default: "8080"
 #  agent_port         The port used as the Jenkins slave agent port
 #                     Default: "50000"
-#  out_img            The name given to the Docker image when it is built
+#  img_name            The name given to the Docker image when it is built
 #                     Default: "openbmc/jenkins-master-${ARCH}:${JENKINS_VRSN}"
 #
+# Other Variables:
+#  build_scripts_dir  The path of the openbmc-build-scripts directory
+#                     Default: The directory containing this script.
 ################################################################################
 
 set -xeo pipefail
 ARCH=$(uname -m)
+build_scripts_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 # Launch Variables
 workspace=${workspace:-${HOME}/jenkins-build-${RANDOM}}
@@ -75,7 +79,7 @@ j_gid=${j_gid:-1000}
 j_home=${j_home:-/var/jenkins_home}
 http_port=${http_port:-8080}
 agent_port=${agent_port:-50000}
-out_img=${out_img:-openbmc/jenkins-master-${ARCH}:${j_vrsn}}
+img_name=${img_name:-openbmc/jenkins-master-${ARCH}:${j_vrsn}}
 
 # Save the Jenkins.war URL to a variable and SHA if we care about verification
 j_url=https://repo.jenkins-ci.org/public/org/jenkins-ci/main/jenkins-war/${j_vrsn}/jenkins-war-${j_vrsn}.war
@@ -190,7 +194,7 @@ EOF
 ################################################################################
 
 # Build the image
-docker build -t ${out_img} .
+docker build -t ${img_name} .
 
 if [[ ${launch} == "docker" ]]; then
 
@@ -206,22 +210,22 @@ if [[ ${launch} == "docker" ]]; then
   # Ensure directories tht will be mounted are owned by the jenkins user
   if [[ "$(id -u)" != 0 ]]; then
     echo "Not running as root:"
-    echo "Checking if jgid and juid are the owners of mounted directories"
-    test1=$(ls -nd ${home_mnt} | awk '{print $3 " " $4}')
-    if [[ "${test1}" != "${j_uid} ${j_gid}" ]]; then
+    echo "Checking if j_gid and j_uid are the owners of mounted directories"
+    test_1=$(ls -nd ${home_mnt} | awk '{print $3 " " $4}')
+    if [[ "${test_1}" != "${j_uid} ${j_gid}" ]]; then
       echo "Owner of ${home_mnt} is not the jenkins user"
-      echo "${test1} != ${j_uid} ${j_gid}"
-      willfail=1
+      echo "${test_1} != ${j_uid} ${j_gid}"
+      will_fail=1
     fi
     if [[ ! -z "${host_import_mnt}" ]]; then
-      test2=$(ls -nd ${host_import_mnt} | awk '{print $3 " " $4}' )
-      if [[ "${test2}" != "${j_uid} ${j_gid}" ]]; then
+      test_2=$(ls -nd ${host_import_mnt} | awk '{print $3 " " $4}' )
+      if [[ "${test_2}" != "${j_uid} ${j_gid}" ]]; then
         echo "Owner of ${host_import_mnt} is not the jenkins user"
-        echo "${test2} != ${j_uid} ${j_gid}"
-        willfail=1
+        echo "${test_2} != ${j_uid} ${j_gid}"
+        will_fail=1
       fi
     fi
-    if [[ "${willfail}" == 1 ]]; then
+    if [[ "${will_fail}" == 1 ]]; then
       echo "Failing before attempting to launch container"
       echo "Try again as root or use correct uid/gid pairs"
       exit 1
@@ -235,21 +239,19 @@ if [[ ${launch} == "docker" ]]; then
 
   #If we don't have import mount don't add to docker command
   if [[ ! -z ${host_import_mnt} ]]; then
-   importvolcmd="-v ${host_import_mnt}:${cont_import_mnt}"
+   import_vol_cmd="-v ${host_import_mnt}:${cont_import_mnt}"
   fi
   # Launch the jenkins image with Docker
   docker run -d \
-    ${importvolcmd} \
+    ${import_vol_cmd} \
     -v ${home_mnt}:${j_home} \
     -p ${http_port}:8080 \
     -p ${agent_port}:${agent_port} \
     --env JAVA_OPTS=\"${java_options}\" \
     --env JENKINS_OPTS=\"${jenkins_options}\" \
-    ${out_img}
+    ${img_name}
 
 elif [[ ${launch} == "k8s" ]]; then
   # launch using the k8s template
-  echo "Not yet Implemented"
-  exit 1
-  source ./kubernetes/kubernetes-launch.sh Build-Jenkins false false
+  source ${build_scripts_dir}/kubernetes/kubernetes-launch.sh Build-Jenkins false false
 fi

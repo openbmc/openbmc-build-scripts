@@ -22,18 +22,18 @@
 # Variables used to create Kubernetes Job:
 #  namespace    = the namespace to be used within the Kubernetes cluster
 #  registry     = the registry to use to pull and push images
-#  imgplsec     = the image pull secret used to access registry if needed
-#  jobtimeout   = the amount of time in seconds that the build will wait for
+#  img_pl_sec   = the image pull secret used to access registry if needed
+#  job_timeout  = the amount of time in seconds that the build will wait for
 #                 the job to be created in the api of the cluster.
-#  podtimeout   = the amount of time in seconds that the build will wait for
+#  pod_timeout  = the amount of time in seconds that the build will wait for
 #                 the pod to start running on the cluster.
-#  imgname      = the name the image that will be passed to the kubernetes api
+#  img_name     = the name the image that will be passed to the kubernetes api
 #                 to build the containers. The image with the tag imgname will
 #                 be built in the invoker script. This script will then tag it
 #                 to include the registry in the name, push it, and update the
 #                 imgname to be what was pushed to the registry. Users should
 #                 not include the registry in the original imgname.
-#  podname      = the name of the pod, will be needed to trace down the logs
+#  pod_name     = the name of the pod, will be needed to trace down the logs
 #
 ###############################################################################
 # Variables that act as script options:
@@ -50,14 +50,20 @@
 #                 impact the retrieval of container logs when using kubectl.
 #                 Defaulting to be true whenever logging is enabled until ICP
 #                 upgrades their Kubernetes version.
+#
 ###############################################################################
+# Other Variables:
+#  build_scripts_dir = The path for the openbmc-build-scripts directory.
+#
+###############################################################################
+build_scripts_dir=${build_scripts_dir:-"$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )/.."}
 
 # Kubernetes Variables
 namespace=${namespace:-openbmc}
-imgrepo=${imgrepo:-master.cfc:8500/openbmc/}
-imgplsec=${imgplsec:-regkey}
-jobtimeout=${jobtimeout:-60}
-podtimeout=${podtimeout:-600}
+img_repo=${img_repo:-master.cfc:8500/openbmc/}
+img_pl_sec=${img_pl_sec:-regkey}
+job_timeout=${job_timeout:-60}
+pod_timeout=${pod_timeout:-600}
 
 # Options which decide script behavior
 invoker=${invoker:-${1}}
@@ -70,25 +76,34 @@ workaround=${workaround:-${log}}
 # Other variables in the template not declared here are declared by invoker
 case ${invoker} in
   OpenBMC-build)
-    wclaim=${wclaim:-jenkins-slave-space}
-    sclaim=${sclaim:-shared-state-cache}
-    oclaim=${oclaim:-openbmc-reference-repo}
-    newimgname=${newimgname:-${imgrepo}${distro}:${imgtag}-${ARCH}}
-    podname=${podname:-openbmc${BUILD_ID}-${target}-builder}
+    w_claim=${w_claim:-jenkins-slave-space}
+    s_claim=${s_claim:-shared-state-cache}
+    o_claim=${o_claim:-openbmc-reference-repo}
+    new_img_name=${new_img_name:-${imgrepo}${distro}:${imgtag}-${ARCH}}
+    pod_name=${pod_name:-openbmc${BUILD_ID}-${target}-builder}
     ;;
   QEMU-build)
-    podname=${podname:-qemubuild${BUILD_ID}}
-    wclaim=${wclaim:-jenkins-slave-space}
-    qclaim=${qclaim:-qemu-repo}
-    newimgname="${imgrepo}${imgname}"
+    pod_name=${pod_name:-qemubuild${BUILD_ID}}
+    w_claim=${w_claim:-jenkins-slave-space}
+    q_claim=${q_claim:-qemu-repo}
+    new_img_name="${img_repo}${img_name}"
     ;;
   QEMU-launch)
-    deployname=${deployname:-qemu-launch-deployment}
-    podname=${podname:-qemu-instance}
+    deploy_name=${deploy_name:-qemu-launch-deployment}
+    pod_name=${pod_name:-qemu-instance}
     replicas=${replicas:-5}
-    wclaim=${wclaim:-jenkins-slave-space}
+    w_claim=${w_claim:-jenkins-slave-space}
     jenkins_subpath=${jenkins_subpath:-Openbmc-Build/openbmc/build}
-    newimgname="${imgrepo}qemu-instance"
+    new_img_name="${img_repo}qemu-instance"
+    ;;
+  Build-Jenkins)
+    deploy_name=${deploy_name:-jenkins-master}
+    pod_name=${pod_name:-jenkins-master-pod}
+    new_img_name="${img_repo}jenkins-master-${ARCH}:${j_vrsn}"
+    h_claim=${h_claim:-jenkins-home}
+    cluster_ip=${cluster_ip:-10.0.0.175}
+    http_nodeport=${http_nodeport:-32222}
+    agent_nodeport=${agent_nodeport:-32223}
     ;;
   XCAT-launch)
     ;;
@@ -100,11 +115,11 @@ case ${invoker} in
 esac
 
 # Tag the image created by the invoker with a name that includes the imgrepo
-docker tag ${imgname} ${newimgname}
-imgname=${newimgname}
+docker tag ${img_name} ${new_img_name}
+img_name=${new_img_name}
 
 # Push the image that was built to the image repository
-docker push ${imgname}
+docker push ${img_name}
 
 if [[ "$ARCH" == x86_64 ]]; then
   ARCH=amd64
@@ -115,53 +130,53 @@ if [[ "${workaround}" == "true" ]]; then
   extras+="-v2"
 fi
 
-yamlfile=$(eval "echo \"$(<./kubernetes/Templates/${invoker}-${launch}${extras}.yaml)\"")
-kubectl create -f - <<< "${yamlfile}"
+yaml_file=$(eval "echo \"$(<${build_scripts_dir}/kubernetes/Templates/${invoker}-${launch}${extras}.yaml)\"")
+kubectl create -f - <<< "${yaml_file}"
 
 # If launch is a job we have to find the podname with identifiers
 if [[ "${launch}" == "job" ]]; then
   while [ -z ${replace} ]
   do
-    if [ ${jobtimeout} -lt 0 ]; then
-      kubectl delete -f - <<< "${yamlfile}"
+    if [ ${job_timeout} -lt 0 ]; then
+      kubectl delete -f - <<< "${yaml_file}"
       echo "Timeout occurred before job was present in the API"
       exit 1
     else
       sleep 1
-      let jobtimeout-=1
+      let job_timeout-=1
     fi
-    replace=$(kubectl get pods -n ${namespaces} | grep ${podname} | awk 'print $1')
+    replace=$(kubectl get pods -n ${namespaces} | grep ${pod_name} | awk 'print $1')
   done
-  podname=${replace}
+  pod_name=${replace}
 fi
 
 
 # Once pod is running track logs
 if [[ "${log}" == true ]]; then
   # Wait for Pod to be running
-  checkstatus="kubectl describe pod ${podname} -n ${namespace}"
-  status=$( ${checkstatus} | grep Status: )
+  check_status="kubectl describe pod ${pod_name} -n ${namespace}"
+  status=$( ${check_status} | grep Status: )
   while [ -z "$( echo ${status} | grep Running)" ]
   do
-    if [ ${podtimeout} -lt 0 ]; then
-      kubectl delete -f - <<< "${yamlfile}"
+    if [ ${pod_timeout} -lt 0 ]; then
+      kubectl delete -f - <<< "${yaml_file}"
       echo "Timeout occurred before pod was Running"
       exit 1
     else
       sleep 1
-      let podtimeout-=1
+      let pod_timeout-=1
     fi
-    status=$( ${checkstatus} | grep Status: )
+    status=$( ${check_status} | grep Status: )
   done
   # Tail the logs of the pod, if workaround enabled start executing build script instead.
   if [[ "${workaround}" == "true" ]]; then
-    kubectl exec -it ${podname} -n ${namespace} ${WORKSPACE}/build.sh
+    kubectl exec -it ${pod_name} -n ${namespace} ${WORKSPACE}/build.sh
   else
-    kubectl logs -f ${podname} -n ${namespace}
+    kubectl logs -f ${pod_name} -n ${namespace}
   fi
 fi
 
 # Delete the object if purge is true
 if [[ "${purge}" == true ]]; then
-  kubectl delete -f - <<< "${yamlfile}"
+  kubectl delete -f - <<< "${yaml_file}"
 fi
