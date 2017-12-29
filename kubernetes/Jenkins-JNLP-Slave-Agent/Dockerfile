@@ -2,8 +2,6 @@
 
 FROM jenkinsci/jnlp-slave
 
-MAINTAINER Alanny Lopez (alanny.lopez@ibm.com)
-
 USER root
 
 # Download and install Kubectl
@@ -13,7 +11,16 @@ RUN curl -LO https://storage.googleapis.com/kubernetes-release/release/$(curl -s
     && mv ./kubectl /usr/local/bin/kubectl
 
 # install Docker and grant access to Jenkins user
-RUN curl -sSL https://get.docker.com/ | sh
+RUN apt-get update && apt-get install -yy \
+    apt-transport-https \
+    ca-certificates \
+    software-properties-common
+
+RUN add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu xenial stable" \
+    && apt-get update \
+    && apt-get install -yy --allow-unauthenticated docker-ce \
+    && groupmod --gid 999 docker
+
 RUN usermod -a -G docker jenkins
 
 USER jenkins
