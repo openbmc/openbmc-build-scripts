@@ -51,7 +51,9 @@ RUN apt-get update && apt-get install -yy \
     diffstat \
     expect \
     curl \
-    build-essential
+    build-essential \
+    libpixman-1-0 \
+    libglib2.0-0
 
 RUN easy_install \
     tox \
