@@ -19,6 +19,13 @@
 #   parm2:  <optional, full path to base directory of qemu binary and images >
 #            default is ${HOME}
 #
+# Optional Env Variable:
+#
+#  QEMU_BIN           = Location of qemu-system-arm binary to use when starting
+#                       QEMU relative to upstream workspace.  Default is
+#                       ./tmp/sysroots/${QEMU_ARCH}/usr/bin/qemu-system-arm
+#                       which is the default location when doing a bitbake
+#                       of obmc-phosphor-image
 ###############################################################################
 
 set -uo pipefail
@@ -39,6 +46,9 @@ if [[ ! -d $BASE_DIR ]]; then
     exit -1
 fi
 
+# Set the location of the qemu binary relative to BASE_DIR
+QEMU_BIN=${QEMU_BIN:-./tmp/sysroots/${QEMU_ARCH}/usr/bin/qemu-system-arm}
+
 # Enter the base directory
 cd ${BASE_DIR}
 
@@ -52,7 +62,7 @@ if [[ "$IP" != *.*.*.* ]]; then
 fi
 
 # Launch QEMU using the qemu-system-arm
-./tmp/sysroots/${QEMU_ARCH}/usr/bin/qemu-system-arm \
+${QEMU_BIN} \
     -device virtio-net,netdev=mynet \
     -netdev user,id=mynet,hostfwd=tcp:${IP}:22-:22,hostfwd=tcp:${IP}:443-:443,hostfwd=tcp:${IP}:80-:80 \
     -machine versatilepb \
