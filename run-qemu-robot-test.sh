@@ -36,6 +36,11 @@
 #                       to do the runs. If specified k8s will launch a group of
 #                       containers into a kubernetes cluster using the helper
 #                       script.
+#  QEMU_BIN           = Location of qemu-system-arm binary to use when starting
+#                       QEMU relative to upstream workspace.  Default is
+#                       ./tmp/sysroots/${QEMU_ARCH}/usr/bin/qemu-system-arm
+#                       which is the default location when doing a bitbake
+#                       of obmc-phosphor-image
 #
 ###############################################################################
 
@@ -66,6 +71,9 @@ case ${ARCH} in
     exit 1
 esac
 
+# Set the location of the qemu binary relative to UPSTREAM_WORKSPACE
+QEMU_BIN=${QEMU_BIN:-./tmp/sysroots/${QEMU_ARCH}/usr/bin/qemu-system-arm}
+
 # Get the base directory of the openbmc-build-scripts repo so we can return
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
@@ -86,6 +94,7 @@ if [[ ${LAUNCH} == "local" ]]; then
                                 --env HOME=${OBMC_BUILD_DIR} \
                                 --env QEMU_RUN_TIMER=${QEMU_RUN_TIMER} \
                                 --env QEMU_ARCH=${QEMU_ARCH} \
+                                --env QEMU_BIN=${QEMU_BIN} \
                                 --workdir "${OBMC_BUILD_DIR}"           \
                                 --volume "${UPSTREAM_WORKSPACE}":"${OBMC_BUILD_DIR}" \
                                 --tty \
