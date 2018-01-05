@@ -26,6 +26,10 @@
 #                       ./tmp/sysroots/${QEMU_ARCH}/usr/bin/qemu-system-arm
 #                       which is the default location when doing a bitbake
 #                       of obmc-phosphor-image
+#
+#  MACHINE            = Machine to run test against. witherspoon, palmetto,
+#                       romulus, undefined (default).  Default will use the
+#                       versatilepb model.
 ###############################################################################
 
 set -uo pipefail
@@ -49,11 +53,36 @@ fi
 # Set the location of the qemu binary relative to BASE_DIR
 QEMU_BIN=${QEMU_BIN:-./tmp/sysroots/${QEMU_ARCH}/usr/bin/qemu-system-arm}
 
+MACHINE=${MACHINE:-versatilepb}
+
 # Enter the base directory
 cd ${BASE_DIR}
 
-# Find the correct drive file, and save its name
-DRIVE=$(ls ./tmp/deploy/images/qemuarm | grep rootfs.ext4)
+# Find the correct drive file, and save its name.  openbmc has 3 different
+# image formats.  The UBI based one, the standard static.mtd one, and the
+# default QEMU basic image (rootfs.ext4).
+
+DEFAULT_IMAGE_LOC="./tmp/deploy/images/"
+# First look for a UBI image
+if [ -d ${DEFAULT_IMAGE_LOC}/${MACHINE} ]; then
+    DRIVE=$(ls ${DEFAULT_IMAGE_LOC}/${MACHINE}/ | grep -m 1 obmc-phosphor-image-${MACHINE}.ubi.mtd)
+
+    # If not found then look for a static mdt
+    if [ -z ${DRIVE+x} ]; then
+        DRIVE=$(ls ${DEFAULT_IMAGE_LOC}/${MACHINE}/ | grep -m 1 obmc-phosphor-image-${MACHINE}.static.mtd)
+    fi
+fi
+
+# If not found above then use use the default
+if [ -z ${DRIVE+x} ]; then
+    DRIVE=$(ls ${DEFAULT_IMAGE_LOC}/qemuarm | grep rootfs.ext4)
+fi
+
+# If no image to boot from found then exit out
+if [ -z ${DRIVE+x} ]; then
+	echo "No image found to boot from for machine ${MACHINE}"
+	exit -1
+fi
 
 # Obtain IP from /etc/hosts if IP is not valid set to localhost
 IP=$(awk 'END{print $1}' /etc/hosts)
@@ -67,7 +96,7 @@ ${QEMU_BIN} \
     -netdev user,id=mynet,hostfwd=tcp:${IP}:22-:22,hostfwd=tcp:${IP}:443-:443,hostfwd=tcp:${IP}:80-:80 \
     -machine versatilepb \
     -m 256 \
-    -drive file=./tmp/deploy/images/qemuarm/${DRIVE},if=virtio,format=raw \
+    -drive file=${DEFAULT_IMAGE_LOC}/qemuarm/${DRIVE},if=virtio,format=raw \
     -show-cursor \
     -usb \
     -usbdevice tablet \
@@ -75,6 +104,6 @@ ${QEMU_BIN} \
     -serial mon:vc \
     -serial mon:stdio \
     -serial null \
-    -kernel ./tmp/deploy/images/qemuarm/zImage \
+    -kernel ${DEFAULT_IMAGE_LOC}/qemuarm/zImage \
     -append 'root=/dev/vda rw highres=off  console=ttyS0 mem=256M ip=dhcp console=ttyAMA0,115200 console=tty'\
-    -dtb ./tmp/deploy/images/qemuarm/zImage-versatile-pb.dtb
+    -dtb ${DEFAULT_IMAGE_LOC}/qemuarm/zImage-versatile-pb.dtb

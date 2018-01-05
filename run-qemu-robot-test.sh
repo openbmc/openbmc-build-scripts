@@ -42,6 +42,9 @@
 #                       which is the default location when doing a bitbake
 #                       of obmc-phosphor-image
 #
+#  MACHINE            = Machine to run test against. witherspoon, palmetto,
+#                       romulus, undefined (default).  Default will use the
+#                       versatilepb model.
 ###############################################################################
 
 set -uo pipefail
@@ -95,6 +98,7 @@ if [[ ${LAUNCH} == "local" ]]; then
                                 --env QEMU_RUN_TIMER=${QEMU_RUN_TIMER} \
                                 --env QEMU_ARCH=${QEMU_ARCH} \
                                 --env QEMU_BIN=${QEMU_BIN} \
+                                --env MACHINE=${MACHINE} \
                                 --workdir "${OBMC_BUILD_DIR}"           \
                                 --volume "${UPSTREAM_WORKSPACE}":"${OBMC_BUILD_DIR}" \
                                 --tty \
