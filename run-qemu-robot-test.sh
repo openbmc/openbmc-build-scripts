@@ -42,6 +42,9 @@
 #                       which is the default location when doing a bitbake
 #                       of obmc-phosphor-image
 #
+#  MACHINE            = Machine to run test against. The options are "witherspoon",
+#                       "palmetto", "romulus", or undefined (default).  Default
+#                       will use the versatilepb model.
 ###############################################################################
 
 set -uo pipefail
@@ -52,6 +55,7 @@ DOCKER_IMG_NAME=${DOCKER_IMG_NAME:-openbmc/ubuntu-robot-qemu}
 OBMC_BUILD_DIR=${OBMC_BUILD_DIR:-/tmp/openbmc/build}
 UPSTREAM_WORKSPACE=${UPSTREAM_WORKSPACE:-${1}}
 LAUNCH=${LAUNCH:-local}
+MACHINE=${MACHINE:-versatilepb}
 
 # Determine the architecture
 ARCH=$(uname -m)
@@ -95,6 +99,7 @@ if [[ ${LAUNCH} == "local" ]]; then
                                 --env QEMU_RUN_TIMER=${QEMU_RUN_TIMER} \
                                 --env QEMU_ARCH=${QEMU_ARCH} \
                                 --env QEMU_BIN=${QEMU_BIN} \
+                                --env MACHINE=${MACHINE} \
                                 --workdir "${OBMC_BUILD_DIR}"           \
                                 --volume "${UPSTREAM_WORKSPACE}":"${OBMC_BUILD_DIR}" \
                                 --tty \
