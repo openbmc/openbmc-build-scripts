@@ -90,7 +90,7 @@ RUN tar -xzf v1.2.2.tar.gz
 RUN cp -a cereal-1.2.2/include/cereal/ /usr/include/
 
 RUN wget https://github.com/nlohmann/json/releases/download/v3.0.1/json.hpp
-RUN mkdir /usr/include/nlohmann-json/
+RUN mkdir /usr/include/nlohmann/
 RUN cp -a json.hpp /usr/include/nlohmann/
 
 RUN grep -q ${GROUPS} /etc/group || groupadd -g ${GROUPS} ${USER}
