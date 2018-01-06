@@ -15,7 +15,7 @@ spawn $command
 expect {
   timeout { send_user "\nFailed to boot\n"; exit 1 }
   eof { send_user "\nFailure, got EOF"; exit 1 }
-  "qemuarm login:"
+  "* login:"
 }
 
 send "root\r"
@@ -31,7 +31,7 @@ send "0penBmc\r"
 expect {
   timeout { send_user "\nFailed, could not login\n"; exit 1 }
   eof { send_user "\nFailure, got EOF"; exit 1 }
-  "root@qemuarm:~#"
+  "root@*:~#"
 }
 
 send_user "OPENBMC-READY\n"

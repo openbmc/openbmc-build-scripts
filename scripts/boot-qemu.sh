@@ -53,7 +53,8 @@ fi
 # Set the location of the qemu binary relative to BASE_DIR
 QEMU_BIN=${QEMU_BIN:-./tmp/sysroots/${QEMU_ARCH}/usr/bin/qemu-system-arm}
 
-MACHINE=${MACHINE:-versatilepb}
+DEFAULT_MACHINE=versatilepb
+MACHINE=${MACHINE:-${DEFAULT_MACHINE}}
 
 # Enter the base directory
 cd ${BASE_DIR}
@@ -63,25 +64,12 @@ cd ${BASE_DIR}
 # default QEMU basic image (rootfs.ext4).
 
 DEFAULT_IMAGE_LOC="./tmp/deploy/images/"
-# First look for a UBI image
-if [ -d ${DEFAULT_IMAGE_LOC}/${MACHINE} ]; then
-    DRIVE=$(ls ${DEFAULT_IMAGE_LOC}/${MACHINE}/ | grep -m 1 obmc-phosphor-image-${MACHINE}.ubi.mtd)
-
-    # If not found then look for a static mdt
-    if [ -z ${DRIVE+x} ]; then
-        DRIVE=$(ls ${DEFAULT_IMAGE_LOC}/${MACHINE}/ | grep -m 1 obmc-phosphor-image-${MACHINE}.static.mtd)
-    fi
-fi
-
-# If not found above then use use the default
-if [ -z ${DRIVE+x} ]; then
+if [ -f ${DEFAULT_IMAGE_LOC}/${MACHINE}/obmc-phosphor-image-${MACHINE}.ubi.mtd ]; then
+    DRIVE=obmc-phosphor-image-${MACHINE}.ubi.mtd
+elif [ -f ${DEFAULT_IMAGE_LOC}/${MACHINE}/obmc-phosphor-image-${MACHINE}.static.mtd ]; then
+    DRIVE=obmc-phosphor-image-${MACHINE}.static.mtd
+else
     DRIVE=$(ls ${DEFAULT_IMAGE_LOC}/qemuarm | grep rootfs.ext4)
-fi
-
-# If no image to boot from found then exit out
-if [ -z ${DRIVE+x} ]; then
-    echo "No image found to boot from for machine ${MACHINE}"
-    exit -1
 fi
 
 # Obtain IP from /etc/hosts if IP is not valid set to localhost
@@ -90,20 +78,32 @@ if [[ "$IP" != *.*.*.* ]]; then
   IP=127.0.0.1
 fi
 
-# Launch QEMU using the qemu-system-arm
-${QEMU_BIN} \
-    -device virtio-net,netdev=mynet \
-    -netdev user,id=mynet,hostfwd=tcp:${IP}:22-:22,hostfwd=tcp:${IP}:443-:443,hostfwd=tcp:${IP}:80-:80 \
-    -machine versatilepb \
-    -m 256 \
-    -drive file=${DEFAULT_IMAGE_LOC}/qemuarm/${DRIVE},if=virtio,format=raw \
-    -show-cursor \
-    -usb \
-    -usbdevice tablet \
-    -device virtio-rng-pci \
-    -serial mon:vc \
-    -serial mon:stdio \
-    -serial null \
-    -kernel ${DEFAULT_IMAGE_LOC}/qemuarm/zImage \
-    -append 'root=/dev/vda rw highres=off  console=ttyS0 mem=256M ip=dhcp console=ttyAMA0,115200 console=tty'\
-    -dtb ${DEFAULT_IMAGE_LOC}/qemuarm/zImage-versatile-pb.dtb
+# The syntax to start old qemu / default version requires different syntax
+# then new qemu with the real platforms
+if [ ${MACHINE} = ${DEFAULT_MACHINE} ]; then
+    # Launch default QEMU using the qemu-system-arm
+    ${QEMU_BIN} \
+        -device virtio-net,netdev=mynet \
+        -netdev user,id=mynet,hostfwd=tcp:${IP}:22-:22,hostfwd=tcp:${IP}:443-:443,hostfwd=tcp:${IP}:80-:80 \
+        -machine versatilepb \
+        -m 256 \
+        -drive file=${DEFAULT_IMAGE_LOC}/qemuarm/${DRIVE},if=virtio,format=raw \
+        -show-cursor \
+        -usb \
+        -usbdevice tablet \
+        -device virtio-rng-pci \
+        -serial mon:vc \
+        -serial mon:stdio \
+        -serial null \
+        -kernel ${DEFAULT_IMAGE_LOC}/qemuarm/zImage \
+        -append 'root=/dev/vda rw highres=off  console=ttyS0 mem=256M ip=dhcp console=ttyAMA0,115200 console=tty'\
+        -dtb ${DEFAULT_IMAGE_LOC}/qemuarm/zImage-versatile-pb.dtb
+else
+    ${QEMU_BIN} \
+        -m 256 \
+        -machine ${MACHINE}-bmc \
+        -nographic \
+        -drive file=${DEFAULT_IMAGE_LOC}/${MACHINE}/${DRIVE},format=raw,if=mtd \
+        -net nic \
+        -net user,hostfwd=:${IP}:22-:22,hostfwd=:${IP}:443-:443,hostfwd=tcp:${IP}:80-:80,hostname=qemu
+fi
