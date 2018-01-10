@@ -344,6 +344,8 @@ def build_dep_tree(pkg, pkgdir, dep_added, head, dep_tree=None):
 
 
 if __name__ == '__main__':
+
+
     # CONFIGURE_FLAGS = [GIT REPO]:[CONFIGURE FLAGS]
     CONFIGURE_FLAGS = {
         'phosphor-objmgr': ['--enable-unpatched-systemd'],
@@ -393,6 +395,11 @@ if __name__ == '__main__':
             print
     else:
         printline = lambda *l: None
+
+    # First validate code formattting if repo has clang file
+    CODE_SCAN_DIR = WORKSPACE + UNIT_TEST_PKG
+    if os.path.exists(CODE_SCAN_DIR + "/.clang-format"):
+        check_call_cmd(WORKSPACE, "./format-code.sh", CODE_SCAN_DIR)
 
     prev_umask = os.umask(000)
     # Determine dependencies and add them
