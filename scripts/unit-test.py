@@ -394,6 +394,14 @@ if __name__ == '__main__':
     else:
         printline = lambda *l: None
 
+    # First validate code formattting if repo has clang file
+    CODE_SCAN_DIR = WORKSPACE + UNIT_TEST_PKG
+    print "CODE_SCAN_DIR = " + CODE_SCAN_DIR
+    if os.path.exists(CODE_SCAN_DIR + "/.clang-format"):
+        check_call_cmd(WORKSPACE, "./format-code.sh", CODE_SCAN_DIR)
+    else:
+        print "CODE_SCAN_DIR + .clang_format does not exist!"
+
     prev_umask = os.umask(000)
     # Determine dependencies and add them
     dep_added = dict()
