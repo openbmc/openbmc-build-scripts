@@ -344,6 +344,11 @@ def build_dep_tree(pkg, pkgdir, dep_added, head, dep_tree=None):
 
 
 if __name__ == '__main__':
+    
+    # First validate code formattting if repo has clang file
+    if os.path.exists("./.clang-format"):
+        subprocess.call("format-code.sh")
+
     # CONFIGURE_FLAGS = [GIT REPO]:[CONFIGURE FLAGS]
     CONFIGURE_FLAGS = {
         'phosphor-objmgr': ['--enable-unpatched-systemd'],
