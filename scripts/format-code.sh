@@ -13,6 +13,16 @@ DIR=$1
 cd ${DIR}
 
 echo "Formatting code under $DIR/"
-find . -regextype sed -regex ".*\.[hc]\(pp\)\?" -not -name "*mako*" -print0 | xargs -0 "clang-format-3.9" -i
 
-git --no-pager diff --exit-code
+if [ -f "setup.cfg" ]; then
+  pycodestyle --show-source .
+  rc=$?
+  if [ ${rc} -ne 0 ]; then
+    exit ${rc}
+  fi
+fi
+
+if [ -f ".clang-format" ]; then
+  find . -regextype sed -regex ".*\.[hc]\(pp\)\?" -not -name "*mako*" -print0 | xargs -0 "clang-format-3.9" -i
+  git --no-pager diff --exit-code
+fi
