@@ -71,6 +71,7 @@ RUN apt-get update && apt-get install -yy \
 
 RUN easy_install pip
 RUN pip install inflection
+RUN pip install pycodestyle
 
 RUN wget http://ftpmirror.gnu.org/autoconf-archive/autoconf-archive-2016.09.16.tar.xz
 RUN tar -xJf autoconf-archive-2016.09.16.tar.xz
