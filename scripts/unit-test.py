@@ -394,9 +394,12 @@ if __name__ == '__main__':
     else:
         printline = lambda *l: None
 
-    # First validate code formattting if repo has clang file
+    # First validate code formattting if repo has style formatting files
     CODE_SCAN_DIR = WORKSPACE + "/" + UNIT_TEST_PKG
-    if os.path.exists(CODE_SCAN_DIR + "/.clang-format"):
+    style_files = [".clang-format", "setup.cfg"]
+    style_files_exist = [s for s in style_files if os.path.exists(
+            CODE_SCAN_DIR + "/" + s)];
+    if style_files_exist:
         check_call_cmd(WORKSPACE, "./format-code.sh", CODE_SCAN_DIR)
 
     prev_umask = os.umask(000)
