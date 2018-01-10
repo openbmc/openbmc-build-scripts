@@ -66,7 +66,8 @@ RUN apt-get update && apt-get install -yy \
     wget \
     git \
     dbus \
-    iputils-ping
+    iputils-ping \
+    clang-format-3.9
 
 RUN easy_install pip
 RUN pip install inflection
