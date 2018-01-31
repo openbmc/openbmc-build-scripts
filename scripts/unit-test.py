@@ -399,6 +399,12 @@ if __name__ == '__main__':
     CODE_SCAN_DIR = WORKSPACE + "/" + UNIT_TEST_PKG
     check_call_cmd(WORKSPACE, "./format-code.sh", CODE_SCAN_DIR)
 
+    # Next verify this is an supported repo, if not just exit
+    # Currently this script only support Automake
+    if not os.path.isfile("configure.ac"):
+        print "Not a supported repo for CI Tests, exit"
+        quit()
+
     prev_umask = os.umask(000)
     # Determine dependencies and add them
     dep_added = dict()
