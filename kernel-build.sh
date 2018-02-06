@@ -31,6 +31,8 @@ RUN apt-get update && apt-get install -yy \
 	gcc-powerpc64le-linux-gnu \
 	software-properties-common \
 	libssl-dev \
+	bison \
+	flex \
 	iputils-ping
 
 RUN apt-add-repository -y multiverse && apt-get update && apt-get install -yy \
