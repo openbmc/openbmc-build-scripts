@@ -3,7 +3,7 @@
 # This build script is for running the Jenkins builds using docker.
 #
 # It expects a few variables which are part of Jenkins build job matrix:
-#   target = palmetto|qemu|habanero|firestone|garrison
+#   target = palmetto|qemux86-64|habanero|firestone|garrison
 #   distro = ubuntu|fedora
 #   WORKSPACE = Random Number by Default
 

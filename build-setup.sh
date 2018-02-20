@@ -34,9 +34,9 @@
 #                     fedora: 23|24|25
 #                     Default: "latest"
 #  target             The target we aim to build:
-#                     barreleye|evb-ast2500|firestone|garrison|palmetto|qemu
+#                     barreleye|evb-ast2500|firestone|garrison|palmetto|qemux86-64
 #                     romulus|s2600wf|witherspoon|zaius
-#                     Default: "qemu"
+#                     Default: "qemux86-64"
 #
 # Deployment Variables:
 #  launch             ""|job|pod
@@ -86,7 +86,7 @@ num_cpu=${num_cpu:-$(nproc)}
 build_dir=${build_dir:-/tmp/openbmc}
 distro=${distro:-ubuntu}
 img_tag=${img_tag:-latest}
-target=${target:-qemu}
+target=${target:-qemux86-64}
 
 # Deployment variables
 launch=${launch:-}
@@ -149,8 +149,8 @@ case ${target} in
   romulus)
     BITBAKE_CMD="TEMPLATECONF=meta-ibm/meta-romulus/conf source oe-init-build-env"
     ;;
-  qemu)
-    BITBAKE_CMD="source openbmc-env"
+  qemux86-64)
+    BITBAKE_CMD="MACHINE=qemux86-64 source oe-init-build-env"
     ;;
   *)
     exit 1
