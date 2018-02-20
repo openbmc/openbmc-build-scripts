@@ -34,7 +34,7 @@
 #                     fedora: 23|24|25
 #                     Default: "latest"
 #  target             The target we aim to build:
-#                     evb-ast2500|palmetto|qemu
+#                     evb-ast2500|palmetto|qemu|qemux86-64
 #                     romulus|s2600wf|witherspoon|zaius
 #                     Default: "qemu"
 #
@@ -151,6 +151,9 @@ case ${target} in
     ;;
   qemu)
     LAYER_DIR="meta-phosphor"
+    ;;
+  qemux86-64)
+    BITBAKE_CMD="MACHINE=qemux86-64 source oe-init-build-env"
     ;;
   *)
     exit 1
