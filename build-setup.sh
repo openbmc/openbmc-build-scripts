@@ -35,7 +35,7 @@
 #                     Default: "latest"
 #  target             The target we aim to build:
 #                     barreleye|evb-ast2500|firestone|garrison|palmetto|qemu
-#                     romulus|s2600wf|witherspoon|zaius
+#                     qemux86-64|romulus|s2600wf|witherspoon|zaius
 #                     Default: "qemu"
 #
 # Deployment Variables:
@@ -151,6 +151,9 @@ case ${target} in
     ;;
   qemu)
     BITBAKE_CMD="source openbmc-env"
+    ;;
+  qemux86-64)
+    BITBAKE_CMD="MACHINE=qemux86-64 source oe-init-build-env"
     ;;
   *)
     exit 1
