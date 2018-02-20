@@ -8,7 +8,7 @@
 #
 # Variables used for Jenkins build job matrix:
 #  target       = barreleye|palmetto|witherspoon|firestone|garrison|evb-ast2500
-#                 zaius|romulus|qemu
+#                 zaius|romulus|qemu|qemux86-64
 #  distro       = fedora|ubuntu
 #  imgtag       = Varies by distro. latest|16.04|14.04|trusty|xenial; 23|24|25
 #  obmcext      = Path of the OpenBMC repo directory used in creating a copy
@@ -117,6 +117,9 @@ case ${target} in
     ;;
   qemu)
     BITBAKE_CMD="source openbmc-env"
+    ;;
+  qemux86-64)
+    BITBAKE_CMD="MACHINE=qemux86-64 source openbmc-env"
     ;;
   *)
     exit 1
