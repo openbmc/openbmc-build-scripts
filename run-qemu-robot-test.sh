@@ -112,6 +112,12 @@ if [[ ${LAUNCH} == "local" ]]; then
   # docker instances talk over their private network
   DOCKER_SSH_PORT=22
   DOCKER_HTTPS_PORT=443
+
+  # This docker command intermittently asserts a SIGPIPE which
+  # causes the whole script to fail. The IP address comes through
+  # fine on these errors so just ignore the SIGPIPE
+  trap '' PIPE
+
   DOCKER_QEMU_IP_ADDR="$(docker inspect $obmc_qemu_docker |  \
                        grep -m 1 "IPAddress\":" | cut -d '"' -f 4)"
 
