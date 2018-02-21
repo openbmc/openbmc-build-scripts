@@ -108,6 +108,9 @@ if [[ ${LAUNCH} == "local" ]]; then
                                 --tty \
                                 ${DOCKER_IMG_NAME} ${OBMC_BUILD_DIR}/boot-qemu-test.exp)
 
+  # Give docker instance a few seconds to fire up
+  sleep 5
+
   # We can use default ports because we're going to have the 2
   # docker instances talk over their private network
   DOCKER_SSH_PORT=22
