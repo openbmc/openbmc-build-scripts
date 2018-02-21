@@ -18,6 +18,8 @@
 #  WORKSPACE          = Path of the workspace directory where some intermediate
 #                       files will be saved to.
 #  QEMU_RUN_TIMER     = Defaults to 300, a timer for the QEMU container.
+#  QEMU_LOGIN_TIMER   = Defaults to 180, a timer for the QEMU container to reach
+#                       login.
 #  DOCKER_IMG_NAME    = Defaults to openbmc/ubuntu-robot-qemu, the name the
 #                       Docker image will be tagged with when built.
 #  OBMC_BUILD_DIR     = Defaults to /tmp/openbmc/build, the path to the
@@ -50,6 +52,7 @@
 set -uo pipefail
 
 QEMU_RUN_TIMER=${QEMU_RUN_TIMER:-300}
+QEMU_LOGIN_TIMER=${QEMU_LOGIN_TIMER:-180}
 WORKSPACE=${WORKSPACE:-${HOME}/${RANDOM}${RANDOM}}
 DOCKER_IMG_NAME=${DOCKER_IMG_NAME:-openbmc/ubuntu-robot-qemu}
 OBMC_BUILD_DIR=${OBMC_BUILD_DIR:-/tmp/openbmc/build}
@@ -113,7 +116,8 @@ if [[ ${LAUNCH} == "local" ]]; then
                        grep -m 1 "IPAddress\":" | cut -d '"' -f 4)"
 
   #Now wait for the OpenBMC QEMU Docker instance to get to standby
-  attempt=60
+  delay=5
+  attempt=$(( $QEMU_LOGIN_TIMER / $delay ))
   while [ $attempt -gt 0 ]; do
     attempt=$(( $attempt - 1 ))
     echo "Waiting for qemu to get to standby (attempt: $attempt)..."
@@ -121,10 +125,10 @@ if [[ ${LAUNCH} == "local" ]]; then
     if grep -q 'OPENBMC-READY' <<< $result ; then
       echo "QEMU is ready!"
       # Give QEMU a few secs to stablize
-      sleep 5
+      sleep $delay
       break
     fi
-      sleep 2
+      sleep $delay
   done
 
   if [ "$attempt" -eq 0 ]; then
