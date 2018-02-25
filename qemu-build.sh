@@ -37,19 +37,24 @@
 #                     saving anything to the api when it completes.
 #
 ###############################################################################
-build_scripts_dir=${build_scripts_dir:-"$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"}
-
 # Trace bash processing
 set -x
 
-# Default variables
-WORKSPACE=${WORKSPACE:-${HOME}/${RANDOM}${RANDOM}}
+# Script Variables:
+build_scripts_dir=${build_scripts_dir:-"$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"}
 http_proxy=${http_proxy:-}
-launch=${launch:-}
 qemu_dir=${qemu_dir:-${WORKSPACE}/qemu}
+WORKSPACE=${WORKSPACE:-${HOME}/${RANDOM}${RANDOM}}
+
+# Docker Image Build Variables:
 build_dir=${build_dir:-/tmp/qemu}
-ARCH=$(uname -m)
 img_name=${img_name:-qemu-build:${ARCH}}
+
+# Deployment Variables
+launch=${launch:-}
+
+# Determine the architecture
+ARCH=$(uname -m)
 
 # Timestamp for job
 echo "Build started, $(date)"

@@ -26,8 +26,6 @@
 # Kubernetes Variables:
 #  img_pl_sec         The image pull secret used to access registry if needed
 #                     Default: "regkey"
-#  registry           The registry to use to pull and push images
-#                     Default: "master.cfc:8500/openbmc/""
 #  job_timeout         The amount of time in seconds that the build will wait for
 #                     the job to be created in the api of the cluster.
 #                     Default: "60"
@@ -36,6 +34,8 @@
 #  pod_timeout        The amount of time in seconds that the build will wait for
 #                     the pod to start running on the cluster.
 #                     Default: "600"
+#  registry           The registry to use to pull and push images
+#                     Default: "master.cfc:8500/openbmc/""
 #
 # YAML File Variables (No Defaults):
 #  img_name           The name the image that will be passed to the kubernetes
@@ -67,20 +67,22 @@
 #                     Kubernetes version to a version that doesn't need this.
 #
 ###############################################################################
+
+# Script Variables
 build_scripts_dir=${build_scripts_dir:-"$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )/.."}
 
 # Kubernetes Variables
-namespace=${namespace:-openbmc}
-registry=${registry:-master.cfc:8500/openbmc/}
 img_pl_sec=${img_pl_sec:-regkey}
 job_timeout=${job_timeout:-60}
+namespace=${namespace:-openbmc}
 pod_timeout=${pod_timeout:-600}
+registry=${registry:-master.cfc:8500/openbmc/}
 
-# Options which decide script behavior
+# Deployment Option Variables:
 invoker=${invoker:-${1}}
+launch=${launch:-${4}}
 log=${log:-${2}}
 purge=${purge:-${3}}
-launch=${launch:-${4}}
 workaround=${workaround:-${log}}
 
 # Set the variables for the specific invoker to fill in the YAML template
