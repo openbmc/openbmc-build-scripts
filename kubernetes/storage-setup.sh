@@ -15,30 +15,30 @@
 ###############################################################################
 #
 # The script expects a few variables which are needed to define PV's and PVC's
-#  ns      = Namespace under which to create the mounts on the cluster
-#  nfsip   = Server IP for NFS server that will be used
-#  nfspath = Path of the directory that will be mounted from NFS server
-#  size    = The size of the volume, numeric value followed by Gi or Mi
-#  name    = The name of the PV and PVC that will be used by the Kubernetes
-#            system to refer to PV/PVC
-#  mode    = ReadWriteOnce|ReadOnlyMany|ReadWriteMany
-#            Access Mode used by NFS normally uses ReadWriteMany
-#  reclaim = recycle|delete|retain
-#            The policy, defines what occurs when claim on PV is released, can
-#            be either: recycle, delete, or retain.
+#  mode     ReadWriteOnce|ReadOnlyMany|ReadWriteMany
+#           Access Mode used by NFS normally uses ReadWriteMany
+#  name     The name of the PV and PVC that will be used by the Kubernetes
+#           system to refer to PV/PVC
+#  nfs_ip   Server IP for NFS server that will be used
+#  nfs_path Path of the directory that will be mounted from NFS server
+#  ns       Namespace under which to create the mounts on the cluster
+#  reclaim  recycle|delete|retain
+#           The policy, defines what occurs when claim on PV is released, can
+#           be either: recycle, delete, or retain.
+#  size     The size of the volume, numeric value followed by Gi or Mi
 #
 # Note: Kubernetes Systems permissions vary by implementation
 #       some will require permissions to create PV's or PVC's
 #
 ###############################################################################
 
-ns=${ns:-openbmc}
-nfsip=${nfsip:-NFS-Server}
-nfspath=${nfspath:-/san/dir}
-size=${size:-10Gi}
-name=${name:-placeholder}
 mode=${mode:-ReadWriteMany}
+name=${name:-placeholder}
+nfs_ip=${nfs_ip:-NFS-Server}
+nfs_path=${nfs_path:-/san/dir}
+ns=${ns:-openbmc}
 reclaim=${reclaim:-Retain}
+size=${size:-10Gi}
 
 # Generate the PV
 pv=$(cat << EOF
@@ -55,8 +55,8 @@ spec:
   capacity:
     storage: ${size}
   nfs:
-    path: ${nfspath}
-    server: ${nfsip}
+    path: ${nfs_path}
+    server: ${nfs_ip}
   persistentVolumeReclaimPolicy: ${reclaim}
 EOF
 )

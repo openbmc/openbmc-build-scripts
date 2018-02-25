@@ -30,70 +30,75 @@
 ###############################################################################
 #
 # Variables used to initialize environment:
-#  ns           = Name of namespace we will be deploying the components into,
-#                 defaults to "openbmc".
-#  nfsip        = IP address of the NFS server we will be using for mounting a
-#                 Persistent Volume (PV) to, defaults to "10.0.0.0", should be
-#                 replaced with an actual IP address of an NFS server.
-#  reclaim      = The reclaim policy that will be used when creating the PV
-#                 look at k8s docs for more info on this. Defaults to "Retain".
-#  path_prefix  = The prefix we will add to the nfspath of the directories we
-#                 intend to mount. This is used to place all the different
-#                 directories into the same parent folder on the NFS server.
-#                 defaults to "/san_mount/openbmc_k8s", should be changed to
-#                 a valid path on your NFS server.
-#  regserver    = The docker registry which will be used when pushing and
-#                 pulling images. For internal use, it will be the internal
-#                 registry created by ICP, defaults to "master.icp:8500" must
-#                 be changed to an actual registry.
-#  username     = The username that will be used to login to the regserver,
-#                 defaults to "admin", should be changed.
-#  pass         = The password that will be used to login to the regserver,
-#                 defaults to "password", should be changed.
-#  email        = The email that will be used to login to the regserver,
-#                 defaults to "email@place.holder", should be changed.
-#  k8s_master   = Set to True if you want to deploy a Jenkins Master into k8s,
-#                 defaults to True.
+#  build_scripts_dir  The path for the openbmc-build-scripts directory.
+#                     Default: The parent directory containing this script
+#  email              The email that will be used to login to the regserver.
+#                     Default: "email@place.holder", placeholder.
+#  k8s_master         Set to True if you want to deploy a Jenkins Master into
+#                     the Kubernetes deployment.
+#                     Defaults: True
+#  nfs_ip             IP address of the NFS server we will be using for mounting
+#                     a Persistent Volume (PV) to. This should be replaced with
+#                     an actual IP address of an NFS server.
+#                     Default: "10.0.0.0", placeholder
+#  ns                 Name of namespace the components will be deployed into.
+#                     Default:"openbmc"
+#  pass               The password that will be used to login to the regserver.
+#                     Default: "password", placeholder
+#  path_prefix        The prefix we will add to the nfspath of the directories
+#                     we intend to mount. This is used to place all the
+#                     different directories into the same parent folder on the
+#                     NFS server.
+#                     Default: "/san_mount/openbmc_k8s", placeholder
+#  reclaim            The reclaim policy that will be used when creating the PV
+#                     look at k8s docs for more info on this.
+#                     Default: "Retain"
+#  reg_server         The docker registry which will be used when pushing and
+#                     pulling images. For internal use, it will be the internal
+#                     registry created by ICP.
+#                     Default: "master.icp:8500", placeholder
+#  username           The username that will be used to login to the regserver.
+#                     Default: "admin", placeholder
 ###############################################################################
 
+# Variables used to initialize environment:
 build_scripts_dir=${build_scripts_dir:-"$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )/.."}
-
-ns=${ns:-openbmc}
-nfsip=${nfsip:-10.0.0.0}
-regserver=${regserver:-master.icp:8500}
-reclaim=${reclaim:-Retain}
-path_prefix=${path_prefix:-/san_mount/openbmc_k8s}
-username=${username:-admin}
-pass=${pass:-password}
 email=${email:-email\@place.holder}
 k8s_master=${k8s_master:-True}
+nfs_ip=${nfs_ip:-10.0.0.0}
+ns=${ns:-openbmc}
+pass=${pass:-password}
+path_prefix=${path_prefix:-/san_mount/openbmc_k8s}
+reclaim=${reclaim:-Retain}
+reg_server=${reg_server:-master.icp:8500}
+username=${username:-admin}
 
 echo "Create the Jenkins Slave Workspace PVC"
 name="jenkins-slave-space"
 size="100Gi"
 mode="ReadWriteMany"
-nfspath="${path_prefix}/jenkins-slave-space"
+nfs_path="${path_prefix}/jenkins-slave-space"
 source ${build_scripts_dir}/kubernetes/storage-setup.sh
 
 echo "Create the Shared State Cache PVC"
 name="shared-state-cache"
 size="100Gi"
 mode="ReadWriteMany"
-nfspath="${path_prefix}/sstate-cache"
+nfs_path="${path_prefix}/sstate-cache"
 source ${build_scripts_dir}/kubernetes/storage-setup.sh
 
 echo "Create the Openbmc Reference PVC"
 name="openbmc-reference-repo"
 size="1Gi"
 mode="ReadWriteMany"
-nfspath="${path_prefix}/openbmc"
+nfs_path="${path_prefix}/openbmc"
 source ${build_scripts_dir}/kubernetes/storage-setup.sh
 
 echo "Create the QEMU Reference PVC"
 name="qemu-repo"
 size="1Gi"
 mode="ReadWriteMany"
-nfspath="${path_prefix}/qemu"
+nfs_path="${path_prefix}/qemu"
 source ${build_scripts_dir}/kubernetes/storage-setup.sh
 
 # Create the regkey secret for the internal docker registry
@@ -101,7 +106,7 @@ kubectl create secret docker-registry regkey -n $ns \
 --docker-username=${username} \
 --docker-password=${pass} \
 --docker-email=${email} \
---docker-server=${regserver}
+--docker-server=${reg_server}
 
 # Create the docker config.json secret using the base64 encode of
 # '${username}:${pass}'
