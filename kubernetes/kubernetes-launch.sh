@@ -86,6 +86,15 @@ workaround=${workaround:-${log}}
 # Set the variables for the specific invoker to fill in the YAML template
 # Other variables in the template not declared here are declared by invoker
 case ${invoker} in
+  Build-Jenkins)
+    deploy_name=${deploy_name:-jenkins-master}
+    pod_name=${pod_name:-jenkins-master-pod}
+    new_img_name="${img_repo}jenkins-master-${ARCH}:${j_vrsn}"
+    h_claim=${h_claim:-jenkins-home}
+    cluster_ip=${cluster_ip:-10.0.0.175}
+    http_nodeport=${http_nodeport:-32222}
+    agent_nodeport=${agent_nodeport:-32223}
+    ;;
   OpenBMC-build)
     w_claim=${w_claim:-jenkins-slave-space}
     s_claim=${s_claim:-shared-state-cache}
@@ -147,7 +156,7 @@ if [[ "${launch}" == "job" ]]; then
       sleep 1
       let job_timeout-=1
     fi
-    replace=$(kubectl get pods -n ${namespaces} | grep ${pod_name} | awk 'print $1')
+    replace=$(kubectl get pods -n ${namespace} | grep ${pod_name} | awk 'print $1')
   done
   pod_name=${replace}
 fi
