@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: Pod
 metadata:
-  name: ${podname}
+  name: ${pod_name}
   namespace: ${namespace}
 spec:
   nodeSelector:
@@ -9,26 +9,26 @@ spec:
   volumes:
   - name: workspace
     persistentVolumeClaim:
-      claimName: ${wclaim}
-  - name: qemudir
+      claimName: ${w_claim}
+  - name: qemu-dir
     persistentVolumeClaim:
-      claimName: ${qclaim}
+      claimName: ${q_claim}
   restartPolicy: Never
   hostNetwork: True
   containers:
-  - image: ${imgname}
+  - image: ${img_name}
     name: builder
     command: [\"${WORKSPACE}/build.sh\"]
     workingDir: ${HOME}
     env:
     - name: WORKSPACE
       value: ${WORKSPACE}
-    - name: qemudir
-      value: ${qemudir}
+    - name: qemu-dir
+      value: ${qemu_dir}
     volumeMounts:
     - name: workspace
       mountPath: ${HOME}/workspace
-    - name: qemudir
-      mountPath: ${qemudir}
+    - name: qemu-dir
+      mountPath: ${qemu_dir}
   imagePullSecrets:
-  - name: ${imgplsec}
+  - name: ${img_pl_sec}
