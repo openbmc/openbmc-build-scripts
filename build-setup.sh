@@ -16,18 +16,18 @@
 #                     Default: "~/{RandomNumber}"
 #
 # Docker Image Build Variables:
-#  BITBAKE_OPTS       Set to "-c populate_sdk" or whatever other bitbake options
+#  BITBAKE_OPTS       Set to "-c populate_sdk" or whatever other BitBake options
 #                     you'd like to pass into the build.
 #                     Default: "", no options set
-#  builddir           Path where the actual bitbake build occurs in inside the
+#  build_dir          Path where the actual BitBake build occurs inside the
 #                     container, path cannot be located on network storage.
 #                     Default: "/tmp/openbmc"
 #  distro             The distro used as the base image for the build image:
 #                     fedora|ubuntu
 #                     Default: "ubuntu"
-#  imgname            The name given to the target build's docker image.
+#  img_name           The name given to the target build's docker image.
 #                     Default: "openbmc/${distro}:${imgtag}-${target}-${ARCH}"
-#  imgtag             The base docker image distro tag:
+#  img_tag            The base docker image distro tag:
 #                     ubuntu: latest|16.04|14.04|trusty|xenial
 #                     fedora: 23|24|25
 #                     Default: "latest"
@@ -37,9 +37,6 @@
 #                     Default: "qemu"
 #
 # Deployment Variables:
-#  extraction         Path where the ombcdir contents will be copied out to when
-#                     the build completes.
-#                     Default: "${obmcext}/build/tmp"
 #  launch             ""|job|pod
 #                     Can be left blank to launch the container via Docker
 #                     Job lets you keep a copy of job and container logs on the
@@ -47,11 +44,14 @@
 #                     job again via the api without needing this script.
 #                     Pod launches a container which runs to completion without
 #                     saving anything to the api when it completes.
-#  obmcext            Path of the OpenBMC repo directory used as a reference
+#  obmc_dir           Path of the OpenBMC repo directory used as a reference
 #                     for the build inside the container.
 #                     Default: "${WORKSPACE}/openbmc"
-#  sscdir             Path to use as the BitBake shared-state cache directory.
+#  ssc_dir            Path to use as the BitBake shared-state cache directory.
 #                     Default: "/home/${USER}"
+#  xtrct_path         Path where the build_dir contents will be copied out to
+#                     when the build completes.
+#                     Default: "${obmc_dir}/build/tmp"
 #
 ###############################################################################
 build_scripts_dir=${build_scripts_dir:-"$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"}
@@ -62,12 +62,12 @@ set -xeo pipefail
 # Default variables
 target=${target:-qemu}
 distro=${distro:-ubuntu}
-imgtag=${imgtag:-latest}
-builddir=${builddir:-/tmp/openbmc}
-sscdir=${sscdir:-${HOME}}
+img_tag=${img_tag:-latest}
+build_dir=${build_dir:-/tmp/openbmc}
+ssc_dir=${ssc_dir:-${HOME}}
 WORKSPACE=${WORKSPACE:-${HOME}/${RANDOM}${RANDOM}}
-obmcext=${obmcext:-${WORKSPACE}/openbmc}
-extraction=${extraction:-${obmcext}/build/tmp}
+obmc_dir=${obmc_dir:-${WORKSPACE}/openbmc}
+xtrct_path=${xtrct_path:-${obmc_dir}/build/tmp}
 launch=${launch:-}
 http_proxy=${http_proxy:-}
 PROXY=""
@@ -91,17 +91,17 @@ esac
 # Timestamp for job
 echo "Build started, $(date)"
 
-# If the obmcext directory doesn't exist clone it in
-if [ ! -d ${obmcext} ]; then
-  echo "Clone in openbmc master to ${obmcext}"
-  git clone https://github.com/openbmc/openbmc ${obmcext}
+# If the obmc_dir directory doesn't exist clone it in
+if [ ! -d ${obmc_dir} ]; then
+  echo "Clone in openbmc master to ${obmc_dir}"
+  git clone https://github.com/openbmc/openbmc ${obmc_dir}
 fi
 
-# Make and chown the extraction directory to avoid permission errors
-if [ ! -d ${extraction} ]; then
-  mkdir -p ${extraction}
+# Make and chown the xtrct_path directory to avoid permission errors
+if [ ! -d ${xtrct_path} ]; then
+  mkdir -p ${xtrct_path}
 fi
-chown ${UID}:${GROUPS} ${extraction}
+chown ${UID}:${GROUPS} ${xtrct_path}
 
 # Work out what build target we should be running and set BitBake command
 case ${target} in
@@ -145,7 +145,7 @@ if [[ "${distro}" == fedora ]];then
   fi
 
   Dockerfile=$(cat << EOF
-  FROM ${DOCKER_BASE}${distro}:${imgtag}
+  FROM ${DOCKER_BASE}${distro}:${img_tag}
 
   ${PROXY}
 
@@ -196,7 +196,7 @@ elif [[ "${distro}" == ubuntu ]]; then
   fi
 
   Dockerfile=$(cat << EOF
-  FROM ${DOCKER_BASE}${distro}:${imgtag}
+  FROM ${DOCKER_BASE}${distro}:${img_tag}
 
   ${PROXY}
 
@@ -251,7 +251,7 @@ cat > "${WORKSPACE}"/build.sh << EOF_SCRIPT
 set -xeo pipefail
 
 # Go into the OpenBMC directory, the build will handle changing directories
-cd ${obmcext}
+cd ${obmc_dir}
 
 # Set up proxies
 export ftp_proxy=${http_proxy}
@@ -293,39 +293,39 @@ BB_NUMBER_THREADS = "$(nproc)"
 PARALLEL_MAKE = "-j$(nproc)"
 INHERIT += "rm_work"
 BB_GENERATE_MIRROR_TARBALLS = "1"
-DL_DIR="${sscdir}/bitbake_downloads"
-SSTATE_DIR="${sscdir}/bitbake_sharedstatecache"
+DL_DIR="${ssc_dir}/bitbake_downloads"
+SSTATE_DIR="${ssc_dir}/bitbake_sharedstatecache"
 USER_CLASSES += "buildstats"
 INHERIT_remove = "uninative"
-TMPDIR="${builddir}"
+TMPDIR="${build_dir}"
 EOF_CONF
 
 # Kick off a build
 bitbake ${BITBAKE_OPTS} obmc-phosphor-image
 
-# Copy build directory of internal obmcdir into workspace directory
-cp -r ${builddir}/* ${extraction}
+# Copy internal build directory into xtrct_path directory
+cp -r ${build_dir}/* ${xtrct_path}
 EOF_SCRIPT
 
 chmod a+x ${WORKSPACE}/build.sh
 
 # Give the Docker image a name based on the distro,tag,arch,and target
-imgname=${imgname:-openbmc/${distro}:${imgtag}-${target}-${ARCH}}
+img_name=${img_name:-openbmc/${distro}:${img_tag}-${target}-${ARCH}}
 
 # Build the Docker image
-docker build -t ${imgname} - <<< "${Dockerfile}"
+docker build -t ${img_name} - <<< "${Dockerfile}"
 
 # Determine if the build container will be launched with Docker or Kubernetes
 if [[ "${launch}" == "" ]]; then
 
-  # If obmcext or sscdir are ${HOME} or a subdirectory they will not be mounted
-  mountobmcext="-v ""${obmcext}"":""${obmcext}"" "
-  mountsscdir="-v ""${sscdir}"":""${sscdir}"" "
-  if [[ "${obmcext}" = "${HOME}/"* || "${obmcext}" = "${HOME}" ]];then
-    mountobmcext=""
+  # If obmc_dir or ssc_dir are ${HOME} or a subdirectory they will not be mounted
+  mount_obmc_dir="-v ""${obmc_dir}"":""${obmc_dir}"" "
+  mount_ssc_dir="-v ""${ssc_dir}"":""${ssc_dir}"" "
+  if [[ "${obmc_dir}" = "${HOME}/"* || "${obmc_dir}" = "${HOME}" ]];then
+    mount_obmc_dir=""
   fi
-  if [[ "${sscdir}" = "${HOME}/"* || "${sscdir}" = "${HOME}" ]];then
-    mountsscdir=""
+  if [[ "${ssc_dir}" = "${HOME}/"* || "${ssc_dir}" = "${HOME}" ]];then
+    mount_ssc_dir=""
   fi
 
   # Run the Docker container, execute the build.sh script
@@ -336,9 +336,9 @@ if [[ "${launch}" == "" ]]; then
   -e WORKSPACE=${WORKSPACE} \
   -w "${HOME}" \
   -v "${HOME}":"${HOME}" \
-  ${mountobmcext} \
-  ${mountsscdir} \
-  -t ${imgname} \
+  ${mount_obmc_dir} \
+  ${mount_ssc_dir} \
+  -t ${img_name} \
   ${WORKSPACE}/build.sh
 
 elif [[ "${launch}" == "job" || "${launch}" == "pod" ]]; then
@@ -351,7 +351,7 @@ else
 fi
 
 # To maintain function of resources that used an older path, add a link
-ln -sf ${extraction}/deploy ${WORKSPACE}/deploy
+ln -sf ${xtrct_path}/deploy ${WORKSPACE}/deploy
 
 # Timestamp for build
 echo "Build completed, $(date)"
