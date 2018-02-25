@@ -1,29 +1,29 @@
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
-  name: ${deployname}
+  name: ${deploy_name}
   namespace: ${namespace}
 spec:
   replicas: ${replicas}
   selector:
     matchLabels:
-      app: ${deployname}
+      app: ${deploy_name}
   template:
     metadata:
       labels:
-        app: ${deployname}
+        app: ${deploy_name}
     spec:
       volumes:
       - name: workspace
         persistentVolumeClaim:
-          claimName: ${wclaim}
+          claimName: ${w_claim}
       nodeSelector:
         beta.kubernetes.io/arch: ${ARCH}
       securityContext:
         runAsUser: 0
       containers:
-      - image: ${imgname}
-        name: ${podname}
+      - image: ${img_name}
+        name: ${pod_name}
         command: [\"${OBMC_BUILD_DIR}/boot-qemu.sh\"]
         tty: true
         workingDir: ${OBMC_BUILD_DIR}
@@ -59,4 +59,4 @@ spec:
           subPath: ${jenkins_subpath}
           mountPath: ${OBMC_BUILD_DIR}
       imagePullSecrets:
-      - name: ${imgplsec}
+      - name: ${img_pl_sec}
