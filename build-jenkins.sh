@@ -258,7 +258,5 @@ if [[ ${launch} == "docker" ]]; then
 
 elif [[ ${launch} == "k8s" ]]; then
   # launch using the k8s template
-  echo "Not yet Implemented"
-  exit 1
   source ${build_scripts_dir}/kubernetes/kubernetes-launch.sh Build-Jenkins false false
 fi
