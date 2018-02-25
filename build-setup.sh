@@ -54,22 +54,26 @@
 #                     Default: "${obmc_dir}/build/tmp"
 #
 ###############################################################################
-build_scripts_dir=${build_scripts_dir:-"$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"}
-
 # Trace bash processing. Set -e so when a step fails, we fail the build
 set -xeo pipefail
 
-# Default variables
-target=${target:-qemu}
+# Script Variables:
+build_scripts_dir=${build_scripts_dir:-"$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"}
+http_proxy=${http_proxy:-}
+WORKSPACE=${WORKSPACE:-${HOME}/${RANDOM}${RANDOM}}
+
+# Docker Image Build Variables:
+build_dir=${build_dir:-/tmp/openbmc}
 distro=${distro:-ubuntu}
 img_tag=${img_tag:-latest}
-build_dir=${build_dir:-/tmp/openbmc}
-ssc_dir=${ssc_dir:-${HOME}}
-WORKSPACE=${WORKSPACE:-${HOME}/${RANDOM}${RANDOM}}
-obmc_dir=${obmc_dir:-${WORKSPACE}/openbmc}
-xtrct_path=${xtrct_path:-${obmc_dir}/build/tmp}
+target=${target:-qemu}
+
+# Deployment variables
 launch=${launch:-}
-http_proxy=${http_proxy:-}
+obmc_dir=${obmc_dir:-${WORKSPACE}/openbmc}
+ssc_dir=${ssc_dir:-${HOME}}
+xtrct_path=${xtrct_path:-${obmc_dir}/build/tmp}
+
 PROXY=""
 
 # Determine the architecture
