@@ -19,22 +19,22 @@
 #                     Default: "50000"
 #  http_port          The port used as Jenkins UI port.
 #                     Default: "8080"
-#  img_tag            The tag of the OpenJDK image used as the base image.
-#                     Default: "/8-jdk"
-#  j_vrsn             The version of the Jenkins war file you wish to use.
-#                     Default: "2.60.3"
-#  j_user             Username tag the container will use to run Jenkins.
-#                     Default: "jenkins"
-#  j_group            Group name tag the container will use to run Jenkins.
-#                     Default: "jenkins"
-#  j_uid              Jenkins user ID the container will use to run Jenkins.
-#                     Default: "1000"
-#  j_gif              Jenkins group ID the container will use to run Jenkins.
-#                     Default: "1000"
-#  j_home             Directory used as the Jenkins Home in the container.
-#                     Default: "/var/jenkins_home"
 #  img_name           The name given to the Docker image when it is built.
 #                     Default: "openbmc/jenkins-master-${ARCH}:${JENKINS_VRSN}"
+#  img_tag            The tag of the OpenJDK image used as the base image.
+#                     Default: "/8-jdk"
+#  j_gid              Jenkins group ID the container will use to run Jenkins.
+#                     Default: "1000"
+#  j_group            Group name tag the container will use to run Jenkins.
+#                     Default: "jenkins"
+#  j_home             Directory used as the Jenkins Home in the container.
+#                     Default: "/var/jenkins_home"
+#  j_uid              Jenkins user ID the container will use to run Jenkins.
+#                     Default: "1000"
+#  j_user             Username tag the container will use to run Jenkins.
+#                     Default: "jenkins"
+#  j_vrsn             The version of the Jenkins war file you wish to use.
+#                     Default: "2.60.3"
 #  tini_vrsn          The version of Tini to use in the Dockerfile, 0.16.1 is
 #                     the first release with ppc64le release support.
 #                     Default: "0.16.1"
@@ -46,12 +46,12 @@
 #                     Default: "${WORKSPACE}/jenkins_home"
 #  host_import_mnt    The directory on the host used to import extra files.
 #                     Default: "", import mount is ignored if not set
-#  jenkins_options    What will be passed as the environment variable for the
-#                     JENKINS_OPTS environment variable.
-#                     Default: "--prefix=/jenkins"
 #  java_options       What will be passed as the environment variable for the
 #                     JAVA_OPTS environment variable.
 #                     Default: "-Xmx4096m"
+#  jenkins_options    What will be passed as the environment variable for the
+#                     JENKINS_OPTS environment variable.
+#                     Default: "--prefix=/jenkins"
 #  launch             docker|k8s
 #                     Method in which the container will be launched. Either as
 #                     a Docker container launched via Docker, or by using a
@@ -59,32 +59,33 @@
 #                     Default: "docker"
 #
 ################################################################################
-build_scripts_dir=${build_scripts_dir:-"$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"}
-
 set -xeo pipefail
 ARCH=$(uname -m)
 
-# Launch Variables
+# Script Variables
+build_scripts_dir=${build_scripts_dir:-"$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"}
 workspace=${workspace:-${HOME}/jenkins-build-${RANDOM}}
-launch=${launch:-docker}
-home_mnt=${home_mnt:-${workspace}/jenkins_home}
-host_import_mnt=${host_import_mnt:-}
-cont_import_mnt=${cont_import_mnt:-/mnt/jenkins_import}
-jenkins_options=${jenkins_options:-"--prefix=/jenkins"}
-java_options=${java_options:-"-Xmx4096m"}
 
-# Dockerfile Variables
+# Jenkins Dockerfile Variables
+agent_port=${agent_port:-50000}
+http_port=${http_port:-8080}
+img_name=${img_name:-openbmc/jenkins-master-${ARCH}:${j_vrsn}}
+j_gid=${j_gid:-1000}
+j_group=${j_group:-jenkins}
+j_home=${j_home:-/var/jenkins_home}
+j_uid=${j_uid:-1000}
+j_user=${j_user:-jenkins}
+j_vrsn=${j_vrsn:-2.60.3}
 img_tag=${img_tag:-8-jdk}
 tini_vrsn=${tini_vrsn:-0.16.1}
-j_vrsn=${j_vrsn:-2.60.3}
-j_user=${j_user:-jenkins}
-j_group=${j_group:-jenkins}
-j_uid=${j_uid:-1000}
-j_gid=${j_gid:-1000}
-j_home=${j_home:-/var/jenkins_home}
-http_port=${http_port:-8080}
-agent_port=${agent_port:-50000}
-img_name=${img_name:-openbmc/jenkins-master-${ARCH}:${j_vrsn}}
+
+# Deployment Variables
+cont_import_mnt=${cont_import_mnt:-/mnt/jenkins_import}
+home_mnt=${home_mnt:-${workspace}/jenkins_home}
+host_import_mnt=${host_import_mnt:-}
+java_options=${java_options:-"-Xmx4096m"}
+jenkins_options=${jenkins_options:-"--prefix=/jenkins"}
+launch=${launch:-docker}
 
 # Save the Jenkins.war URL to a variable and SHA if we care about verification
 j_url=https://repo.jenkins-ci.org/public/org/jenkins-ci/main/jenkins-war/${j_vrsn}/jenkins-war-${j_vrsn}.war
