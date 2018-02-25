@@ -6,29 +6,38 @@
 #
 ###############################################################################
 #
-# Variables used for in the build:
-#  WORKSPACE    = Path of the workspace directory where some intermediate files
-#                 and the images will be saved to.
-#  qemudir      = Path of the directory that holds the QEMU repo, if none
-#                 exists will clone in the OpenBMC/QEMU repo to WORKSPACE.
-#  builddir     = Path of the directory that is created within the docker
-#                 container where the build is actually done. Done this way to
-#                 allow external volumes to be used for the qemudir.
+# Script Variables:
+#  build_scripts_dir  The path of the openbmc-build-scripts directory.
+#                     Default: The directory containing this script
+#  http_proxy         The HTTP address of the proxy server to connect to.
+#                     Default: "", proxy is not setup if this is not set
+#  qemudir            Path of the directory that holds the QEMU repo, if none
+#                     exists will clone in the OpenBMC/QEMU repo to WORKSPACE.
+#                     Default: "${WORKSPACE}/qemu"
+#  WORKSPACE          Path of the workspace directory where some intermediate
+#                     files and the images will be saved to.
+#                     Default: "~/{RandomNumber}"
 #
-# Optional Variables:
-#  launch       = job|pod
-#                 Can be left blank to launch via Docker if not using
-#                 Kubernetes to launch the container.
-#                 Job lets you keep a copy of job and container logs on the
-#                 api, can be useful if not using Jenkins as you can run the
-#                 job again via the api without needing this script.
-#                 Pod launches a container which runs to completion without
-#                 saving anything to the api when it completes.
-#  imgname      = Defaults to qemu-build with the arch as its tag, can be
-#                 changed or passed to give a specific name to created image.
-#  http_proxy   = The HTTP address for the proxy server you wish to connect to.
+# Docker Image Build Variables:
+#  builddir           Path of the directory that is created within the docker
+#                     container where the build is actually done. Done this way
+#                     to allow NFS volumes to be used as the qemudir.
+#                     Default: "/tmp/qemu"
+#  imgname            Defaults to qemu-build with the arch as its tag, can be
+#                     changed or passed to give a specific name to created image
+#
+# Deployment Variables:
+#  launch             ""|job|pod
+#                     Leave blank to launch via Docker if not using kubernetes
+#                     to launch the container.
+#                     Job lets you keep a copy of job and container logs on the
+#                     api, can be useful if not using Jenkins as you can run the
+#                     job again via the api without needing this script.
+#                     Pod launches a container which runs to completion without
+#                     saving anything to the api when it completes.
 #
 ###############################################################################
+build_scripts_dir=${build_scripts_dir:-"$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"}
 
 # Trace bash processing
 set -x
@@ -160,9 +169,7 @@ if [[ "${launch}" == "" ]]; then
       -t ${imgname} \
       ${WORKSPACE}/build.sh
 elif [[ "${launch}" == "pod" || "${launch}" == "job" ]]; then
-  . ./kubernetes/kubernetes-launch.sh QEMU-build true true
+  . ${build_scripts_dir}/kubernetes/kubernetes-launch.sh QEMU-build true true
 else
   echo "Launch Parameter is invalid"
 fi
-
-

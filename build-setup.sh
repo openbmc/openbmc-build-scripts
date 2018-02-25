@@ -6,41 +6,55 @@
 #
 ###############################################################################
 #
-# Variables used for Jenkins build job matrix:
-#  target       = barreleye|palmetto|witherspoon|firestone|garrison|evb-ast2500
-#                 zaius|romulus|qemu
-#  distro       = fedora|ubuntu
-#  imgtag       = Varies by distro. latest|16.04|14.04|trusty|xenial; 23|24|25
-#  obmcext      = Path of the OpenBMC repo directory used in creating a copy
-#                 inside the container that is not mounted to external storage
-#                 default directory location "${WORKSPACE}/openbmc"
-#  builddir     = Path of the OpenBMC directory where the build occurs inside
-#                 the container, cannot be placed on external storage default
-#                 directory location "/tmp/openbmc"
-#  sscdir       = Path of the BitBake shared-state cache directoy, will default
-#                 to directory "/home/${USER}", used to speed up builds.
-#  WORKSPACE    = Path of the workspace directory where some intermediate files
-#                 and the images will be saved to.
+# Script Variables:
+#  build_scripts_dir  The path of the openbmc-build-scripts directory.
+#                     Default: The directory containing this script
+#  http_proxy         The HTTP address of the proxy server to connect to.
+#                     Default: "", proxy is not setup if this is not set
+#  WORKSPACE          Path of the workspace directory where some intermediate
+#                     files and the images will be saved to.
+#                     Default: "~/{RandomNumber}"
 #
-#  extraction   = Path where the ombcdir contents will be copied out to when
-#                 the build completes. Defaults to ${obmcext}/build/tmp.
+# Docker Image Build Variables:
+#  BITBAKE_OPTS       Set to "-c populate_sdk" or whatever other bitbake options
+#                     you'd like to pass into the build.
+#                     Default: "", no options set
+#  builddir           Path where the actual bitbake build occurs in inside the
+#                     container, path cannot be located on network storage.
+#                     Default: "/tmp/openbmc"
+#  distro             The distro used as the base image for the build image:
+#                     fedora|ubuntu
+#                     Default: "ubuntu"
+#  imgname            The name given to the target build's docker image.
+#                     Default: "openbmc/${distro}:${imgtag}-${target}-${ARCH}"
+#  imgtag             The base docker image distro tag:
+#                     ubuntu: latest|16.04|14.04|trusty|xenial
+#                     fedora: 23|24|25
+#                     Default: "latest"
+#  target             The target we aim to build:
+#                     barreleye|evb-ast2500|firestone|garrison|palmetto|qemu
+#                     romulus|witherspoon|zaius
+#                     Default: "qemu"
 #
-# Optional Variables:
-#  launch       = job|pod
-#                 Can be left blank to launch via Docker if not using
-#                 Kubernetes to launch the container.
-#                 Job lets you keep a copy of job and container logs on the
-#                 api, can be useful if not using Jenkins as you can run the
-#                 job again via the api without needing this script.
-#                 Pod launches a container which runs to completion without
-#                 saving anything to the api when it completes.
-#  imgname      = Defaults to a relatively long but descriptive name, can be
-#                 changed or passed to give a specific name to created image.
-#  http_proxy   = The HTTP address for the proxy server you wish to connect to.
-#  BITBAKE_OPTS = Set to "-c populate_sdk" or whatever other bitbake options
-#                 you'd like to pass into the build.
+# Deployment Variables:
+#  extraction         Path where the ombcdir contents will be copied out to when
+#                     the build completes.
+#                     Default: "${obmcext}/build/tmp"
+#  launch             ""|job|pod
+#                     Can be left blank to launch the container via Docker
+#                     Job lets you keep a copy of job and container logs on the
+#                     api, can be useful if not using Jenkins as you can run the
+#                     job again via the api without needing this script.
+#                     Pod launches a container which runs to completion without
+#                     saving anything to the api when it completes.
+#  obmcext            Path of the OpenBMC repo directory used as a reference
+#                     for the build inside the container.
+#                     Default: "${WORKSPACE}/openbmc"
+#  sscdir             Path to use as the BitBake shared-state cache directory.
+#                     Default: "/home/${USER}"
 #
 ###############################################################################
+build_scripts_dir=${build_scripts_dir:-"$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"}
 
 # Trace bash processing. Set -e so when a step fails, we fail the build
 set -xeo pipefail
@@ -330,7 +344,7 @@ if [[ "${launch}" == "" ]]; then
 elif [[ "${launch}" == "job" || "${launch}" == "pod" ]]; then
 
   # Source and run the helper script to launch the pod or job
-  . ./kubernetes/kubernetes-launch.sh OpenBMC-build true true
+  . ${build_scripts_dir}/kubernetes/kubernetes-launch.sh OpenBMC-build true true
 
 else
   echo "Launch Parameter is invalid"

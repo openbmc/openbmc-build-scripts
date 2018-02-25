@@ -19,38 +19,55 @@
 #  - Image pull secret exists for image pulls in Kubernetes cluster namespace
 #
 ###############################################################################
-# Variables used to create Kubernetes Job:
-#  namespace    = the namespace to be used within the Kubernetes cluster
-#  registry     = the registry to use to pull and push images
-#  imgplsec     = the image pull secret used to access registry if needed
-#  jobtimeout   = the amount of time in seconds that the build will wait for
-#                 the job to be created in the api of the cluster.
-#  podtimeout   = the amount of time in seconds that the build will wait for
-#                 the pod to start running on the cluster.
-#  imgname      = the name the image that will be passed to the kubernetes api
-#                 to build the containers. The image with the tag imgname will
-#                 be built in the invoker script. This script will then tag it
-#                 to include the registry in the name, push it, and update the
-#                 imgname to be what was pushed to the registry. Users should
-#                 not include the registry in the original imgname.
-#  podname      = the name of the pod, will be needed to trace down the logs
+# Script Variables:
+#  build_scripts_dir  The path for the openbmc-build-scripts directory.
+#                     Default: The parent directory containing this script
+#
+# Kubernetes Variables:
+#  imgplsec           The image pull secret used to access registry if needed
+#                     Default: "regkey"
+#  imgrepo            The registry to use to pull and push images
+#                     Default: "master.cfc:8500/openbmc/""
+#  jobtimeout         The amount of time in seconds that the build will wait for
+#                     the job to be created in the api of the cluster.
+#                     Default: "60"
+#  namespace          The namespace to be used within the Kubernetes cluster
+#                     Default: "openbmc"
+#  podtimeout         The amount of time in seconds that the build will wait for
+#                     the pod to start running on the cluster.
+#                     Default: "600"
+#
+# YAML File Variables (No Defaults):
+#  imgname            The name the image that will be passed to the kubernetes
+#                     api to build the containers. The image with the tag
+#                     imgname will be built in the invoker script. This script
+#                     will then tag it to include the registry in the name, push
+#                     it, and update the imgname to be what was pushed to the
+#                     registry. Users should not include the registry in the
+#                     original imgname.
+#  podname            The name of the pod, needed to trace down the logs.
+#
+# Deployment Option Variables (No Defaults):
+#  invoker            Name of what this script is being called by or for, used
+#                     to determine the template to use for YAML file.
+#  launch             Used to determine the template used for the YAML file,
+#                     normally carried in by sourcing this script in another
+#                     script that has declared it.
+#  log                If set to true the script will tail the container logs
+#                     as part of the bash script.
+#  purge              If set to true it will delete the created object once this
+#                     script ends.
+#  workaround         Used to enable the logging workaround, when set will
+#                     launch a modified template that waits for a command. In
+#                     most cases it will be waiting to have a script run via
+#                     kubectl exec. Required when using a version of Kubernetes
+#                     that has known issues that impact the retrieval of
+#                     container logs when using kubectl. Defaulting to be true
+#                     whenever logging is enabled until ICP upgrades their
+#                     Kubernetes version to a version that doesn't need this.
 #
 ###############################################################################
-# Variables that act as script options:
-#  invoker      = name of what this script is being called by or for, used to
-#                 determine the template to use for YAML file
-#  log          = set to true to make the script tail the container logs of pod
-#  purge        = set to true delete the created object once script completes
-#  launch       = used to determine the template for YAML file, Usually brought
-#                 in by sourcing from another script but can be declared
-#  workaround   = Used to enable the logging workaround, when set will launch a
-#                 modified template that waits for a command. In most cases it
-#                 will be waiting to have a script run via kubectl exec. Needed
-#                 when using a version of Kubernetes that has known issues that
-#                 impact the retrieval of container logs when using kubectl.
-#                 Defaulting to be true whenever logging is enabled until ICP
-#                 upgrades their Kubernetes version.
-###############################################################################
+build_scripts_dir=${build_scripts_dir:-"$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )/.."}
 
 # Kubernetes Variables
 namespace=${namespace:-openbmc}
@@ -115,7 +132,7 @@ if [[ "${workaround}" == "true" ]]; then
   extras+="-v2"
 fi
 
-yamlfile=$(eval "echo \"$(<./kubernetes/Templates/${invoker}-${launch}${extras}.yaml)\"")
+yamlfile=$(eval "echo \"$(<${build_scripts_dir}/kubernetes/Templates/${invoker}-${launch}${extras}.yaml)\"")
 kubectl create -f - <<< "${yamlfile}"
 
 # If launch is a job we have to find the podname with identifiers

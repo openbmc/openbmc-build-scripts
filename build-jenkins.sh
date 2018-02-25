@@ -1,56 +1,65 @@
 #!/bin/bash
 ################################################################################
+#
 # Script used to create a Jenkins master that can run amd64 or ppc64le. It can
 # be used to launch the Jenkins master as a Docker container locally or as a
 # Kubernetes Deployment in a Kubernetes cluster.
+#
 ################################################################################
-# Launch Variables:
-#  These variables are used to determine how the master will be launched
-#  workspace          The directory that hold files used to deploy the Jenkins
-#                     master
-#                     Default: "${HOME}/jenkins-build-${RANDOM}"
-#  launch             Method in which the container will be launched, either as
-#                     a Docker container launched via Docker or by using a
-#                     helper script to launch into Kubernetes (docker or k8s)
-#                     Default: "docker"
-#  home_mnt           The directory on the host used as the Jenkins home
+#
+# Script Variables:
+#  build_scripts_dir  The path of the openbmc-build-scripts directory.
+#                     Default: The directory containing this script
+#  workspace          The directory that holds files used to build the Jenkins
+#                     master master image and volumes used to deploy it.
+#                     Default: "~/jenkins-build-${RANDOM}"
+#
+# Jenkins Dockerfile Variables:
+#  agent_port         The port used as the Jenkins slave agent port.
+#                     Default: "50000"
+#  http_port          The port used as Jenkins UI port.
+#                     Default: "8080"
+#  img_tag            The tag of the OpenJDK image used as the base image.
+#                     Default: "/8-jdk"
+#  j_vrsn             The version of the Jenkins war file you wish to use.
+#                     Default: "2.60.3"
+#  j_user             Username tag the container will use to run Jenkins.
+#                     Default: "jenkins"
+#  j_group            Group name tag the container will use to run Jenkins.
+#                     Default: "jenkins"
+#  j_uid              Jenkins user ID the container will use to run Jenkins.
+#                     Default: "1000"
+#  j_gif              Jenkins group ID the container will use to run Jenkins.
+#                     Default: "1000"
+#  j_home             Directory used as the Jenkins Home in the container.
+#                     Default: "/var/jenkins_home"
+#  out_img            The name given to the Docker image when it is built.
+#                     Default: "openbmc/jenkins-master-${ARCH}:${JENKINS_VRSN}"
+#  tini_vrsn          The version of Tini to use in the Dockerfile, 0.16.1 is
+#                     the first release with ppc64le release support.
+#                     Default: "0.16.1"
+#
+# Deployment Variables:
+#  cont_import_mnt    The directory on the container used to import extra files.
+#                     Default: "/mnt/jenkins_import", ignored if above not set
+#  home_mnt           The directory on the host used as the Jenkins home.
 #                     Default: "${WORKSPACE}/jenkins_home"
-#  host_import_mnt    The directory on the host used to import extra files
-#                     Default: "", variable ignored by default
-#  cont_import_mnt    The directory on the container used to import extra files
-#                     Default: "/mnt/jenkins_import", will be ignored by default
+#  host_import_mnt    The directory on the host used to import extra files.
+#                     Default: "", import mount is ignored if not set
 #  jenkins_options    What will be passed as the environment variable for the
 #                     JENKINS_OPTS environment variable.
 #                     Default: "--prefix=/jenkins"
 #  java_options       What will be passed as the environment variable for the
 #                     JAVA_OPTS environment variable.
 #                     Default: "-Xmx4096m"
-# Build Variables:
-#  img_tag            The tag for the OpenJDK image used to build the Dockerfile
-#                     Default: "/8-jdk"
-#  tini_vrsn          The version of Tini to use in the dockerfile, 0.16.1 is
-#                     the first release with ppc64le release support
-#                     Default: "0.16.1"
-#  j_vrsn             The version of the Jenkins war file you wish to use
-#                     Default: "2.60.3"
-#  j_user             Username tag the container will use to run Jenkins
-#                     Default: "jenkins"
-#  j_group            Group name tag the container will use to run Jenkins
-#                     Default: "jenkins"
-#  j_uid              Jenkins user ID the container will use to run Jenkins
-#                     Default: "1000"
-#  j_gif              Jenkins group ID the container will use to run Jenkins
-#                     Default: "1000"
-#  j_home             Directory used as the Jenkins Home in the container
-#                     Default: "/var/jenkins_home"
-#  http_port          The port used as Jenkins UI port
-#                     Default: "8080"
-#  agent_port         The port used as the Jenkins slave agent port
-#                     Default: "50000"
-#  out_img            The name given to the Docker image when it is built
-#                     Default: "openbmc/jenkins-master-${ARCH}:${JENKINS_VRSN}"
+#  launch             docker|k8s
+#                     Method in which the container will be launched. Either as
+#                     a Docker container launched via Docker, or by using a
+#                     helper script to launch into a Kubernetes cluster.
+#                     Default: "docker"
 #
 ################################################################################
+build_scripts_dir=${build_scripts_dir:-"$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"}
 
 set -xeo pipefail
 ARCH=$(uname -m)
@@ -251,5 +260,5 @@ elif [[ ${launch} == "k8s" ]]; then
   # launch using the k8s template
   echo "Not yet Implemented"
   exit 1
-  source ./kubernetes/kubernetes-launch.sh Build-Jenkins false false
+  source ${build_scripts_dir}/kubernetes/kubernetes-launch.sh Build-Jenkins false false
 fi
