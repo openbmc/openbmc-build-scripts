@@ -58,7 +58,17 @@ DOCKER_IMG_NAME=${DOCKER_IMG_NAME:-openbmc/ubuntu-robot-qemu}
 OBMC_BUILD_DIR=${OBMC_BUILD_DIR:-/tmp/openbmc/build}
 UPSTREAM_WORKSPACE=${UPSTREAM_WORKSPACE:-${1}}
 LAUNCH=${LAUNCH:-local}
-MACHINE=${MACHINE:-versatilepb}
+DEFAULT_MACHINE=versatilepb
+MACHINE=${MACHINE:-${DEFAULT_MACHINE}}
+
+# The automated test suite needs a real machine type so
+# if we're using versatilepb for our qemu start parameter
+# then we need to just let our run-robot use the default
+if [[ $MACHINE == $DEFAULT_MACHINE ]]; then
+    MACHINE_QEMU=
+else
+    MACHINE_QEMU=${MACHINE}
+fi
 
 # Determine the architecture
 ARCH=$(uname -m)
@@ -139,26 +149,27 @@ if [[ ${LAUNCH} == "local" ]]; then
   # Now run the Robot test (Tests commented out until they are working again)
 
   # Timestamp for job
-  #echo "Robot Test started, $(date)"
+  echo "Robot Test started, $(date)"
 
-  #mkdir -p ${WORKSPACE}
-  #cd ${WORKSPACE}
+  mkdir -p ${WORKSPACE}
+  cd ${WORKSPACE}
 
   # Copy in the script which will execute the Robot tests
-  #cp $DIR/scripts/run-robot.sh ${WORKSPACE}
+  cp $DIR/scripts/run-robot.sh ${WORKSPACE}
 
   # Run the Docker container to execute the Robot test cases
   # The test results will be put in ${WORKSPACE}
-  #docker run --rm \
-  #           --user root \
-  #           --env HOME=${HOME} \
-  #           --env IP_ADDR=${DOCKER_QEMU_IP_ADDR} \
-  #           --env SSH_PORT=${DOCKER_SSH_PORT} \
-  #           --env HTTPS_PORT=${DOCKER_HTTPS_PORT} \
-  #           --workdir ${HOME} \
-  #           --volume ${WORKSPACE}:${HOME} \
-  #           --tty \
-  #           ${DOCKER_IMG_NAME} ${HOME}/run-robot.sh
+  docker run --rm \
+             --user root \
+             --env HOME=${HOME} \
+             --env IP_ADDR=${DOCKER_QEMU_IP_ADDR} \
+             --env SSH_PORT=${DOCKER_SSH_PORT} \
+             --env HTTPS_PORT=${DOCKER_HTTPS_PORT} \
+             --env MACHINE=${MACHINE_QEMU} \
+             --workdir ${HOME} \
+             --volume ${WORKSPACE}:${HOME} \
+             --tty \
+             ${DOCKER_IMG_NAME} ${HOME}/run-robot.sh
 
   # Now stop the QEMU Docker image
   docker stop $obmc_qemu_docker
