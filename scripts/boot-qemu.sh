@@ -84,7 +84,7 @@ if [ ${MACHINE} = ${DEFAULT_MACHINE} ]; then
     # Launch default QEMU using the qemu-system-arm
     ${QEMU_BIN} \
         -device virtio-net,netdev=mynet \
-        -netdev user,id=mynet,hostfwd=tcp:${IP}:22-:22,hostfwd=tcp:${IP}:443-:443,hostfwd=tcp:${IP}:80-:80 \
+        -netdev user,id=mynet,hostfwd=tcp:${IP}:22-:22,hostfwd=tcp:${IP}:443-:443,hostfwd=tcp:${IP}:80-:80,hostfwd=tcp:${IP}:2200-:2200,hostfwd=udp:${IP}:623-:623,hostfwd=udp:${IP}:664-:664 \
         -machine versatilepb \
         -m 256 \
         -drive file=${DEFAULT_IMAGE_LOC}/qemuarm/${DRIVE},if=virtio,format=raw \
@@ -105,5 +105,5 @@ else
         -nographic \
         -drive file=${DEFAULT_IMAGE_LOC}/${MACHINE}/${DRIVE},format=raw,if=mtd \
         -net nic \
-        -net user,hostfwd=:${IP}:22-:22,hostfwd=:${IP}:443-:443,hostfwd=tcp:${IP}:80-:80,hostname=qemu
+        -net user,hostfwd=:${IP}:22-:22,hostfwd=:${IP}:443-:443,hostfwd=tcp:${IP}:80-:80,hostfwd=tcp:${IP}:2200-:2200,hostfwd=udp:${IP}:623-:623,hostfwd=udp:${IP}:664-:664,hostname=qemu
 fi
