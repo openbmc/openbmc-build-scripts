@@ -313,10 +313,14 @@ def build_dep_tree(pkg, pkgdir, dep_added, head, dep_tree=None):
         dep_tree = head
     os.chdir(pkgdir)
     # Open package's configure.ac
+    with open("/root/.depcache", "r") as depcache:
+        cached = depcache.readline()
     with open("configure.ac", "rt") as configure_ac:
         # Retrieve dependency list from package's configure.ac
         configure_ac_deps = get_deps(configure_ac)
         for dep_pkg in configure_ac_deps:
+            if dep_pkg in cached:
+                continue
             # Dependency package not already known
             if dep_added.get(dep_pkg) is None:
                 # Dependency package not added
