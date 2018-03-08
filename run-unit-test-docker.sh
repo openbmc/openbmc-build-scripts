@@ -2,17 +2,16 @@
 
 # This build script is for running the Jenkins unit test builds using docker.
 #
-# It uses a few variables which are part of Jenkins build job matrix:
-#   distro = fedora|ubuntu|ubuntu:14.04|ubuntu:16.04
-#   dbus_sys_config_file = <path of the dbus config file>
+#   DISTRO = Docker base image. Ubuntu and Fedora are supported.
 #   WORKSPACE = <location of unit test execution script>
+#   dbus_sys_config_file = <path of the dbus config file>
 
 # Trace bash processing. Set -e so when a step fails, we fail the build
 set -uo pipefail
 
 # Default variables
 DOCKER_IMG_NAME="openbmc/ubuntu-unit-test"
-DISTRO=${distro:-ubuntu:latest}
+DISTRO=${DISTRO:-ubuntu:latest}
 WORKSPACE=${WORKSPACE:-${TMP}/unit-test${RANDOM}}
 OBMC_BUILD_SCRIPTS="openbmc-build-scripts"
 UNIT_TEST_PY_DIR="scripts"
