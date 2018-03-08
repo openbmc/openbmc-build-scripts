@@ -232,10 +232,13 @@ def clone_pkg(pkg):
     Parameter descriptions:
     pkg                 Name of the package to clone
     """
+    pkg_dir = os.path.join(WORKSPACE, pkg)
+    if os.path.exists(os.path.join(pkg_dir, '.git')):
+        return pkg_dir
     pkg_repo = urljoin('https://gerrit.openbmc-project.xyz/openbmc/', pkg)
-    os.mkdir(os.path.join(WORKSPACE, pkg))
-    printline(os.path.join(WORKSPACE, pkg), "> git clone", pkg_repo, "./")
-    return Repo.clone_from(pkg_repo, os.path.join(WORKSPACE, pkg))
+    os.mkdir(pkg_dir)
+    printline(pkg_dir, "> git clone", pkg_repo, "./")
+    return Repo.clone_from(pkg_repo, pkg_dir).working_dir
 
 
 def get_deps(configure_ac):
@@ -319,13 +322,12 @@ def build_dep_tree(pkg, pkgdir, dep_added, head, dep_tree=None):
                 # Dependency package not added
                 new_child = dep_tree.AddChild(dep_pkg)
                 dep_added[dep_pkg] = False
-                dep_repo = clone_pkg(dep_pkg)
+                dep_pkgdir = clone_pkg(dep_pkg)
                 # Determine this dependency package's
                 # dependencies and add them before
                 # returning to add this package
-                dep_pkgdir = os.path.join(WORKSPACE, dep_pkg)
                 dep_added = build_dep_tree(dep_pkg,
-                                           dep_repo.working_dir,
+                                           dep_pkgdir,
                                            dep_added,
                                            head,
                                            new_child)
