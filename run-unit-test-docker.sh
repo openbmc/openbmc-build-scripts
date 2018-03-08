@@ -24,10 +24,7 @@ DBUS_SYS_CONFIG_FILE=${dbus_sys_config_file:-"/usr/share/dbus-1/system.conf"}
 # Timestamp for job
 echo "Unit test build started, $(date)"
 
-# Currently only support ubuntu:latest due to systemd requirements
-if [[ "${DISTRO}" == "ubuntu"* ]]; then
-    DISTRO="ubuntu:latest"
-elif [[ "${DISTRO}" == "fedora" ]]; then
+if [[ "${DISTRO}" == "fedora" ]]; then
     echo "Distro (${DISTRO}) not supported, running as ubuntu"
     DISTRO="ubuntu:latest"
 fi
