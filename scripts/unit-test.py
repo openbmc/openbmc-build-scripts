@@ -10,6 +10,7 @@ prior to executing its unit tests.
 from git import Repo
 from urlparse import urljoin
 from subprocess import check_call, call
+from multiprocessing import cpu_count
 import os
 import sys
 import argparse
@@ -291,7 +292,7 @@ def install_deps(dep_list):
             conf_flags.extend(CONFIGURE_FLAGS.get(pkg))
         check_call_cmd(pkgdir, './bootstrap.sh')
         check_call_cmd(pkgdir, './configure', *conf_flags)
-        check_call_cmd(pkgdir, 'make')
+        check_call_cmd(pkgdir, 'make', "-j{}".format(cpu_count()), 'V=1')
         check_call_cmd(pkgdir, 'make', 'install')
 
 
@@ -434,9 +435,8 @@ if __name__ == '__main__':
     # Refresh dynamic linker run time bindings for dependencies
     check_call_cmd(os.path.join(WORKSPACE, UNIT_TEST_PKG), 'ldconfig')
     # Run package unit tests
+    cmd = [ 'make', '-j{}'.format(cpu_count()), 'check' ]
     if args.verbose:
-        check_call_cmd(os.path.join(WORKSPACE, UNIT_TEST_PKG), 'make', 'check',
-                       'VERBOSE=1')
-    else:
-        check_call_cmd(os.path.join(WORKSPACE, UNIT_TEST_PKG), 'make', 'check')
+        cmd.append('V=1')
+    check_call_cmd(os.path.join(WORKSPACE, UNIT_TEST_PKG), *cmd)
     os.umask(prev_umask)
