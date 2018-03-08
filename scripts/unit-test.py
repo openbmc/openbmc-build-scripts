@@ -389,6 +389,8 @@ if __name__ == '__main__':
                         help="OpenBMC package to be unit tested")
     parser.add_argument("-v", "--verbose", action="store_true",
                         help="Print additional package status messages")
+    parser.add_argument("-r", "--repeat", help="Repeat tests N times",
+                        type=int, default=1)
     args = parser.parse_args(sys.argv[1:])
     WORKSPACE = args.WORKSPACE
     UNIT_TEST_PKG = args.PACKAGE
@@ -435,7 +437,9 @@ if __name__ == '__main__':
     check_call_cmd(os.path.join(WORKSPACE, UNIT_TEST_PKG), 'ldconfig')
     # Run package unit tests
     try:
-        check_call_cmd(os.path.join(WORKSPACE, UNIT_TEST_PKG),  'make', 'check')
+        cmd = [ 'make', 'check' ]
+        for i in range(0, args.repeat):
+            check_call_cmd(os.path.join(WORKSPACE, UNIT_TEST_PKG),  *cmd)
     except CalledProcessError:
         check_call_cmd(os.path.join(WORKSPACE, UNIT_TEST_PKG), "cat",
             os.path.join(WORKSPACE, UNIT_TEST_PKG, "test/test-suite.log"))
