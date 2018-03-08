@@ -14,7 +14,22 @@ import argparse
 import re
 import tempfile
 
-def launch_session_dbus(dbus_dir, dbus_config_file):
+def mangle_dbus_config(dbus_dir, system, local):
+    dbus_pid = os.path.join(dbus_dir, 'pid')
+    dbus_socket = os.path.join(dbus_dir, 'system_bus_socket')
+    for line in system:
+        line = re.sub('<type>.*</type>','<type>session</type>', \
+                      line, flags=re.DOTALL)
+        line = re.sub('<pidfile>.*</pidfile>', \
+                      '<pidfile>%s</pidfile>' % dbus_pid, \
+                      line, flags=re.DOTALL)
+        line = re.sub('<listen>.*</listen>', \
+                      '<listen>unix:path=%s</listen>' % dbus_socket, \
+                      line, flags=re.DOTALL)
+        line = re.sub('<deny','<allow', line)
+        local.write(line)
+
+def launch_session_dbus(dbus_dir, system):
     """
     Launches a session debus using a modified config file and
     sets the DBUS_SESSION_BUS_ADDRESS environment variable
@@ -23,27 +38,15 @@ def launch_session_dbus(dbus_dir, dbus_config_file):
     dbus_dir            Directory location for generated files
     dbus_config_file    File location of dbus sys config file
     """
+    local = os.path.join(dbus_dir,'system-local.conf')
+    with open(system) as infile, open(local, 'w') as outfile:
+        mangle_dbus_config(dbus_dir, infile, outfile)
+
     dbus_pid = os.path.join(dbus_dir,'pid')
-    dbus_socket = os.path.join(dbus_dir,'system_bus_socket')
-    dbus_local_conf = os.path.join(dbus_dir,'system-local.conf')
     if os.path.isfile(dbus_pid):
         os.remove(dbus_pid)
-    with open(dbus_config_file) as infile, \
-         open(dbus_local_conf, 'w') as outfile:
-        for line in infile:
-            line = re.sub('<type>.*</type>','<type>session</type>', \
-                          line, flags=re.DOTALL)
-            line = re.sub('<pidfile>.*</pidfile>', \
-                          '<pidfile>%s</pidfile>' % dbus_pid, \
-                          line, flags=re.DOTALL)
-            line = re.sub('<listen>.*</listen>', \
-                          '<listen>unix:path=%s</listen>' % dbus_socket, \
-                          line, flags=re.DOTALL)
-            line = re.sub('<deny','<allow', line)
-            outfile.write(line)
-    infile.close()
-    outfile.close()
-    command = ['dbus-daemon', '--config-file=%s' % dbus_local_conf, \
+
+    command = ['dbus-daemon', '--config-file=%s' % local, \
                '--print-address']
     out = check_output(command).splitlines()
     os.environ['DBUS_SESSION_BUS_ADDRESS'] = out[0]
@@ -77,15 +80,22 @@ if __name__ == '__main__':
 
     parser.add_argument("-f", "--dbussysconfigfile",
                         dest="DBUS_SYS_CONFIG_FILE",
-                        required=True, help="Dbus sys config file location")
+                        help="Dbus sys config file location")
     parser.add_argument("-u", "--unittestandparams",
                         dest="UNIT_TEST",
-                        required=True, help="Unit test script and params \
-                        as comma delimited string")
+                        help="Unit test script and params as comma delimited string")
+    parser.add_argument("-m", "--mangle", action='store_true',
+                        help="Mangle a DBus configuration file. Requires --directory")
+    parser.add_argument("-d", "--directory",
+                        help="The DBus state directory. Required for --mangle")
     args = parser.parse_args(sys.argv[1:])
-    DBUS_DIR = tempfile.mkdtemp()
+    DBUS_DIR = tempfile.mkdtemp() if args.directory is None else args.directory
     DBUS_SYS_CONFIG_FILE = args.DBUS_SYS_CONFIG_FILE
     UNIT_TEST = args.UNIT_TEST
+
+    if args.mangle:
+        mangle_dbus_config(DBUS_DIR, sys.stdin, sys.stdout)
+        sys.exit(0)
 
     launch_session_dbus(DBUS_DIR, DBUS_SYS_CONFIG_FILE)
     check_call(UNIT_TEST.split(','), env=os.environ)
