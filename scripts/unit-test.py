@@ -9,7 +9,7 @@ prior to executing its unit tests.
 
 from git import Repo
 from urlparse import urljoin
-from subprocess import check_call, call
+from subprocess import check_call, call, CalledProcessError
 from multiprocessing import cpu_count
 import os
 import sys
@@ -435,8 +435,12 @@ if __name__ == '__main__':
     # Refresh dynamic linker run time bindings for dependencies
     check_call_cmd(os.path.join(WORKSPACE, UNIT_TEST_PKG), 'ldconfig')
     # Run package unit tests
-    cmd = [ 'make', '-j{}'.format(cpu_count()), 'check' ]
-    if args.verbose:
-        cmd.append('V=1')
-    check_call_cmd(os.path.join(WORKSPACE, UNIT_TEST_PKG), *cmd)
+    try:
+        cmd = [ 'make', '-j{}'.format(cpu_count()), 'check' ]
+        if args.verbose:
+            cmd.append('V=1')
+        check_call_cmd(os.path.join(WORKSPACE, UNIT_TEST_PKG), *cmd)
+    except CalledProcessError:
+        check_call_cmd(os.path.join(WORKSPACE, UNIT_TEST_PKG), "cat",
+            os.path.join(WORKSPACE, UNIT_TEST_PKG, "test/test-suite.log"))
     os.umask(prev_umask)
