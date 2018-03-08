@@ -32,6 +32,16 @@ case ${ARCH} in
         exit 1
 esac
 
+PKGS="phosphor-objmgr sdbusplus phosphor-logging phosphor-dbus-interfaces"
+PKGS+=" openpower-dbus-interfaces"
+DEPCACHE=
+for package in $PKGS
+do
+    tip=$(git ls-remote https://github.com/openbmc/${package} |
+           grep 'refs/heads/master' | awk '{ print $1 }')
+    DEPCACHE+=${package}:${tip},
+done
+
 ################################# docker img # #################################
 # Create docker image that can run package unit tests
 if [[ "${DISTRO}" == "ubuntu"* ]]; then
@@ -99,6 +109,47 @@ RUN grep -q ${GROUPS} /etc/group || groupadd -g ${GROUPS} ${USER}
 RUN grep -q ${UID} /etc/passwd || useradd -d ${HOME} -m -u ${UID} -g ${GROUPS} ${USER}
 
 RUN echo '${AUTOM4TE}' > ${AUTOM4TE_CFG}
+
+# Sneaky use of Dockerfile semantics! Force a rebuild of the image if master
+# has been updated in any of the repositories in $PKGS: This happens as a
+# consequence of the ls-remotes above, which will change the value of
+# ${DEPCACHE} and therefore trigger rebuilds of all of the following layers.
+RUN echo '${DEPCACHE}' > /root/.depcache
+
+RUN git clone https://github.com/openbmc/sdbusplus && \
+cd sdbusplus && \
+./bootstrap.sh && \
+./configure --enable-transaction && \
+make -j$(nproc) && \
+make install
+
+RUN git clone https://github.com/openbmc/phosphor-dbus-interfaces && \
+cd phosphor-dbus-interfaces && \
+./bootstrap.sh && \
+./configure && \
+make -j$(nproc) && \
+make install
+
+RUN git clone https://github.com/openbmc/openpower-dbus-interfaces && \
+cd openpower-dbus-interfaces && \
+./bootstrap.sh && \
+./configure && \
+make -j$(nproc) && \
+make install
+
+RUN git clone https://github.com/openbmc/phosphor-logging && \
+cd phosphor-logging && \
+./bootstrap.sh && \
+./configure --enable-metadata-processing YAML_DIR=/usr/local/share/phosphor-dbus-yaml/yaml && \
+make -j$(nproc) && \
+make install
+
+RUN git clone https://github.com/openbmc/phosphor-objmgr && \
+cd phosphor-objmgr && \
+./bootstrap.sh && \
+./configure --enable-unpatched-systemd && \
+make -j$(nproc) && \
+make install
 
 RUN /bin/bash
 EOF
