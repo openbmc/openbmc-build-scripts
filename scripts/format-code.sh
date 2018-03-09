@@ -27,3 +27,10 @@ if [ -f ".clang-format" ]; then
      xargs -0 "clang-format-5.0" -i
   git --no-pager diff --exit-code
 fi
+
+# Sometimes your situation is terrible enough that you need the flexibility.
+# For example, phosphor-mboxd.
+if [ -f "format-code.sh" ]; then
+  ./format-code.sh
+  git --no-pager diff --exit-code
+fi
