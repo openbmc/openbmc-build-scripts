@@ -19,6 +19,7 @@ UNIT_TEST_PY="unit-test.py"
 FORMAT_CODE_SH="format-code.sh"
 DBUS_UNIT_TEST_PY="dbus-unit-test.py"
 DBUS_SYS_CONFIG_FILE=${dbus_sys_config_file:-"/usr/share/dbus-1/system.conf"}
+MAKEFLAGS="${MAKEFLAGS:-""}"
 
 # Timestamp for job
 echo "Unit test build started, $(date)"
@@ -70,6 +71,7 @@ echo "Executing docker image"
 docker run --cap-add=sys_admin --rm=true \
     --privileged=true \
     -w "${WORKSPACE}" -v "${WORKSPACE}":"${WORKSPACE}" \
+    -e "MAKEFLAGS=${MAKEFLAGS}" \
     -t ${DOCKER_IMG_NAME} \
     ${WORKSPACE}/${DBUS_UNIT_TEST_PY} -u ${UNIT_TEST} \
     -f ${DBUS_SYS_CONFIG_FILE}
