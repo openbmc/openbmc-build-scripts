@@ -77,7 +77,8 @@ RUN apt-get update && apt-get install -yy \
     git \
     dbus \
     iputils-ping \
-    clang-format-5.0
+    clang-format-5.0 \
+    iproute2
 
 RUN easy_install pip
 RUN pip install inflection
