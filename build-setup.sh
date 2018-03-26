@@ -14,6 +14,8 @@
 #  WORKSPACE          Path of the workspace directory where some intermediate
 #                     files and the images will be saved to.
 #                     Default: "~/{RandomNumber}"
+#  num_cpu            Number of cpu's to give bitbake, default is total amount
+#                     in system
 #
 # Docker Image Build Variables:
 #  BITBAKE_OPTS       Set to "-c populate_sdk" or whatever other BitBake options
@@ -61,6 +63,7 @@ set -xeo pipefail
 build_scripts_dir=${build_scripts_dir:-"$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"}
 http_proxy=${http_proxy:-}
 WORKSPACE=${WORKSPACE:-${HOME}/${RANDOM}${RANDOM}}
+num_cpu=${num_cpu:-$(nproc)}
 
 # Docker Image Build Variables:
 build_dir=${build_dir:-/tmp/openbmc}
@@ -342,6 +345,7 @@ if [[ "${launch}" == "" ]]; then
   -v "${HOME}":"${HOME}" \
   ${mount_obmc_dir} \
   ${mount_ssc_dir} \
+  --cpus ="$num_cpu" \
   -t ${img_name} \
   ${WORKSPACE}/build.sh
 
