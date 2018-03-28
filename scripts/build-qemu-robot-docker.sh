@@ -25,6 +25,7 @@ FROM ${DOCKER_BASE}ubuntu:latest
 ENV DEBIAN_FRONTEND noninteractive
 
 RUN apt-get update && apt-get install -yy \
+    sshpass \
     debianutils \
     gawk \
     git \
