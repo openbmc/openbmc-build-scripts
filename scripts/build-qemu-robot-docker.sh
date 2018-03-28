@@ -53,7 +53,8 @@ RUN apt-get update && apt-get install -yy \
     curl \
     build-essential \
     libpixman-1-0 \
-    libglib2.0-0
+    libglib2.0-0 \
+    sshpass
 
 RUN easy_install \
     tox \
