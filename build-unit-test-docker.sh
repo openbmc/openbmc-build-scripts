@@ -78,7 +78,9 @@ RUN apt-get update && apt-get install -yy \
     dbus \
     iputils-ping \
     clang-format-5.0 \
-    iproute2
+    iproute2 \
+    bison \
+    flex
 
 RUN easy_install pip
 RUN pip install inflection
@@ -149,6 +151,13 @@ RUN git clone https://github.com/openbmc/phosphor-objmgr && \
 cd phosphor-objmgr && \
 ./bootstrap.sh && \
 ./configure --enable-unpatched-systemd && \
+make -j$(nproc) && \
+make install
+
+RUN git clone https://github.com/thom311/libnl && \
+cd libnl && \
+./autogen.sh && \
+./configure --prefix=/usr && \
 make -j$(nproc) && \
 make install
 
