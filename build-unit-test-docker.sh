@@ -78,7 +78,10 @@ RUN apt-get update && apt-get install -yy \
     dbus \
     iputils-ping \
     clang-format-5.0 \
-    iproute2
+    iproute2 \
+    bison \
+    flex \
+    libnl-3-dev=3.2.29
 
 RUN easy_install pip
 RUN pip install inflection
@@ -152,10 +155,6 @@ cd phosphor-objmgr && \
 make -j$(nproc) && \
 make install
 
-RUN /bin/bash
-EOF
-)
-fi
 ################################# docker img # #################################
 
 # Build above image
