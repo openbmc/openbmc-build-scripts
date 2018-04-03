@@ -129,7 +129,7 @@ if [[ ${LAUNCH} == "local" ]]; then
   trap '' PIPE
 
   DOCKER_QEMU_IP_ADDR="$(docker inspect $obmc_qemu_docker |  \
-                       grep -m 1 "IPAddress\":" | cut -d '"' -f 4)"
+                       grep "IPAddress\":" | tail -n1 | cut -d '"' -f 4)"
 
   #Now wait for the OpenBMC QEMU Docker instance to get to standby
   delay=5
