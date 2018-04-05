@@ -54,7 +54,10 @@ RUN apt-get update && apt-get install -yy \
     build-essential \
     libpixman-1-0 \
     libglib2.0-0 \
-    sshpass
+    sshpass \
+    libasound2 \
+    libfdt1 \
+    libpcre3
 
 RUN easy_install \
     tox \
