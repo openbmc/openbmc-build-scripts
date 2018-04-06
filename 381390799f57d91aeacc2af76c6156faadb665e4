@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "5ac10518_334b352d",
+        "filename": "build-gerrit.sh",
+        "patchSetId": 3
+      },
+      "lineNbr": 97,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2018-04-06T15:35:26Z",
+      "side": 1,
+      "message": "Probably should make this a parameter you pass in",
+      "range": {
+        "startLine": 97,
+        "startChar": 79,
+        "endLine": 97,
+        "endChar": 88
+      },
+      "revId": "381390799f57d91aeacc2af76c6156faadb665e4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5ac10518_5348412d",
+        "filename": "build-gerrit.sh",
+        "patchSetId": 3
+      },
+      "lineNbr": 116,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2018-04-06T15:35:26Z",
+      "side": 1,
+      "message": "Probably be nice if this was configurable as well",
+      "range": {
+        "startLine": 116,
+        "startChar": 20,
+        "endLine": 116,
+        "endChar": 65
+      },
+      "revId": "381390799f57d91aeacc2af76c6156faadb665e4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    }
+  ]
+}
