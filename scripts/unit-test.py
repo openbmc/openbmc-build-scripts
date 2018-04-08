@@ -407,6 +407,10 @@ if __name__ == '__main__':
     CODE_SCAN_DIR = WORKSPACE + "/" + UNIT_TEST_PKG
     check_call_cmd(WORKSPACE, "./format-code.sh", CODE_SCAN_DIR)
 
+    # Do a npm install if npm repo (e.g. phosphor-webui)
+    if os.path.isfile(CODE_SCAN_DIR + "/package.json"):
+        check_call_cmd(CODE_SCAN_DIR, "npm install")
+
     # The rest of this script is CI testing, which currently only supports
     # Automake based repos. Check if this repo is Automake, if not exit
     if not os.path.isfile(CODE_SCAN_DIR + "/configure.ac"):
