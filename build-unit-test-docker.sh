@@ -80,7 +80,9 @@ RUN apt-get update && apt-get install -yy \
     clang-format-5.0 \
     iproute2 \
     libnl-3-dev \
-    libnl-genl-3-dev
+    libnl-genl-3-dev \
+    npm \
+    nodejs
 
 RUN easy_install pip
 RUN pip install inflection
