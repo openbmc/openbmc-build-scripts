@@ -1,7 +1,7 @@
 #!/bin/bash
 ###############################################################################
 #
-# This script is for initializing the Kubernetes environement needed to run all
+# This script is for initializing the Kubernetes environment needed to run all
 # the kubernetes integrated scripts in Kubernetes.
 # - Provisions the PV's and PVC's for:
 #   * The Kubernetes JNLP Jenkins slave's shared workspace
@@ -16,7 +16,7 @@
 # - Provision the PV and PVC for the Jenkin Master home directory
 #
 # Instructions:
-#  Suggested way to run is to create a seperate script that will export all the
+#  Suggested way to run is to create a separate script that will export all the
 #  necessary variables and then source in this script. But editing this one
 #  works as well.
 #
