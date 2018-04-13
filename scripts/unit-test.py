@@ -371,6 +371,7 @@ if __name__ == '__main__':
         'PKG_CHECK_MODULES': {
             'phosphor-dbus-interfaces': 'phosphor-dbus-interfaces',
             'openpower-dbus-interfaces': 'openpower-dbus-interfaces',
+            'ibm-dbus-interfaces': 'ibm-dbus-interfaces',
             'sdbusplus': 'sdbusplus',
             'phosphor-logging': 'phosphor-logging',
         },
