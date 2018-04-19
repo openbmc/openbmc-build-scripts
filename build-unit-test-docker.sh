@@ -92,13 +92,17 @@ RUN cd autoconf-archive-2016.09.16 && ./configure --prefix=/usr && make && make 
 
 RUN wget https://github.com/google/googletest/archive/release-1.8.0.tar.gz
 RUN tar -xzf release-1.8.0.tar.gz
-RUN cd googletest-release-1.8.0 && cmake -DBUILD_SHARED_LIBS=ON . && make && \
-cp -a googletest/include/gtest /usr/include && \
-cp -a googlemock/include/gmock /usr/include && \
-cp -a googlemock/gtest/libgtest.so /usr/lib/ && \
-cp -a googlemock/gtest/libgtest_main.so /usr/lib/ && \
-cp -a googlemock/libgmock.so /usr/lib/ && \
-cp -a googlemock/libgmock_main.so /usr/lib/
+RUN wget https://raw.githubusercontent.com/openbmc/openbmc/master/import-layers/meta-openembedded/meta-oe/recipes-test/gtest/gtest/Add-pkg-config-support.patch
+RUN cp Add-pkg-config-support.patch googletest-release-1.8.0/.
+RUN cd googletest-release-1.8.0 && git init && \
+git add googlemock/CMakeLists.txt googletest/CMakeLists.txt && \
+git config --global user.email "janedoe@openbmc.org" && \
+git config --global user.name "Jane Doe" && \
+git commit -a -m "."
+RUN cd googletest-release-1.8.0 && git am Add-pkg-config-support.patch
+RUN cd googletest-release-1.8.0 && \
+cmake -DBUILD_SHARED_LIBS=ON -DCMAKE_INSTALL_PREFIX:PATH=/usr -DCMAKE_INSTALL_LIBDIR:PATH=/usr/lib -DCMAKE_INSTALL_INCLUDEDIR:PATH=/usr/include . && \
+make && make install
 
 RUN wget https://github.com/USCiLab/cereal/archive/v1.2.2.tar.gz
 RUN tar -xzf v1.2.2.tar.gz
