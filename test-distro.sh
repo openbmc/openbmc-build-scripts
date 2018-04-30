@@ -62,7 +62,8 @@ do
       echo build and test the repositories described in config.xml. Individual
       echo repositories can be tested against DOCKERBASE with the --repository
       echo option \(in place of --config\).
-
+      exit 0
+      ;;
     *)
       (>&2 echo Unrecognised argument \'$1\')
       shift
