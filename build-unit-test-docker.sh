@@ -61,11 +61,13 @@ RUN apt-get update && apt-get install -yy \
     python-git \
     python-yaml \
     python-mako \
+    python-pip \
     python-setuptools \
     python3 \
     python3-dev\
     python3-yaml \
     python3-mako \
+    python3-pip \
     python3-setuptools \
     pkg-config \
     autoconf \
@@ -82,7 +84,6 @@ RUN apt-get update && apt-get install -yy \
     libnl-3-dev \
     libnl-genl-3-dev
 
-RUN easy_install pip
 RUN pip install inflection
 RUN pip install pycodestyle
 
