@@ -442,6 +442,9 @@ if __name__ == '__main__':
         for i in range(0, args.repeat):
             check_call_cmd(os.path.join(WORKSPACE, UNIT_TEST_PKG),  *cmd)
     except CalledProcessError:
-        check_call_cmd(os.path.join(WORKSPACE, UNIT_TEST_PKG), "cat",
-            os.path.join(WORKSPACE, UNIT_TEST_PKG, "test/test-suite.log"))
+        for relpath in ("test/test-suite.log", "src/test/test-suite.log"):
+            log = os.path.join(WORKSPACE, UNIT_TEST_PKG, relpath)
+            if not os.path.exists(log):
+                continue
+            check_call_cmd(os.path.join(WORKSPACE, UNIT_TEST_PKG), "cat", log)
     os.umask(prev_umask)
