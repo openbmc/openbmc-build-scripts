@@ -12,6 +12,8 @@
 DIR=$1
 cd ${DIR}
 
+set -e
+
 echo "Formatting code under $DIR/"
 
 if [ -f "setup.cfg" ]; then
