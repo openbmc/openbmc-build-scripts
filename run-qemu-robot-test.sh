@@ -177,6 +177,9 @@ if [[ ${LAUNCH} == "local" ]]; then
              --tty \
              ${DOCKER_IMG_NAME} ${HOME}/run-robot.sh
 
+  # Get the logs from the QEMU docker image
+  docker logs $obmc_qemu_docker
+
   # Now stop the QEMU Docker image
   docker stop $obmc_qemu_docker
 
