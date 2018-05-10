@@ -82,7 +82,8 @@ RUN apt-get update && apt-get install -yy \
     clang-format-5.0 \
     iproute2 \
     libnl-3-dev \
-    libnl-genl-3-dev
+    libnl-genl-3-dev \
+    libconfig++-dev
 
 RUN pip install inflection
 RUN pip install pycodestyle
