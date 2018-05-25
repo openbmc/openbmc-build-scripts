@@ -83,7 +83,8 @@ RUN apt-get update && apt-get install -yy \
     iproute2 \
     libnl-3-dev \
     libnl-genl-3-dev \
-    libconfig++-dev
+    libconfig++-dev \
+    libsnmp-dev
 
 RUN pip install inflection
 RUN pip install pycodestyle
