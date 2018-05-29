@@ -5,10 +5,13 @@
 #  Parameters:
 #   parm1:  <optional, the name of the docker image to generate>
 #            default is openbmc/ubuntu-robot-qemu
+#   param2: <optional, the distro to build a docker image against>
+#            default is ubuntu:artful
 
 set -uo pipefail
 
 DOCKER_IMG_NAME=${1:-"openbmc/ubuntu-robot-qemu"}
+DISTRO=${2:-"ubuntu:artful"}
 
 # Determine our architecture, ppc64le or the other one
 if [ $(uname -m) == "ppc64le" ]; then
@@ -20,7 +23,7 @@ fi
 ################################# docker img # #################################
 # Create docker image that can run QEMU and Robot Tests
 Dockerfile=$(cat << EOF
-FROM ${DOCKER_BASE}ubuntu:latest
+FROM ${DOCKER_BASE}${DISTRO}
 
 ENV DEBIAN_FRONTEND noninteractive
 
