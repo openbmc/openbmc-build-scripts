@@ -165,7 +165,8 @@ if [[ ${LAUNCH} == "local" ]]; then
 
   # Run the Docker container to execute the Robot test cases
   # The test results will be put in ${WORKSPACE}
-  docker run --rm \
+  obmc_test_docker=$(docker run --rm \
+             --detach \
              --user root \
              --env HOME=${HOME} \
              --env IP_ADDR=${DOCKER_QEMU_IP_ADDR} \
@@ -175,10 +176,12 @@ if [[ ${LAUNCH} == "local" ]]; then
              --workdir ${HOME} \
              --volume ${WORKSPACE}:${HOME} \
              --tty \
-             ${DOCKER_IMG_NAME} ${HOME}/run-robot.sh
+             ${DOCKER_IMG_NAME} ${HOME}/run-robot.sh)
 
   # Now stop the QEMU Docker image
-  docker stop $obmc_qemu_docker
+  #docker stop $obmc_qemu_docker
+  print "QEMU Docker: $obmc_qemu_docker"
+  print "Test Docker: $obmc_test_docker"
 
 elif [[ ${LAUNCH} == "k8s" ]]; then
   # Package the Upstream into an image based off the one created by the build-qemu-robot.sh
