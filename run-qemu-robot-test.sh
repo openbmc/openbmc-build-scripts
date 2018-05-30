@@ -179,6 +179,8 @@ if [[ ${LAUNCH} == "local" ]]; then
 
   # Now stop the QEMU Docker image
   docker stop $obmc_qemu_docker
+  # print "QEMU Docker: $obmc_qemu_docker"
+  # print "Test Docker: $obmc_test_docker"
 
 elif [[ ${LAUNCH} == "k8s" ]]; then
   # Package the Upstream into an image based off the one created by the build-qemu-robot.sh
