@@ -1,0 +1,11 @@
+Code-Review+1: Michael Walsh <micwalsh@us.ibm.com>
+Code-Review+1: George Keishing <gkeishin@in.ibm.com>
+Code-Review+1: Matthew Barth <msbarth@linux.ibm.com>
+Code-Review+1: Brad Bishop <bradleyb@fuzziesquirrel.com>
+Code-Review+2: Andrew Geissler <geissonator@yahoo.com>
+Verified+1: Andrew Geissler <geissonator@yahoo.com>
+Submitted-by: Andrew Geissler <geissonator@yahoo.com>
+Submitted-at: Thu, 31 May 2018 21:44:05 +0000
+Reviewed-on: https://gerrit.openbmc-project.xyz/10665
+Project: openbmc/openbmc-build-scripts
+Branch: refs/heads/master
