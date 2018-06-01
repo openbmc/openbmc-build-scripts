@@ -34,8 +34,8 @@
 #                     fedora: 23|24|25
 #                     Default: "latest"
 #  target             The target we aim to build:
-#                     barreleye|evb-ast2500|firestone|garrison|palmetto|qemu
-#                     romulus|witherspoon|zaius
+#                     barreleye|evb-ast2500|palmetto|qemu|romulus|witherspoon
+#                     zaius
 #                     Default: "qemu"
 #
 # Deployment Variables:
@@ -120,12 +120,6 @@ case ${target} in
     ;;
   witherspoon)
     BITBAKE_CMD="TEMPLATECONF=meta-openbmc-machines/meta-openpower/meta-ibm/meta-witherspoon/conf source oe-init-build-env"
-    ;;
-  firestone)
-    BITBAKE_CMD="TEMPLATECONF=meta-openbmc-machines/meta-openpower/meta-ibm/meta-firestone/conf source oe-init-build-env"
-    ;;
-  garrison)
-    BITBAKE_CMD="TEMPLATECONF=meta-openbmc-machines/meta-openpower/meta-ibm/meta-garrison/conf source oe-init-build-env"
     ;;
   evb-ast2500)
     BITBAKE_CMD="TEMPLATECONF=meta-openbmc-machines/meta-evb/meta-evb-aspeed/meta-evb-ast2500/conf source oe-init-build-env"
