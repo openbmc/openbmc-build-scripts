@@ -86,7 +86,7 @@ if [ ${MACHINE} = ${DEFAULT_MACHINE} ]; then
         -device virtio-net,netdev=mynet \
         -netdev user,id=mynet,hostfwd=tcp:${IP}:22-:22,hostfwd=tcp:${IP}:443-:443,hostfwd=tcp:${IP}:80-:80,hostfwd=tcp:${IP}:2200-:2200,hostfwd=udp:${IP}:623-:623,hostfwd=udp:${IP}:664-:664 \
         -machine versatilepb \
-        -m 256 \
+        -m 512 \
         -drive file=${DEFAULT_IMAGE_LOC}/qemuarm/${DRIVE},if=virtio,format=raw \
         -show-cursor \
         -usb \
@@ -100,7 +100,7 @@ if [ ${MACHINE} = ${DEFAULT_MACHINE} ]; then
         -dtb ${DEFAULT_IMAGE_LOC}/qemuarm/zImage-versatile-pb.dtb
 else
     ${QEMU_BIN} \
-        -m 256 \
+        -m 512 \
         -machine ${MACHINE}-bmc \
         -nographic \
         -drive file=${DEFAULT_IMAGE_LOC}/${MACHINE}/${DRIVE},format=raw,if=mtd \
