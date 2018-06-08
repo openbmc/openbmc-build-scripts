@@ -72,6 +72,19 @@ else
     DRIVE=$(ls ${DEFAULT_IMAGE_LOC}/qemuarm | grep rootfs.ext4)
 fi
 
+# Copy the drive file off to /tmp so that QEMU does not write anything back
+# to the drive file and make it unusable for future QEMU runs.
+
+TMP_DRIVE_PATH=$(mktemp "/tmp/${DRIVE}-XXXXX")
+
+# The drive file is stored in different locations depending on if we are
+# using the default or real platforms.
+if [ ${MACHINE} = ${DEFAULT_MACHINE} ]; then
+    cp ${DEFAULT_IMAGE_LOC}/qemuarm/${DRIVE} ${TMP_DRIVE_PATH}
+else
+    cp ${DEFAULT_IMAGE_LOC}/${MACHINE}/${DRIVE} ${TMP_DRIVE_PATH}
+fi
+
 # Obtain IP from /etc/hosts if IP is not valid set to localhost
 IP=$(awk 'END{print $1}' /etc/hosts)
 if [[ "$IP" != *.*.*.* ]]; then
@@ -87,7 +100,7 @@ if [ ${MACHINE} = ${DEFAULT_MACHINE} ]; then
         -netdev user,id=mynet,hostfwd=tcp:${IP}:22-:22,hostfwd=tcp:${IP}:443-:443,hostfwd=tcp:${IP}:80-:80,hostfwd=tcp:${IP}:2200-:2200,hostfwd=udp:${IP}:623-:623,hostfwd=udp:${IP}:664-:664 \
         -machine versatilepb \
         -m 256 \
-        -drive file=${DEFAULT_IMAGE_LOC}/qemuarm/${DRIVE},if=virtio,format=raw \
+        -drive file=${TMP_DRIVE_PATH},if=virtio,format=raw \
         -show-cursor \
         -usb \
         -usbdevice tablet \
@@ -103,7 +116,7 @@ else
         -m 256 \
         -machine ${MACHINE}-bmc \
         -nographic \
-        -drive file=${DEFAULT_IMAGE_LOC}/${MACHINE}/${DRIVE},format=raw,if=mtd \
+        -drive file=${TMP_DRIVE_PATH},format=raw,if=mtd \
         -net nic \
         -net user,hostfwd=:${IP}:22-:22,hostfwd=:${IP}:443-:443,hostfwd=tcp:${IP}:80-:80,hostfwd=tcp:${IP}:2200-:2200,hostfwd=udp:${IP}:623-:623,hostfwd=udp:${IP}:664-:664,hostname=qemu
 fi
