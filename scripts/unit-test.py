@@ -437,14 +437,17 @@ if __name__ == '__main__':
     # Refresh dynamic linker run time bindings for dependencies
     check_call_cmd(os.path.join(WORKSPACE, UNIT_TEST_PKG), 'ldconfig')
     # Run package unit tests
+    rv = 0
     try:
         cmd = [ 'make', 'check' ]
         for i in range(0, args.repeat):
             check_call_cmd(os.path.join(WORKSPACE, UNIT_TEST_PKG),  *cmd)
     except CalledProcessError:
+        rv = 1
         for relpath in ("test/test-suite.log", "src/test/test-suite.log"):
             log = os.path.join(WORKSPACE, UNIT_TEST_PKG, relpath)
             if not os.path.exists(log):
                 continue
             check_call_cmd(os.path.join(WORKSPACE, UNIT_TEST_PKG), "cat", log)
     os.umask(prev_umask)
+    sys.exit(rv)
