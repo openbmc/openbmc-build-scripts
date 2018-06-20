@@ -284,7 +284,9 @@ def install_deps(dep_list):
     for pkg in dep_list:
         pkgdir = os.path.join(WORKSPACE, pkg)
         # Build & install this package
-        conf_flags = []
+        conf_flags = [
+            '--disable-silent-rules',
+        ]
         os.chdir(pkgdir)
         # Add any necessary configure flags for package
         if CONFIGURE_FLAGS.get(pkg) is not None:
