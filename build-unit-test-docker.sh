@@ -91,9 +91,9 @@ RUN apt-get update && apt-get install -yy \
 RUN pip install inflection
 RUN pip install pycodestyle
 
-RUN wget http://ftpmirror.gnu.org/autoconf-archive/autoconf-archive-2016.09.16.tar.xz
-RUN tar -xJf autoconf-archive-2016.09.16.tar.xz
-RUN cd autoconf-archive-2016.09.16 && ./configure --prefix=/usr && make && make install
+RUN wget http://ftpmirror.gnu.org/autoconf-archive/autoconf-archive-2018.03.13.tar.xz
+RUN tar -xJf autoconf-archive-2018.03.13.tar.xz
+RUN cd autoconf-archive-2018.03.13 && ./configure --prefix=/usr && make && make install
 
 # Googletest doesn't support pkg-config properly and therefore yocto uses a
 # patch to fix it.  This grabs and applies that patch and then builds it.
