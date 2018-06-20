@@ -84,7 +84,9 @@ RUN apt-get update && apt-get install -yy \
     libnl-3-dev \
     libnl-genl-3-dev \
     libconfig++-dev \
-    libsnmp-dev
+    libsnmp-dev \
+    valgrind \
+    lcov
 
 RUN pip install inflection
 RUN pip install pycodestyle
