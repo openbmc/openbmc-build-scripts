@@ -286,6 +286,8 @@ def install_deps(dep_list):
         # Build & install this package
         conf_flags = [
             '--disable-silent-rules',
+            '--enable-code-coverage',
+            '--enable-valgrind',
         ]
         os.chdir(pkgdir)
         # Add any necessary configure flags for package
@@ -449,4 +451,36 @@ if __name__ == '__main__':
                 continue
             check_call_cmd(root, 'cat', os.path.join(root, 'test-suite.log'))
         raise Exception('Unit tests failed')
+
+    with open(os.devnull, 'w') as devnull:
+        # Run unit tests through valgrind if it exists
+        top_dir = os.path.join(WORKSPACE, UNIT_TEST_PKG)
+        try:
+            cmd = [ 'make', '-n', 'check-valgrind' ]
+            check_call(cmd, stdout=devnull, stderr=devnull)
+            try:
+                cmd = [ 'make', 'check-valgrind' ]
+                check_call_cmd(top_dir,  *cmd)
+            except CalledProcessError:
+                for root, _, files in os.walk(top_dir):
+                    for f in files:
+                        if re.search('test-suite-[a-z]+.log', f) is None:
+                            continue
+                        check_call_cmd(root, 'cat', os.path.join(root, f))
+                raise Exception('Valgrind tests failed')
+        except CalledProcessError:
+            pass
+
+        # Run code coverage if possible
+        try:
+            cmd = [ 'make', '-n', 'check-code-coverage' ]
+            check_call(cmd, stdout=devnull, stderr=devnull)
+            try:
+                cmd = [ 'make', 'check-code-coverage' ]
+                check_call_cmd(top_dir,  *cmd)
+            except CalledProcessError:
+                raise Exception('Code coverage failed')
+        except CalledProcessError:
+            pass
+
     os.umask(prev_umask)
