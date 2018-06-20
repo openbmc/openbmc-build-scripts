@@ -92,15 +92,11 @@ RUN apt-get update && apt-get install -yy \
 RUN pip install inflection
 RUN pip install pycodestyle
 
-# Googletest doesn't support pkg-config properly and therefore yocto uses a
-# patch to fix it.  This grabs and applies that patch and then builds it.
-RUN wget https://github.com/google/googletest/archive/release-1.8.0.tar.gz
-RUN tar -xzf release-1.8.0.tar.gz
-RUN wget -O googletest-release-1.8.0/Add-pkg-config-support.patch \
-http://cgit.openembedded.org/meta-openembedded/plain/meta-oe/recipes-test/gtest/gtest/Add-pkg-config-support.patch?h=rocko
-RUN cd googletest-release-1.8.0 && patch -p1 -i Add-pkg-config-support.patch
-RUN cd googletest-release-1.8.0 && \
-cmake -DBUILD_SHARED_LIBS=ON -DCMAKE_INSTALL_PREFIX:PATH=/usr -DCMAKE_INSTALL_LIBDIR:PATH=/usr/lib -DCMAKE_INSTALL_INCLUDEDIR:PATH=/usr/include . && \
+# Snapshot from 2018-06-14
+RUN wget -O googletest.tar.gz https://github.com/google/googletest/archive/ba96d0b1161f540656efdaed035b3c062b60e006.tar.gz
+RUN tar -xzf googletest.tar.gz
+RUN cd googletest-* && \
+cmake -DBUILD_GTEST=ON -DBUILD_GMOCK=ON -DCMAKE_BUILD_TYPE=Release -DBUILD_SHARED_LIBS=ON -DCMAKE_INSTALL_PREFIX:PATH=/usr . && \
 make && make install
 
 RUN wget https://github.com/USCiLab/cereal/archive/v1.2.2.tar.gz
