@@ -50,9 +50,24 @@ FROM ${DOCKER_BASE}${DISTRO}
 
 ENV DEBIAN_FRONTEND noninteractive
 
+# We need the keys to be imported for dbgsym repos
+# New releases have a package, older ones fall back to manual fetching
+# https://wiki.ubuntu.com/Debug%20Symbol%20Packages
+RUN apt-get update && ( apt-get install ubuntu-dbgsym-keyring || ( apt-get install -yy dirmngr && \
+    apt-key adv --keyserver keyserver.ubuntu.com --recv-keys F2EDC64DC5AEE1F6B9C621F0C8CAB6595FDFF622 ) )
+
+# Parse the current repo list into a debug repo list
+RUN sed -n '/^deb /s,^deb [^ ]* ,deb http://ddebs.ubuntu.com ,p' /etc/apt/sources.list >/etc/apt/sources.list.d/debug.list
+
+# Remove non-existent debug repos
+RUN sed -i '/-\(backports\|security\) /d' /etc/apt/sources.list.d/debug.list
+
+RUN cat /etc/apt/sources.list.d/debug.list
+
 RUN apt-get update && apt-get install -yy \
     gcc \
     g++ \
+    libc6-dbg \
     libc6-dev \
     libtool \
     cmake \
@@ -73,8 +88,10 @@ RUN apt-get update && apt-get install -yy \
     autoconf \
     autoconf-archive \
     libsystemd-dev \
+    libsystemd0-dbgsym \
     libssl-dev \
     libevdev-dev \
+    libevdev2-dbgsym \
     sudo \
     wget \
     git \
@@ -87,6 +104,7 @@ RUN apt-get update && apt-get install -yy \
     libconfig++-dev \
     libsnmp-dev \
     valgrind \
+    valgrind-dbg \
     lcov
 
 RUN pip install inflection
