@@ -113,6 +113,7 @@ RUN mkdir /usr/include/nlohmann/
 RUN cp -a json.hpp /usr/include/nlohmann/
 
 RUN grep -q ${GROUPS} /etc/group || groupadd -g ${GROUPS} ${USER}
+RUN mkdir -p $(dirname ${HOME})
 RUN grep -q ${UID} /etc/passwd || useradd -d ${HOME} -m -u ${UID} -g ${GROUPS} ${USER}
 
 RUN echo '${AUTOM4TE}' > ${AUTOM4TE_CFG}
