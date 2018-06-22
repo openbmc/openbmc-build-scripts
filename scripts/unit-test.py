@@ -286,6 +286,7 @@ def install_deps(dep_list):
         # Build & install this package
         conf_flags = [
             '--disable-silent-rules',
+            '--enable-tests',
             '--enable-code-coverage',
             '--enable-valgrind',
         ]
