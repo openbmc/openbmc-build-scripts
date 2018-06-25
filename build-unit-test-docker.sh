@@ -6,12 +6,12 @@
 #   param1:  <optional, the name of the docker image to generate>
 #            default is openbmc/ubuntu-unit-test
 #   param2:  <optional, the distro to build a docker image against>
-#            default is ubuntu:latest
+#            default is ubuntu:artful
 
 set -uo pipefail
 
 DOCKER_IMG_NAME=${1:-"openbmc/ubuntu-unit-test"}
-DISTRO=${2:-"ubuntu:latest"}
+DISTRO=${2:-"ubuntu:artful"}
 
 # Disable autom4te cache as workaround to permission issue
 AUTOM4TE_CFG="/root/.autom4te.cfg"
