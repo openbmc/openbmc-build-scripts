@@ -1,0 +1,11 @@
+Code-Review+1: Andrew Jeffery <andrew@aj.id.au>
+Code-Review+1: Andrew Geissler <geissonator@yahoo.com>
+Code-Review+1: Brad Bishop <bradleyb@fuzziesquirrel.com>
+Code-Review+2: Joel Stanley <joel@jms.id.au>
+Code-Review+1: Patrick Venture <venture@google.com>
+Verified+1: Andrew Geissler <geissonator@yahoo.com>
+Submitted-by: William A. Kennington III <wak@google.com>
+Submitted-at: Tue, 26 Jun 2018 03:56:55 +0000
+Reviewed-on: https://gerrit.openbmc-project.xyz/11189
+Project: openbmc/openbmc-build-scripts
+Branch: refs/heads/master
