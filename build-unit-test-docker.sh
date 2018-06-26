@@ -105,7 +105,8 @@ RUN apt-get update && apt-get install -yy \
     libsnmp-dev \
     valgrind \
     valgrind-dbg \
-    lcov
+    lcov \
+    libpam0g-dev
 
 RUN pip install inflection
 RUN pip install pycodestyle
