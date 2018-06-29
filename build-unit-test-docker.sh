@@ -78,6 +78,7 @@ RUN apt-get update && apt-get install -yy \
     python-mako \
     python-pip \
     python-setuptools \
+    python-socks \
     python3 \
     python3-dev\
     python3-yaml \
@@ -93,7 +94,7 @@ RUN apt-get update && apt-get install -yy \
     libevdev-dev \
     libevdev2-dbgsym \
     sudo \
-    wget \
+    curl \
     git \
     dbus \
     iputils-ping \
@@ -112,17 +113,17 @@ RUN pip install inflection
 RUN pip install pycodestyle
 
 # Snapshot from 2018-06-14
-RUN wget -O googletest.tar.gz https://github.com/google/googletest/archive/ba96d0b1161f540656efdaed035b3c062b60e006.tar.gz
+RUN curl -L -o googletest.tar.gz https://github.com/google/googletest/archive/ba96d0b1161f540656efdaed035b3c062b60e006.tar.gz
 RUN tar -xzf googletest.tar.gz
 RUN cd googletest-* && \
 cmake -DBUILD_GTEST=ON -DBUILD_GMOCK=ON -DCMAKE_BUILD_TYPE=RelWithDebInfo -DBUILD_SHARED_LIBS=ON -DCMAKE_INSTALL_PREFIX:PATH=/usr . && \
 make && make install
 
-RUN wget https://github.com/USCiLab/cereal/archive/v1.2.2.tar.gz
+RUN curl -L -O https://github.com/USCiLab/cereal/archive/v1.2.2.tar.gz
 RUN tar -xzf v1.2.2.tar.gz
 RUN cp -a cereal-1.2.2/include/cereal/ /usr/include/
 
-RUN wget https://github.com/nlohmann/json/releases/download/v3.0.1/json.hpp
+RUN curl -L -O https://github.com/nlohmann/json/releases/download/v3.0.1/json.hpp
 RUN mkdir /usr/include/nlohmann/
 RUN cp -a json.hpp /usr/include/nlohmann/
 
