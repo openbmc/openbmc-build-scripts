@@ -115,7 +115,7 @@ RUN pip install pycodestyle
 RUN wget -O googletest.tar.gz https://github.com/google/googletest/archive/ba96d0b1161f540656efdaed035b3c062b60e006.tar.gz
 RUN tar -xzf googletest.tar.gz
 RUN cd googletest-* && \
-cmake -DBUILD_GTEST=ON -DBUILD_GMOCK=ON -DCMAKE_BUILD_TYPE=Release -DBUILD_SHARED_LIBS=ON -DCMAKE_INSTALL_PREFIX:PATH=/usr . && \
+cmake -DBUILD_GTEST=ON -DBUILD_GMOCK=ON -DCMAKE_BUILD_TYPE=RelWithDebInfo -DBUILD_SHARED_LIBS=ON -DCMAKE_INSTALL_PREFIX:PATH=/usr . && \
 make && make install
 
 RUN wget https://github.com/USCiLab/cereal/archive/v1.2.2.tar.gz
