@@ -13,6 +13,7 @@ from subprocess import check_call, call, CalledProcessError
 import os
 import sys
 import argparse
+import multiprocessing
 import re
 
 
@@ -274,6 +275,14 @@ def get_deps(configure_ac):
     return deps
 
 
+make_parallel = [
+    'make',
+    # Run enough jobs to saturate all the cpus
+    '-j', str(multiprocessing.cpu_count()),
+    # Don't start more jobs if the load avg is too high
+    '-l', str(multiprocessing.cpu_count()),
+]
+
 def install_deps(dep_list):
     """
     Install each package in the ordered dep_list.
@@ -296,8 +305,8 @@ def install_deps(dep_list):
             conf_flags.extend(CONFIGURE_FLAGS.get(pkg))
         check_call_cmd(pkgdir, './bootstrap.sh')
         check_call_cmd(pkgdir, './configure', *conf_flags)
-        check_call_cmd(pkgdir, 'make')
-        check_call_cmd(pkgdir, 'make', 'install')
+        check_call_cmd(pkgdir, *make_parallel)
+        check_call_cmd(pkgdir, *(make_parallel + [ 'install' ]))
 
 
 def build_dep_tree(pkg, pkgdir, dep_added, head, dep_tree=None):
@@ -443,7 +452,7 @@ if __name__ == '__main__':
     check_call_cmd(os.path.join(WORKSPACE, UNIT_TEST_PKG), 'ldconfig')
     # Run package unit tests
     try:
-        cmd = [ 'make', 'check' ]
+        cmd = make_parallel + [ 'check' ]
         for i in range(0, args.repeat):
             check_call_cmd(os.path.join(WORKSPACE, UNIT_TEST_PKG),  *cmd)
     except CalledProcessError:
@@ -460,7 +469,7 @@ if __name__ == '__main__':
             cmd = [ 'make', '-n', 'check-valgrind' ]
             check_call(cmd, stdout=devnull, stderr=devnull)
             try:
-                cmd = [ 'make', 'check-valgrind' ]
+                cmd = make_parallel + [ 'check-valgrind' ]
                 check_call_cmd(top_dir,  *cmd)
             except CalledProcessError:
                 for root, _, files in os.walk(top_dir):
@@ -477,7 +486,7 @@ if __name__ == '__main__':
             cmd = [ 'make', '-n', 'check-code-coverage' ]
             check_call(cmd, stdout=devnull, stderr=devnull)
             try:
-                cmd = [ 'make', 'check-code-coverage' ]
+                cmd = make_parallel + [ 'check-code-coverage' ]
                 check_call_cmd(top_dir,  *cmd)
             except CalledProcessError:
                 raise Exception('Code coverage failed')
