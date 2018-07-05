@@ -91,7 +91,7 @@ ARCH=powerpc scripts/kconfig/merge_config.sh \
     fragment.config
 
 # Build kernel
-ARCH=powerpc CROSS_COMPILE=powerpc64le-linux-gnu- make -j$(nproc) vmlinux
+yes "" | ARCH=powerpc CROSS_COMPILE=powerpc64le-linux-gnu- make -j$(nproc) vmlinux
 
 EOF_SCRIPT
 
