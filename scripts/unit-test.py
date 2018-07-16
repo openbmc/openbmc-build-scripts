@@ -15,6 +15,7 @@ import sys
 import argparse
 import multiprocessing
 import re
+import platform
 
 
 class DepTree():
@@ -408,6 +409,12 @@ def maybe_run_valgrind(top_dir):
     Parameter descriptions:
     top_dir             The root directory of our project
     """
+    # Valgrind testing is currently broken by an aggressive strcmp optimization
+    # that is inlined into optimized code for POWER by gcc 7+. Until we find
+    # a workaround, just don't run valgrind tests on POWER.
+    # https://github.com/openbmc/openbmc/issues/3315
+    if re.match('ppc64', platform.machine()) is not None:
+        return
     if not make_target_exists('check-valgrind'):
         return
 
