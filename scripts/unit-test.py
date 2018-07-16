@@ -364,6 +364,82 @@ def build_dep_tree(pkg, pkgdir, dep_added, head, dep_tree=None):
 
     return dep_added
 
+def make_target_exists(target):
+    """
+    Runs a check against the makefile in the current directory to determine
+    if the target exists so that it can be built.
+
+    Parameter descriptions:
+    target              The make target we are checking
+    """
+    try:
+        cmd = [ 'make', '-n', target ]
+        with open(os.devnull, 'w') as devnull:
+            check_call(cmd, stdout=devnull, stderr=devnull)
+        return True
+    except CalledProcessError:
+        return False
+
+def run_unit_tests(top_dir):
+    """
+    Runs the unit tests for the package via `make check`
+
+    Parameter descriptions:
+    top_dir             The root directory of our project
+    """
+    try:
+        cmd = make_parallel + [ 'check' ]
+        for i in range(0, args.repeat):
+            check_call_cmd(top_dir,  *cmd)
+    except CalledProcessError:
+        for root, _, files in os.walk(top_dir):
+            if 'test-suite.log' not in files:
+                continue
+            check_call_cmd(root, 'cat', os.path.join(root, 'test-suite.log'))
+        raise Exception('Unit tests failed')
+
+
+def maybe_run_valgrind(top_dir):
+    """
+    Potentially runs the unit tests through valgrind for the package
+    via `make check-valgrind`. If the package does not have valgrind testing
+    then it just skips over this.
+
+    Parameter descriptions:
+    top_dir             The root directory of our project
+    """
+    if not make_target_exists('check-valgrind'):
+        return
+
+    try:
+        cmd = make_parallel + [ 'check-valgrind' ]
+        check_call_cmd(top_dir,  *cmd)
+    except CalledProcessError:
+        for root, _, files in os.walk(top_dir):
+            for f in files:
+                if re.search('test-suite-[a-z]+.log', f) is None:
+                    continue
+                check_call_cmd(root, 'cat', os.path.join(root, f))
+        raise Exception('Valgrind tests failed')
+
+def maybe_run_coverage(top_dir):
+    """
+    Potentially runs the unit tests through code coverage for the package
+    via `make check-code-coverage`. If the package does not have code coverage
+    testing then it just skips over this.
+
+    Parameter descriptions:
+    top_dir             The root directory of our project
+    """
+    if not make_target_exists('check-code-coverage'):
+        return
+
+    # Actually run code coverage
+    try:
+        cmd = make_parallel + [ 'check-code-coverage' ]
+        check_call_cmd(top_dir,  *cmd)
+    except CalledProcessError:
+        raise Exception('Code coverage failed')
 
 if __name__ == '__main__':
     # CONFIGURE_FLAGS = [GIT REPO]:[CONFIGURE FLAGS]
@@ -449,50 +525,13 @@ if __name__ == '__main__':
     install_list = dep_tree.GetInstallList()
     # install reordered dependencies
     install_deps(install_list)
-    os.chdir(os.path.join(WORKSPACE, UNIT_TEST_PKG))
+    top_dir = os.path.join(WORKSPACE, UNIT_TEST_PKG)
+    os.chdir(top_dir)
     # Refresh dynamic linker run time bindings for dependencies
-    check_call_cmd(os.path.join(WORKSPACE, UNIT_TEST_PKG), 'ldconfig')
+    check_call_cmd(top_dir, 'ldconfig')
     # Run package unit tests
-    try:
-        cmd = make_parallel + [ 'check' ]
-        for i in range(0, args.repeat):
-            check_call_cmd(os.path.join(WORKSPACE, UNIT_TEST_PKG),  *cmd)
-    except CalledProcessError:
-        for root, _, files in os.walk(os.path.join(WORKSPACE, UNIT_TEST_PKG)):
-            if 'test-suite.log' not in files:
-                continue
-            check_call_cmd(root, 'cat', os.path.join(root, 'test-suite.log'))
-        raise Exception('Unit tests failed')
-
-    with open(os.devnull, 'w') as devnull:
-        # Run unit tests through valgrind if it exists
-        top_dir = os.path.join(WORKSPACE, UNIT_TEST_PKG)
-        try:
-            cmd = [ 'make', '-n', 'check-valgrind' ]
-            check_call(cmd, stdout=devnull, stderr=devnull)
-            try:
-                cmd = make_parallel + [ 'check-valgrind' ]
-                check_call_cmd(top_dir,  *cmd)
-            except CalledProcessError:
-                for root, _, files in os.walk(top_dir):
-                    for f in files:
-                        if re.search('test-suite-[a-z]+.log', f) is None:
-                            continue
-                        check_call_cmd(root, 'cat', os.path.join(root, f))
-                raise Exception('Valgrind tests failed')
-        except CalledProcessError:
-            pass
-
-        # Run code coverage if possible
-        try:
-            cmd = [ 'make', '-n', 'check-code-coverage' ]
-            check_call(cmd, stdout=devnull, stderr=devnull)
-            try:
-                cmd = make_parallel + [ 'check-code-coverage' ]
-                check_call_cmd(top_dir,  *cmd)
-            except CalledProcessError:
-                raise Exception('Code coverage failed')
-        except CalledProcessError:
-            pass
+    run_unit_tests(top_dir)
+    maybe_run_valgrind(top_dir)
+    maybe_run_coverage(top_dir)
 
     os.umask(prev_umask)
