@@ -104,9 +104,15 @@ cp $DIR/scripts/boot-qemu* ${UPSTREAM_WORKSPACE}
 
 if [[ ${LAUNCH} == "local" ]]; then
 
-  # Start QEMU docker instance
-  # root in docker required to open up the https/ssh ports
-  obmc_qemu_docker=$(docker run --detach \
+  # Set up a retry loop for if we see certain errors in the QEMU log
+  retries_left=2
+  should_retry=true
+  while $should_retry; do
+    should_retry=false
+
+    # Start QEMU docker instance
+    # root in docker required to open up the https/ssh ports
+    obmc_qemu_docker=$(docker run --detach \
                                 --user root \
                                 --env HOME=${OBMC_BUILD_DIR} \
                                 --env QEMU_RUN_TIMER=${QEMU_RUN_TIMER} \
@@ -118,39 +124,56 @@ if [[ ${LAUNCH} == "local" ]]; then
                                 --tty \
                                 ${DOCKER_IMG_NAME} ${OBMC_BUILD_DIR}/boot-qemu-test.exp)
 
-  # We can use default ports because we're going to have the 2
-  # docker instances talk over their private network
-  DOCKER_SSH_PORT=22
-  DOCKER_HTTPS_PORT=443
+    # We can use default ports because we're going to have the 2
+    # docker instances talk over their private network
+    DOCKER_SSH_PORT=22
+    DOCKER_HTTPS_PORT=443
 
-  # This docker command intermittently asserts a SIGPIPE which
-  # causes the whole script to fail. The IP address comes through
-  # fine on these errors so just ignore the SIGPIPE
-  trap '' PIPE
+    # This docker command intermittently asserts a SIGPIPE which
+    # causes the whole script to fail. The IP address comes through
+    # fine on these errors so just ignore the SIGPIPE
+    trap '' PIPE
 
-  DOCKER_QEMU_IP_ADDR="$(docker inspect $obmc_qemu_docker |  \
+    DOCKER_QEMU_IP_ADDR="$(docker inspect $obmc_qemu_docker |  \
                        grep "IPAddress\":" | tail -n1 | cut -d '"' -f 4)"
 
-  #Now wait for the OpenBMC QEMU Docker instance to get to standby
-  delay=5
-  attempt=$(( $QEMU_LOGIN_TIMER / $delay ))
-  while [ $attempt -gt 0 ]; do
-    attempt=$(( $attempt - 1 ))
-    echo "Waiting for qemu to get to standby (attempt: $attempt)..."
-    result=$(docker logs $obmc_qemu_docker)
-    if grep -q 'OPENBMC-READY' <<< $result ; then
-      echo "QEMU is ready!"
-      # Give QEMU a few secs to stablize
-      sleep $delay
-      break
-    fi
-      sleep $delay
-  done
+    #Now wait for the OpenBMC QEMU Docker instance to get to standby
+    delay=5
+    attempt=$(( $QEMU_LOGIN_TIMER / $delay ))
+    while [ $attempt -gt 0 ]; do
+      attempt=$(( $attempt - 1 ))
+      echo "Waiting for qemu to get to standby (attempt: $attempt)..."
+      result=$(docker logs $obmc_qemu_docker)
 
-  if [ "$attempt" -eq 0 ]; then
-    echo "Timed out waiting for QEMU, exiting"
-    exit 1
-  fi
+      # If we hit a squashfs error, try restarting QEMU
+      if grep -q "SQUASHFS error: xz decompression failed, data probably corrupt" <<< $result ; then
+        echo "Found squashfs error"
+        if [ "$retries_left" -eq 0 ]; then
+          echo "Out of retries"
+          exit 1
+        else
+          should_retry=true
+          retries_left=$(( $retries_left - 1 ))
+          docker stop $obmc_qemu_docker
+          sleep $delay
+          break
+        fi
+      fi
+
+      if grep -q 'OPENBMC-READY' <<< $result ; then
+        echo "QEMU is ready!"
+        # Give QEMU a few secs to stablize
+        sleep $delay
+        break
+      fi
+      sleep $delay
+    done
+
+    if [ "$attempt" -eq 0 ]; then
+      echo "Timed out waiting for QEMU, exiting"
+      exit 1
+    fi
+  done
 
   # Now run the Robot test (Tests commented out until they are working again)
 
