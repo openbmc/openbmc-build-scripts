@@ -181,4 +181,4 @@ fi
 ################################# docker img # #################################
 
 # Build above image
-docker build -t ${DOCKER_IMG_NAME} - <<< "${Dockerfile}"
+docker build --network=host -t ${DOCKER_IMG_NAME} - <<< "${Dockerfile}"
