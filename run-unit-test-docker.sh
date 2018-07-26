@@ -69,6 +69,7 @@ UNIT_TEST="${WORKSPACE}/${UNIT_TEST_PY},-w,${WORKSPACE},-p,${UNIT_TEST_PKG},-v"
 # Run the docker unit test container with the unit test execution script
 echo "Executing docker image"
 docker run --cap-add=sys_admin --rm=true \
+    --network host \
     --privileged=true \
     -w "${WORKSPACE}" -v "${WORKSPACE}":"${WORKSPACE}" \
     -e "MAKEFLAGS=${MAKEFLAGS}" \

@@ -502,43 +502,55 @@ if __name__ == '__main__':
     else:
         printline = lambda *l: None
 
-    # First validate code formattting if repo has style formatting files.
+    # First validate code formatting if repo has style formatting files.
     # The format-code.sh checks for these files.
     CODE_SCAN_DIR = WORKSPACE + "/" + UNIT_TEST_PKG
     check_call_cmd(WORKSPACE, "./format-code.sh", CODE_SCAN_DIR)
 
-    # The rest of this script is CI testing, which currently only supports
-    # Automake based repos. Check if this repo is Automake, if not exit
-    if not os.path.isfile(CODE_SCAN_DIR + "/configure.ac"):
+    # Automake
+    if os.path.isfile(CODE_SCAN_DIR + "/configure.ac"):
+        prev_umask = os.umask(000)
+        # Determine dependencies and add them
+        dep_added = dict()
+        dep_added[UNIT_TEST_PKG] = False
+        # Create dependency tree
+        dep_tree = DepTree(UNIT_TEST_PKG)
+        build_dep_tree(UNIT_TEST_PKG,
+                       os.path.join(WORKSPACE, UNIT_TEST_PKG),
+                       dep_added,
+                       dep_tree)
+
+        # Reorder Dependency Tree
+        for pkg_name, regex_str in DEPENDENCIES_REGEX.iteritems():
+            dep_tree.ReorderDeps(pkg_name, regex_str)
+        if args.verbose:
+            dep_tree.PrintTree()
+        install_list = dep_tree.GetInstallList()
+        # install reordered dependencies
+        install_deps(install_list)
+        top_dir = os.path.join(WORKSPACE, UNIT_TEST_PKG)
+        os.chdir(top_dir)
+        # Refresh dynamic linker run time bindings for dependencies
+        check_call_cmd(top_dir, 'ldconfig')
+        # Run package unit tests
+        run_unit_tests(top_dir)
+        maybe_run_valgrind(top_dir)
+        maybe_run_coverage(top_dir)
+
+        os.umask(prev_umask)
+
+    # Cmake
+    elif os.path.isfile(CODE_SCAN_DIR + "/CMakeLists.txt"):
+        top_dir = os.path.join(WORKSPACE, UNIT_TEST_PKG)
+        os.chdir(top_dir)
+        check_call_cmd(top_dir, 'cmake', '.')
+        check_call_cmd(top_dir, 'cmake', '--build', '.', '--', '-j',
+                       str(multiprocessing.cpu_count()))
+        if make_target_exists('test'):
+            check_call_cmd(top_dir, 'ctest', '.')
+        maybe_run_valgrind(top_dir)
+        maybe_run_coverage(top_dir)
+
+    else:
         print "Not a supported repo for CI Tests, exit"
         quit()
-
-    prev_umask = os.umask(000)
-    # Determine dependencies and add them
-    dep_added = dict()
-    dep_added[UNIT_TEST_PKG] = False
-    # Create dependency tree
-    dep_tree = DepTree(UNIT_TEST_PKG)
-    build_dep_tree(UNIT_TEST_PKG,
-                   os.path.join(WORKSPACE, UNIT_TEST_PKG),
-                   dep_added,
-                   dep_tree)
-
-    # Reorder Dependency Tree
-    for pkg_name, regex_str in DEPENDENCIES_REGEX.iteritems():
-        dep_tree.ReorderDeps(pkg_name, regex_str)
-    if args.verbose:
-        dep_tree.PrintTree()
-    install_list = dep_tree.GetInstallList()
-    # install reordered dependencies
-    install_deps(install_list)
-    top_dir = os.path.join(WORKSPACE, UNIT_TEST_PKG)
-    os.chdir(top_dir)
-    # Refresh dynamic linker run time bindings for dependencies
-    check_call_cmd(top_dir, 'ldconfig')
-    # Run package unit tests
-    run_unit_tests(top_dir)
-    maybe_run_valgrind(top_dir)
-    maybe_run_coverage(top_dir)
-
-    os.umask(prev_umask)

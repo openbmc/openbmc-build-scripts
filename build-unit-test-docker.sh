@@ -107,7 +107,8 @@ RUN apt-get update && apt-get install -yy \
     valgrind \
     valgrind-dbg \
     lcov \
-    libpam0g-dev
+    libpam0g-dev \
+    xxd
 
 RUN pip install inflection
 RUN pip install pycodestyle
@@ -126,6 +127,10 @@ RUN cp -a cereal-1.2.2/include/cereal/ /usr/include/
 RUN curl -L -O https://github.com/nlohmann/json/releases/download/v3.0.1/json.hpp
 RUN mkdir /usr/include/nlohmann/
 RUN cp -a json.hpp /usr/include/nlohmann/
+
+RUN curl -L -O https://dl.bintray.com/boostorg/release/1.66.0/source/boost_1_66_0.tar.bz2
+RUN tar --bzip2 -xf boost_1_66_0.tar.bz2
+RUN cp -a -r boost_1_66_0/boost /usr/include
 
 RUN grep -q ${GROUPS} /etc/group || groupadd -g ${GROUPS} ${USER}
 RUN mkdir -p $(dirname ${HOME})
