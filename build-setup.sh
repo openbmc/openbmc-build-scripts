@@ -35,7 +35,7 @@
 #                     Default: "latest"
 #  target             The target we aim to build:
 #                     barreleye|evb-ast2500|firestone|garrison|palmetto|qemu
-#                     romulus|witherspoon|zaius
+#                     romulus|s2600wf|witherspoon|zaius
 #                     Default: "qemu"
 #
 # Deployment Variables:
@@ -129,6 +129,9 @@ case ${target} in
     ;;
   evb-ast2500)
     BITBAKE_CMD="TEMPLATECONF=meta-openbmc-machines/meta-evb/meta-evb-aspeed/meta-evb-ast2500/conf source oe-init-build-env"
+    ;;
+  s2600wf)
+    BITBAKE_CMD="TEMPLATECONF=meta-openbmc-machines/meta-x86/meta-intel/meta-s2600wf/conf source oe-init-build-env"
     ;;
   zaius)
     BITBAKE_CMD="TEMPLATECONF=meta-openbmc-machines/meta-openpower/meta-ingrasys/meta-zaius/conf source oe-init-build-env"
