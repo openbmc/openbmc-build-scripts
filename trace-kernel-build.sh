@@ -90,8 +90,11 @@ ARCH=powerpc scripts/kconfig/merge_config.sh \
     arch/powerpc/configs/le.config \
     fragment.config
 
+# Ensure config is up to date and no questions will be asked
+yes "" | ARCH=powerpc CROSS_COMPILE=powerpc64le-linux-gnu- make oldconfig
+
 # Build kernel
-yes "" | ARCH=powerpc CROSS_COMPILE=powerpc64le-linux-gnu- make -j$(nproc) vmlinux
+ARCH=powerpc CROSS_COMPILE=powerpc64le-linux-gnu- make -j$(nproc) vmlinux
 
 EOF_SCRIPT
 
