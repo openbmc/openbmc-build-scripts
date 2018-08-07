@@ -1,0 +1,8 @@
+Code-Review+1: Charles Hofer <charles.hofer@ibm.com>
+Code-Review+2: Andrew Geissler <geissonator@yahoo.com>
+Verified+1: Andrew Geissler <geissonator@yahoo.com>
+Submitted-by: Andrew Geissler <geissonator@yahoo.com>
+Submitted-at: Tue, 07 Aug 2018 17:20:43 +0000
+Reviewed-on: https://gerrit.openbmc-project.xyz/11624
+Project: openbmc/openbmc-build-scripts
+Branch: refs/heads/master
