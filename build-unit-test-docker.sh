@@ -108,7 +108,8 @@ RUN apt-get update && apt-get install -yy \
     valgrind-dbg \
     lcov \
     libpam0g-dev \
-    xxd
+    xxd \
+    wget
 
 RUN pip install inflection
 RUN pip install pycodestyle
