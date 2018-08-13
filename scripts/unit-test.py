@@ -473,6 +473,7 @@ if __name__ == '__main__':
             'ibm-dbus-interfaces': 'ibm-dbus-interfaces',
             'sdbusplus': 'sdbusplus',
             'phosphor-logging': 'phosphor-logging',
+            'phosphor-snmp': 'phosphor-snmp',
         },
     }
 
