@@ -46,15 +46,15 @@ http_proxy=${http_proxy:-}
 qemu_dir=${qemu_dir:-${WORKSPACE}/qemu}
 WORKSPACE=${WORKSPACE:-${HOME}/${RANDOM}${RANDOM}}
 
+# Determine the architecture
+ARCH=$(uname -m)
+
 # Docker Image Build Variables:
 build_dir=${build_dir:-/tmp/qemu}
 img_name=${img_name:-qemu-build:${ARCH}}
 
 # Deployment Variables
 launch=${launch:-}
-
-# Determine the architecture
-ARCH=$(uname -m)
 
 # Timestamp for job
 echo "Build started, $(date)"
