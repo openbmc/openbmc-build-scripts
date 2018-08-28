@@ -113,11 +113,6 @@ $\{CROSS_COMPILER}gcc --version
 ARCH=arm CROSS_COMPILE=\${CROSS_COMPILER} make aspeed_defconfig
 ARCH=arm CROSS_COMPILE=\${CROSS_COMPILER} make -j$(($(nproc) / 4))
 
-# Build barreleye image
-ARCH=arm CROSS_COMPILE=\${CROSS_COMPILER} make aspeed-bmc-opp-barreleye.dtb
-cat arch/arm/boot/zImage arch/arm/boot/dts/aspeed-bmc-opp-barreleye.dtb > barreleye-zimage
-./scripts/mkuboot.sh -A arm -O linux -C none  -T kernel -a 0x40008000 -e 0x40008000 -d-e 0x40008000 -n obmc-beye-\$(date +%Y%m%d%H%M) -d barreleye-zimage uImage.barreleye
-
 # build palmetto image
 ARCH=arm CROSS_COMPILE=\${CROSS_COMPILER} make aspeed-bmc-opp-palmetto.dtb
 cat arch/arm/boot/zImage arch/arm/boot/dts/aspeed-bmc-opp-palmetto.dtb > palmetto-zimage
