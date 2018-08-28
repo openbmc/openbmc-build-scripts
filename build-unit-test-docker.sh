@@ -93,6 +93,7 @@ RUN apt-get update && apt-get install -yy \
     libssl-dev \
     libevdev-dev \
     libevdev2-dbgsym \
+    libvncserver-dev \
     sudo \
     curl \
     git \
