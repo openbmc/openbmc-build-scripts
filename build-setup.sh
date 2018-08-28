@@ -112,20 +112,11 @@ chown ${UID}:${GROUPS} ${xtrct_path}
 
 # Work out what build target we should be running and set BitBake command
 case ${target} in
-  barreleye)
-    BITBAKE_CMD="TEMPLATECONF=meta-rackspace/meta-barreleye/conf source oe-init-build-env"
-    ;;
   palmetto)
     BITBAKE_CMD="TEMPLATECONF=meta-ibm/meta-palmetto/conf source oe-init-build-env"
     ;;
   witherspoon)
     BITBAKE_CMD="TEMPLATECONF=meta-ibm/meta-witherspoon/conf source oe-init-build-env"
-    ;;
-  firestone)
-    BITBAKE_CMD="TEMPLATECONF=meta-ibm/meta-firestone/conf source oe-init-build-env"
-    ;;
-  garrison)
-    BITBAKE_CMD="TEMPLATECONF=meta-ibm/meta-garrison/conf source oe-init-build-env"
     ;;
   evb-ast2500)
     BITBAKE_CMD="TEMPLATECONF=meta-evb/meta-evb-aspeed/meta-evb-ast2500/conf source oe-init-build-env"
