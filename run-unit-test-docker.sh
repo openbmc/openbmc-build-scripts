@@ -11,7 +11,7 @@ set -uo pipefail
 
 # Default variables
 DOCKER_IMG_NAME="openbmc/ubuntu-unit-test"
-DISTRO=${DISTRO:-ubuntu:artful}
+DISTRO=${DISTRO:-ubuntu:bionic}
 WORKSPACE=${WORKSPACE:-$(mktemp -d --tmpdir unit-test.XXXXXX)}
 OBMC_BUILD_SCRIPTS="openbmc-build-scripts"
 UNIT_TEST_PY_DIR="scripts"

@@ -11,7 +11,7 @@
 set -uo pipefail
 
 DOCKER_IMG_NAME=${1:-"openbmc/ubuntu-unit-test"}
-DISTRO=${2:-"ubuntu:artful"}
+DISTRO=${2:-"ubuntu:bionic"}
 
 # Disable autom4te cache as workaround to permission issue
 AUTOM4TE_CFG="/root/.autom4te.cfg"
@@ -98,7 +98,7 @@ RUN apt-get update && apt-get install -yy \
     git \
     dbus \
     iputils-ping \
-    clang-format-5.0 \
+    clang-format-6.0 \
     iproute2 \
     libnl-3-dev \
     libnl-genl-3-dev \
