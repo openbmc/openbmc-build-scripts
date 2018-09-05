@@ -54,6 +54,9 @@
 #  xtrct_path         Path where the build_dir contents will be copied out to
 #                     when the build completes.
 #                     Default: "${obmc_dir}/build/tmp"
+#  xtrct_copy_timeout Timeout (in seconds) for copying the contents of
+#                     build_dir to xtrct_path.
+#                     Default: "300"
 #
 ###############################################################################
 # Trace bash processing. Set -e so when a step fails, we fail the build
@@ -76,6 +79,7 @@ launch=${launch:-}
 obmc_dir=${obmc_dir:-${WORKSPACE}/openbmc}
 ssc_dir=${ssc_dir:-${HOME}}
 xtrct_path=${xtrct_path:-${obmc_dir}/build/tmp}
+xtrct_copy_timeout=${xtrct_copy_timeout:-300}
 
 PROXY=""
 
@@ -305,7 +309,9 @@ EOF_CONF
 bitbake ${BITBAKE_OPTS} obmc-phosphor-image
 
 # Copy internal build directory into xtrct_path directory
-cp -r ${build_dir}/* ${xtrct_path}
+timeout ${xtrct_copy_timeout} cp -r ${build_dir}/* ${xtrct_path}
+return $?
+
 EOF_SCRIPT
 
 chmod a+x ${WORKSPACE}/build.sh
