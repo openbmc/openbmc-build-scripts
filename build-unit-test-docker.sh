@@ -93,7 +93,7 @@ RUN apt-get update && apt-get install -yy \
     libssl-dev \
     libevdev-dev \
     libevdev2-dbgsym \
-    libvncserver-dev \
+    libjpeg-dev \
     sudo \
     curl \
     git \
@@ -178,6 +178,17 @@ RUN git clone https://github.com/openbmc/phosphor-objmgr && \
 cd phosphor-objmgr && \
 ./bootstrap.sh && \
 ./configure --enable-unpatched-systemd && \
+make -j$(nproc) && \
+make install
+
+# Fetch, build, and install latest libvncserver because obmc-ikvm requires a recent commit
+# (libvncserver commit dd873fce451e4b7d7cc69056a62e107aae7c8e7a). This won't be included in any
+# respository packages for some time.
+RUN git clone https://github.com/LibVNC/libvncserver && \
+cd libvncserver && \
+mkdir build && \
+cd build && \
+cmake -DWITH_PNG=OFF .. && \
 make -j$(nproc) && \
 make install
 
