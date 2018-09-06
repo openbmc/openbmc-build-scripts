@@ -93,7 +93,7 @@ RUN apt-get update && apt-get install -yy \
     libssl-dev \
     libevdev-dev \
     libevdev2-dbgsym \
-    libvncserver-dev \
+    libjpeg-dev \
     sudo \
     curl \
     git \
@@ -178,6 +178,14 @@ RUN git clone https://github.com/openbmc/phosphor-objmgr && \
 cd phosphor-objmgr && \
 ./bootstrap.sh && \
 ./configure --enable-unpatched-systemd && \
+make -j$(nproc) && \
+make install
+
+RUN git clone https://github.com/LibVNC/libvncserver && \
+cd libvncserver && \
+mkdir build && \
+cd build && \
+cmake .. && \
 make -j$(nproc) && \
 make install
 
