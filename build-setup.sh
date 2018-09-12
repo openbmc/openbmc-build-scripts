@@ -51,6 +51,20 @@
 #                     Default: "${WORKSPACE}/openbmc"
 #  ssc_dir            Path to use as the BitBake shared-state cache directory.
 #                     Default: "/home/${USER}"
+#  xtrct_small_copy_dir
+#                     Directory within build_dir that should be copied to
+#                     xtrct_path. The directory and all parents up to, but not
+#                     including, build_dir will be copied. For example, if
+#                     build_dir is set to "/tmp/openbmc" and this is set to
+#                     "build/tmp", the directory at xtrct_path will have the
+#                     following directory structure:
+#                     xtrct_path
+#                      | - build
+#                        | - tmp
+#                          ...
+#                     Can also be set to the empty string to copy the entire
+#                     contents of build_dir to xtrct_path.
+#                     Default: "build/tmp/deploy/images".
 #  xtrct_path         Path where the build_dir contents will be copied out to
 #                     when the build completes.
 #                     Default: "${obmc_dir}/build/tmp"
@@ -78,6 +92,7 @@ target=${target:-qemu}
 launch=${launch:-}
 obmc_dir=${obmc_dir:-${WORKSPACE}/openbmc}
 ssc_dir=${ssc_dir:-${HOME}}
+xtrct_small_copy_dir=${xtrct_small_copy_dir:-deploy/images}
 xtrct_path=${xtrct_path:-${obmc_dir}/build/tmp}
 xtrct_copy_timeout=${xtrct_copy_timeout:-300}
 
@@ -309,8 +324,12 @@ EOF_CONF
 bitbake ${BITBAKE_OPTS} obmc-phosphor-image
 
 # Copy internal build directory into xtrct_path directory
-timeout ${xtrct_copy_timeout} cp -r ${build_dir}/* ${xtrct_path}
-
+if [[ ${xtrct_small_copy_dir} ]]; then
+  mkdir -p ${xtrct_path}/${xtrct_small_copy_dir}
+  timeout ${xtrct_copy_timeout} cp -r ${build_dir}/${xtrct_small_copy_dir}/* ${xtrct_path}/${xtrct_small_copy_dir}
+else
+  timeout ${xtrct_copy_timeout} cp -r ${build_dir}/* ${xtrct_path}
+fi
 
 if [[ 0 -ne $? ]]; then
   echo "Received a non-zero exit code from timeout"
