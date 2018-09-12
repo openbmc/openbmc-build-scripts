@@ -464,6 +464,7 @@ if __name__ == '__main__':
         'AC_CHECK_HEADER': {
             'host-ipmid': 'phosphor-host-ipmid',
             'sdbusplus': 'sdbusplus',
+            'sdeventplus': 'sdeventplus',
             'phosphor-logging/log.hpp': 'phosphor-logging',
         },
         'AC_PATH_PROG': {'sdbus++': 'sdbusplus'},
@@ -472,6 +473,7 @@ if __name__ == '__main__':
             'openpower-dbus-interfaces': 'openpower-dbus-interfaces',
             'ibm-dbus-interfaces': 'ibm-dbus-interfaces',
             'sdbusplus': 'sdbusplus',
+            'sdeventplus': 'sdeventplus',
             'phosphor-logging': 'phosphor-logging',
             'phosphor-snmp': 'phosphor-snmp',
         },
