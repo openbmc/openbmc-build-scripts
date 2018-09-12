@@ -32,10 +32,16 @@ case ${ARCH} in
         exit 1
 esac
 
-PKGS="phosphor-objmgr sdbusplus phosphor-logging phosphor-dbus-interfaces"
-PKGS+=" openpower-dbus-interfaces"
+PKGS=(
+  phosphor-objmgr
+  sdbusplus
+  sdeventplus
+  phosphor-logging
+  phosphor-dbus-interfaces
+  openpower-dbus-interfaces
+)
 DEPCACHE=
-for package in $PKGS
+for package in "${PKGS[@]}"
 do
     tip=$(git ls-remote https://github.com/openbmc/${package} |
            grep 'refs/heads/master' | awk '{ print $1 }')
@@ -150,6 +156,13 @@ RUN git clone https://github.com/openbmc/sdbusplus && \
 cd sdbusplus && \
 ./bootstrap.sh && \
 ./configure --enable-transaction && \
+make -j$(nproc) && \
+make install
+
+RUN git clone https://github.com/openbmc/sdeventplus && \
+cd sdeventplus && \
+./bootstrap.sh && \
+./configure --disable-tests --disable-examples && \
 make -j$(nproc) && \
 make install
 
