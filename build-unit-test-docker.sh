@@ -83,6 +83,7 @@ wait
 declare -A PKG_REV=(
   [boost]=1.66.0
   [cereal]=v1.2.2
+  [CLI11]=v1.6.1
   # Snapshot from 2018-06-14
   [googletest]=ba96d0b1161f540656efdaed035b3c062b60e006
   [json]=v3.0.1
@@ -205,6 +206,15 @@ make install
 FROM openbmc-base as openbmc-cereal
 RUN curl -L https://github.com/USCiLab/cereal/archive/${PKG_REV['cereal']}.tar.gz | tar -xz && \
 cp -a cereal-*/include/cereal/ ${PREFIX}/include/
+
+FROM openbmc-base as openbmc-CLI11
+RUN curl -L https://github.com/CLIUtils/CLI11/archive/${PKG_REV['CLI11']}.tar.gz | tar -xz && \
+cd CLI11-* && \
+mkdir build && \
+cd build && \
+cmake ${CMAKE_FLAGS} -DCLI11_TESTING=OFF -DCLI11_EXAMPLES=OFF .. && \
+make -j$(nproc) && \
+make install
 
 FROM openbmc-base as openbmc-json
 RUN mkdir ${PREFIX}/include/nlohmann/ && \
