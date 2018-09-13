@@ -170,6 +170,13 @@ RUN curl -L -O https://dl.bintray.com/boostorg/release/1.66.0/source/boost_1_66_
 RUN tar --bzip2 -xf boost_1_66_0.tar.bz2
 RUN cp -a -r boost_1_66_0/boost /usr/include
 
+RUN curl -L -o CLI11.tar.gz https://github.com/CLIUtils/CLI11/archive/v1.6.1.tar.gz
+RUN tar -xzf CLI11.tar.gz
+RUN cd CLI11-* && \
+cmake -DCLI11_TESTING=OFF -DCLI11_EXAMPLES=OFF -DCMAKE_BUILD_TYPE=RelWithDebInfo \
+  -DBUILD_SHARED_LIBS=ON -DCMAKE_INSTALL_PREFIX:PATH=/usr . && \
+make -j$(nproc) && make install
+
 RUN grep -q ${GROUPS} /etc/group || groupadd -g ${GROUPS} ${USER}
 RUN mkdir -p $(dirname ${HOME})
 RUN grep -q ${UID} /etc/passwd || useradd -d ${HOME} -m -u ${UID} -g ${GROUPS} ${USER}
