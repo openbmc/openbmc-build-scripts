@@ -36,6 +36,7 @@ PKGS=(
   phosphor-objmgr
   sdbusplus
   sdeventplus
+  gpioplus
   phosphor-logging
   phosphor-dbus-interfaces
   openpower-dbus-interfaces
@@ -161,6 +162,13 @@ make install
 
 RUN git clone https://github.com/openbmc/sdeventplus && \
 cd sdeventplus && \
+./bootstrap.sh && \
+./configure --disable-tests --disable-examples && \
+make -j$(nproc) && \
+make install
+
+RUN git clone https://github.com/openbmc/gpioplus && \
+cd gpioplus && \
 ./bootstrap.sh && \
 ./configure --disable-tests --disable-examples && \
 make -j$(nproc) && \
