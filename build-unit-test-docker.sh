@@ -32,6 +32,19 @@ case ${ARCH} in
         exit 1
 esac
 
+# Setup temporary files
+DEPCACHE_FILE=""
+cleanup() {
+  local status="$?"
+  if [ -n "$DEPCACHE_FILE" ]; then
+    rm -f "$DEPCACHE_FILE"
+  fi
+  trap - EXIT ERR
+  exit "$status"
+}
+trap cleanup EXIT ERR INT TERM QUIT
+DEPCACHE_FILE="$(mktemp)"
+
 PKGS=(
   phosphor-objmgr
   sdbusplus
@@ -41,13 +54,29 @@ PKGS=(
   phosphor-dbus-interfaces
   openpower-dbus-interfaces
 )
-DEPCACHE=
-for package in "${PKGS[@]}"
-do
-    tip=$(git ls-remote https://github.com/openbmc/${package} |
-           grep 'refs/heads/master' | awk '{ print $1 }')
-    DEPCACHE+=${package}:${tip},
+
+# Generate a list of depcache entries
+# We want to do this in parallel since the package list is growing
+# and the network lookup is low overhead but decently high latency.
+# This doesn't worry about producing a stable DEPCACHE_FILE, that is
+# done by readers who need a stable ordering.
+generate_depcache_entry() {
+  local package="$1"
+
+  local tip
+  tip=$(git ls-remote "https://github.com/openbmc/${package}" |
+        grep 'refs/heads/master' | awk '{ print $1 }')
+
+  # Lock the file to avoid interlaced writes
+  exec 3>> "$DEPCACHE_FILE"
+  flock -x 3
+  echo "$package:$tip" >&3
+  exec 3>&-
+}
+for package in "${PKGS[@]}"; do
+  generate_depcache_entry "$package" &
 done
+wait
 
 ################################# docker img # #################################
 # Create docker image that can run package unit tests
@@ -149,10 +178,11 @@ RUN grep -q ${UID} /etc/passwd || useradd -d ${HOME} -m -u ${UID} -g ${GROUPS} $
 RUN echo '${AUTOM4TE}' > ${AUTOM4TE_CFG}
 
 # Sneaky use of Dockerfile semantics! Force a rebuild of the image if master
-# has been updated in any of the repositories in $PKGS: This happens as a
-# consequence of the ls-remotes above, which will change the value of
-# ${DEPCACHE} and therefore trigger rebuilds of all of the following layers.
-RUN echo '${DEPCACHE}' > /root/.depcache
+# has been updated in any of the repositories in \$PKGS: This happens as a
+# consequence of the ls-remotes above, which will change the contents of
+# \${DEPCACHE_FILE} and therefore trigger rebuilds of all of the following layers.
+# NOTE: The file is sorted to ensure the ordering is stable.
+RUN echo '$(sort "$DEPCACHE_FILE" | tr '\n' ',')' > /root/.depcache
 
 RUN git clone https://github.com/openbmc/sdbusplus && \
 cd sdbusplus && \
