@@ -117,7 +117,8 @@ RUN apt-get update && apt-get install -yy \
     lcov \
     libpam0g-dev \
     xxd \
-    wget
+    wget \
+    tinyxml2
 
 RUN pip install inflection
 RUN pip install pycodestyle
