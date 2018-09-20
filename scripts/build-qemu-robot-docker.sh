@@ -60,7 +60,8 @@ RUN apt-get update && apt-get install -yy \
     sshpass \
     libasound2 \
     libfdt1 \
-    libpcre3
+    libpcre3 \
+    openssl
 
 RUN easy_install \
     tox \
