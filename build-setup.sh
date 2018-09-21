@@ -71,7 +71,7 @@
 #  xtrct_copy_timeout Timeout (in seconds) for copying the contents of
 #                     build_dir to xtrct_path.
 #                     Default: "300"
-#
+# test
 ###############################################################################
 # Trace bash processing. Set -e so when a step fails, we fail the build
 set -xeo pipefail
