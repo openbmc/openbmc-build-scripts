@@ -146,8 +146,7 @@ RUN apt-get update && apt-get install -yy \
     lcov \
     libpam0g-dev \
     xxd \
-    wget \
-    libtinyxml2-6
+    wget
 
 RUN pip install inflection
 RUN pip install pycodestyle
@@ -241,6 +240,16 @@ cd libvncserver && \
 mkdir build && \
 cd build && \
 cmake -DWITH_PNG=OFF .. && \
+make -j$(nproc) && \
+make install
+
+# version from meta-openembedded/meta-oe/recipes-support/libtinyxml2/libtinyxml2_5.0.1.bb
+RUN curl -L -o tinyxml2.tar.gz https://github.com/leethomason/tinyxml2/archive/37bc3aca429f0164adf68c23444540b4a24b5778.tar.gz && \
+tar -xzf tinyxml2.tar.gz && \
+cd tinyxml2-3* && \
+mkdir build && \
+cd build && \
+cmake .. && \
 make -j$(nproc) && \
 make install
 
