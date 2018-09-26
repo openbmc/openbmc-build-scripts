@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<!--
+This file contains regex defintions used by fail_analysis.py to capture
+failures in Jenkins Code update compile and build logs. Infrastructure issues defintions
+should precede developer issue definitions. Other issues are infrastructure issues that
+will not be fixed by a track restart. Issues with regexes can be added as children to create
+sub-issues.
+-->
+<issues>
+    <issue name="infrastructure">
+        <issue name="Build step fails">
+            <regex>Build step 'Execute shell' marked build as failure</regex>
+        </issue>
+    </issue>
+    <issue name="other"></issue>
+    <issue name="developer"></issue>
+</issues>
