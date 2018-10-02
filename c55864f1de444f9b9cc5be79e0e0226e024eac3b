@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "2627fd34_e3df5fcc",
+        "filename": "scripts/fail_analysis.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 75,
+      "author": {
+        "id": 1000018
+      },
+      "writtenOn": "2018-10-02T17:11:15Z",
+      "side": 1,
+      "message": "Where is simics coming from here.. and there are other places where its mentioned..",
+      "range": {
+        "startLine": 75,
+        "startChar": 26,
+        "endLine": 75,
+        "endChar": 32
+      },
+      "revId": "c55864f1de444f9b9cc5be79e0e0226e024eac3b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "004e5653_ddbb2281",
+        "filename": "scripts/fail_analysis.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 91,
+      "author": {
+        "id": 1000018
+      },
+      "writtenOn": "2018-10-02T17:11:15Z",
+      "side": 1,
+      "message": "fsp? do u want to name it different or its just existing files.",
+      "range": {
+        "startLine": 91,
+        "startChar": 21,
+        "endLine": 91,
+        "endChar": 37
+      },
+      "revId": "c55864f1de444f9b9cc5be79e0e0226e024eac3b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    }
+  ]
+}
