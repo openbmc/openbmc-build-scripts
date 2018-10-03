@@ -146,6 +146,7 @@ RUN apt-get update && apt-get install -yy \
     lcov \
     libpam0g-dev \
     xxd \
+    libi2c-dev \
     wget
 
 RUN pip install inflection
