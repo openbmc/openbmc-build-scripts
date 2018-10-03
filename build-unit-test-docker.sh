@@ -78,6 +78,9 @@ for package in "${PKGS[@]}"; do
 done
 wait
 
+# Define common flags used for cmake builds
+CMAKE_FLAGS="-DCMAKE_BUILD_TYPE=RelWithDebInfo -DBUILD_SHARED_LIBS=ON -DCMAKE_INSTALL_PREFIX:PATH=/usr"
+
 ################################# docker img # #################################
 # Create docker image that can run package unit tests
 if [[ "${DISTRO}" == "ubuntu"* ]]; then
@@ -155,7 +158,7 @@ RUN pip install pycodestyle
 RUN curl -L -o googletest.tar.gz https://github.com/google/googletest/archive/ba96d0b1161f540656efdaed035b3c062b60e006.tar.gz
 RUN tar -xzf googletest.tar.gz
 RUN cd googletest-* && \
-cmake -DBUILD_GTEST=ON -DBUILD_GMOCK=ON -DCMAKE_BUILD_TYPE=RelWithDebInfo -DBUILD_SHARED_LIBS=ON -DCMAKE_INSTALL_PREFIX:PATH=/usr . && \
+cmake ${CMAKE_FLAGS} -DBUILD_GTEST=ON -DBUILD_GMOCK=ON . && \
 make && make install
 
 RUN curl -L -O https://github.com/USCiLab/cereal/archive/v1.2.2.tar.gz
@@ -176,7 +179,7 @@ tar -xzf tinyxml2.tar.gz && \
 cd tinyxml2-3* && \
 mkdir build && \
 cd build && \
-cmake .. && \
+cmake ${CMAKE_FLAGS} .. && \
 make -j$(nproc) && \
 make install
 
@@ -187,7 +190,7 @@ RUN git clone https://github.com/LibVNC/libvncserver && \
 cd libvncserver && \
 mkdir build && \
 cd build && \
-cmake -DWITH_PNG=OFF .. && \
+cmake ${CMAKE_FLAGS} -DWITH_PNG=OFF .. && \
 make -j$(nproc) && \
 make install
 
