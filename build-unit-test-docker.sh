@@ -172,6 +172,27 @@ RUN curl -L -O https://dl.bintray.com/boostorg/release/1.66.0/source/boost_1_66_
 RUN tar --bzip2 -xf boost_1_66_0.tar.bz2
 RUN cp -a -r boost_1_66_0/boost /usr/include
 
+# version from meta-openembedded/meta-oe/recipes-support/libtinyxml2/libtinyxml2_5.0.1.bb
+RUN curl -L -o tinyxml2.tar.gz https://github.com/leethomason/tinyxml2/archive/37bc3aca429f0164adf68c23444540b4a24b5778.tar.gz && \
+tar -xzf tinyxml2.tar.gz && \
+cd tinyxml2-3* && \
+mkdir build && \
+cd build && \
+cmake .. && \
+make -j$(nproc) && \
+make install
+
+# Fetch, build, and install latest libvncserver because obmc-ikvm requires a recent commit
+# (libvncserver commit dd873fce451e4b7d7cc69056a62e107aae7c8e7a). This won't be included in any
+# respository packages for some time.
+RUN git clone https://github.com/LibVNC/libvncserver && \
+cd libvncserver && \
+mkdir build && \
+cd build && \
+cmake -DWITH_PNG=OFF .. && \
+make -j$(nproc) && \
+make install
+
 RUN grep -q ${GROUPS} /etc/group || groupadd -g ${GROUPS} ${USER}
 RUN mkdir -p $(dirname ${HOME})
 RUN grep -q ${UID} /etc/passwd || useradd -d ${HOME} -m -u ${UID} -g ${GROUPS} ${USER}
@@ -227,31 +248,10 @@ cd phosphor-logging && \
 make -j$(nproc) && \
 make install
 
-# version from meta-openembedded/meta-oe/recipes-support/libtinyxml2/libtinyxml2_5.0.1.bb
-RUN curl -L -o tinyxml2.tar.gz https://github.com/leethomason/tinyxml2/archive/37bc3aca429f0164adf68c23444540b4a24b5778.tar.gz && \
-tar -xzf tinyxml2.tar.gz && \
-cd tinyxml2-3* && \
-mkdir build && \
-cd build && \
-cmake .. && \
-make -j$(nproc) && \
-make install
-
 RUN git clone https://github.com/openbmc/phosphor-objmgr && \
 cd phosphor-objmgr && \
 ./bootstrap.sh && \
 ./configure --enable-unpatched-systemd && \
-make -j$(nproc) && \
-make install
-
-# Fetch, build, and install latest libvncserver because obmc-ikvm requires a recent commit
-# (libvncserver commit dd873fce451e4b7d7cc69056a62e107aae7c8e7a). This won't be included in any
-# respository packages for some time.
-RUN git clone https://github.com/LibVNC/libvncserver && \
-cd libvncserver && \
-mkdir build && \
-cd build && \
-cmake -DWITH_PNG=OFF .. && \
 make -j$(nproc) && \
 make install
 
