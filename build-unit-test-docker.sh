@@ -99,7 +99,7 @@ for line in $(cat "$DEPCACHE_FILE"); do
 done
 
 # Define common flags used for builds
-PREFIX="/usr"
+PREFIX="/usr/local"
 CONFIGURE_FLAGS="--prefix=${PREFIX}"
 CMAKE_FLAGS="-DCMAKE_BUILD_TYPE=RelWithDebInfo -DBUILD_SHARED_LIBS=ON -DCMAKE_INSTALL_PREFIX:PATH=${PREFIX}"
 
