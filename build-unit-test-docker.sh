@@ -210,19 +210,6 @@ cmake ${CMAKE_FLAGS} .. && \
 make -j$(nproc) && \
 make install
 
-RUN grep -q ${GROUPS} /etc/group || groupadd -g ${GROUPS} ${USER}
-RUN mkdir -p $(dirname ${HOME})
-RUN grep -q ${UID} /etc/passwd || useradd -d ${HOME} -m -u ${UID} -g ${GROUPS} ${USER}
-
-RUN echo '${AUTOM4TE}' > ${AUTOM4TE_CFG}
-
-# Sneaky use of Dockerfile semantics! Force a rebuild of the image if master
-# has been updated in any of the repositories in \$PKGS: This happens as a
-# consequence of the ls-remotes above, which will change the contents of
-# \${DEPCACHE_FILE} and therefore trigger rebuilds of all of the following layers.
-# NOTE: The file is sorted to ensure the ordering is stable.
-RUN echo '$(sort "$DEPCACHE_FILE" | tr '\n' ',')' > /root/.depcache
-
 RUN curl -L https://github.com/openbmc/sdbusplus/archive/${PKG_REV['sdbusplus']}.tar.gz | tar -xz && \
 cd sdbusplus-* && \
 ./bootstrap.sh && \
@@ -271,6 +258,18 @@ cd phosphor-objmgr-* && \
 ./configure ${CONFIGURE_FLAGS} --enable-unpatched-systemd && \
 make -j$(nproc) && \
 make install
+
+RUN echo '${AUTOM4TE}' > ${AUTOM4TE_CFG}
+
+# Some of our infrastructure still relies on the presence of this file
+# even though it is no longer needed to rebuild the docker environment
+# NOTE: The file is sorted to ensure the ordering is stable.
+RUN echo '$(LC_COLLATE=C sort -s "$DEPCACHE_FILE" | tr '\n' ',')' > /root/.depcache
+
+# Final configuration for the workspace
+RUN grep -q ${GROUPS} /etc/group || groupadd -g ${GROUPS} ${USER}
+RUN mkdir -p $(dirname ${HOME})
+RUN grep -q ${UID} /etc/passwd || useradd -d ${HOME} -m -u ${UID} -g ${GROUPS} ${USER}
 
 RUN /bin/bash
 EOF
