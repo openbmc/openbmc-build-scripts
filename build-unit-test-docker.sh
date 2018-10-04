@@ -158,7 +158,9 @@ RUN pip install pycodestyle
 RUN curl -L -o googletest.tar.gz https://github.com/google/googletest/archive/ba96d0b1161f540656efdaed035b3c062b60e006.tar.gz
 RUN tar -xzf googletest.tar.gz
 RUN cd googletest-* && \
-cmake ${CMAKE_FLAGS} -DBUILD_GTEST=ON -DBUILD_GMOCK=ON . && \
+mkdir build && \
+cd build && \
+cmake ${CMAKE_FLAGS} -DBUILD_GTEST=ON -DBUILD_GMOCK=ON .. && \
 make && make install
 
 RUN curl -L -O https://github.com/USCiLab/cereal/archive/v1.2.2.tar.gz
