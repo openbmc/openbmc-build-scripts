@@ -78,11 +78,15 @@ for package in "${PKGS[@]}"; do
 done
 wait
 
-# Define common flags used for cmake builds
+# Define common flags used for builds
+PREFIX="/usr/local"
+CONFIGURE_FLAGS=(
+  "--prefix=${PREFIX}"
+)
 CMAKE_FLAGS=(
   "-DCMAKE_BUILD_TYPE=RelWithDebInfo"
   "-DBUILD_SHARED_LIBS=ON"
-  "-DCMAKE_INSTALL_PREFIX:PATH=/usr/local"
+  "-DCMAKE_INSTALL_PREFIX:PATH=${PREFIX}"
 )
 
 ################################# docker img # #################################
@@ -218,49 +222,49 @@ RUN echo '$(sort "$DEPCACHE_FILE" | tr '\n' ',')' > /root/.depcache
 RUN git clone https://github.com/openbmc/sdbusplus && \
 cd sdbusplus && \
 ./bootstrap.sh && \
-./configure --enable-transaction && \
+./configure ${CONFIGURE_FLAGS[@]} --enable-transaction && \
 make -j$(nproc) && \
 make install
 
 RUN git clone https://github.com/openbmc/sdeventplus && \
 cd sdeventplus && \
 ./bootstrap.sh && \
-./configure --disable-tests --disable-examples && \
+./configure ${CONFIGURE_FLAGS[@]} --disable-tests --disable-examples && \
 make -j$(nproc) && \
 make install
 
 RUN git clone https://github.com/openbmc/gpioplus && \
 cd gpioplus && \
 ./bootstrap.sh && \
-./configure --disable-tests --disable-examples && \
+./configure ${CONFIGURE_FLAGS[@]} --disable-tests --disable-examples && \
 make -j$(nproc) && \
 make install
 
 RUN git clone https://github.com/openbmc/phosphor-dbus-interfaces && \
 cd phosphor-dbus-interfaces && \
 ./bootstrap.sh && \
-./configure && \
+./configure ${CONFIGURE_FLAGS[@]} && \
 make -j$(nproc) && \
 make install
 
 RUN git clone https://github.com/openbmc/openpower-dbus-interfaces && \
 cd openpower-dbus-interfaces && \
 ./bootstrap.sh && \
-./configure && \
+./configure ${CONFIGURE_FLAGS[@]} && \
 make -j$(nproc) && \
 make install
 
 RUN git clone https://github.com/openbmc/phosphor-logging && \
 cd phosphor-logging && \
 ./bootstrap.sh && \
-./configure --enable-metadata-processing YAML_DIR=/usr/local/share/phosphor-dbus-yaml/yaml && \
+./configure ${CONFIGURE_FLAGS[@]} --enable-metadata-processing YAML_DIR=/usr/local/share/phosphor-dbus-yaml/yaml && \
 make -j$(nproc) && \
 make install
 
 RUN git clone https://github.com/openbmc/phosphor-objmgr && \
 cd phosphor-objmgr && \
 ./bootstrap.sh && \
-./configure --enable-unpatched-systemd && \
+./configure ${CONFIGURE_FLAGS[@]} --enable-unpatched-systemd && \
 make -j$(nproc) && \
 make install
 
