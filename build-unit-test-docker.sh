@@ -53,6 +53,7 @@ PKGS=(
   phosphor-logging
   phosphor-dbus-interfaces
   openpower-dbus-interfaces
+  phosphor-ipmi-blobs
 )
 
 # Generate a list of depcache entries
@@ -239,6 +240,13 @@ RUN git clone https://github.com/openbmc/phosphor-objmgr && \
 cd phosphor-objmgr && \
 ./bootstrap.sh && \
 ./configure --enable-unpatched-systemd && \
+make -j$(nproc) && \
+make install
+
+RUN git clone https://github.com/openbmc/phosphor-ipmi-blobs && \
+cd phosphor-ipmi-blobs && \
+./bootstrap.sh && \
+./configure && \
 make -j$(nproc) && \
 make install
 
