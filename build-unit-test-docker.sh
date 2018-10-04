@@ -135,6 +135,7 @@ RUN apt-get update && apt-get install -yy \
     libevdev-dev \
     libevdev2-dbgsym \
     libjpeg-dev \
+    libpng-dev \
     sudo \
     curl \
     git \
@@ -194,7 +195,7 @@ RUN git clone https://github.com/LibVNC/libvncserver && \
 cd libvncserver && \
 mkdir build && \
 cd build && \
-cmake ${CMAKE_FLAGS} -DWITH_PNG=OFF .. && \
+cmake ${CMAKE_FLAGS} .. && \
 make -j$(nproc) && \
 make install
 
