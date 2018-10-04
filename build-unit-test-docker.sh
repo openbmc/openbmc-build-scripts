@@ -172,7 +172,8 @@ cd googletest-* && \
 mkdir build && \
 cd build && \
 cmake ${CMAKE_FLAGS} -DBUILD_GTEST=ON -DBUILD_GMOCK=ON .. && \
-make && make install
+make -j$(nproc) && \
+make install
 
 RUN curl -L https://github.com/USCiLab/cereal/archive/v1.2.2.tar.gz | tar -xz && \
 cp -a cereal-1.2.2/include/cereal/ ${PREFIX}/include/
