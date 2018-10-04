@@ -79,7 +79,18 @@ done
 wait
 
 # A list of package versions we are building
-declare -A PKG_REV=()
+# Start off by listing the stating versions of third-party sources
+declare -A PKG_REV=(
+  [boost]=1.66.0
+  [cereal]=v1.2.2
+  # Snapshot from 2018-06-14
+  [googletest]=ba96d0b1161f540656efdaed035b3c062b60e006
+  [json]=v3.0.1
+  # libvncserver commit dd873fce451e4b7d7cc69056a62e107aae7c8e7a is required for obmc-ikvm
+  [libvncserver]=dd873fce451e4b7d7cc69056a62e107aae7c8e7a
+  # version from meta-openembedded/meta-oe/recipes-support/libtinyxml2/libtinyxml2_5.0.1.bb
+  [tinyxml2]=37bc3aca429f0164adf68c23444540b4a24b5778
+)
 
 # Turn the depcache into a dictionary so we can reference the HEAD of each repo
 for line in $(cat "$DEPCACHE_FILE"); do
@@ -166,8 +177,7 @@ RUN apt-get update && apt-get install -yy \
 RUN pip install inflection
 RUN pip install pycodestyle
 
-# Snapshot from 2018-06-14
-RUN curl -L https://github.com/google/googletest/archive/ba96d0b1161f540656efdaed035b3c062b60e006.tar.gz | tar -xz && \
+RUN curl -L https://github.com/google/googletest/archive/${PKG_REV['googletest']}.tar.gz | tar -xz && \
 cd googletest-* && \
 mkdir build && \
 cd build && \
@@ -175,17 +185,16 @@ cmake ${CMAKE_FLAGS} -DBUILD_GTEST=ON -DBUILD_GMOCK=ON .. && \
 make -j$(nproc) && \
 make install
 
-RUN curl -L https://github.com/USCiLab/cereal/archive/v1.2.2.tar.gz | tar -xz && \
-cp -a cereal-1.2.2/include/cereal/ ${PREFIX}/include/
+RUN curl -L https://github.com/USCiLab/cereal/archive/${PKG_REV['cereal']}.tar.gz | tar -xz && \
+cp -a cereal-*/include/cereal/ ${PREFIX}/include/
 
 RUN mkdir ${PREFIX}/include/nlohmann/ && \
-curl -L -o ${PREFIX}/include/nlohmann/json.hpp https://github.com/nlohmann/json/releases/download/v3.0.1/json.hpp
+curl -L -o ${PREFIX}/include/nlohmann/json.hpp https://github.com/nlohmann/json/releases/download/${PKG_REV['json']}/json.hpp
 
-RUN curl -L https://dl.bintray.com/boostorg/release/1.66.0/source/boost_1_66_0.tar.bz2 | tar -xj && \
-cp -a -r boost_1_66_0/boost ${PREFIX}/include
+RUN curl -L https://dl.bintray.com/boostorg/release/${PKG_REV['boost']}/source/boost_$(echo "${PKG_REV['boost']}" | tr '.' '_').tar.bz2 | tar -xj && \
+cp -a -r boost_*/boost ${PREFIX}/include
 
-# version from meta-openembedded/meta-oe/recipes-support/libtinyxml2/libtinyxml2_5.0.1.bb
-RUN curl -L https://github.com/leethomason/tinyxml2/archive/37bc3aca429f0164adf68c23444540b4a24b5778.tar.gz | tar -xz && \
+RUN curl -L https://github.com/leethomason/tinyxml2/archive/${PKG_REV['tinyxml2']}.tar.gz | tar -xz && \
 cd tinyxml2-* && \
 mkdir build && \
 cd build && \
@@ -193,10 +202,7 @@ cmake ${CMAKE_FLAGS} .. && \
 make -j$(nproc) && \
 make install
 
-# Fetch, build, and install latest libvncserver because obmc-ikvm requires a recent commit
-# (libvncserver commit dd873fce451e4b7d7cc69056a62e107aae7c8e7a). This won't be included in any
-# respository packages for some time.
-RUN curl -L https://github.com/LibVNC/libvncserver/archive/dd873fce451e4b7d7cc69056a62e107aae7c8e7a.tar.gz | tar -xz && \
+RUN curl -L https://github.com/LibVNC/libvncserver/archive/${PKG_REV['libvncserver']}.tar.gz | tar -xz && \
 cd libvncserver-* && \
 mkdir build && \
 cd build && \
