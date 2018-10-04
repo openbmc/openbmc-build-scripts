@@ -103,11 +103,19 @@ PREFIX="/usr/local"
 CONFIGURE_FLAGS="--prefix=${PREFIX}"
 CMAKE_FLAGS="-DCMAKE_BUILD_TYPE=RelWithDebInfo -DBUILD_SHARED_LIBS=ON -DCMAKE_INSTALL_PREFIX:PATH=${PREFIX}"
 
+# Build the commands needed to compose our final image
+COPY_CMDS=""
+# We must sort the packages, otherwise we might produce an unstable
+# docker file and rebuild the image unnecessarily
+for pkg in $(echo "${!PKG_REV[@]}" | tr ' ' '\n' | LC_COLLATE=C sort -s); do
+  COPY_CMDS+="COPY --from=openbmc-${pkg} ${PREFIX} ${PREFIX}"$'\n'
+done
+
 ################################# docker img # #################################
 # Create docker image that can run package unit tests
 if [[ "${DISTRO}" == "ubuntu"* ]]; then
 Dockerfile=$(cat << EOF
-FROM ${DOCKER_BASE}${DISTRO}
+FROM ${DOCKER_BASE}${DISTRO} as openbmc-base
 
 ENV DEBIAN_FRONTEND noninteractive
 
@@ -177,6 +185,7 @@ RUN apt-get update && apt-get install -yy \
 RUN pip install inflection
 RUN pip install pycodestyle
 
+FROM openbmc-base as openbmc-googletest
 RUN curl -L https://github.com/google/googletest/archive/${PKG_REV['googletest']}.tar.gz | tar -xz && \
 cd googletest-* && \
 mkdir build && \
@@ -185,15 +194,19 @@ cmake ${CMAKE_FLAGS} -DBUILD_GTEST=ON -DBUILD_GMOCK=ON .. && \
 make -j$(nproc) && \
 make install
 
+FROM openbmc-base as openbmc-cereal
 RUN curl -L https://github.com/USCiLab/cereal/archive/${PKG_REV['cereal']}.tar.gz | tar -xz && \
 cp -a cereal-*/include/cereal/ ${PREFIX}/include/
 
+FROM openbmc-base as openbmc-json
 RUN mkdir ${PREFIX}/include/nlohmann/ && \
 curl -L -o ${PREFIX}/include/nlohmann/json.hpp https://github.com/nlohmann/json/releases/download/${PKG_REV['json']}/json.hpp
 
+FROM openbmc-base as openbmc-boost
 RUN curl -L https://dl.bintray.com/boostorg/release/${PKG_REV['boost']}/source/boost_$(echo "${PKG_REV['boost']}" | tr '.' '_').tar.bz2 | tar -xj && \
 cp -a -r boost_*/boost ${PREFIX}/include
 
+FROM openbmc-base as openbmc-tinyxml2
 RUN curl -L https://github.com/leethomason/tinyxml2/archive/${PKG_REV['tinyxml2']}.tar.gz | tar -xz && \
 cd tinyxml2-* && \
 mkdir build && \
@@ -202,6 +215,7 @@ cmake ${CMAKE_FLAGS} .. && \
 make -j$(nproc) && \
 make install
 
+FROM openbmc-base as openbmc-libvncserver
 RUN curl -L https://github.com/LibVNC/libvncserver/archive/${PKG_REV['libvncserver']}.tar.gz | tar -xz && \
 cd libvncserver-* && \
 mkdir build && \
@@ -210,6 +224,7 @@ cmake ${CMAKE_FLAGS} .. && \
 make -j$(nproc) && \
 make install
 
+FROM openbmc-base as openbmc-sdbusplus
 RUN curl -L https://github.com/openbmc/sdbusplus/archive/${PKG_REV['sdbusplus']}.tar.gz | tar -xz && \
 cd sdbusplus-* && \
 ./bootstrap.sh && \
@@ -217,6 +232,7 @@ cd sdbusplus-* && \
 make -j$(nproc) && \
 make install
 
+FROM openbmc-base as openbmc-sdeventplus
 RUN curl -L https://github.com/openbmc/sdeventplus/archive/${PKG_REV['sdeventplus']}.tar.gz | tar -xz && \
 cd sdeventplus-* && \
 ./bootstrap.sh && \
@@ -224,6 +240,7 @@ cd sdeventplus-* && \
 make -j$(nproc) && \
 make install
 
+FROM openbmc-base as openbmc-gpioplus
 RUN curl -L https://github.com/openbmc/gpioplus/archive/${PKG_REV['gpioplus']}.tar.gz | tar -xz && \
 cd gpioplus-* && \
 ./bootstrap.sh && \
@@ -231,6 +248,8 @@ cd gpioplus-* && \
 make -j$(nproc) && \
 make install
 
+FROM openbmc-base as openbmc-phosphor-dbus-interfaces
+COPY --from=openbmc-sdbusplus ${PREFIX} ${PREFIX}
 RUN curl -L https://github.com/openbmc/phosphor-dbus-interfaces/archive/${PKG_REV['phosphor-dbus-interfaces']}.tar.gz | tar -xz && \
 cd phosphor-dbus-interfaces-* && \
 ./bootstrap.sh && \
@@ -238,6 +257,8 @@ cd phosphor-dbus-interfaces-* && \
 make -j$(nproc) && \
 make install
 
+FROM openbmc-base as openbmc-openpower-dbus-interfaces
+COPY --from=openbmc-sdbusplus ${PREFIX} ${PREFIX}
 RUN curl -L https://github.com/openbmc/openpower-dbus-interfaces/archive/${PKG_REV['openpower-dbus-interfaces']}.tar.gz | tar -xz && \
 cd openpower-dbus-interfaces-* && \
 ./bootstrap.sh && \
@@ -245,6 +266,10 @@ cd openpower-dbus-interfaces-* && \
 make -j$(nproc) && \
 make install
 
+FROM openbmc-base as openbmc-phosphor-logging
+COPY --from=openbmc-cereal ${PREFIX} ${PREFIX}
+COPY --from=openbmc-sdbusplus ${PREFIX} ${PREFIX}
+COPY --from=openbmc-phosphor-dbus-interfaces ${PREFIX} ${PREFIX}
 RUN curl -L https://github.com/openbmc/phosphor-logging/archive/${PKG_REV['phosphor-logging']}.tar.gz | tar -xz && \
 cd phosphor-logging-* && \
 ./bootstrap.sh && \
@@ -252,12 +277,22 @@ cd phosphor-logging-* && \
 make -j$(nproc) && \
 make install
 
+FROM openbmc-base as openbmc-phosphor-objmgr
+COPY --from=openbmc-boost ${PREFIX} ${PREFIX}
+COPY --from=openbmc-sdbusplus ${PREFIX} ${PREFIX}
+COPY --from=openbmc-tinyxml2 ${PREFIX} ${PREFIX}
+COPY --from=openbmc-phosphor-logging ${PREFIX} ${PREFIX}
 RUN curl -L https://github.com/openbmc/phosphor-objmgr/archive/${PKG_REV['phosphor-objmgr']}.tar.gz | tar -xz && \
 cd phosphor-objmgr-* && \
 ./bootstrap.sh && \
 ./configure ${CONFIGURE_FLAGS} --enable-unpatched-systemd && \
 make -j$(nproc) && \
 make install
+
+
+# Build the final output image
+FROM openbmc-base
+${COPY_CMDS}
 
 RUN echo '${AUTOM4TE}' > ${AUTOM4TE_CFG}
 
