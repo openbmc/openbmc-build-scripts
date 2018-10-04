@@ -45,7 +45,7 @@ cleanup() {
 trap cleanup EXIT ERR INT TERM QUIT
 DEPCACHE_FILE="$(mktemp)"
 
-PKGS=(
+HEAD_PKGS=(
   phosphor-objmgr
   sdbusplus
   sdeventplus
@@ -73,10 +73,19 @@ generate_depcache_entry() {
   echo "$package:$tip" >&3
   exec 3>&-
 }
-for package in "${PKGS[@]}"; do
+for package in "${HEAD_PKGS[@]}"; do
   generate_depcache_entry "$package" &
 done
 wait
+
+# A list of package versions we are building
+declare -A PKG_REV=()
+
+# Turn the depcache into a dictionary so we can reference the HEAD of each repo
+for line in $(cat "$DEPCACHE_FILE"); do
+  linearr=($(echo "$line" | tr ':' ' '))
+  PKG_REV["${linearr[0]}"]="${linearr[1]}"
+done
 
 # Define common flags used for builds
 PREFIX="/usr/local"
@@ -194,8 +203,8 @@ make install
 # Fetch, build, and install latest libvncserver because obmc-ikvm requires a recent commit
 # (libvncserver commit dd873fce451e4b7d7cc69056a62e107aae7c8e7a). This won't be included in any
 # respository packages for some time.
-RUN git clone https://github.com/LibVNC/libvncserver && \
-cd libvncserver && \
+RUN curl -L https://github.com/LibVNC/libvncserver/archive/dd873fce451e4b7d7cc69056a62e107aae7c8e7a.tar.gz | tar -xz && \
+cd libvncserver-* && \
 mkdir build && \
 cd build && \
 cmake ${CMAKE_FLAGS[@]} .. && \
@@ -215,50 +224,50 @@ RUN echo '${AUTOM4TE}' > ${AUTOM4TE_CFG}
 # NOTE: The file is sorted to ensure the ordering is stable.
 RUN echo '$(sort "$DEPCACHE_FILE" | tr '\n' ',')' > /root/.depcache
 
-RUN git clone https://github.com/openbmc/sdbusplus && \
-cd sdbusplus && \
+RUN curl -L https://github.com/openbmc/sdbusplus/archive/${PKG_REV['sdbusplus']}.tar.gz | tar -xz && \
+cd sdbusplus-* && \
 ./bootstrap.sh && \
 ./configure ${CONFIGURE_FLAGS[@]} --enable-transaction && \
 make -j$(nproc) && \
 make install
 
-RUN git clone https://github.com/openbmc/sdeventplus && \
-cd sdeventplus && \
+RUN curl -L https://github.com/openbmc/sdeventplus/archive/${PKG_REV['sdeventplus']}.tar.gz | tar -xz && \
+cd sdeventplus-* && \
 ./bootstrap.sh && \
 ./configure ${CONFIGURE_FLAGS[@]} --disable-tests --disable-examples && \
 make -j$(nproc) && \
 make install
 
-RUN git clone https://github.com/openbmc/gpioplus && \
-cd gpioplus && \
+RUN curl -L https://github.com/openbmc/gpioplus/archive/${PKG_REV['gpioplus']}.tar.gz | tar -xz && \
+cd gpioplus-* && \
 ./bootstrap.sh && \
 ./configure ${CONFIGURE_FLAGS[@]} --disable-tests --disable-examples && \
 make -j$(nproc) && \
 make install
 
-RUN git clone https://github.com/openbmc/phosphor-dbus-interfaces && \
-cd phosphor-dbus-interfaces && \
+RUN curl -L https://github.com/openbmc/phosphor-dbus-interfaces/archive/${PKG_REV['phosphor-dbus-interfaces']}.tar.gz | tar -xz && \
+cd phosphor-dbus-interfaces-* && \
 ./bootstrap.sh && \
 ./configure ${CONFIGURE_FLAGS[@]} && \
 make -j$(nproc) && \
 make install
 
-RUN git clone https://github.com/openbmc/openpower-dbus-interfaces && \
-cd openpower-dbus-interfaces && \
+RUN curl -L https://github.com/openbmc/openpower-dbus-interfaces/archive/${PKG_REV['openpower-dbus-interfaces']}.tar.gz | tar -xz && \
+cd openpower-dbus-interfaces-* && \
 ./bootstrap.sh && \
 ./configure ${CONFIGURE_FLAGS[@]} && \
 make -j$(nproc) && \
 make install
 
-RUN git clone https://github.com/openbmc/phosphor-logging && \
-cd phosphor-logging && \
+RUN curl -L https://github.com/openbmc/phosphor-logging/archive/${PKG_REV['phosphor-logging']}.tar.gz | tar -xz && \
+cd phosphor-logging-* && \
 ./bootstrap.sh && \
 ./configure ${CONFIGURE_FLAGS[@]} --enable-metadata-processing YAML_DIR=/usr/share/phosphor-dbus-yaml/yaml && \
 make -j$(nproc) && \
 make install
 
-RUN git clone https://github.com/openbmc/phosphor-objmgr && \
-cd phosphor-objmgr && \
+RUN curl -L https://github.com/openbmc/phosphor-objmgr/archive/${PKG_REV['phosphor-objmgr']}.tar.gz | tar -xz && \
+cd phosphor-objmgr-* && \
 ./bootstrap.sh && \
 ./configure ${CONFIGURE_FLAGS[@]} --enable-unpatched-systemd && \
 make -j$(nproc) && \
