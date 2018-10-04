@@ -463,6 +463,7 @@ if __name__ == '__main__':
         'AC_CHECK_LIB': {'mapper': 'phosphor-objmgr'},
         'AC_CHECK_HEADER': {
             'host-ipmid': 'phosphor-host-ipmid',
+            'blobs-ipmid': 'phosphor-ipmi-blobs',
             'sdbusplus': 'sdbusplus',
             'sdeventplus': 'sdeventplus',
             'gpioplus': 'gpioplus',
