@@ -175,13 +175,13 @@ cmake ${CMAKE_FLAGS} -DBUILD_GTEST=ON -DBUILD_GMOCK=ON .. && \
 make && make install
 
 RUN curl -L https://github.com/USCiLab/cereal/archive/v1.2.2.tar.gz | tar -xz && \
-cp -a cereal-1.2.2/include/cereal/ /usr/include/
+cp -a cereal-1.2.2/include/cereal/ ${PREFIX}/include/
 
-RUN mkdir /usr/include/nlohmann/ && \
-curl -L -o /usr/include/nlohmann/json.hpp https://github.com/nlohmann/json/releases/download/v3.0.1/json.hpp
+RUN mkdir ${PREFIX}/include/nlohmann/ && \
+curl -L -o ${PREFIX}/include/nlohmann/json.hpp https://github.com/nlohmann/json/releases/download/v3.0.1/json.hpp
 
 RUN curl -L https://dl.bintray.com/boostorg/release/1.66.0/source/boost_1_66_0.tar.bz2 | tar -xj && \
-cp -a -r boost_1_66_0/boost /usr/include
+cp -a -r boost_1_66_0/boost ${PREFIX}/include
 
 # version from meta-openembedded/meta-oe/recipes-support/libtinyxml2/libtinyxml2_5.0.1.bb
 RUN curl -L https://github.com/leethomason/tinyxml2/archive/37bc3aca429f0164adf68c23444540b4a24b5778.tar.gz | tar -xz && \
@@ -254,7 +254,7 @@ make install
 RUN curl -L https://github.com/openbmc/phosphor-logging/archive/${PKG_REV['phosphor-logging']}.tar.gz | tar -xz && \
 cd phosphor-logging-* && \
 ./bootstrap.sh && \
-./configure ${CONFIGURE_FLAGS} --enable-metadata-processing YAML_DIR=/usr/local/share/phosphor-dbus-yaml/yaml && \
+./configure ${CONFIGURE_FLAGS} --enable-metadata-processing YAML_DIR=${PREFIX}/share/phosphor-dbus-yaml/yaml && \
 make -j$(nproc) && \
 make install
 
