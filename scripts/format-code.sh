@@ -24,9 +24,12 @@ if [ -f "setup.cfg" ]; then
   fi
 fi
 
+# Allow called scripts to know which clang format we are using
+export CLANG_FORMAT="clang-format-6.0"
+
 if [ -f ".clang-format" ]; then
   find . -regextype sed -regex ".*\.[hc]\(pp\)\?" -not -name "*mako*" -print0 |\
-     xargs -0 "clang-format-6.0" -i
+     xargs -0 "${CLANG_FORMAT}" -i
   git --no-pager diff --exit-code
 fi
 
