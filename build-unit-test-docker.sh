@@ -147,7 +147,8 @@ RUN apt-get update && apt-get install -yy \
     libpam0g-dev \
     xxd \
     libi2c-dev \
-    wget
+    wget \
+    libldap2-dev
 
 RUN pip install inflection
 RUN pip install pycodestyle
