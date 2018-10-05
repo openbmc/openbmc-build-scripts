@@ -34,7 +34,7 @@
 #                     fedora: 23|24|25
 #                     Default: "latest"
 #  target             The target we aim to build:
-#                     barreleye|evb-ast2500|firestone|garrison|palmetto|qemu
+#                     evb-ast2500|palmetto|qemu
 #                     romulus|s2600wf|witherspoon|zaius
 #                     Default: "qemu"
 #
@@ -132,30 +132,32 @@ chown ${UID}:${GROUPS} ${xtrct_path}
 # Work out what build target we should be running and set BitBake command
 case ${target} in
   palmetto)
-    BITBAKE_CMD="TEMPLATECONF=meta-ibm/meta-palmetto/conf source oe-init-build-env"
+    LAYER_DIR="meta-ibm/meta-palmetto"
     ;;
   witherspoon)
-    BITBAKE_CMD="TEMPLATECONF=meta-ibm/meta-witherspoon/conf source oe-init-build-env"
+    LAYER_DIR="meta-ibm/meta-witherspoon"
     ;;
   evb-ast2500)
-    BITBAKE_CMD="TEMPLATECONF=meta-evb/meta-evb-aspeed/meta-evb-ast2500/conf source oe-init-build-env"
+    LAYER_DIR="meta-evb/meta-evb-aspeed/meta-evb-ast2500"
     ;;
   s2600wf)
-    BITBAKE_CMD="TEMPLATECONF=meta-intel/meta-s2600wf/conf source oe-init-build-env"
+    LAYER_DIR="meta-intel/meta-s2600wf"
     ;;
   zaius)
-    BITBAKE_CMD="TEMPLATECONF=meta-ingrasys/meta-zaius/conf source oe-init-build-env"
+    LAYER_DIR="meta-ingrasys/meta-zaius"
     ;;
   romulus)
-    BITBAKE_CMD="TEMPLATECONF=meta-ibm/meta-romulus/conf source oe-init-build-env"
+    LAYER_DIR="meta-ibm/meta-romulus"
     ;;
   qemu)
-    BITBAKE_CMD="source openbmc-env"
+    LAYER_DIR="meta-phosphor"
     ;;
   *)
     exit 1
     ;;
 esac
+
+BITBAKE_CMD="TEMPLATECONF=${LAYER_DIR}/conf source oe-init-build-env"
 
 # Configure Docker build
 if [[ "${distro}" == fedora ]];then
