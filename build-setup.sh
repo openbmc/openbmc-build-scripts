@@ -46,6 +46,9 @@
 #                     job again via the api without needing this script.
 #                     Pod launches a container which runs to completion without
 #                     saving anything to the api when it completes.
+#  META_REPO          Set to an openbmc subtree to provide a hint as to which
+#                     subtree was changed.
+#                     Default: "", no hint
 #  obmc_dir           Path of the OpenBMC repo directory used as a reference
 #                     for the build inside the container.
 #                     Default: "${WORKSPACE}/openbmc"
@@ -156,6 +159,13 @@ case ${target} in
     exit 1
     ;;
 esac
+
+# Don't bother building if the layer being updated isn't used by this target
+if [ -n "${META_REPO}" ] && \
+    [ ! grep -q ${META_REPO} ${obmc_dir}/${LAYER_DIR}/conf/bblayers.conf.sample ]; then
+  echo "Skipping build of ${target} because it does not verify ${META_REPO}"
+  exit 0
+fi
 
 BITBAKE_CMD="TEMPLATECONF=${LAYER_DIR}/conf source oe-init-build-env"
 
