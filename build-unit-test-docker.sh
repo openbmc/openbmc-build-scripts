@@ -157,20 +157,20 @@ RUN pip install pycodestyle
 RUN curl -L -o googletest.tar.gz https://github.com/google/googletest/archive/ba96d0b1161f540656efdaed035b3c062b60e006.tar.gz
 RUN tar -xzf googletest.tar.gz
 RUN cd googletest-* && \
-cmake -DBUILD_GTEST=ON -DBUILD_GMOCK=ON -DCMAKE_BUILD_TYPE=RelWithDebInfo -DBUILD_SHARED_LIBS=ON -DCMAKE_INSTALL_PREFIX:PATH=/usr . && \
+cmake -DBUILD_GTEST=ON -DBUILD_GMOCK=ON -DCMAKE_BUILD_TYPE=RelWithDebInfo -DBUILD_SHARED_LIBS=ON -DCMAKE_INSTALL_PREFIX:PATH=/usr/local . && \
 make && make install
 
 RUN curl -L -O https://github.com/USCiLab/cereal/archive/v1.2.2.tar.gz
 RUN tar -xzf v1.2.2.tar.gz
-RUN cp -a cereal-1.2.2/include/cereal/ /usr/include/
+RUN cp -a cereal-1.2.2/include/cereal/ /usr/local/include/
 
 RUN curl -L -O https://github.com/nlohmann/json/releases/download/v3.0.1/json.hpp
-RUN mkdir /usr/include/nlohmann/
-RUN cp -a json.hpp /usr/include/nlohmann/
+RUN mkdir /usr/local/include/nlohmann/
+RUN cp -a json.hpp /usr/local/include/nlohmann/
 
 RUN curl -L -O https://dl.bintray.com/boostorg/release/1.66.0/source/boost_1_66_0.tar.bz2
 RUN tar --bzip2 -xf boost_1_66_0.tar.bz2
-RUN cp -a -r boost_1_66_0/boost /usr/include
+RUN cp -a -r boost_1_66_0/boost /usr/local/include
 
 # version from meta-openembedded/meta-oe/recipes-support/libtinyxml2/libtinyxml2_5.0.1.bb
 RUN curl -L -o tinyxml2.tar.gz https://github.com/leethomason/tinyxml2/archive/37bc3aca429f0164adf68c23444540b4a24b5778.tar.gz && \
