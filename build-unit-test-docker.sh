@@ -81,13 +81,14 @@ wait
 # A list of package versions we are building
 # Start off by listing the stating versions of third-party sources
 declare -A PKG_REV=(
-  [boost]=1.66.0
+  [boost]=1.68.0
   [cereal]=v1.2.2
-  # Snapshot from 2018-06-14
-  [googletest]=ba96d0b1161f540656efdaed035b3c062b60e006
-  [json]=v3.0.1
+  # Snapshot from 2018-10-11
+  [googletest]=b3b19a796cbb3222fb3a49daf3f0a9378e8505ad
+  [json]=v3.3.0
   # libvncserver commit dd873fce451e4b7d7cc69056a62e107aae7c8e7a is required for obmc-ikvm
-  [libvncserver]=dd873fce451e4b7d7cc69056a62e107aae7c8e7a
+  # Snapshot from 2018-10-08
+  [libvncserver]=7b1ef0ffc4815cab9a96c7278394152bdc89dc4d
   # version from meta-openembedded/meta-oe/recipes-support/libtinyxml2/libtinyxml2_5.0.1.bb
   [tinyxml2]=37bc3aca429f0164adf68c23444540b4a24b5778
 )
