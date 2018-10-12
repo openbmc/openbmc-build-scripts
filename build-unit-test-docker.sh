@@ -92,6 +92,7 @@ declare -A PKG_REV=(
   [libvncserver]=7b1ef0ffc4815cab9a96c7278394152bdc89dc4d
   # version from meta-openembedded/meta-oe/recipes-support/libtinyxml2/libtinyxml2_5.0.1.bb
   [tinyxml2]=37bc3aca429f0164adf68c23444540b4a24b5778
+  [cppcheck]=df32b0fb05f0c951ab0efa691292c7428f3f50a9
 )
 
 # Turn the depcache into a dictionary so we can reference the HEAD of each repo
@@ -224,6 +225,14 @@ curl -L -o ${PREFIX}/include/nlohmann/json.hpp https://github.com/nlohmann/json/
 FROM openbmc-base as openbmc-boost
 RUN curl -L https://dl.bintray.com/boostorg/release/${PKG_REV['boost']}/source/boost_$(echo "${PKG_REV['boost']}" | tr '.' '_').tar.bz2 | tar -xj && \
 cp -a -r boost_*/boost ${PREFIX}/include
+
+FROM openbmc-base as openbmc-cppcheck
+RUN curl -L https://github.com/danmar/cppcheck/archive/${PKG_REV['cppcheck']}.tar.gz | tar -xz && \
+cd cppcheck-* && \
+mkdir "${PREFIX}/cppcheck-cfg" && cp cfg/* "${PREFIX}/cppcheck-cfg/" && \
+make -j$(nproc) PREFIX=${PREFIX} CFGDIR="${PREFIX}/cppcheck-cfg" CXXFLAGS="-O2 -DNDEBUG -Wall -Wno-sign-compare -Wno-unused-function" && \
+make PREFIX=${PREFIX} install && \
+ls -l
 
 FROM openbmc-base as openbmc-tinyxml2
 RUN curl -L https://github.com/leethomason/tinyxml2/archive/${PKG_REV['tinyxml2']}.tar.gz | tar -xz && \
