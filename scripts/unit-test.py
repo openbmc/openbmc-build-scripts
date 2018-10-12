@@ -399,6 +399,20 @@ def run_unit_tests(top_dir):
             check_call_cmd(root, 'cat', os.path.join(root, 'test-suite.log'))
         raise Exception('Unit tests failed')
 
+def run_cppcheck(top_dir):
+    try:
+        # http://cppcheck.sourceforge.net/manual.pdf
+        ignore_list = ['-i%s' % path for path in os.listdir(top_dir) \
+                       if path.endswith('-src') or path.endswith('-build')]
+        ignore_list.extend(('-itest', '-iscripts'))
+        params = ['cppcheck', '-j', str(multiprocessing.cpu_count()),
+                  '--enable=all']
+        params.extend(ignore_list)
+        params.append('.')
+
+        check_call_cmd(top_dir, *params)
+    except CalledProcessError:
+        raise Exception('Cppcheck failed')
 
 def maybe_run_valgrind(top_dir):
     """
@@ -542,6 +556,7 @@ if __name__ == '__main__':
         run_unit_tests(top_dir)
         maybe_run_valgrind(top_dir)
         maybe_run_coverage(top_dir)
+        run_cppcheck(top_dir)
 
         os.umask(prev_umask)
 
@@ -556,6 +571,7 @@ if __name__ == '__main__':
             check_call_cmd(top_dir, 'ctest', '.')
         maybe_run_valgrind(top_dir)
         maybe_run_coverage(top_dir)
+        run_cppcheck(top_dir)
 
     else:
         print "Not a supported repo for CI Tests, exit"
