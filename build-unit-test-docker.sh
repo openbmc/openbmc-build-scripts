@@ -212,7 +212,7 @@ RUN curl -L https://github.com/CLIUtils/CLI11/archive/${PKG_REV['CLI11']}.tar.gz
 cd CLI11-* && \
 mkdir build && \
 cd build && \
-cmake ${CMAKE_FLAGS} -DCLI11_TESTING=OFF -DCLI11_EXAMPLES=OFF .. && \
+cmake ${CMAKE_FLAGS[@]} -DCLI11_TESTING=OFF -DCLI11_EXAMPLES=OFF .. && \
 make -j$(nproc) && \
 make install
 
