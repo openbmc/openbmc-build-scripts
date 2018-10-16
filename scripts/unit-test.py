@@ -484,7 +484,7 @@ if __name__ == '__main__':
 
     # DEPENDENCIES_REGEX = [GIT REPO]:[REGEX STRING]
     DEPENDENCIES_REGEX = {
-        'phosphor-logging': '\S+-dbus-interfaces$'
+        'phosphor-logging': r'\S+-dbus-interfaces$'
     }
 
     # Set command line arguments
