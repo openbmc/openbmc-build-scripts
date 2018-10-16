@@ -36,7 +36,7 @@ esac
 DEPCACHE_FILE=""
 cleanup() {
   local status="$?"
-  if [ -n "$DEPCACHE_FILE" ]; then
+  if [[ -n "$DEPCACHE_FILE" ]]; then
     rm -f "$DEPCACHE_FILE"
   fi
   trap - EXIT ERR
