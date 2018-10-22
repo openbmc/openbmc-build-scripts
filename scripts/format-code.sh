@@ -16,10 +16,10 @@ set -e
 
 echo "Formatting code under $DIR/"
 
-if [ -f "setup.cfg" ]; then
+if [[ -f "setup.cfg" ]]; then
   pycodestyle --show-source .
   rc=$?
-  if [ ${rc} -ne 0 ]; then
+  if [[ ${rc} -ne 0 ]]; then
     exit ${rc}
   fi
 fi
@@ -27,7 +27,7 @@ fi
 # Allow called scripts to know which clang format we are using
 export CLANG_FORMAT="clang-format-6.0"
 
-if [ -f ".clang-format" ]; then
+if [[ -f ".clang-format" ]]; then
   find . -regextype sed -regex ".*\.[hc]\(pp\)\?" -not -name "*mako*" -print0 |\
      xargs -0 "${CLANG_FORMAT}" -i
   git --no-pager diff --exit-code
@@ -35,7 +35,7 @@ fi
 
 # Sometimes your situation is terrible enough that you need the flexibility.
 # For example, phosphor-mboxd.
-if [ -f "format-code.sh" ]; then
+if [[ -f "format-code.sh" ]]; then
   ./format-code.sh
   git --no-pager diff --exit-code
 fi
