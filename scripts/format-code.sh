@@ -26,10 +26,35 @@ fi
 
 # Allow called scripts to know which clang format we are using
 export CLANG_FORMAT="clang-format-6.0"
+IGNORE_FILE=".clang-ignore"
+declare -a IGNORE_LIST
+
+if [[ -f "${IGNORE_FILE}" ]]; then
+  readarray -t IGNORE_LIST < "${IGNORE_FILE}"
+fi
+
+ignorepaths=""
+ignorefiles=""
+
+for path in "${IGNORE_LIST[@]}"; do
+  # Check for comment, line starting with space, or zero-length string.
+  # Checking for [[:space:]] checks all options.
+  if [[ -z "${path}" ]] || [[ "${path}" =~ ^(#|[[:space:]]).+$ ]]; then
+    continue
+  fi
+
+  # All paths must start with ./ for find's path prune expectation.
+  if [[ "${path}" =~ ^\.\/.+$ ]]; then
+    ignorepaths+=" -o -path ${path} -prune"
+  else
+    ignorefiles+=" -not -name ${path}"
+  fi
+done
 
 if [[ -f ".clang-format" ]]; then
-  find . -regextype sed -regex ".*\.[hc]\(pp\)\?" -not -name "*mako*" -print0 |\
-     xargs -0 "${CLANG_FORMAT}" -i
+  find . \( -regextype sed -regex ".*\.[hc]\(pp\)\?" ${ignorepaths} \) \
+    -not -name "*mako*" ${ignorefiles} -not -type d -print0 |\
+    xargs -0 "${CLANG_FORMAT}" -i
   git --no-pager diff --exit-code
 fi
 
