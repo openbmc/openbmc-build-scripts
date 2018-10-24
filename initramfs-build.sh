@@ -80,6 +80,7 @@ RUN apt-get update && apt-get install -yy \
 	python \
 	unzip \
 	wget \
+	rsync \
 	iputils-ping \
 	locales
 
