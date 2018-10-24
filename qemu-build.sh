@@ -116,6 +116,7 @@ git submodule update --init dtc
     --disable-gnutls \
     --disable-vte \
     --disable-vnc \
+    --disable-werror \
     --disable-vnc-png
 make -j4
 
