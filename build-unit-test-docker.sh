@@ -297,6 +297,7 @@ FROM openbmc-base as openbmc-phosphor-logging
 COPY --from=openbmc-cereal ${PREFIX} ${PREFIX}
 COPY --from=openbmc-sdbusplus ${PREFIX} ${PREFIX}
 COPY --from=openbmc-phosphor-dbus-interfaces ${PREFIX} ${PREFIX}
+COPY --from=openbmc-openpower-dbus-interfaces ${PREFIX} ${PREFIX}
 RUN curl -L https://github.com/openbmc/phosphor-logging/archive/${PKG_REV['phosphor-logging']}.tar.gz | tar -xz && \
 cd phosphor-logging-* && \
 ./bootstrap.sh && \
