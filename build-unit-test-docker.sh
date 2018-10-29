@@ -224,7 +224,9 @@ curl -L -o ${PREFIX}/include/nlohmann/json.hpp https://github.com/nlohmann/json/
 
 FROM openbmc-base as openbmc-boost
 RUN curl -L https://dl.bintray.com/boostorg/release/${PKG_REV['boost']}/source/boost_$(echo "${PKG_REV['boost']}" | tr '.' '_').tar.bz2 | tar -xj && \
-cp -a -r boost_*/boost ${PREFIX}/include
+cd boost_*/ && \
+./bootstrap.sh --prefix=${PREFIX} --with-libraries=context,coroutine && \
+./b2 && ./b2 install --prefix=${PREFIX}
 
 FROM openbmc-base as openbmc-cppcheck
 RUN curl -L https://github.com/danmar/cppcheck/archive/${PKG_REV['cppcheck']}.tar.gz | tar -xz && \
