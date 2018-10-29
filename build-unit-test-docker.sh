@@ -173,6 +173,7 @@ RUN apt-get update && apt-get install -yy \
     libevdev2-dbgsym \
     libjpeg-dev \
     libpng-dev \
+    libboost-coroutine-dev \
     sudo \
     curl \
     git \
