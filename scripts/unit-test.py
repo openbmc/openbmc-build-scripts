@@ -548,6 +548,11 @@ if __name__ == '__main__':
         install_list = dep_tree.GetInstallList()
         # install reordered dependencies
         install_deps(install_list)
+        check_call_cmd(WORKSPACE, "pwd")
+        os.chdir(WORKSPACE)
+        check_call_cmd(WORKSPACE, "pwd")
+        check_call_cmd(WORKSPACE, "./tidy-code.sh", CODE_SCAN_DIR)
+
         top_dir = os.path.join(WORKSPACE, UNIT_TEST_PKG)
         os.chdir(top_dir)
         # Refresh dynamic linker run time bindings for dependencies

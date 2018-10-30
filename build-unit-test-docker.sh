@@ -92,7 +92,7 @@ declare -A PKG_REV=(
   [libvncserver]=7b1ef0ffc4815cab9a96c7278394152bdc89dc4d
   # version from meta-openembedded/meta-oe/recipes-support/libtinyxml2/libtinyxml2_5.0.1.bb
   [tinyxml2]=37bc3aca429f0164adf68c23444540b4a24b5778
-  [cppcheck]=df32b0fb05f0c951ab0efa691292c7428f3f50a9
+  [cppcheck]=86782af43cf4c0c25160bdc8946a0cf020d245b1
 )
 
 # Turn the depcache into a dictionary so we can reference the HEAD of each repo
@@ -179,6 +179,7 @@ RUN apt-get update && apt-get install -yy \
     dbus \
     iputils-ping \
     clang-format-6.0 \
+    clang-tidy-6.0 \
     iproute2 \
     libnl-3-dev \
     libnl-genl-3-dev \
