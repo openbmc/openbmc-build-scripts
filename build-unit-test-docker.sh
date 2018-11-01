@@ -118,6 +118,9 @@ COPY_CMDS=""
 # docker file and rebuild the image unnecessarily
 for pkg in $(echo "${!PKG_REV[@]}" | tr ' ' '\n' | LC_COLLATE=C sort -s); do
   COPY_CMDS+="COPY --from=openbmc-${pkg} ${PREFIX} ${PREFIX}"$'\n'
+  # Workaround for upstream docker bug and multiple COPY cmds
+  # https://github.com/moby/moby/issues/37965
+  COPY_CMDS+="RUN true"$'\n'
 done
 
 ################################# docker img # #################################
