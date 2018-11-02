@@ -1,0 +1,9 @@
+Code-Review+1: Emily Shaffer <emilyshaffer@google.com>
+Ok-To-Test+1: Jenkins <openbmc-ci-admin@ozlabs.org>
+Verified+1: Jenkins <openbmc-ci-admin@ozlabs.org>
+Code-Review+2: Andrew Geissler <geissonator@yahoo.com>
+Submitted-by: Patrick Venture <venture@google.com>
+Submitted-at: Fri, 02 Nov 2018 19:41:50 +0000
+Reviewed-on: https://gerrit.openbmc-project.xyz/14537
+Project: openbmc/openbmc-build-scripts
+Branch: refs/heads/master
