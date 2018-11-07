@@ -130,6 +130,7 @@ fi
 chown ${UID}:${GROUPS} ${xtrct_path}
 
 # Work out what build target we should be running and set BitBake command
+MACHINE=${target}
 case ${target} in
   palmetto)
     LAYER_DIR="meta-ibm/meta-palmetto"
@@ -151,9 +152,11 @@ case ${target} in
     ;;
   qemu)
     LAYER_DIR="meta-phosphor"
+    MACHINE="qemuarm"
     ;;
   qemux86-64)
-    BITBAKE_CMD="MACHINE=qemux86-64 source oe-init-build-env"
+    LAYER_DIR="meta-phosphor"
+    MACHINE="qemux86"
     ;;
   *)
     exit 1
@@ -313,6 +316,7 @@ fi
 ${BITBAKE_CMD}
 
 # Custom BitBake config settings
+sed "s/^MACHINE\ ??=.*/MACHINE\ ??=\ \"${MACHINE}\"/" -i conf/local.conf
 cat >> conf/local.conf << EOF_CONF
 BB_NUMBER_THREADS = "$(nproc)"
 PARALLEL_MAKE = "-j$(nproc)"
