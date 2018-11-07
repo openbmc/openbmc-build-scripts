@@ -149,11 +149,8 @@ case ${target} in
   romulus)
     LAYER_DIR="meta-ibm/meta-romulus"
     ;;
-  qemu)
+  qemu | qemux86-64)
     LAYER_DIR="meta-phosphor"
-    ;;
-  qemux86-64)
-    BITBAKE_CMD="MACHINE=qemux86-64 source oe-init-build-env"
     ;;
   *)
     exit 1
