@@ -130,6 +130,7 @@ fi
 chown ${UID}:${GROUPS} ${xtrct_path}
 
 # Work out what build target we should be running and set BitBake command
+MACHINE=${target}
 case ${target} in
   palmetto)
     LAYER_DIR="meta-ibm/meta-palmetto"
@@ -151,16 +152,18 @@ case ${target} in
     ;;
   qemu)
     LAYER_DIR="meta-phosphor"
+    MACHINE="qemuarm"
     ;;
   qemux86-64)
-    BITBAKE_CMD="MACHINE=qemux86-64 source oe-init-build-env"
+    LAYER_DIR="meta-phosphor"
+    MACHINE="qemux86"
     ;;
   *)
     exit 1
     ;;
 esac
 
-BITBAKE_CMD="TEMPLATECONF=${LAYER_DIR}/conf source oe-init-build-env"
+BITBAKE_CMD="TEMPLATECONF=${LAYER_DIR}/conf MACHINE=${MACHINE} source oe-init-build-env"
 
 # Configure Docker build
 if [[ "${distro}" == fedora ]];then
