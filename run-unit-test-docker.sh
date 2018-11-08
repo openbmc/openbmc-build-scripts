@@ -20,6 +20,7 @@ FORMAT_CODE_SH="format-code.sh"
 DBUS_UNIT_TEST_PY="dbus-unit-test.py"
 DBUS_SYS_CONFIG_FILE=${dbus_sys_config_file:-"/usr/share/dbus-1/system.conf"}
 MAKEFLAGS="${MAKEFLAGS:-""}"
+DOCKER_WORKDIR="${DOCKER_WORKDIR:-$WORKSPACE}"
 
 # Timestamp for job
 echo "Unit test build started, $(date)"
@@ -64,17 +65,17 @@ echo "Building docker image with build-unit-test-docker.sh"
 ./build-unit-test-docker.sh ${DOCKER_IMG_NAME} ${DISTRO}
 
 # Unit test and parameters
-UNIT_TEST="${WORKSPACE}/${UNIT_TEST_PY},-w,${WORKSPACE},-p,${UNIT_TEST_PKG},-v"
+UNIT_TEST="${DOCKER_WORKDIR}/${UNIT_TEST_PY},-w,${DOCKER_WORKDIR},-p,${UNIT_TEST_PKG},-v"
 
 # Run the docker unit test container with the unit test execution script
 echo "Executing docker image"
 docker run --cap-add=sys_admin --rm=true \
     --network host \
     --privileged=true \
-    -w "${WORKSPACE}" -v "${WORKSPACE}":"${WORKSPACE}" \
+    -w "${DOCKER_WORKDIR}" -v "${WORKSPACE}":"${DOCKER_WORKDIR}" \
     -e "MAKEFLAGS=${MAKEFLAGS}" \
     -t ${DOCKER_IMG_NAME} \
-    ${WORKSPACE}/${DBUS_UNIT_TEST_PY} -u ${UNIT_TEST} \
+    "${DOCKER_WORKDIR}"/${DBUS_UNIT_TEST_PY} -u ${UNIT_TEST} \
     -f ${DBUS_SYS_CONFIG_FILE}
 
 # Timestamp for build
