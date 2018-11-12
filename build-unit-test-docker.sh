@@ -2,16 +2,16 @@
 #
 # Build the required docker image to run package unit tests
 #
-# Parameters:
-#   param1:  <optional, the name of the docker image to generate>
-#            default is openbmc/ubuntu-unit-test
-#   param2:  <optional, the distro to build a docker image against>
-#            default is ubuntu:artful
+# Script Variables:
+#   DOCKER_IMG_NAME:  <optional, the name of the docker image to generate>
+#                     default is openbmc/ubuntu-unit-test
+#   DISTRO:           <optional, the distro to build a docker image against>
+#                     default is ubuntu:bionic
 
 set -uo pipefail
 
-DOCKER_IMG_NAME=${1:-"openbmc/ubuntu-unit-test"}
-DISTRO=${2:-"ubuntu:bionic"}
+DOCKER_IMG_NAME=${DOCKER_IMG_NAME:-"openbmc/ubuntu-unit-test"}
+DISTRO=${DISTRO:-"ubuntu:bionic"}
 
 # Determine the architecture
 ARCH=$(uname -m)
