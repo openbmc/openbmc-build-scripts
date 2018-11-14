@@ -63,7 +63,11 @@ RUN apt-get update && apt-get install -yy \
 	bc \
 	build-essential \
 	git \
-	gcc-arm-none-eabi \
+	gcc-arm-linux-gnueabi \
+	binutils-arm-linux-gnueabi \
+	libssl-dev \
+	bison \
+	flex \
 	u-boot-tools
 
 RUN grep -q ${GROUPS} /etc/group || groupadd -g ${GROUPS} ${USER}
