@@ -1,0 +1,8 @@
+Code-Review+2: Joel Stanley <joel@jms.id.au>
+Ok-To-Test+1: Jenkins <openbmc-ci-admin@ozlabs.org>
+Verified+1: Jenkins <openbmc-ci-admin@ozlabs.org>
+Submitted-by: Joel Stanley <joel@jms.id.au>
+Submitted-at: Wed, 14 Nov 2018 23:25:32 +0000
+Reviewed-on: https://gerrit.openbmc-project.xyz/15828
+Project: openbmc/openbmc-build-scripts
+Branch: refs/heads/master
