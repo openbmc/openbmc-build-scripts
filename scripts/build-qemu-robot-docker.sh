@@ -5,13 +5,10 @@
 #  Parameters:
 #   parm1:  <optional, the name of the docker image to generate>
 #            default is openbmc/ubuntu-robot-qemu
-#   param2: <optional, the distro to build a docker image against>
-#            default is ubuntu:artful
 
 set -uo pipefail
 
 DOCKER_IMG_NAME=${1:-"openbmc/ubuntu-robot-qemu"}
-DISTRO=${2:-"ubuntu:artful"}
 
 # Determine our architecture, ppc64le or the other one
 if [ $(uname -m) == "ppc64le" ]; then
@@ -23,9 +20,10 @@ fi
 ################################# docker img # #################################
 # Create docker image that can run QEMU and Robot Tests
 Dockerfile=$(cat << EOF
-FROM ${DOCKER_BASE}${DISTRO}
+FROM ${DOCKER_BASE}ubuntu:latest
 
 ENV DEBIAN_FRONTEND noninteractive
+
 
 RUN apt-get update && apt-get install -yy \
     debianutils \
@@ -56,12 +54,7 @@ RUN apt-get update && apt-get install -yy \
     curl \
     build-essential \
     libpixman-1-0 \
-    libglib2.0-0 \
-    sshpass \
-    libasound2 \
-    libfdt1 \
-    libpcre3 \
-    openssl
+    libglib2.0-0
 
 RUN easy_install \
     tox \
@@ -75,6 +68,7 @@ RUN pip install \
     robotframework-sshlibrary \
     robotframework-scplibrary \
     pysnmp
+
 
 RUN wget https://sourceforge.net/projects/ipmitool/files/ipmitool/1.8.18/ipmitool-1.8.18.tar.bz2
 RUN tar xvfj ipmitool-*.tar.bz2
