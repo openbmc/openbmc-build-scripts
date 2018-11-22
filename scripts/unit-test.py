@@ -251,27 +251,44 @@ def get_deps(configure_ac):
     Parameter descriptions:
     configure_ac        Opened 'configure.ac' file object
     """
-    line = ""
-    dep_pkgs = set()
-    for cfg_line in configure_ac:
-        # Remove whitespace & newline
-        cfg_line = cfg_line.rstrip()
-        # Check for line breaks
-        if cfg_line.endswith('\\'):
-            line += str(cfg_line[:-1])
-            continue
-        line = line+cfg_line
 
-        # Find any defined dependency
-        line_has = lambda x: x if x in line else None
-        macros = set(filter(line_has, DEPENDENCIES.iterkeys()))
-        if len(macros) == 1:
-            macro = ''.join(macros)
-            deps = filter(line_has, DEPENDENCIES[macro].iterkeys())
-            dep_pkgs.update(map(lambda x: DEPENDENCIES[macro][x], deps))
+    dep_pkgs = {}
+    configure_contents = configure_ac.read()
 
-        line = ""
-    deps = list(dep_pkgs)
+    for macro in DEPENDENCIES.keys():
+        type_format = r'%s\s*\(.+?\)\n' % macro
+
+        # Detect macros that are multiple lines, such as:
+        # AC_PATH_PROG([SDBUSPLUSPLUS], [sdbus++])
+        # or
+        # PKG_CHECK_MODULES(
+        #    [SDBUSPLUS],
+        #    [sdbusplus],
+        #    [],
+        #    [AC_MSG_ERROR(["Requires sdbusplus package."])]
+        #)
+        # or
+        # PKG_CHECK_MODULES([SDBUSPLUS], [sdbusplus],,\
+        # AC_MSG_ERROR(["Requires sdbusplus package."]))
+        matches = re.findall(type_format, configure_contents, re.DOTALL)
+        for check in matches:
+            # split it into groups of matches where the 1st match is what we
+            # want (or is empty)
+            name_matches = re.findall(r'\s*\[*(.*?)\]*\s*(,|\))',
+                                      check.replace(macro + '(', ''))
+            if len(name_matches) < 2:
+                continue
+
+            # flatten the list of lists, grabbing the 1st element from each
+            # sub-list IFF it's non-zero in length.
+            items = [item[0] for item in name_matches if item[0]]
+            package_match = items[DEPENDENCIES_OFFSET[macro]]
+
+            # Grab the second name field
+            if package_match in DEPENDENCIES[macro]:
+                dep_pkgs[DEPENDENCIES[macro][package_match]] = 1
+
+    deps = dep_pkgs.keys()
 
     return deps
 
@@ -494,6 +511,14 @@ if __name__ == '__main__':
             'phosphor-logging': 'phosphor-logging',
             'phosphor-snmp': 'phosphor-snmp',
         },
+    }
+
+    # Offset into array of macro parameters MACRO(0, 1, ...N)
+    DEPENDENCIES_OFFSET = {
+        'AC_CHECK_LIB': 0,
+        'AC_CHECK_HEADER': 0,
+        'AC_PATH_PROG': 1,
+        'PKG_CHECK_MODULES': 1,
     }
 
     # DEPENDENCIES_REGEX = [GIT REPO]:[REGEX STRING]
