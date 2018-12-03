@@ -260,7 +260,7 @@ FROM openbmc-base as openbmc-sdbusplus
 RUN curl -L https://github.com/openbmc/sdbusplus/archive/${PKG_REV['sdbusplus']}.tar.gz | tar -xz && \
 cd sdbusplus-* && \
 ./bootstrap.sh && \
-./configure ${CONFIGURE_FLAGS[@]} --enable-transaction && \
+./configure ${CONFIGURE_FLAGS[@]} --disable-tests --enable-transaction && \
 make -j$(nproc) && \
 make install
 
