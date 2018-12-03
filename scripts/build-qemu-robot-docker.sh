@@ -61,7 +61,8 @@ RUN apt-get update && apt-get install -yy \
     libasound2 \
     libfdt1 \
     libpcre3 \
-    openssl
+    openssl \
+    redfish
 
 RUN easy_install \
     tox \
