@@ -306,7 +306,10 @@ def build_and_install(pkg):
     # Add any necessary configure flags for package
     if CONFIGURE_FLAGS.get(pkg) is not None:
         conf_flags.extend(CONFIGURE_FLAGS.get(pkg))
-    check_call_cmd(pkgdir, './bootstrap.sh')
+    for bootstrap in ['bootstrap.sh', 'bootstrap', 'autogen.sh']:
+        if os.path.exists(bootstrap):
+            check_call_cmd(pkgdir, './' + bootstrap)
+            break
     check_call_cmd(pkgdir, './configure', *conf_flags)
     check_call_cmd(pkgdir, *make_parallel)
     check_call_cmd(pkgdir, 'sudo', '-n', '--', *(make_parallel + [ 'install' ]))
