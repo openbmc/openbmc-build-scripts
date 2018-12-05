@@ -176,6 +176,8 @@ RUN apt-get update && apt-get install -yy \
     libevdev2-dbgsym \
     libjpeg-dev \
     libpng-dev \
+    meson \
+    ninja-build \
     sudo \
     curl \
     git \
