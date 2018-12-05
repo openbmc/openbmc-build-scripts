@@ -176,6 +176,7 @@ RUN apt-get update && apt-get install -yy \
     libevdev2-dbgsym \
     libjpeg-dev \
     libpng-dev \
+    ninja-build \
     sudo \
     curl \
     git \
@@ -198,6 +199,7 @@ RUN apt-get update && apt-get install -yy \
 
 RUN pip install inflection
 RUN pip install pycodestyle
+RUN pip3 install meson==0.48.2
 
 FROM openbmc-base as openbmc-googletest
 RUN curl -L https://github.com/google/googletest/archive/${PKG_REV['googletest']}.tar.gz | tar -xz && \

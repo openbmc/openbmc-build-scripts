@@ -527,8 +527,21 @@ if __name__ == '__main__':
     CODE_SCAN_DIR = WORKSPACE + "/" + UNIT_TEST_PKG
     check_call_cmd(WORKSPACE, "./format-code.sh", CODE_SCAN_DIR)
 
+    # Prefer meson
+    if os.path.isfile(CODE_SCAN_DIR + "/meson.build"):
+        top_dir = os.path.join(WORKSPACE, UNIT_TEST_PKG)
+        os.chdir(top_dir)
+        # Refresh dynamic linker run time bindings for dependencies
+        check_call_cmd(top_dir, 'ldconfig')
+
+        check_call_cmd(top_dir, 'meson', 'build', '-Dtests=true', '-Dexamples=true', '-Db_coverage=true')
+        check_call_cmd(top_dir, 'ninja', '-C', 'build')
+        check_call_cmd(top_dir, 'ninja', '-C', 'build', 'install')
+        check_call_cmd(top_dir, 'meson', 'test', '-C', 'build')
+        check_call_cmd(top_dir, 'ninja', '-C', 'build', 'coverage-html')
+        check_call_cmd(top_dir, 'meson', 'test', '-C', 'build', '--wrap', 'valgrind')
     # Automake
-    if os.path.isfile(CODE_SCAN_DIR + "/configure.ac"):
+    elif os.path.isfile(CODE_SCAN_DIR + "/configure.ac"):
         prev_umask = os.umask(000)
         # Determine dependencies and add them
         dep_added = dict()
