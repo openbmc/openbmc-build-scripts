@@ -13,11 +13,6 @@ set -uo pipefail
 DOCKER_IMG_NAME=${1:-"openbmc/ubuntu-unit-test"}
 DISTRO=${2:-"ubuntu:bionic"}
 
-# Disable autom4te cache as workaround to permission issue
-AUTOM4TE_CFG="/root/.autom4te.cfg"
-AUTOM4TE="begin-language: \"Autoconf-without-aclocal-m4\"\nargs: --no-cache\n\
-end-language: \"Autoconf-without-aclocal-m4\""
-
 # Determine the architecture
 ARCH=$(uname -m)
 case ${ARCH} in
@@ -327,17 +322,16 @@ make install
 FROM openbmc-base
 ${COPY_CMDS}
 
-RUN echo '${AUTOM4TE}' > ${AUTOM4TE_CFG}
-
 # Some of our infrastructure still relies on the presence of this file
 # even though it is no longer needed to rebuild the docker environment
 # NOTE: The file is sorted to ensure the ordering is stable.
-RUN echo '$(LC_COLLATE=C sort -s "$DEPCACHE_FILE" | tr '\n' ',')' > /root/.depcache
+RUN echo '$(LC_COLLATE=C sort -s "$DEPCACHE_FILE" | tr '\n' ',')' > /depcache
 
 # Final configuration for the workspace
 RUN grep -q ${GROUPS} /etc/group || groupadd -g ${GROUPS} ${USER}
 RUN mkdir -p $(dirname ${HOME})
 RUN grep -q ${UID} /etc/passwd || useradd -d ${HOME} -m -u ${UID} -g ${GROUPS} ${USER}
+RUN echo "${USER} ALL=(ALL) NOPASSWD: ALL" >>/etc/sudoers
 
 RUN /bin/bash
 EOF
