@@ -72,6 +72,7 @@ echo "Executing docker image"
 docker run --cap-add=sys_admin --rm=true \
     --network host \
     --privileged=true \
+    -u "$USER" \
     -w "${DOCKER_WORKDIR}" -v "${WORKSPACE}":"${DOCKER_WORKDIR}" \
     -e "MAKEFLAGS=${MAKEFLAGS}" \
     -t ${DOCKER_IMG_NAME} \
