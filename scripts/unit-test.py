@@ -309,7 +309,7 @@ def build_and_install(pkg):
     check_call_cmd(pkgdir, './bootstrap.sh')
     check_call_cmd(pkgdir, './configure', *conf_flags)
     check_call_cmd(pkgdir, *make_parallel)
-    check_call_cmd(pkgdir, *(make_parallel + [ 'install' ]))
+    check_call_cmd(pkgdir, 'sudo', '-n', '--', *(make_parallel + [ 'install' ]))
 
 def install_deps(dep_list):
     """
@@ -339,7 +339,7 @@ def build_dep_tree(pkg, pkgdir, dep_added, head, dep_tree=None):
         dep_tree = head
     os.chdir(pkgdir)
     # Open package's configure.ac
-    with open("/root/.depcache", "r") as depcache:
+    with open("/tmp/depcache", "r") as depcache:
         cached = depcache.readline()
     with open("configure.ac", "rt") as configure_ac:
         # Retrieve dependency list from package's configure.ac
@@ -560,7 +560,7 @@ if __name__ == '__main__':
         top_dir = os.path.join(WORKSPACE, UNIT_TEST_PKG)
         os.chdir(top_dir)
         # Refresh dynamic linker run time bindings for dependencies
-        check_call_cmd(top_dir, 'ldconfig')
+        check_call_cmd(top_dir, 'sudo', '-n', '--', 'ldconfig')
         # Run package unit tests
         run_unit_tests(top_dir)
         maybe_run_valgrind(top_dir)
