@@ -326,16 +326,6 @@ def build_and_install(pkg, build_for_testing=False):
     check_call_cmd(pkgdir, *make_parallel)
     check_call_cmd(pkgdir, 'sudo', '-n', '--', *(make_parallel + [ 'install' ]))
 
-def install_deps(dep_list):
-    """
-    Install each package in the ordered dep_list.
-
-    Parameter descriptions:
-    dep_list            Ordered list of dependencies
-    """
-    for pkg in dep_list:
-        build_and_install(pkg, True)
-
 def build_dep_tree(pkg, pkgdir, dep_added, head, dep_tree=None):
     """
     For each package(pkg), starting with the package to be unit tested,
@@ -570,13 +560,17 @@ if __name__ == '__main__':
         if args.verbose:
             dep_tree.PrintTree()
         install_list = dep_tree.GetInstallList()
+        # We don't want to treat our package as a dependency
+        install_list.remove(UNIT_TEST_PKG)
         # install reordered dependencies
-        install_deps(install_list)
+        for dep in install_list:
+            build_and_install(dep, False)
         top_dir = os.path.join(WORKSPACE, UNIT_TEST_PKG)
         os.chdir(top_dir)
         # Refresh dynamic linker run time bindings for dependencies
         check_call_cmd(top_dir, 'sudo', '-n', '--', 'ldconfig')
         # Run package unit tests
+        build_and_install(UNIT_TEST_PKG, True)
         run_unit_tests(top_dir)
         maybe_run_valgrind(top_dir)
         maybe_run_coverage(top_dir)
