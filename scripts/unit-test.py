@@ -286,6 +286,31 @@ make_parallel = [
     '-O',
 ]
 
+def build_and_install(pkg):
+    """
+    Builds and installs the package in the environment. Optionally
+    builds the examples and test cases for package.
+
+    Parameter description:
+    pkg                 The package we are building
+    """
+    pkgdir = os.path.join(WORKSPACE, pkg)
+    # Build & install this package
+    conf_flags = [
+        '--disable-silent-rules',
+        '--enable-tests',
+        '--enable-code-coverage',
+        '--enable-valgrind'
+    ]
+    os.chdir(pkgdir)
+    # Add any necessary configure flags for package
+    if CONFIGURE_FLAGS.get(pkg) is not None:
+        conf_flags.extend(CONFIGURE_FLAGS.get(pkg))
+    check_call_cmd(pkgdir, './bootstrap.sh')
+    check_call_cmd(pkgdir, './configure', *conf_flags)
+    check_call_cmd(pkgdir, *make_parallel)
+    check_call_cmd(pkgdir, *(make_parallel + [ 'install' ]))
+
 def install_deps(dep_list):
     """
     Install each package in the ordered dep_list.
@@ -294,23 +319,7 @@ def install_deps(dep_list):
     dep_list            Ordered list of dependencies
     """
     for pkg in dep_list:
-        pkgdir = os.path.join(WORKSPACE, pkg)
-        # Build & install this package
-        conf_flags = [
-            '--disable-silent-rules',
-            '--enable-tests',
-            '--enable-code-coverage',
-            '--enable-valgrind',
-        ]
-        os.chdir(pkgdir)
-        # Add any necessary configure flags for package
-        if CONFIGURE_FLAGS.get(pkg) is not None:
-            conf_flags.extend(CONFIGURE_FLAGS.get(pkg))
-        check_call_cmd(pkgdir, './bootstrap.sh')
-        check_call_cmd(pkgdir, './configure', *conf_flags)
-        check_call_cmd(pkgdir, *make_parallel)
-        check_call_cmd(pkgdir, *(make_parallel + [ 'install' ]))
-
+        build_and_install(pkg)
 
 def build_dep_tree(pkg, pkgdir, dep_added, head, dep_tree=None):
     """
