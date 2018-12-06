@@ -286,21 +286,32 @@ make_parallel = [
     '-O',
 ]
 
-def build_and_install(pkg):
+def enFlag(flag, enabled):
+    """
+    Returns an configure flag as a string
+
+    Parameters:
+    flag                The name of the flag
+    enabled             Whether the flag is enabled or disabled
+    """
+    return '--' + ('enable' if enabled else 'disable') + '-' + flag
+
+def build_and_install(pkg, build_for_testing=False):
     """
     Builds and installs the package in the environment. Optionally
     builds the examples and test cases for package.
 
     Parameter description:
     pkg                 The package we are building
+    build_for_testing   Enable options related to testing on the package?
     """
     pkgdir = os.path.join(WORKSPACE, pkg)
     # Build & install this package
     conf_flags = [
-        '--disable-silent-rules',
-        '--enable-tests',
-        '--enable-code-coverage',
-        '--enable-valgrind'
+        enFlag('silent-rules', False),
+        enFlag('tests', build_for_testing),
+        enFlag('code-coverage', build_for_testing),
+        enFlag('valgrind', build_for_testing),
     ]
     os.chdir(pkgdir)
     # Add any necessary configure flags for package
@@ -322,7 +333,7 @@ def install_deps(dep_list):
     dep_list            Ordered list of dependencies
     """
     for pkg in dep_list:
-        build_and_install(pkg)
+        build_and_install(pkg, True)
 
 def build_dep_tree(pkg, pkgdir, dep_added, head, dep_tree=None):
     """
