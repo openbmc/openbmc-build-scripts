@@ -275,6 +275,21 @@ def get_deps(configure_ac):
 
     return deps
 
+def get_autoconf_deps(pkgdir):
+    """
+    Parse the given 'configure.ac' file for package dependencies and return
+    a list of the dependencies found. If the package is not autoconf it is just
+    ignored.
+
+    Parameter descriptions:
+    pkgdir              Directory where package source is located
+    """
+    configure_ac = os.path.join(pkgdir, 'configure.ac')
+    if not os.path.exists(configure_ac):
+        return []
+
+    with open(configure_ac, "rt") as f:
+        return get_deps(f)
 
 make_parallel = [
     'make',
@@ -336,43 +351,44 @@ def build_dep_tree(pkg, pkgdir, dep_added, head, dep_tree=None):
     Parameter descriptions:
     pkg                 Name of the package
     pkgdir              Directory where package source is located
-    dep_added           Current list of dependencies and added status
+    dep_added           Current dict of dependencies and added status
     head                Head node of the dependency tree
     dep_tree            Current dependency tree node
     """
     if not dep_tree:
         dep_tree = head
-    os.chdir(pkgdir)
-    # Open package's configure.ac
+
     with open("/tmp/depcache", "r") as depcache:
-        cached = depcache.readline()
-    with open("configure.ac", "rt") as configure_ac:
-        # Retrieve dependency list from package's configure.ac
-        configure_ac_deps = get_deps(configure_ac)
-        for dep_pkg in configure_ac_deps:
-            if dep_pkg in cached:
+        cache = depcache.readline()
+
+    # Read out pkg dependencies
+    pkg_deps = []
+    pkg_deps += get_autoconf_deps(pkgdir)
+
+    for dep in pkg_deps:
+        if dep in cache:
+            continue
+        # Dependency package not already known
+        if dep_added.get(dep) is None:
+            # Dependency package not added
+            new_child = dep_tree.AddChild(dep)
+            dep_added[dep] = False
+            dep_pkgdir = clone_pkg(dep)
+            # Determine this dependency package's
+            # dependencies and add them before
+            # returning to add this package
+            dep_added = build_dep_tree(dep,
+                                       dep_pkgdir,
+                                       dep_added,
+                                       head,
+                                       new_child)
+        else:
+            # Dependency package known and added
+            if dep_added[dep]:
                 continue
-            # Dependency package not already known
-            if dep_added.get(dep_pkg) is None:
-                # Dependency package not added
-                new_child = dep_tree.AddChild(dep_pkg)
-                dep_added[dep_pkg] = False
-                dep_pkgdir = clone_pkg(dep_pkg)
-                # Determine this dependency package's
-                # dependencies and add them before
-                # returning to add this package
-                dep_added = build_dep_tree(dep_pkg,
-                                           dep_pkgdir,
-                                           dep_added,
-                                           head,
-                                           new_child)
             else:
-                # Dependency package known and added
-                if dep_added[dep_pkg]:
-                    continue
-                else:
-                    # Cyclic dependency failure
-                    raise Exception("Cyclic dependencies found in "+pkg)
+                # Cyclic dependency failure
+                raise Exception("Cyclic dependencies found in "+pkg)
 
     if not dep_added[pkg]:
         dep_added[pkg] = True
