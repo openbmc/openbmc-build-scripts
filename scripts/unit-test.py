@@ -15,6 +15,7 @@ import sys
 import argparse
 import multiprocessing
 import re
+import sets
 import platform
 
 
@@ -365,7 +366,7 @@ def build_dep_tree(pkg, pkgdir, dep_added, head, dep_tree=None):
     pkg_deps = []
     pkg_deps += get_autoconf_deps(pkgdir)
 
-    for dep in pkg_deps:
+    for dep in sets.Set(pkg_deps):
         if dep in cache:
             continue
         # Dependency package not already known
