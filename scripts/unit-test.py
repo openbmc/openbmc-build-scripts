@@ -17,6 +17,7 @@ import multiprocessing
 import re
 import sets
 import subprocess
+import shutil
 import platform
 
 
@@ -292,6 +293,32 @@ def get_autoconf_deps(pkgdir):
 
     return found_deps
 
+def get_meson_deps(pkgdir):
+    """
+    Parse the given 'meson.build' file for package dependencies and return
+    a list of the dependencies found. If the package is not meson compatible
+    it is just ignored.
+
+    Parameter descriptions:
+    pkgdir              Directory where package source is located
+    """
+    meson_build = os.path.join(pkgdir, 'meson.build')
+    if not os.path.exists(meson_build):
+        return []
+
+    found_deps = []
+    for root, dirs, files in os.walk(pkgdir):
+        if 'meson.build' not in files:
+            continue
+        with open(os.path.join(root, 'meson.build'), 'rt') as f:
+            build_contents = f.read()
+        for match in re.finditer(r"dependency\('([^']*)'.*?\)\n", build_contents):
+            maybe_dep = DEPENDENCIES['PKG_CHECK_MODULES'].get(match.group(1))
+            if maybe_dep is not None:
+                found_deps.append(maybe_dep)
+
+    return found_deps
+
 make_parallel = [
     'make',
     # Run enough jobs to saturate all the cpus
@@ -328,23 +355,42 @@ def build_and_install(pkg, build_for_testing=False):
     check_call_cmd(pkgdir, 'sudo', '-n', '--', 'ldconfig')
 
     # Build & install this package
-    conf_flags = [
-        enFlag('silent-rules', False),
-        enFlag('examples', build_for_testing),
-        enFlag('tests', build_for_testing),
-        enFlag('code-coverage', build_for_testing),
-        enFlag('valgrind', build_for_testing),
-    ]
-    # Add any necessary configure flags for package
-    if CONFIGURE_FLAGS.get(pkg) is not None:
-        conf_flags.extend(CONFIGURE_FLAGS.get(pkg))
-    for bootstrap in ['bootstrap.sh', 'bootstrap', 'autogen.sh']:
-        if os.path.exists(bootstrap):
-            check_call_cmd(pkgdir, './' + bootstrap)
-            break
-    check_call_cmd(pkgdir, './configure', *conf_flags)
-    check_call_cmd(pkgdir, *make_parallel)
-    check_call_cmd(pkgdir, 'sudo', '-n', '--', *(make_parallel + [ 'install' ]))
+    # Always try using meson first
+    if os.path.exists('meson.build'):
+        meson_flags = [
+            '-Db_colorout=never',
+            '-Dtests=' + str(build_for_testing).lower(),
+            '-Dexamples=' + str(build_for_testing).lower(),
+            '-Db_coverage=' + str(build_for_testing).lower(),
+        ]
+        if MESON_FLAGS.get(pkg) is not None:
+            meson_flags.extend(MESON_FLAGS.get(pkg))
+        try:
+            check_call_cmd(pkgdir, 'meson', 'setup', '--reconfigure', 'build', *meson_flags)
+        except:
+            shutil.rmtree('build')
+            check_call_cmd(pkgdir, 'meson', 'setup', 'build', *meson_flags)
+        check_call_cmd(pkgdir, 'ninja', '-C', 'build')
+        check_call_cmd(pkgdir, 'sudo', '-n', '--', 'ninja', '-C', 'build', 'install')
+    # Assume we are autoconf otherwise
+    else:
+        conf_flags = [
+            enFlag('silent-rules', False),
+            enFlag('examples', build_for_testing),
+            enFlag('tests', build_for_testing),
+            enFlag('code-coverage', build_for_testing),
+            enFlag('valgrind', build_for_testing),
+        ]
+        # Add any necessary configure flags for package
+        if CONFIGURE_FLAGS.get(pkg) is not None:
+            conf_flags.extend(CONFIGURE_FLAGS.get(pkg))
+        for bootstrap in ['bootstrap.sh', 'bootstrap', 'autogen.sh']:
+            if os.path.exists(bootstrap):
+                check_call_cmd(pkgdir, './' + bootstrap)
+                break
+        check_call_cmd(pkgdir, './configure', *conf_flags)
+        check_call_cmd(pkgdir, *make_parallel)
+        check_call_cmd(pkgdir, 'sudo', '-n', '--', *(make_parallel + [ 'install' ]))
 
 def build_dep_tree(pkg, pkgdir, dep_added, head, dep_tree=None):
     """
@@ -369,6 +415,7 @@ def build_dep_tree(pkg, pkgdir, dep_added, head, dep_tree=None):
     # Read out pkg dependencies
     pkg_deps = []
     pkg_deps += get_autoconf_deps(pkgdir)
+    pkg_deps += get_meson_deps(pkgdir)
 
     for dep in sets.Set(pkg_deps):
         if dep in cache:
@@ -507,6 +554,10 @@ if __name__ == '__main__':
          'YAML_DIR=/usr/local/share/phosphor-dbus-yaml/yaml']
     }
 
+    # MESON_FLAGS = [GIT REPO]:[MESON FLAGS]
+    MESON_FLAGS = {
+    }
+
     # DEPENDENCIES = [MACRO]:[library/header]:[GIT REPO]
     DEPENDENCIES = {
         'AC_CHECK_LIB': {'mapper': 'phosphor-objmgr'},
@@ -570,8 +621,9 @@ if __name__ == '__main__':
     CODE_SCAN_DIR = WORKSPACE + "/" + UNIT_TEST_PKG
     check_call_cmd(WORKSPACE, "./format-code.sh", CODE_SCAN_DIR)
 
-    # Automake
-    if os.path.isfile(CODE_SCAN_DIR + "/configure.ac"):
+    # Automake and meson
+    if (os.path.isfile(CODE_SCAN_DIR + "/configure.ac") or
+        os.path.isfile(CODE_SCAN_DIR + '/meson.build')):
         prev_umask = os.umask(000)
         # Determine dependencies and add them
         dep_added = dict()
@@ -598,9 +650,14 @@ if __name__ == '__main__':
         os.chdir(top_dir)
         # Run package unit tests
         build_and_install(UNIT_TEST_PKG, True)
-        run_unit_tests(top_dir)
-        maybe_run_valgrind(top_dir)
-        maybe_run_coverage(top_dir)
+        if os.path.isfile(CODE_SCAN_DIR + '/meson.build'):
+            check_call_cmd(top_dir, 'meson', 'test', '-C', 'build')
+            check_call_cmd(top_dir, 'ninja', '-C', 'build', 'coverage-html')
+            check_call_cmd(top_dir, 'meson', 'test', '-C', 'build', '--wrap', 'valgrind')
+        else:
+            run_unit_tests(top_dir)
+            maybe_run_valgrind(top_dir)
+            maybe_run_coverage(top_dir)
         run_cppcheck(top_dir)
 
         os.umask(prev_umask)
