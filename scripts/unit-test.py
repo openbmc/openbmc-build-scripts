@@ -16,6 +16,7 @@ import argparse
 import multiprocessing
 import re
 import sets
+import subprocess
 import platform
 
 
@@ -244,38 +245,6 @@ def clone_pkg(pkg):
     return Repo.clone_from(pkg_repo, pkg_dir).working_dir
 
 
-def get_deps(configure_ac):
-    """
-    Parse the given 'configure.ac' file for package dependencies and return
-    a list of the dependencies found.
-
-    Parameter descriptions:
-    configure_ac        Opened 'configure.ac' file object
-    """
-    line = ""
-    dep_pkgs = set()
-    for cfg_line in configure_ac:
-        # Remove whitespace & newline
-        cfg_line = cfg_line.rstrip()
-        # Check for line breaks
-        if cfg_line.endswith('\\'):
-            line += str(cfg_line[:-1])
-            continue
-        line = line+cfg_line
-
-        # Find any defined dependency
-        line_has = lambda x: x if x in line else None
-        macros = set(filter(line_has, DEPENDENCIES.iterkeys()))
-        if len(macros) == 1:
-            macro = ''.join(macros)
-            deps = filter(line_has, DEPENDENCIES[macro].iterkeys())
-            dep_pkgs.update(map(lambda x: DEPENDENCIES[macro][x], deps))
-
-        line = ""
-    deps = list(dep_pkgs)
-
-    return deps
-
 def get_autoconf_deps(pkgdir):
     """
     Parse the given 'configure.ac' file for package dependencies and return
@@ -289,8 +258,39 @@ def get_autoconf_deps(pkgdir):
     if not os.path.exists(configure_ac):
         return []
 
+    configure_ac_contents = ''
+    # Prepend some special function overrides so we can parse out dependencies
+    for macro in DEPENDENCIES.iterkeys():
+        configure_ac_contents += ('m4_define([' + macro + '], [' +
+                macro + '_START$' + str(DEPENDENCIES_OFFSET[macro] + 1) +
+                macro + '_END])\n')
     with open(configure_ac, "rt") as f:
-        return get_deps(f)
+        configure_ac_contents += f.read()
+
+    autoconf_process = subprocess.Popen(['autoconf', '-Wno-undefined', '-'],
+            stdin=subprocess.PIPE, stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE)
+    (stdout, stderr) = autoconf_process.communicate(input=configure_ac_contents)
+    if not stdout:
+        print(stderr)
+        raise Exception("Failed to run autoconf for parsing dependencies")
+
+    # Parse out all of the dependency text
+    matches = []
+    for macro in DEPENDENCIES.iterkeys():
+        pattern = '(' + macro + ')_START(.*?)' + macro + '_END'
+        for match in re.compile(pattern).finditer(stdout):
+            matches.append((match.group(1), match.group(2)))
+
+    # Look up dependencies from the text
+    found_deps = []
+    for macro, deptext in matches:
+        for potential_dep in deptext.split(' '):
+            for known_dep in DEPENDENCIES[macro].iterkeys():
+                if potential_dep.startswith(known_dep):
+                    found_deps.append(DEPENDENCIES[macro][known_dep])
+
+    return found_deps
 
 make_parallel = [
     'make',
@@ -525,6 +525,14 @@ if __name__ == '__main__':
             'phosphor-logging': 'phosphor-logging',
             'phosphor-snmp': 'phosphor-snmp',
         },
+    }
+
+    # Offset into array of macro parameters MACRO(0, 1, ...N)
+    DEPENDENCIES_OFFSET = {
+        'AC_CHECK_LIB': 0,
+        'AC_CHECK_HEADER': 0,
+        'AC_PATH_PROG': 1,
+        'PKG_CHECK_MODULES': 1,
     }
 
     # DEPENDENCIES_REGEX = [GIT REPO]:[REGEX STRING]
