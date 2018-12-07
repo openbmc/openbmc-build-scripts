@@ -322,6 +322,11 @@ def build_and_install(pkg, build_for_testing=False):
     build_for_testing   Enable options related to testing on the package?
     """
     pkgdir = os.path.join(WORKSPACE, pkg)
+    os.chdir(pkgdir)
+
+    # Refresh dynamic linker run time bindings for dependencies
+    check_call_cmd(pkgdir, 'sudo', '-n', '--', 'ldconfig')
+
     # Build & install this package
     conf_flags = [
         enFlag('silent-rules', False),
@@ -330,7 +335,6 @@ def build_and_install(pkg, build_for_testing=False):
         enFlag('code-coverage', build_for_testing),
         enFlag('valgrind', build_for_testing),
     ]
-    os.chdir(pkgdir)
     # Add any necessary configure flags for package
     if CONFIGURE_FLAGS.get(pkg) is not None:
         conf_flags.extend(CONFIGURE_FLAGS.get(pkg))
@@ -592,8 +596,6 @@ if __name__ == '__main__':
             build_and_install(dep, False)
         top_dir = os.path.join(WORKSPACE, UNIT_TEST_PKG)
         os.chdir(top_dir)
-        # Refresh dynamic linker run time bindings for dependencies
-        check_call_cmd(top_dir, 'sudo', '-n', '--', 'ldconfig')
         # Run package unit tests
         build_and_install(UNIT_TEST_PKG, True)
         run_unit_tests(top_dir)
