@@ -309,6 +309,7 @@ def build_and_install(pkg, build_for_testing=False):
     # Build & install this package
     conf_flags = [
         enFlag('silent-rules', False),
+        enFlag('examples', build_for_testing),
         enFlag('tests', build_for_testing),
         enFlag('code-coverage', build_for_testing),
         enFlag('valgrind', build_for_testing),
