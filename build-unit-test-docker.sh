@@ -190,7 +190,9 @@ RUN apt-get update && apt-get install -yy \
     xxd \
     libi2c-dev \
     wget \
-    libldap2-dev
+    libldap2-dev \
+    libprotobuf-dev \
+    protobuf-compiler
 
 RUN pip install inflection
 RUN pip install pycodestyle
