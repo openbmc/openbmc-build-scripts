@@ -1,0 +1,7 @@
+Code-Review+2: Brad Bishop <bradleyb@fuzziesquirrel.com>
+Verified+1: Brad Bishop <bradleyb@fuzziesquirrel.com>
+Submitted-by: Brad Bishop <bradleyb@fuzziesquirrel.com>
+Submitted-at: Fri, 05 Jan 2018 17:09:11 +0000
+Reviewed-on: https://gerrit.openbmc-project.xyz/8422
+Project: openbmc/openbmc-build-scripts
+Branch: refs/heads/master

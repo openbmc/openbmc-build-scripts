@@ -1,0 +1,9 @@
+Ok-To-Test+1: Brad Bishop <bradleyb@fuzziesquirrel.com>
+Code-Review+1: Andrew Geissler <geissonator@yahoo.com>
+Code-Review+2: Brad Bishop <bradleyb@fuzziesquirrel.com>
+Verified+1: Brad Bishop <bradleyb@fuzziesquirrel.com>
+Submitted-by: Brad Bishop <bradleyb@fuzziesquirrel.com>
+Submitted-at: Thu, 04 Jan 2018 04:25:23 +0000
+Reviewed-on: https://gerrit.openbmc-project.xyz/8367
+Project: openbmc/openbmc-build-scripts
+Branch: refs/heads/master

@@ -1,0 +1,8 @@
+Code-Review+1: Chris Austen <austenc@us.ibm.com>
+Code-Review+2: Andrew Geissler <geissonator@yahoo.com>
+Verified+1: Andrew Geissler <geissonator@yahoo.com>
+Submitted-by: Andrew Geissler <geissonator@yahoo.com>
+Submitted-at: Fri, 02 Sep 2016 17:25:52 +0000
+Reviewed-on: https://gerrit.openbmc-project.xyz/381
+Project: openbmc/openbmc-build-scripts
+Branch: refs/heads/master

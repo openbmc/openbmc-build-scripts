@@ -1,0 +1,8 @@
+Code-Review+1: Matthew Barth <msbarth@linux.ibm.com>
+Code-Review+2: Patrick Williams <patrick@stwcx.xyz>
+Verified+1: Patrick Williams <patrick@stwcx.xyz>
+Submitted-by: Patrick Williams <patrick@stwcx.xyz>
+Submitted-at: Tue, 21 Feb 2017 16:00:39 +0000
+Reviewed-on: https://gerrit.openbmc-project.xyz/2404
+Project: openbmc/openbmc-build-scripts
+Branch: refs/heads/master
