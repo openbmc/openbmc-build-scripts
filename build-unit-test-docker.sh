@@ -79,8 +79,8 @@ declare -A PKG_REV=(
   [boost]=1.68.0
   [cereal]=v1.2.2
   [CLI11]=v1.6.1
-  # Snapshot from 2018-10-11
-  [googletest]=b3b19a796cbb3222fb3a49daf3f0a9378e8505ad
+  # Snapshot from 2018-12-11
+  [googletest]=9acd06106b506018c5d60dce038551ac4e0f8c12
   [json]=v3.3.0
   # libvncserver commit dd873fce451e4b7d7cc69056a62e107aae7c8e7a is required for obmc-ikvm
   # Snapshot from 2018-10-08
@@ -197,11 +197,11 @@ RUN pip install pycodestyle
 RUN pip3 install meson==0.49.0
 
 FROM openbmc-base as openbmc-googletest
-RUN curl -L https://github.com/google/googletest/archive/${PKG_REV['googletest']}.tar.gz | tar -xz && \
+RUN curl -L https://github.com/abseil/googletest/archive/${PKG_REV['googletest']}.tar.gz | tar -xz && \
 cd googletest-* && \
 mkdir build && \
 cd build && \
-cmake ${CMAKE_FLAGS[@]} -DBUILD_GTEST=ON -DBUILD_GMOCK=ON .. && \
+cmake ${CMAKE_FLAGS[@]} .. && \
 make -j$(nproc) && \
 make install
 
