@@ -91,8 +91,8 @@ declare -A PKG_REV=(
   [boost]=1.68.0
   [cereal]=v1.2.2
   [CLI11]=v1.6.1
-  # Snapshot from 2018-10-11
-  [googletest]=b3b19a796cbb3222fb3a49daf3f0a9378e8505ad
+  # Snapshot from 2018-12-17
+  [googletest]=9ab640ce5e5120021c5972d7e60f258bfca64d71
   [json]=v3.3.0
   # libvncserver commit dd873fce451e4b7d7cc69056a62e107aae7c8e7a is required for obmc-ikvm
   # Snapshot from 2018-10-08
@@ -215,7 +215,7 @@ RUN curl -L https://github.com/google/googletest/archive/${PKG_REV['googletest']
 cd googletest-* && \
 mkdir build && \
 cd build && \
-cmake ${CMAKE_FLAGS[@]} -DTHREADS_PREFER_PTHREAD_FLAG=ON -DBUILD_GTEST=ON -DBUILD_GMOCK=ON .. && \
+cmake ${CMAKE_FLAGS[@]} -DTHREADS_PREFER_PTHREAD_FLAG=ON .. && \
 make -j$(nproc) && \
 make install
 
