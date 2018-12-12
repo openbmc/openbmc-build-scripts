@@ -675,6 +675,8 @@ if __name__ == '__main__':
             check_call_cmd(top_dir, 'meson', 'test', '-C', 'build')
             check_call_cmd(top_dir, 'ninja', '-C', 'build', 'coverage-html')
             check_call_cmd(top_dir, 'meson', 'test', '-C', 'build', '--wrap', 'valgrind')
+            if os.path.isfile('.clang-tidy'):
+                check_call_cmd(top_dir, 'run-clang-tidy-6.0.py', '-p', 'build')
         else:
             run_unit_tests(top_dir)
             maybe_run_valgrind(top_dir)
@@ -687,7 +689,7 @@ if __name__ == '__main__':
     elif os.path.isfile(CODE_SCAN_DIR + "/CMakeLists.txt"):
         top_dir = os.path.join(WORKSPACE, UNIT_TEST_PKG)
         os.chdir(top_dir)
-        check_call_cmd(top_dir, 'cmake', '.')
+        check_call_cmd(top_dir, 'cmake', '-DCMAKE_EXPORT_COMPILE_COMMANDS=ON', '.')
         check_call_cmd(top_dir, 'cmake', '--build', '.', '--', '-j',
                        str(multiprocessing.cpu_count()))
         if make_target_exists('test'):
@@ -695,6 +697,8 @@ if __name__ == '__main__':
         maybe_run_valgrind(top_dir)
         maybe_run_coverage(top_dir)
         run_cppcheck(top_dir)
+        if os.path.isfile('.clang-tidy'):
+            check_call_cmd(top_dir, 'run-clang-tidy-6.0.py', '-p', '.')
 
     else:
         print "Not a supported repo for CI Tests, exit"
