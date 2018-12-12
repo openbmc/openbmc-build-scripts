@@ -177,7 +177,10 @@ RUN apt-get update && apt-get install -yy \
     git \
     dbus \
     iputils-ping \
+    clang-6.0 \
     clang-format-6.0 \
+    clang-tidy-6.0 \
+    clang-tools-6.0 \
     iproute2 \
     libnl-3-dev \
     libnl-genl-3-dev \
