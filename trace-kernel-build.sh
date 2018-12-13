@@ -65,8 +65,7 @@ mkdir -p ${WORKSPACE}
 cat > "${WORKSPACE}"/build.sh << EOF_SCRIPT
 #!/bin/bash
 
-set -x
-set -e -o pipefail
+set -xe
 
 cd ${WORKSPACE}
 
