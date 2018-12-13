@@ -396,7 +396,6 @@ def build_and_install(pkg, build_for_testing=False):
         meson_options = parse_meson_options("meson_options.txt")
         meson_flags = [
             '-Db_colorout=never',
-            '-Db_coverage=' + str(build_for_testing).lower(),
         ]
         if build_for_testing:
             meson_flags.append('--buildtype=debug')
@@ -700,11 +699,18 @@ if __name__ == '__main__':
         # Run package unit tests
         build_and_install(UNIT_TEST_PKG, True)
         if os.path.isfile(CODE_SCAN_DIR + '/meson.build'):
-            check_call_cmd(top_dir, 'meson', 'test', '-C', 'build')
-            check_call_cmd(top_dir, 'ninja', '-C', 'build', 'coverage-html')
+            # Run valgrind if it is supported
             if is_valgrind_safe():
                 check_call_cmd(top_dir, 'meson', 'test', '-C', 'build',
                                '--wrap', 'valgrind')
+
+            # Run coverage checks
+            check_call_cmd(top_dir, 'meson', 'configure', 'build',
+                           '-Db_coverage=true')
+            check_call_cmd(top_dir, 'meson', 'test', '-C', 'build')
+            check_call_cmd(top_dir, 'ninja', '-C', 'build', 'coverage-html')
+            check_call_cmd(top_dir, 'meson', 'configure', 'build',
+                           '-Db_coverage=false')
         else:
             run_unit_tests(top_dir)
             maybe_run_valgrind(top_dir)
