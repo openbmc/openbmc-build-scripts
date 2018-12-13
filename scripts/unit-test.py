@@ -550,6 +550,12 @@ def run_cppcheck(top_dir):
     except CalledProcessError:
         raise Exception('Cppcheck failed')
 
+def is_valgrind_safe():
+    """
+    Returns whether it is safe to run valgrind on our platform
+    """
+    return re.match('ppc64', platform.machine()) is None
+
 def maybe_run_valgrind(top_dir):
     """
     Potentially runs the unit tests through valgrind for the package
@@ -563,7 +569,7 @@ def maybe_run_valgrind(top_dir):
     # that is inlined into optimized code for POWER by gcc 7+. Until we find
     # a workaround, just don't run valgrind tests on POWER.
     # https://github.com/openbmc/openbmc/issues/3315
-    if re.match('ppc64', platform.machine()) is not None:
+    if not is_valgrind_safe():
         return
     if not make_target_exists('check-valgrind'):
         return
@@ -712,7 +718,9 @@ if __name__ == '__main__':
         if os.path.isfile(CODE_SCAN_DIR + '/meson.build'):
             check_call_cmd(top_dir, 'meson', 'test', '-C', 'build')
             check_call_cmd(top_dir, 'ninja', '-C', 'build', 'coverage-html')
-            check_call_cmd(top_dir, 'meson', 'test', '-C', 'build', '--wrap', 'valgrind')
+            if is_valgrind_safe():
+                check_call_cmd(top_dir, 'meson', 'test', '-C', 'build',
+                               '--wrap', 'valgrind')
         else:
             run_unit_tests(top_dir)
             maybe_run_valgrind(top_dir)
