@@ -368,6 +368,21 @@ def mesonFeature(val):
     else:
         raise Exception("Bad meson feature value")
 
+def parse_meson_options(options_file):
+    """
+    Returns a set of options defined in the provides meson_options.txt file
+
+    Parameters:
+    options_file        The file containing options
+    """
+    options_contents = ''
+    with open(options_file, "rt") as f:
+        options_contents += f.read()
+    options = sets.Set()
+    pattern = 'option\\(\\s*\'([^\']*)\''
+    for match in re.compile(pattern).finditer(options_contents):
+        options.add(match.group(1))
+    return options
 
 def build_and_install(pkg, build_for_testing=False):
     """
@@ -387,12 +402,15 @@ def build_and_install(pkg, build_for_testing=False):
     # Build & install this package
     # Always try using meson first
     if os.path.exists('meson.build'):
+        meson_options = parse_meson_options("meson_options.txt")
         meson_flags = [
             '-Db_colorout=never',
-            '-Dtests=' + mesonFeature(build_for_testing),
-            '-Dexamples=' + str(build_for_testing).lower(),
             '-Db_coverage=' + str(build_for_testing).lower(),
         ]
+        if 'tests' in meson_options:
+            meson_flags.append('-Dtests=' + mesonFeature(build_for_testing))
+        if 'examples' in meson_options:
+            meson_flags.append('-Dexamples=' + str(build_for_testing).lower())
         if MESON_FLAGS.get(pkg) is not None:
             meson_flags.extend(MESON_FLAGS.get(pkg))
         try:
