@@ -704,6 +704,17 @@ if __name__ == '__main__':
                 check_call_cmd(top_dir, 'meson', 'test', '-C', 'build',
                                '--wrap', 'valgrind')
 
+            # Run tests through sanitizers
+            check_call_cmd(top_dir, 'meson', 'configure', 'build',
+                           '-Db_sanitize=address,undefined')
+            check_call_cmd(top_dir, 'meson', 'test', '-C', 'build')
+            # TODO: Fix memory sanitizer
+            #check_call_cmd(top_dir, 'meson', 'configure', 'build',
+            #               '-Db_sanitize=memory')
+            #check_call_cmd(top_dir, 'meson', 'test', '-C', 'build')
+            check_call_cmd(top_dir, 'meson', 'configure', 'build',
+                           '-Db_sanitize=none')
+
             # Run coverage checks
             check_call_cmd(top_dir, 'meson', 'configure', 'build',
                            '-Db_coverage=true')
