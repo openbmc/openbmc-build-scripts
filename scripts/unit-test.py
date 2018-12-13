@@ -407,6 +407,10 @@ def build_and_install(pkg, build_for_testing=False):
             '-Db_colorout=never',
             '-Db_coverage=' + str(build_for_testing).lower(),
         ]
+        if build_for_testing:
+            meson_flags.append('--buildtype=debug')
+        else:
+            meson_flags.append('--buildtype=debugoptimized')
         if 'tests' in meson_options:
             meson_flags.append('-Dtests=' + mesonFeature(build_for_testing))
         if 'examples' in meson_options:
