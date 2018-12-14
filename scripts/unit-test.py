@@ -724,7 +724,12 @@ if __name__ == '__main__':
             check_call_cmd(top_dir, 'meson', 'configure', 'build',
                            '-Db_coverage=true')
             check_call_cmd(top_dir, 'meson', 'test', '-C', 'build')
-            check_call_cmd(top_dir, 'ninja', '-C', 'build', 'coverage-html')
+            # Only build coverage HTML if coverage files were produced
+            for root, dirs, files in os.walk('build'):
+                if any([f.endswith('.gcda') for f in files]):
+                    check_call_cmd(top_dir, 'ninja', '-C', 'build',
+                                   'coverage-html')
+                    break
             check_call_cmd(top_dir, 'meson', 'configure', 'build',
                            '-Db_coverage=false')
         else:
