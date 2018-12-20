@@ -203,7 +203,7 @@ RUN curl -L https://github.com/google/googletest/archive/${PKG_REV['googletest']
 cd googletest-* && \
 mkdir build && \
 cd build && \
-cmake ${CMAKE_FLAGS[@]} -DBUILD_GTEST=ON -DBUILD_GMOCK=ON .. && \
+cmake ${CMAKE_FLAGS[@]} -DTHREADS_PREFER_PTHREAD_FLAG=ON -DBUILD_GTEST=ON -DBUILD_GMOCK=ON .. && \
 make -j$(nproc) && \
 make install
 
