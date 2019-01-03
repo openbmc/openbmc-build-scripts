@@ -226,21 +226,28 @@ def check_call_cmd(dir, *cmd):
     check_call(cmd)
 
 
-def clone_pkg(pkg):
+def clone_pkg(pkg, branch):
     """
     Clone the given openbmc package's git repository from gerrit into
     the WORKSPACE location
 
     Parameter descriptions:
     pkg                 Name of the package to clone
+    branch              Branch to clone from pkg
     """
     pkg_dir = os.path.join(WORKSPACE, pkg)
     if os.path.exists(os.path.join(pkg_dir, '.git')):
         return pkg_dir
     pkg_repo = urljoin('https://gerrit.openbmc-project.xyz/openbmc/', pkg)
     os.mkdir(pkg_dir)
-    printline(pkg_dir, "> git clone", pkg_repo, "./")
-    return Repo.clone_from(pkg_repo, pkg_dir).working_dir
+    printline(pkg_dir, "> git clone", pkg_repo, branch, "./")
+    try:
+        # first try the branch
+        repo_inst = Repo.clone_from(pkg_repo, pkg_dir,branch=branch).working_dir
+    except:
+        printline("Input branch not found, default to master")
+        repo_inst = Repo.clone_from(pkg_repo, pkg_dir,branch="master").working_dir
+    return repo_inst
 
 
 def get_deps(configure_ac):
@@ -312,7 +319,7 @@ def install_deps(dep_list):
         check_call_cmd(pkgdir, *(make_parallel + [ 'install' ]))
 
 
-def build_dep_tree(pkg, pkgdir, dep_added, head, dep_tree=None):
+def build_dep_tree(pkg, pkgdir, dep_added, head, branch, dep_tree=None):
     """
     For each package(pkg), starting with the package to be unit tested,
     parse its 'configure.ac' file from within the package's directory(pkgdir)
@@ -324,6 +331,7 @@ def build_dep_tree(pkg, pkgdir, dep_added, head, dep_tree=None):
     pkgdir              Directory where package source is located
     dep_added           Current list of dependencies and added status
     head                Head node of the dependency tree
+    branch              Branch to clone from pkg
     dep_tree            Current dependency tree node
     """
     if not dep_tree:
@@ -343,7 +351,7 @@ def build_dep_tree(pkg, pkgdir, dep_added, head, dep_tree=None):
                 # Dependency package not added
                 new_child = dep_tree.AddChild(dep_pkg)
                 dep_added[dep_pkg] = False
-                dep_pkgdir = clone_pkg(dep_pkg)
+                dep_pkgdir = clone_pkg(dep_pkg,branch)
                 # Determine this dependency package's
                 # dependencies and add them before
                 # returning to add this package
@@ -351,7 +359,9 @@ def build_dep_tree(pkg, pkgdir, dep_added, head, dep_tree=None):
                                            dep_pkgdir,
                                            dep_added,
                                            head,
-                                           new_child)
+                                           branch,
+                                           new_child
+                                           )
             else:
                 # Dependency package known and added
                 if dep_added[dep_pkg]:
@@ -511,9 +521,13 @@ if __name__ == '__main__':
                         help="Print additional package status messages")
     parser.add_argument("-r", "--repeat", help="Repeat tests N times",
                         type=int, default=1)
+    parser.add_argument("-b", "--branch", dest="BRANCH", required=False,
+                        help="Branch to target for dependent repositories",
+                        default="master")
     args = parser.parse_args(sys.argv[1:])
     WORKSPACE = args.WORKSPACE
     UNIT_TEST_PKG = args.PACKAGE
+    BRANCH = args.BRANCH
     if args.verbose:
         def printline(*line):
             for arg in line:
@@ -538,7 +552,8 @@ if __name__ == '__main__':
         build_dep_tree(UNIT_TEST_PKG,
                        os.path.join(WORKSPACE, UNIT_TEST_PKG),
                        dep_added,
-                       dep_tree)
+                       dep_tree,
+                       BRANCH)
 
         # Reorder Dependency Tree
         for pkg_name, regex_str in DEPENDENCIES_REGEX.iteritems():
