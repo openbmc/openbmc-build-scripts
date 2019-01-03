@@ -7,11 +7,16 @@
 #                     default is openbmc/ubuntu-unit-test
 #   DISTRO:           <optional, the distro to build a docker image against>
 #                     default is ubuntu:bionic
+#   BRANCH:           <optional, branch to build from each of the openbmc/
+#                     respositories>
+#                     default is master, which will be used if input branch not
+#                     provided or not found
 
 set -uo pipefail
 
 DOCKER_IMG_NAME=${DOCKER_IMG_NAME:-"openbmc/ubuntu-unit-test"}
 DISTRO=${DISTRO:-"ubuntu:bionic"}
+BRANCH="refs/heads/"${BRANCH:-"master"}
 
 # Determine the architecture
 ARCH=$(uname -m)
@@ -59,8 +64,15 @@ generate_depcache_entry() {
   local package="$1"
 
   local tip
+  # Need to continue if branch not found, hence || true at end
   tip=$(git ls-remote "https://github.com/openbmc/${package}" |
-        grep 'refs/heads/master' | awk '{ print $1 }')
+        grep $BRANCH | awk '{ print $1 }' || true)
+
+  # If specific branch is not found then try master
+  if [ ! -n "$tip" ]; then
+    tip=$(git ls-remote "https://github.com/openbmc/${package}" |
+         grep "refs/heads/master" | awk '{ print $1 }')
+  fi
 
   # Lock the file to avoid interlaced writes
   exec 3>> "$DEPCACHE_FILE"
