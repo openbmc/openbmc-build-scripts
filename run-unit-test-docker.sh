@@ -29,7 +29,8 @@
 set -uo pipefail
 
 # Default variables
-DOCKER_IMG_NAME=${DOCKER_IMG_NAME:-"openbmc/ubuntu-unit-test-${BRANCH:-master}"}
+BRANCH=${BRANCH:-"master"}
+DOCKER_IMG_NAME=${DOCKER_IMG_NAME:-"openbmc/ubuntu-unit-test-${BRANCH}"}
 DISTRO=${DISTRO:-ubuntu:bionic}
 OBMC_BUILD_SCRIPTS="openbmc-build-scripts"
 UNIT_TEST_PY_DIR="scripts"
@@ -87,7 +88,8 @@ export BRANCH
 ./build-unit-test-docker.sh
 
 # Unit test and parameters
-UNIT_TEST="${DOCKER_WORKDIR}/${UNIT_TEST_PY},-w,${DOCKER_WORKDIR},-p,${UNIT_TEST_PKG},-v"
+UNIT_TEST="${DOCKER_WORKDIR}/${UNIT_TEST_PY},-w,${DOCKER_WORKDIR},\
+-p,${UNIT_TEST_PKG},-b,$BRANCH,-v"
 
 # Run the docker unit test container with the unit test execution script
 echo "Executing docker image"
