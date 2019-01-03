@@ -2,17 +2,27 @@
 
 # This build script is for running the Jenkins unit test builds using docker.
 #
-#   UNIT_TEST_PKG = Required, repository which has been extracted and is to
-#                   be tested.
-#   WORKSPACE = Required, location of unit test scripts and repository code to
-#               test.
-#   DISTRO = Docker base image. Ubuntu and Fedora are supported.
-#   dbus_sys_config_file = <path of the dbus config file>
-#   BRANCH = <optional, branch to build from each of the openbmc/respositories>
-#            default is master, which will be used if input branch not
-#            provided or not found
-#   DOCKER_IMG_NAME = Default is openbmc/ubuntu-unit-test with a -$BRANCH
-#            appended if provided
+# This script will build a docker container which will then be used to build
+# and test the input UNIT_TEST_PKG. The docker container will be pre-populated
+# with the most usedOpenBMC repositories (phosphor-dbus-interfaces, sdbusplus,
+# phosphor-logging, ...). This allows the use of docker caching
+# capabilities so the dependent repositories are only built once per update
+# to their corresponding repository. If a BRANCH parameter is input then the
+# docker container will be pre-populated with the latest code from that input
+# branch. If the branch does not exist in the repository, then master will be
+# used.
+#
+#   UNIT_TEST_PKG:   Required, repository which has been extracted and is to
+#                    be tested
+#   WORKSPACE:       Required, location of unit test scripts and repository
+#                    code to test
+#   DISTRO:          Optional, docker base image (ubuntu or fedora)
+#   BRANCH:          Optional, branch to build from each of the
+#                    openbmc repositories. default is master, which will be
+#                    used if input branch not provided or not found
+#   DOCKER_IMG_NAME: Optional, default is openbmc/ubuntu-unit-test with a
+#                    -$BRANCH appended if provided
+#   dbus_sys_config_file:  <path of the dbus config file>
 
 # Trace bash processing. Set -e so when a step fails, we fail the build
 set -uo pipefail
