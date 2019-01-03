@@ -5,12 +5,21 @@
 #   DISTRO = Docker base image. Ubuntu and Fedora are supported.
 #   WORKSPACE = <location of unit test execution script>
 #   dbus_sys_config_file = <path of the dbus config file>
+#   BRANCH = <optional, branch to build from each of the openbmc/respositories>
+#            default is master, which will be used if input branch not
+#            provided or not found
+#   DOCKER_IMG_NAME = Default is openbmc/ubuntu-unit-test with a -$BRANCH
+#            appended if provided
 
 # Trace bash processing. Set -e so when a step fails, we fail the build
 set -uo pipefail
 
 # Default variables
-DOCKER_IMG_NAME="openbmc/ubuntu-unit-test"
+DOCKER_IMG_NAME=${DOCKER_IMG_NAME:-"openbmc/ubuntu-unit-test"}
+# If branch is defined then append it to docker image name
+if [[ -n $BRANCH ]]; then
+    DOCKER_IMG_NAME="$DOCKER_IMG_NAME-$BRANCH"
+fi
 DISTRO=${DISTRO:-ubuntu:bionic}
 WORKSPACE=${WORKSPACE:-$(mktemp -d --tmpdir unit-test.XXXXXX)}
 OBMC_BUILD_SCRIPTS="openbmc-build-scripts"
@@ -61,7 +70,7 @@ chmod a+x ${WORKSPACE}/${FORMAT_CODE_SH}
 # Configure docker build
 cd ${WORKSPACE}/${OBMC_BUILD_SCRIPTS}
 echo "Building docker image with build-unit-test-docker.sh"
-./build-unit-test-docker.sh ${DOCKER_IMG_NAME} ${DISTRO}
+./build-unit-test-docker.sh
 
 # Unit test and parameters
 UNIT_TEST="${WORKSPACE}/${UNIT_TEST_PY},-w,${WORKSPACE},-p,${UNIT_TEST_PKG},-v"
