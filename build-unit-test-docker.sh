@@ -65,12 +65,12 @@ generate_depcache_entry() {
 
   local tip
   # Need to continue if branch not found, hence || true at end
-  tip=$(git ls-remote "https://github.com/openbmc/${package}" |
+  tip=$(git ls-remote --heads "https://github.com/openbmc/${package}" |
         grep "refs/heads/$BRANCH" | awk '{ print $1 }' || true)
 
   # If specific branch is not found then try master
   if [ ! -n "$tip" ]; then
-    tip=$(git ls-remote "https://github.com/openbmc/${package}" |
+    tip=$(git ls-remote --heads "https://github.com/openbmc/${package}" |
          grep "refs/heads/master" | awk '{ print $1 }')
   fi
 
