@@ -153,8 +153,8 @@ RUN sed -i '/-\(backports\|security\) /d' /etc/apt/sources.list.d/debug.list
 RUN cat /etc/apt/sources.list.d/debug.list
 
 RUN apt-get update && apt-get install -yy \
-    gcc \
-    g++ \
+    gcc-8 \
+    g++-8 \
     libc6-dbg \
     libc6-dev \
     libtool \
@@ -208,6 +208,9 @@ RUN apt-get update && apt-get install -yy \
     libldap2-dev \
     libprotobuf-dev \
     protobuf-compiler
+
+# Make gcc8 and g++8 the default
+RUN update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-8 800 --slave /usr/bin/g++ g++ /usr/bin/g++-8
 
 RUN pip install inflection
 RUN pip install pycodestyle
