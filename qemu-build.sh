@@ -107,6 +107,7 @@ ${PROXY}
 ENV DEBIAN_FRONTEND noninteractive
 RUN apt-get update && apt-get install -yy --no-install-recommends \
     bison \
+    ca-certificates \
     flex \
     gcc \
     git \
