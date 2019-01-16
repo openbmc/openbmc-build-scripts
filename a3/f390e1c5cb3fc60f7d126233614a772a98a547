@@ -1,0 +1,12 @@
+Ok-To-Test+1: Jenkins <openbmc-ci-admin@ozlabs.org>
+Code-Review+1: Andrew Geissler <geissonator@yahoo.com>
+Verified+1: Jenkins <openbmc-ci-admin@ozlabs.org>
+Code-Review+1: Matthew Barth <msbarth@linux.ibm.com>
+Code-Review+2: Joel Stanley <joel@jms.id.au>
+Verified+1: Joel Stanley <joel@jms.id.au>
+Code-Review+1: Andrew Jeffery <andrew@aj.id.au>
+Submitted-by: Joel Stanley <joel@jms.id.au>
+Submitted-at: Wed, 16 Jan 2019 02:12:40 +0000
+Reviewed-on: https://gerrit.openbmc-project.xyz/17350
+Project: openbmc/openbmc-build-scripts
+Branch: refs/heads/master
