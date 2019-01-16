@@ -94,6 +94,8 @@ declare -A PKG_REV=(
   # Snapshot from 2018-12-17
   [googletest]=9ab640ce5e5120021c5972d7e60f258bfca64d71
   [json]=v3.3.0
+  # Snapshot from 2019-01-11
+  [lcov]=04335632c371b5066e722298c9f8c6f11b210201
   # libvncserver commit dd873fce451e4b7d7cc69056a62e107aae7c8e7a is required for obmc-ikvm
   # Snapshot from 2018-10-08
   [libvncserver]=7b1ef0ffc4815cab9a96c7278394152bdc89dc4d
@@ -200,7 +202,6 @@ RUN apt-get update && apt-get install -yy \
     libsnmp-dev \
     valgrind \
     valgrind-dbg \
-    lcov \
     libpam0g-dev \
     xxd \
     libi2c-dev \
@@ -219,6 +220,12 @@ RUN update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-8 800 \
 RUN pip install inflection
 RUN pip install pycodestyle
 RUN pip3 install meson==0.49.0
+
+FROM openbmc-base as openbmc-lcov
+RUN curl -L https://github.com/linux-test-project/lcov/archive/${PKG_REV['lcov']}.tar.gz | tar -xz && \
+cd lcov-* && \
+make -j$(nproc) && \
+make install
 
 FROM openbmc-base as openbmc-googletest
 RUN curl -L https://github.com/google/googletest/archive/${PKG_REV['googletest']}.tar.gz | tar -xz && \
