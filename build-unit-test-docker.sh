@@ -210,7 +210,11 @@ RUN apt-get update && apt-get install -yy \
     protobuf-compiler
 
 # Make gcc8 and g++8 the default
-RUN update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-8 800 --slave /usr/bin/g++ g++ /usr/bin/g++-8
+RUN update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-8 800 \
+  --slave /usr/bin/g++ g++ /usr/bin/g++-8 \
+  --slave /usr/bin/gcov gcov /usr/bin/gcov-8 \
+  --slave /usr/bin/gcov-dump gcov-dump /usr/bin/gcov-dump-8 \
+  --slave /usr/bin/gcov-tool gcov-tool /usr/bin/gcov-tool-8
 
 RUN pip install inflection
 RUN pip install pycodestyle
