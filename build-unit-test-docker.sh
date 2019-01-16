@@ -318,6 +318,7 @@ ninja -C build && \
 ninja -C build install
 
 FROM openbmc-base as openbmc-gpioplus
+COPY --from=openbmc-stdplus ${PREFIX} ${PREFIX}
 RUN curl -L https://github.com/openbmc/gpioplus/archive/${PKG_REV['gpioplus']}.tar.gz | tar -xz && \
 cd gpioplus-* && \
 ./bootstrap.sh && \
