@@ -1,8 +1,7 @@
 #!/bin/bash
 ###############################################################################
 #
-# This build script is for running the OpenBMC builds as containers with the
-# option of launching the containers with Docker or Kubernetes.
+# This build script is for running the OpenBMC builds as Docker containers.
 #
 ###############################################################################
 #
@@ -39,13 +38,6 @@
 #                     Default: "qemu"
 #
 # Deployment Variables:
-#  launch             ""|job|pod
-#                     Can be left blank to launch the container via Docker
-#                     Job lets you keep a copy of job and container logs on the
-#                     api, can be useful if not using Jenkins as you can run the
-#                     job again via the api without needing this script.
-#                     Pod launches a container which runs to completion without
-#                     saving anything to the api when it completes.
 #  obmc_dir           Path of the OpenBMC repo directory used as a reference
 #                     for the build inside the container.
 #                     Default: "${WORKSPACE}/openbmc"
@@ -89,7 +81,6 @@ img_tag=${img_tag:-latest}
 target=${target:-qemu}
 
 # Deployment variables
-launch=${launch:-}
 obmc_dir=${obmc_dir:-${WORKSPACE}/openbmc}
 ssc_dir=${ssc_dir:-${HOME}}
 xtrct_small_copy_dir=${xtrct_small_copy_dir:-deploy/images}
@@ -360,41 +351,29 @@ img_name=${img_name:-openbmc/${distro}:${img_tag}-${target}-${ARCH}}
 # Build the Docker image
 docker build -t ${img_name} - <<< "${Dockerfile}"
 
-# Determine if the build container will be launched with Docker or Kubernetes
-if [[ "${launch}" == "" ]]; then
-
-  # If obmc_dir or ssc_dir are ${HOME} or a subdirectory they will not be mounted
-  mount_obmc_dir="-v ""${obmc_dir}"":""${obmc_dir}"" "
-  mount_ssc_dir="-v ""${ssc_dir}"":""${ssc_dir}"" "
-  if [[ "${obmc_dir}" = "${HOME}/"* || "${obmc_dir}" = "${HOME}" ]];then
-    mount_obmc_dir=""
-  fi
-  if [[ "${ssc_dir}" = "${HOME}/"* || "${ssc_dir}" = "${HOME}" ]];then
-    mount_ssc_dir=""
-  fi
-
-  # Run the Docker container, execute the build.sh script
-  docker run \
-  --cap-add=sys_admin \
-  --net=host \
-  --rm=true \
-  -e WORKSPACE=${WORKSPACE} \
-  -w "${HOME}" \
-  -v "${HOME}":"${HOME}" \
-  ${mount_obmc_dir} \
-  ${mount_ssc_dir} \
-  --cpus="$num_cpu" \
-  -t ${img_name} \
-  ${WORKSPACE}/build.sh
-
-elif [[ "${launch}" == "job" || "${launch}" == "pod" ]]; then
-
-  # Source and run the helper script to launch the pod or job
-  . ${build_scripts_dir}/kubernetes/kubernetes-launch.sh OpenBMC-build true true
-
-else
-  echo "Launch Parameter is invalid"
+# If obmc_dir or ssc_dir are ${HOME} or a subdirectory they will not be mounted
+mount_obmc_dir="-v ""${obmc_dir}"":""${obmc_dir}"" "
+mount_ssc_dir="-v ""${ssc_dir}"":""${ssc_dir}"" "
+if [[ "${obmc_dir}" = "${HOME}/"* || "${obmc_dir}" = "${HOME}" ]];then
+mount_obmc_dir=""
 fi
+if [[ "${ssc_dir}" = "${HOME}/"* || "${ssc_dir}" = "${HOME}" ]];then
+mount_ssc_dir=""
+fi
+
+# Run the Docker container, execute the build.sh script
+docker run \
+--cap-add=sys_admin \
+--net=host \
+--rm=true \
+-e WORKSPACE=${WORKSPACE} \
+-w "${HOME}" \
+-v "${HOME}":"${HOME}" \
+${mount_obmc_dir} \
+${mount_ssc_dir} \
+--cpus="$num_cpu" \
+-t ${img_name} \
+${WORKSPACE}/build.sh
 
 # To maintain function of resources that used an older path, add a link
 ln -sf ${xtrct_path}/deploy ${WORKSPACE}/deploy
