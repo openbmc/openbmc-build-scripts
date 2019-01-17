@@ -405,6 +405,8 @@ def build_and_install(pkg, build_for_testing=False):
         meson_options = parse_meson_options("meson_options.txt")
         meson_flags = [
             '-Db_colorout=never',
+            '-Dwerror=true',
+            '-Dwarning_level=3',
         ]
         if build_for_testing:
             meson_flags.append('--buildtype=debug')
