@@ -8,20 +8,28 @@
 #  WORKSPACE:      Directory which contains the extracted meta-*
 #                  layer test is running against
 #  GERRIT_PROJECT: openbmc/meta-* layer under test (i.e. openbmc/meta-phosphor)
+#  GERRIT_BRANCH:  Branch under test (default is master)
 
 export LANG=en_US.UTF8
 cd $WORKSPACE
 
+GERRIT_BRANCH=${GERRIT_BRANCH:-"master"}
+
 # Grab this for the downstream job
-git clone https://github.com/openbmc/openbmc-test-automation.git
+# TODO - Need test repo to branch
+# git clone https://github.com/openbmc/openbmc-test-automation.git --branch ${GERRIT_BRANCH} --single-branch
+git clone https://github.com/openbmc/openbmc-test-automation.git --branch master --single-branch
 
 export META_REPO=`basename $GERRIT_PROJECT`
 
 # Move the extracted meta layer to a dir based on it's meta-* name
 mv $GERRIT_PROJECT $META_REPO
 
+# Remove openbmc dir in prep for full repo clone
+rm -rf openbmc
+
 # Clone openbmc/openbmc
-git clone https://github.com/openbmc/openbmc.git
+git clone https://github.com/openbmc/openbmc.git --branch ${GERRIT_BRANCH} --single-branch
 
 # Make sure meta-* directory is there
 mkdir -p ./openbmc/$META_REPO/
