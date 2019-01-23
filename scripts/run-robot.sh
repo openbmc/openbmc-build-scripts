@@ -20,7 +20,7 @@
 
 MACHINE=${MACHINE:-"qemu"}
 ROBOT_CODE_HOME=${ROBOT_CODE_HOME:-/tmp/$(whoami)/${RANDOM}/obmc-robot/}
-ROBOT_TEST_CMD=${ROBOT_TEST_CMD:-"tox -e ${MACHINE} -- --argumentfile test_lists/QEMU_CI tests"}
+ROBOT_TEST_CMD=${ROBOT_TEST_CMD:-"python -m robot --argumentfile ./test_lists/QEMU_CI ./tests"}
 
 git clone https://github.com/openbmc/openbmc-test-automation.git \
         ${ROBOT_CODE_HOME}
