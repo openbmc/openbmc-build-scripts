@@ -20,7 +20,11 @@
 
 MACHINE=${MACHINE:-"qemu"}
 ROBOT_CODE_HOME=${ROBOT_CODE_HOME:-/tmp/$(whoami)/${RANDOM}/obmc-robot/}
-ROBOT_TEST_CMD=${ROBOT_TEST_CMD:-"tox -e ${MACHINE} -- --argumentfile test_lists/QEMU_CI tests"}
+ROBOT_TEST_CMD=${ROBOT_TEST_CMD:-"python -m robot\
+    -v OPENBMC_HOST:${IP_ADDR}\
+    -v SSH_PORT:${SSH_PORT}\
+    -v HTTPS_PORT:${HTTPS_PORT}\
+    --argumentfile ./test_lists/QEMU_CI ./tests"}
 
 git clone https://github.com/openbmc/openbmc-test-automation.git \
         ${ROBOT_CODE_HOME}
@@ -30,10 +34,6 @@ cd ${ROBOT_CODE_HOME}
 chmod ugo+rw -R ${ROBOT_CODE_HOME}/*
 
 # Execute the CI tests
-export OPENBMC_HOST=${IP_ADDR}
-export SSH_PORT=${SSH_PORT}
-export HTTPS_PORT=${HTTPS_PORT}
-
 "$($ROBOT_TEST_CMD)"
 
 cp ${ROBOT_CODE_HOME}/*.xml ${HOME}/
