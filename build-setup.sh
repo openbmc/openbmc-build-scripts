@@ -35,7 +35,7 @@
 #                     Default: "latest"
 #  target             The target we aim to build:
 #                     evb-ast2500|palmetto|qemu|qemux86-64
-#                     romulus|s2600wf|witherspoon|zaius
+#                     romulus|s2600wf|witherspoon|zaius|tiogapass
 #                     Default: "qemu"
 #
 # Deployment Variables:
@@ -158,6 +158,9 @@ case ${target} in
     LAYER_DIR="meta-phosphor"
     # MACHINE defaults to `qemuarm` in this layer, change to `qemux86-64`
     MACHINE="qemux86-64"
+    ;;
+  tiogapass)
+    LAYER_DIR="meta-facebook/meta-tiogapass"
     ;;
   *)
     exit 1
