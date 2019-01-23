@@ -159,6 +159,9 @@ case ${target} in
     # MACHINE defaults to `qemuarm` in this layer, change to `qemux86-64`
     MACHINE="qemux86-64"
     ;;
+  tiogapass)
+    LAYER_DIR="meta-facebook/meta-tiogapass"
+    ;;
   *)
     exit 1
     ;;
