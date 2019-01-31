@@ -37,6 +37,7 @@ UNIT_TEST_PY_DIR="scripts"
 UNIT_TEST_PY="unit-test.py"
 FORMAT_CODE_SH="format-code.sh"
 DBUS_UNIT_TEST_PY="dbus-unit-test.py"
+TEST_ONLY="${TEST_ONLY:-}"
 DBUS_SYS_CONFIG_FILE=${dbus_sys_config_file:-"/usr/share/dbus-1/system.conf"}
 MAKEFLAGS="${MAKEFLAGS:-""}"
 DOCKER_WORKDIR="${DOCKER_WORKDIR:-$WORKSPACE}"
@@ -89,7 +90,7 @@ export BRANCH
 
 # Unit test and parameters
 UNIT_TEST="${DOCKER_WORKDIR}/${UNIT_TEST_PY},-w,${DOCKER_WORKDIR},\
--p,${UNIT_TEST_PKG},-b,$BRANCH,-v"
+-p,${UNIT_TEST_PKG},-b,$BRANCH,-v${TEST_ONLY:+,-t}"
 
 # Run the docker unit test container with the unit test execution script
 echo "Executing docker image"

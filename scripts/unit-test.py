@@ -429,9 +429,12 @@ def build_and_install(pkg, build_for_testing=False):
             enFlag('silent-rules', False),
             enFlag('examples', build_for_testing),
             enFlag('tests', build_for_testing),
-            enFlag('code-coverage', build_for_testing),
-            enFlag('valgrind', build_for_testing),
         ]
+        if not TEST_ONLY:
+            conf_flags.extend([
+                enFlag('code-coverage', build_for_testing),
+                enFlag('valgrind', build_for_testing),
+            ])
         # Add any necessary configure flags for package
         if CONFIGURE_FLAGS.get(pkg) is not None:
             conf_flags.extend(CONFIGURE_FLAGS.get(pkg))
@@ -660,6 +663,9 @@ if __name__ == '__main__':
                         help="Workspace directory location(i.e. /home)")
     parser.add_argument("-p", "--package", dest="PACKAGE", required=True,
                         help="OpenBMC package to be unit tested")
+    parser.add_argument("-t", "--test-only", dest="TEST_ONLY",
+                        action="store_true", required=False, default=False,
+                        help="Only run test cases, no other validation")
     parser.add_argument("-v", "--verbose", action="store_true",
                         help="Print additional package status messages")
     parser.add_argument("-r", "--repeat", help="Repeat tests N times",
@@ -670,6 +676,7 @@ if __name__ == '__main__':
     args = parser.parse_args(sys.argv[1:])
     WORKSPACE = args.WORKSPACE
     UNIT_TEST_PKG = args.PACKAGE
+    TEST_ONLY = args.TEST_ONLY
     BRANCH = args.BRANCH
     if args.verbose:
         def printline(*line):
@@ -715,52 +722,61 @@ if __name__ == '__main__':
         # Run package unit tests
         build_and_install(UNIT_TEST_PKG, True)
         if os.path.isfile(CODE_SCAN_DIR + '/meson.build'):
-            # Run valgrind if it is supported
-            if is_valgrind_safe():
-                check_call_cmd(top_dir, 'meson', 'test', '-C', 'build',
-                               '--wrap', 'valgrind')
+            if not TEST_ONLY:
+                # Run valgrind if it is supported
+                if is_valgrind_safe():
+                    check_call_cmd(top_dir, 'meson', 'test', '-C', 'build',
+                                   '--wrap', 'valgrind')
 
-            # Run clang-tidy only if the project has a configuration
-            if os.path.isfile('.clang-tidy'):
-                check_call_cmd(top_dir, 'run-clang-tidy-6.0.py', '-p', 'build')
-            # Run the basic clang static analyzer otherwise
-            else:
-                os.environ['SCANBUILD'] = 'scan-build-6.0'
-                check_call_cmd(top_dir, 'ninja', '-C', 'build', 'scan-build')
-
-            # Run tests through sanitizers
-            # b_lundef is needed if clang++ is CXX since it resolves the asan
-            # symbols at runtime only. We don't want to set it earlier in the
-            # build process to ensure we don't have undefined runtime code.
-            check_call_cmd(top_dir, 'meson', 'configure', 'build',
-                           '-Db_sanitize=address,undefined', '-Db_lundef=false')
-            check_call_cmd(top_dir, 'meson', 'test', '-C', 'build',
-                           '--logbase', 'testlog-ubasan')
-            # TODO: Fix memory sanitizer
-            #check_call_cmd(top_dir, 'meson', 'configure', 'build',
-            #               '-Db_sanitize=memory')
-            #check_call_cmd(top_dir, 'meson', 'test', '-C', 'build'
-            #               '--logbase', 'testlog-msan')
-            check_call_cmd(top_dir, 'meson', 'configure', 'build',
-                           '-Db_sanitize=none', '-Db_lundef=true')
-
-            # Run coverage checks
-            check_call_cmd(top_dir, 'meson', 'configure', 'build',
-                           '-Db_coverage=true')
-            check_call_cmd(top_dir, 'meson', 'test', '-C', 'build')
-            # Only build coverage HTML if coverage files were produced
-            for root, dirs, files in os.walk('build'):
-                if any([f.endswith('.gcda') for f in files]):
+                # Run clang-tidy only if the project has a configuration
+                if os.path.isfile('.clang-tidy'):
+                    check_call_cmd(top_dir, 'run-clang-tidy-6.0.py', '-p',
+                                   'build')
+                # Run the basic clang static analyzer otherwise
+                else:
+                    os.environ['SCANBUILD'] = 'scan-build-6.0'
                     check_call_cmd(top_dir, 'ninja', '-C', 'build',
-                                   'coverage-html')
-                    break
-            check_call_cmd(top_dir, 'meson', 'configure', 'build',
-                           '-Db_coverage=false')
+                                   'scan-build')
+
+                # Run tests through sanitizers
+                # b_lundef is needed if clang++ is CXX since it resolves the
+                # asan symbols at runtime only. We don't want to set it earlier
+                # in the build process to ensure we don't have undefined
+                # runtime code.
+                check_call_cmd(top_dir, 'meson', 'configure', 'build',
+                               '-Db_sanitize=address,undefined',
+                               '-Db_lundef=false')
+                check_call_cmd(top_dir, 'meson', 'test', '-C', 'build',
+                               '--logbase', 'testlog-ubasan')
+                # TODO: Fix memory sanitizer
+                #check_call_cmd(top_dir, 'meson', 'configure', 'build',
+                #               '-Db_sanitize=memory')
+                #check_call_cmd(top_dir, 'meson', 'test', '-C', 'build'
+                #               '--logbase', 'testlog-msan')
+                check_call_cmd(top_dir, 'meson', 'configure', 'build',
+                               '-Db_sanitize=none', '-Db_lundef=true')
+
+                # Run coverage checks
+                check_call_cmd(top_dir, 'meson', 'configure', 'build',
+                               '-Db_coverage=true')
+                check_call_cmd(top_dir, 'meson', 'test', '-C', 'build')
+                # Only build coverage HTML if coverage files were produced
+                for root, dirs, files in os.walk('build'):
+                    if any([f.endswith('.gcda') for f in files]):
+                        check_call_cmd(top_dir, 'ninja', '-C', 'build',
+                                       'coverage-html')
+                        break
+                check_call_cmd(top_dir, 'meson', 'configure', 'build',
+                               '-Db_coverage=false')
+            else:
+                check_call_cmd(top_dir, 'meson', 'test', '-C', 'build')
         else:
             run_unit_tests(top_dir)
-            maybe_run_valgrind(top_dir)
-            maybe_run_coverage(top_dir)
-        run_cppcheck(top_dir)
+            if not TEST_ONLY:
+                maybe_run_valgrind(top_dir)
+                maybe_run_coverage(top_dir)
+        if not TEST_ONLY:
+            run_cppcheck(top_dir)
 
         os.umask(prev_umask)
 
@@ -773,11 +789,12 @@ if __name__ == '__main__':
                        str(multiprocessing.cpu_count()))
         if make_target_exists('test'):
             check_call_cmd(top_dir, 'ctest', '.')
-        maybe_run_valgrind(top_dir)
-        maybe_run_coverage(top_dir)
-        run_cppcheck(top_dir)
-        if os.path.isfile('.clang-tidy'):
-            check_call_cmd(top_dir, 'run-clang-tidy-6.0.py', '-p', '.')
+        if not TEST_ONLY:
+            maybe_run_valgrind(top_dir)
+            maybe_run_coverage(top_dir)
+            run_cppcheck(top_dir)
+            if os.path.isfile('.clang-tidy'):
+                check_call_cmd(top_dir, 'run-clang-tidy-6.0.py', '-p', '.')
 
     else:
         print "Not a supported repo for CI Tests, exit"
