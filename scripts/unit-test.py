@@ -560,6 +560,12 @@ def is_valgrind_safe():
     """
     return re.match('ppc64', platform.machine()) is None
 
+def is_sanitize_safe():
+    """
+    Returns whether it is safe to run sanitizers on our platform
+    """
+    return re.match('ppc64', platform.machine()) is None
+
 def maybe_run_valgrind(top_dir):
     """
     Potentially runs the unit tests through valgrind for the package
@@ -745,18 +751,19 @@ if __name__ == '__main__':
                 # asan symbols at runtime only. We don't want to set it earlier
                 # in the build process to ensure we don't have undefined
                 # runtime code.
-                check_call_cmd(top_dir, 'meson', 'configure', 'build',
-                               '-Db_sanitize=address,undefined',
-                               '-Db_lundef=false')
-                check_call_cmd(top_dir, 'meson', 'test', '-C', 'build',
-                               '--logbase', 'testlog-ubasan')
-                # TODO: Fix memory sanitizer
-                #check_call_cmd(top_dir, 'meson', 'configure', 'build',
-                #               '-Db_sanitize=memory')
-                #check_call_cmd(top_dir, 'meson', 'test', '-C', 'build'
-                #               '--logbase', 'testlog-msan')
-                check_call_cmd(top_dir, 'meson', 'configure', 'build',
-                               '-Db_sanitize=none', '-Db_lundef=true')
+                if is_sanitize_safe():
+                    check_call_cmd(top_dir, 'meson', 'configure', 'build',
+                                   '-Db_sanitize=address,undefined',
+                                   '-Db_lundef=false')
+                    check_call_cmd(top_dir, 'meson', 'test', '-C', 'build',
+                                   '--logbase', 'testlog-ubasan')
+                    # TODO: Fix memory sanitizer
+                    #check_call_cmd(top_dir, 'meson', 'configure', 'build',
+                    #               '-Db_sanitize=memory')
+                    #check_call_cmd(top_dir, 'meson', 'test', '-C', 'build'
+                    #               '--logbase', 'testlog-msan')
+                    check_call_cmd(top_dir, 'meson', 'configure', 'build',
+                                   '-Db_sanitize=none', '-Db_lundef=true')
 
                 # Run coverage checks
                 check_call_cmd(top_dir, 'meson', 'configure', 'build',
