@@ -41,6 +41,20 @@
 #  obmc_dir           Path of the OpenBMC repo directory used as a reference
 #                     for the build inside the container.
 #                     Default: "${WORKSPACE}/openbmc"
+#  xtrct_small_copy_dir
+#                     Directory within build_dir that should be copied to
+#                     xtrct_path. The directory and all parents up to, but not
+#                     including, build_dir will be copied. For example, if
+#                     build_dir is set to "/tmp/openbmc" and this is set to
+#                     "build/tmp", the directory at xtrct_path will have the
+#                     following directory structure:
+#                     xtrct_path
+#                      | - build
+#                        | - tmp
+#                          ...
+#                     Can also be set to the empty string to copy the entire
+#                     contents of build_dir to xtrct_path.
+#                     Default: "deploy/images".
 #
 ###############################################################################
 # Trace bash processing. Set -e so when a step fails, we fail the build
@@ -61,7 +75,7 @@ target=${target:-qemu}
 # Deployment variables
 obmc_dir=${obmc_dir:-${WORKSPACE}/openbmc}
 ssc_dir=${HOME}
-xtrct_small_copy_dir="deploy/images"
+xtrct_small_copy_dir=${xtrct_small_copy_dir:-deploy/images}
 xtrct_path="${obmc_dir}/build/tmp"
 xtrct_copy_timeout="300"
 
