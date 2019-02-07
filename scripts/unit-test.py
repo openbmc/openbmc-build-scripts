@@ -584,7 +584,23 @@ def is_sanitize_safe():
     """
     Returns whether it is safe to run sanitizers on our platform
     """
-    return re.match('ppc64', platform.machine()) is None
+    src = 'unit-test-sanitize.c'
+    exe = './unit-test-sanitize'
+    with open(src, 'w') as h:
+        h.write('int main() { return 0; }\n')
+    try:
+        with open(os.devnull, 'w') as devnull:
+            check_call(['gcc', '-O2', '-fsanitize=address',
+                        '-fsanitize=undefined', '-o', exe, src],
+                       stdout=devnull, stderr=devnull)
+            check_call([exe], stdout=devnull, stderr=devnull)
+        return True
+    except:
+        sys.stderr.write("###### Platform is not sanitize safe ######\n")
+        return False
+    finally:
+        os.remove(src)
+        os.remove(exe)
 
 def meson_setup_exists(setup):
     """
