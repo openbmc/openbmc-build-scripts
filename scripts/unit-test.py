@@ -563,7 +563,7 @@ def is_sanitize_safe():
     """
     return re.match('ppc64', platform.machine()) is None
 
-def maybe_run_valgrind():
+def maybe_make_valgrind():
     """
     Potentially runs the unit tests through valgrind for the package
     via `make check-valgrind`. If the package does not have valgrind testing
@@ -589,7 +589,7 @@ def maybe_run_valgrind():
                 check_call_cmd('cat', os.path.join(root, f))
         raise Exception('Valgrind tests failed')
 
-def maybe_run_coverage():
+def maybe_make_coverage():
     """
     Potentially runs the unit tests through code coverage for the package
     via `make check-code-coverage`. If the package does not have code coverage
@@ -772,8 +772,8 @@ if __name__ == '__main__':
         else:
             run_unit_tests()
             if not TEST_ONLY:
-                maybe_run_valgrind()
-                maybe_run_coverage()
+                maybe_make_valgrind()
+                maybe_make_coverage()
         if not TEST_ONLY:
             run_cppcheck()
 
@@ -788,8 +788,8 @@ if __name__ == '__main__':
         if make_target_exists('test'):
             check_call_cmd('ctest', '.')
         if not TEST_ONLY:
-            maybe_run_valgrind()
-            maybe_run_coverage()
+            maybe_make_valgrind()
+            maybe_make_coverage()
             run_cppcheck()
             if os.path.isfile('.clang-tidy'):
                 check_call_cmd('run-clang-tidy-6.0.py', '-p', '.')
