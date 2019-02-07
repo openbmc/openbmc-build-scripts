@@ -563,6 +563,38 @@ def is_sanitize_safe():
     """
     return re.match('ppc64', platform.machine()) is None
 
+def meson_setup_exists(setup):
+    """
+    Returns whether the meson build supports the named test setup.
+
+    Parameter descriptions:
+    setup              The setup target to check
+    """
+    try:
+        with open(os.devnull, 'w') as devnull:
+            output = subprocess.check_output(
+                    ['meson', 'test', '-C', 'build',
+                     '--setup', setup, '-t', '0'],
+                    stderr=subprocess.STDOUT)
+    except CalledProcessError as e:
+        output = e.output
+    return not re.search('Test setup .* not found from project', output)
+
+def maybe_meson_valgrind():
+    """
+    Potentially runs the unit tests through valgrind for the package
+    via `meson test`. The package can specify custom valgrind configurations
+    by utilizing add_test_setup() in a meson.build
+    """
+    if not is_valgrind_safe():
+        return
+    if meson_setup_exists('valgrind'):
+        check_call_cmd('meson', 'test', '-C', 'build',
+                       '--setup', 'valgrind')
+    else:
+        check_call_cmd('meson', 'test', '-C', 'build',
+                       '--wrapper', 'valgrind')
+
 def maybe_make_valgrind():
     """
     Potentially runs the unit tests through valgrind for the package
@@ -721,10 +753,7 @@ if __name__ == '__main__':
         build_and_install(UNIT_TEST_PKG, True)
         if os.path.isfile(CODE_SCAN_DIR + '/meson.build'):
             if not TEST_ONLY:
-                # Run valgrind if it is supported
-                if is_valgrind_safe():
-                    check_call_cmd('meson', 'test', '-C', 'build',
-                                   '--wrap', 'valgrind')
+                maybe_meson_valgrind()
 
                 # Run clang-tidy only if the project has a configuration
                 if os.path.isfile('.clang-tidy'):
