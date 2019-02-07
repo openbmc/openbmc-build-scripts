@@ -86,6 +86,10 @@ ARCH=powerpc CROSS_COMPILE=powerpc64le-linux-gnu- make -s -j$(nproc)
 # Build kernel with debug
 ARCH=powerpc CROSS_COMPILE=powerpc64le-linux-gnu- make -s pseries_le_defconfig
 echo "CONFIG_DEBUG_INFO=y" >> .config
+# Enable virtio-net driver to be able to boot under QEMU
+echo "CONFIG_VIRTIO=y" >> .config
+echo "CONFIG_VIRTIO_NET=y" >> .config
+echo "CONFIG_VIRTIO_PCI=y" >> .config
 ARCH=powerpc CROSS_COMPILE=powerpc64le-linux-gnu- make olddefconfig
 ARCH=powerpc CROSS_COMPILE=powerpc64le-linux-gnu- make -j$(nproc) -s C=2 CF=-D__CHECK_ENDIAN__ 2>&1 | gzip > sparse.log.gz
 pahole vmlinux 2>&1 | gzip > structs.dump.gz
