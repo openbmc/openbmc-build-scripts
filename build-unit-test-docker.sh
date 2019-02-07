@@ -18,6 +18,8 @@ DOCKER_IMG_NAME=${DOCKER_IMG_NAME:-"openbmc/ubuntu-unit-test"}
 DISTRO=${DISTRO:-"ubuntu:bionic"}
 BRANCH=${BRANCH:-"master"}
 
+DISTRO_VERSION="$(echo "$DISTRO" | awk -F: '{print $2}')"
+
 # Determine the architecture
 ARCH=$(uname -m)
 case ${ARCH} in
@@ -154,6 +156,11 @@ RUN sed -i '/-\(backports\|security\) /d' /etc/apt/sources.list.d/debug.list
 
 RUN cat /etc/apt/sources.list.d/debug.list
 
+# We want a newer llvm than what is supported
+RUN apt-get update && apt-get install -yy dirmngr && \
+    apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 6084F3CF814B57C1CF12EFD515CF4D18AF4F7421
+RUN echo 'deb http://apt.llvm.org/$DISTRO_VERSION/ llvm-toolchain-$DISTRO_VERSION-8 main' >/etc/apt/sources.list.d/llvm.list
+
 RUN apt-get update && apt-get install -yy \
     gcc-8 \
     g++-8 \
@@ -191,10 +198,10 @@ RUN apt-get update && apt-get install -yy \
     git \
     dbus \
     iputils-ping \
-    clang-6.0 \
-    clang-format-6.0 \
-    clang-tidy-6.0 \
-    clang-tools-6.0 \
+    clang-8 \
+    clang-format-8 \
+    clang-tidy-8 \
+    clang-tools-8 \
     iproute2 \
     libnl-3-dev \
     libnl-genl-3-dev \
