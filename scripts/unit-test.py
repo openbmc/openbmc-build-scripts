@@ -216,7 +216,7 @@ class DepTree():
             child.PrintTree(level + 1)
 
 
-def check_call_cmd(dir, *cmd):
+def check_call_cmd(*cmd):
     """
     Verbose prints the directory location the given command is called from and
     the command, then executes the command using check_call.
@@ -225,7 +225,7 @@ def check_call_cmd(dir, *cmd):
     dir                 Directory location command is to be called from
     cmd                 List of parameters constructing the complete command
     """
-    printline(dir, ">", " ".join(cmd))
+    printline(os.getcwd(), ">", " ".join(cmd))
     check_call(cmd)
 
 
@@ -397,7 +397,7 @@ def build_and_install(pkg, build_for_testing=False):
     os.chdir(pkgdir)
 
     # Refresh dynamic linker run time bindings for dependencies
-    check_call_cmd(pkgdir, 'sudo', '-n', '--', 'ldconfig')
+    check_call_cmd('sudo', '-n', '--', 'ldconfig')
 
     # Build & install this package
     # Always try using meson first
@@ -419,12 +419,12 @@ def build_and_install(pkg, build_for_testing=False):
         if MESON_FLAGS.get(pkg) is not None:
             meson_flags.extend(MESON_FLAGS.get(pkg))
         try:
-            check_call_cmd(pkgdir, 'meson', 'setup', '--reconfigure', 'build', *meson_flags)
+            check_call_cmd('meson', 'setup', '--reconfigure', 'build', *meson_flags)
         except:
             shutil.rmtree('build')
-            check_call_cmd(pkgdir, 'meson', 'setup', 'build', *meson_flags)
-        check_call_cmd(pkgdir, 'ninja', '-C', 'build')
-        check_call_cmd(pkgdir, 'sudo', '-n', '--', 'ninja', '-C', 'build', 'install')
+            check_call_cmd('meson', 'setup', 'build', *meson_flags)
+        check_call_cmd('ninja', '-C', 'build')
+        check_call_cmd('sudo', '-n', '--', 'ninja', '-C', 'build', 'install')
     # Assume we are autoconf otherwise
     else:
         conf_flags = [
@@ -442,11 +442,11 @@ def build_and_install(pkg, build_for_testing=False):
             conf_flags.extend(CONFIGURE_FLAGS.get(pkg))
         for bootstrap in ['bootstrap.sh', 'bootstrap', 'autogen.sh']:
             if os.path.exists(bootstrap):
-                check_call_cmd(pkgdir, './' + bootstrap)
+                check_call_cmd('./' + bootstrap)
                 break
-        check_call_cmd(pkgdir, './configure', *conf_flags)
-        check_call_cmd(pkgdir, *make_parallel)
-        check_call_cmd(pkgdir, 'sudo', '-n', '--', *(make_parallel + [ 'install' ]))
+        check_call_cmd('./configure', *conf_flags)
+        check_call_cmd(*make_parallel)
+        check_call_cmd('sudo', '-n', '--', *(make_parallel + [ 'install' ]))
 
 def build_dep_tree(pkg, pkgdir, dep_added, head, branch, dep_tree=None):
     """
@@ -531,12 +531,12 @@ def run_unit_tests(top_dir):
     try:
         cmd = make_parallel + [ 'check' ]
         for i in range(0, args.repeat):
-            check_call_cmd(top_dir,  *cmd)
+            check_call_cmd(*cmd)
     except CalledProcessError:
         for root, _, files in os.walk(top_dir):
             if 'test-suite.log' not in files:
                 continue
-            check_call_cmd(root, 'cat', os.path.join(root, 'test-suite.log'))
+            check_call_cmd('cat', os.path.join(root, 'test-suite.log'))
         raise Exception('Unit tests failed')
 
 def run_cppcheck(top_dir):
@@ -550,7 +550,7 @@ def run_cppcheck(top_dir):
         params.extend(ignore_list)
         params.append('.')
 
-        check_call_cmd(top_dir, *params)
+        check_call_cmd(*params)
     except CalledProcessError:
         raise Exception('Cppcheck failed')
 
@@ -586,13 +586,13 @@ def maybe_run_valgrind(top_dir):
 
     try:
         cmd = make_parallel + [ 'check-valgrind' ]
-        check_call_cmd(top_dir,  *cmd)
+        check_call_cmd(*cmd)
     except CalledProcessError:
         for root, _, files in os.walk(top_dir):
             for f in files:
                 if re.search('test-suite-[a-z]+.log', f) is None:
                     continue
-                check_call_cmd(root, 'cat', os.path.join(root, f))
+                check_call_cmd('cat', os.path.join(root, f))
         raise Exception('Valgrind tests failed')
 
 def maybe_run_coverage(top_dir):
@@ -610,7 +610,7 @@ def maybe_run_coverage(top_dir):
     # Actually run code coverage
     try:
         cmd = make_parallel + [ 'check-code-coverage' ]
-        check_call_cmd(top_dir,  *cmd)
+        check_call_cmd(*cmd)
     except CalledProcessError:
         raise Exception('Code coverage failed')
 
@@ -699,7 +699,7 @@ if __name__ == '__main__':
     # First validate code formatting if repo has style formatting files.
     # The format-code.sh checks for these files.
     CODE_SCAN_DIR = WORKSPACE + "/" + UNIT_TEST_PKG
-    check_call_cmd(WORKSPACE, "./format-code.sh", CODE_SCAN_DIR)
+    check_call_cmd("./format-code.sh", CODE_SCAN_DIR)
 
     # Automake and meson
     if (os.path.isfile(CODE_SCAN_DIR + "/configure.ac") or
@@ -735,17 +735,17 @@ if __name__ == '__main__':
             if not TEST_ONLY:
                 # Run valgrind if it is supported
                 if is_valgrind_safe():
-                    check_call_cmd(top_dir, 'meson', 'test', '-C', 'build',
+                    check_call_cmd('meson', 'test', '-C', 'build',
                                    '--wrap', 'valgrind')
 
                 # Run clang-tidy only if the project has a configuration
                 if os.path.isfile('.clang-tidy'):
-                    check_call_cmd(top_dir, 'run-clang-tidy-6.0.py', '-p',
+                    check_call_cmd('run-clang-tidy-6.0.py', '-p',
                                    'build')
                 # Run the basic clang static analyzer otherwise
                 else:
                     os.environ['SCANBUILD'] = 'scan-build-6.0'
-                    check_call_cmd(top_dir, 'ninja', '-C', 'build',
+                    check_call_cmd('ninja', '-C', 'build',
                                    'scan-build')
 
                 # Run tests through sanitizers
@@ -754,33 +754,33 @@ if __name__ == '__main__':
                 # in the build process to ensure we don't have undefined
                 # runtime code.
                 if is_sanitize_safe():
-                    check_call_cmd(top_dir, 'meson', 'configure', 'build',
+                    check_call_cmd('meson', 'configure', 'build',
                                    '-Db_sanitize=address,undefined',
                                    '-Db_lundef=false')
-                    check_call_cmd(top_dir, 'meson', 'test', '-C', 'build',
+                    check_call_cmd('meson', 'test', '-C', 'build',
                                    '--logbase', 'testlog-ubasan')
                     # TODO: Fix memory sanitizer
-                    #check_call_cmd(top_dir, 'meson', 'configure', 'build',
+                    #check_call_cmd('meson', 'configure', 'build',
                     #               '-Db_sanitize=memory')
-                    #check_call_cmd(top_dir, 'meson', 'test', '-C', 'build'
+                    #check_call_cmd('meson', 'test', '-C', 'build'
                     #               '--logbase', 'testlog-msan')
-                    check_call_cmd(top_dir, 'meson', 'configure', 'build',
+                    check_call_cmd('meson', 'configure', 'build',
                                    '-Db_sanitize=none', '-Db_lundef=true')
 
                 # Run coverage checks
-                check_call_cmd(top_dir, 'meson', 'configure', 'build',
+                check_call_cmd('meson', 'configure', 'build',
                                '-Db_coverage=true')
-                check_call_cmd(top_dir, 'meson', 'test', '-C', 'build')
+                check_call_cmd('meson', 'test', '-C', 'build')
                 # Only build coverage HTML if coverage files were produced
                 for root, dirs, files in os.walk('build'):
                     if any([f.endswith('.gcda') for f in files]):
-                        check_call_cmd(top_dir, 'ninja', '-C', 'build',
+                        check_call_cmd('ninja', '-C', 'build',
                                        'coverage-html')
                         break
-                check_call_cmd(top_dir, 'meson', 'configure', 'build',
+                check_call_cmd('meson', 'configure', 'build',
                                '-Db_coverage=false')
             else:
-                check_call_cmd(top_dir, 'meson', 'test', '-C', 'build')
+                check_call_cmd('meson', 'test', '-C', 'build')
         else:
             run_unit_tests(top_dir)
             if not TEST_ONLY:
@@ -795,17 +795,17 @@ if __name__ == '__main__':
     elif os.path.isfile(CODE_SCAN_DIR + "/CMakeLists.txt"):
         top_dir = os.path.join(WORKSPACE, UNIT_TEST_PKG)
         os.chdir(top_dir)
-        check_call_cmd(top_dir, 'cmake', '-DCMAKE_EXPORT_COMPILE_COMMANDS=ON', '.')
-        check_call_cmd(top_dir, 'cmake', '--build', '.', '--', '-j',
+        check_call_cmd('cmake', '-DCMAKE_EXPORT_COMPILE_COMMANDS=ON', '.')
+        check_call_cmd('cmake', '--build', '.', '--', '-j',
                        str(multiprocessing.cpu_count()))
         if make_target_exists('test'):
-            check_call_cmd(top_dir, 'ctest', '.')
+            check_call_cmd('ctest', '.')
         if not TEST_ONLY:
             maybe_run_valgrind(top_dir)
             maybe_run_coverage(top_dir)
             run_cppcheck(top_dir)
             if os.path.isfile('.clang-tidy'):
-                check_call_cmd(top_dir, 'run-clang-tidy-6.0.py', '-p', '.')
+                check_call_cmd('run-clang-tidy-6.0.py', '-p', '.')
 
     else:
         print "Not a supported repo for CI Tests, exit"
