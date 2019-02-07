@@ -614,6 +614,7 @@ def meson_setup_exists(setup):
 
 def maybe_meson_valgrind():
     if not is_valgrind_safe():
+        sys.stderr.write("###### Skipping valgrind ######\n")
         return
     if meson_setup_exists('valgrind'):
         check_call_cmd('meson', 'test', '-C', 'build',
@@ -633,6 +634,7 @@ def maybe_make_valgrind():
     # a workaround, just don't run valgrind tests on POWER.
     # https://github.com/openbmc/openbmc/issues/3315
     if not is_valgrind_safe():
+        sys.stderr.write("###### Skipping valgrind ######\n")
         return
     if not make_target_exists('check-valgrind'):
         return
@@ -810,6 +812,8 @@ if __name__ == '__main__':
                     #               '--logbase', 'testlog-msan')
                     check_call_cmd('meson', 'configure', 'build',
                                    '-Db_sanitize=none', '-Db_lundef=true')
+                else:
+                    sys.stderr.write("###### Skipping sanitizers ######\n")
 
                 # Run coverage checks
                 check_call_cmd('meson', 'configure', 'build',
