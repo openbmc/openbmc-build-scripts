@@ -393,8 +393,7 @@ def build_and_install(pkg, build_for_testing=False):
     pkg                 The package we are building
     build_for_testing   Enable options related to testing on the package?
     """
-    pkgdir = os.path.join(WORKSPACE, pkg)
-    os.chdir(pkgdir)
+    os.chdir(os.path.join(WORKSPACE, pkg))
 
     # Refresh dynamic linker run time bindings for dependencies
     check_call_cmd('sudo', '-n', '--', 'ldconfig')
@@ -521,28 +520,25 @@ def make_target_exists(target):
     except CalledProcessError:
         return False
 
-def run_unit_tests(top_dir):
+def run_unit_tests():
     """
     Runs the unit tests for the package via `make check`
-
-    Parameter descriptions:
-    top_dir             The root directory of our project
     """
     try:
         cmd = make_parallel + [ 'check' ]
         for i in range(0, args.repeat):
             check_call_cmd(*cmd)
     except CalledProcessError:
-        for root, _, files in os.walk(top_dir):
+        for root, _, files in os.walk(os.getcwd()):
             if 'test-suite.log' not in files:
                 continue
             check_call_cmd('cat', os.path.join(root, 'test-suite.log'))
         raise Exception('Unit tests failed')
 
-def run_cppcheck(top_dir):
+def run_cppcheck():
     try:
         # http://cppcheck.sourceforge.net/manual.pdf
-        ignore_list = ['-i%s' % path for path in os.listdir(top_dir) \
+        ignore_list = ['-i%s' % path for path in os.listdir(os.getcwd()) \
                        if path.endswith('-src') or path.endswith('-build')]
         ignore_list.extend(('-itest', '-iscripts'))
         params = ['cppcheck', '-j', str(multiprocessing.cpu_count()),
@@ -566,14 +562,11 @@ def is_sanitize_safe():
     """
     return re.match('ppc64', platform.machine()) is None
 
-def maybe_run_valgrind(top_dir):
+def maybe_run_valgrind():
     """
     Potentially runs the unit tests through valgrind for the package
     via `make check-valgrind`. If the package does not have valgrind testing
     then it just skips over this.
-
-    Parameter descriptions:
-    top_dir             The root directory of our project
     """
     # Valgrind testing is currently broken by an aggressive strcmp optimization
     # that is inlined into optimized code for POWER by gcc 7+. Until we find
@@ -588,21 +581,18 @@ def maybe_run_valgrind(top_dir):
         cmd = make_parallel + [ 'check-valgrind' ]
         check_call_cmd(*cmd)
     except CalledProcessError:
-        for root, _, files in os.walk(top_dir):
+        for root, _, files in os.walk(os.getcwd()):
             for f in files:
                 if re.search('test-suite-[a-z]+.log', f) is None:
                     continue
                 check_call_cmd('cat', os.path.join(root, f))
         raise Exception('Valgrind tests failed')
 
-def maybe_run_coverage(top_dir):
+def maybe_run_coverage():
     """
     Potentially runs the unit tests through code coverage for the package
     via `make check-code-coverage`. If the package does not have code coverage
     testing then it just skips over this.
-
-    Parameter descriptions:
-    top_dir             The root directory of our project
     """
     if not make_target_exists('check-code-coverage'):
         return
@@ -727,8 +717,7 @@ if __name__ == '__main__':
         # install reordered dependencies
         for dep in install_list:
             build_and_install(dep, False)
-        top_dir = os.path.join(WORKSPACE, UNIT_TEST_PKG)
-        os.chdir(top_dir)
+        os.chdir(os.path.join(WORKSPACE, UNIT_TEST_PKG))
         # Run package unit tests
         build_and_install(UNIT_TEST_PKG, True)
         if os.path.isfile(CODE_SCAN_DIR + '/meson.build'):
@@ -782,28 +771,27 @@ if __name__ == '__main__':
             else:
                 check_call_cmd('meson', 'test', '-C', 'build')
         else:
-            run_unit_tests(top_dir)
+            run_unit_tests()
             if not TEST_ONLY:
-                maybe_run_valgrind(top_dir)
-                maybe_run_coverage(top_dir)
+                maybe_run_valgrind()
+                maybe_run_coverage()
         if not TEST_ONLY:
-            run_cppcheck(top_dir)
+            run_cppcheck()
 
         os.umask(prev_umask)
 
     # Cmake
     elif os.path.isfile(CODE_SCAN_DIR + "/CMakeLists.txt"):
-        top_dir = os.path.join(WORKSPACE, UNIT_TEST_PKG)
-        os.chdir(top_dir)
+        os.chdir(os.path.join(WORKSPACE, UNIT_TEST_PKG))
         check_call_cmd('cmake', '-DCMAKE_EXPORT_COMPILE_COMMANDS=ON', '.')
         check_call_cmd('cmake', '--build', '.', '--', '-j',
                        str(multiprocessing.cpu_count()))
         if make_target_exists('test'):
             check_call_cmd('ctest', '.')
         if not TEST_ONLY:
-            maybe_run_valgrind(top_dir)
-            maybe_run_coverage(top_dir)
-            run_cppcheck(top_dir)
+            maybe_run_valgrind()
+            maybe_run_coverage()
+            run_cppcheck()
             if os.path.isfile('.clang-tidy'):
                 check_call_cmd('run-clang-tidy-6.0.py', '-p', '.')
 
