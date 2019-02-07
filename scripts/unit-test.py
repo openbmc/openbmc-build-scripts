@@ -638,6 +638,8 @@ if __name__ == '__main__':
             'phosphor-dbus-interfaces': 'phosphor-dbus-interfaces',
             'openpower-dbus-interfaces': 'openpower-dbus-interfaces',
             'ibm-dbus-interfaces': 'ibm-dbus-interfaces',
+            'libipmid': 'phosphor-host-ipmid',
+            'libipmid-host': 'phosphor-host-ipmid',
             'sdbusplus': 'sdbusplus',
             'sdeventplus': 'sdeventplus',
             'gpioplus': 'gpioplus',
