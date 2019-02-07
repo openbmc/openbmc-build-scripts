@@ -554,7 +554,31 @@ def is_valgrind_safe():
     """
     Returns whether it is safe to run valgrind on our platform
     """
-    return re.match('ppc64', platform.machine()) is None
+    src = 'unit-test-vg.c'
+    exe = './unit-test-vg'
+    with open(src, 'w') as h:
+        h.write('#include <stdlib.h>\n')
+        h.write('#include <string.h>\n')
+        h.write('int main() {\n')
+        h.write('char *heap_str = malloc(16);\n')
+        h.write('strcpy(heap_str, "RandString");\n')
+        h.write('int res = strcmp("RandString", heap_str);\n')
+        h.write('free(heap_str);\n')
+        h.write('return res;\n')
+        h.write('}\n')
+    try:
+        with open(os.devnull, 'w') as devnull:
+            check_call(['gcc', '-O2', '-o', exe, src],
+                       stdout=devnull, stderr=devnull)
+            check_call(['valgrind', '--error-exitcode=99', exe],
+                       stdout=devnull, stderr=devnull)
+        return True
+    except:
+        sys.stderr.write("###### Platform is not valgrind safe ######\n")
+        return False
+    finally:
+        os.remove(src)
+        os.remove(exe)
 
 def is_sanitize_safe():
     """
