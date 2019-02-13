@@ -69,7 +69,7 @@ generate_depcache_entry() {
         grep "refs/heads/$BRANCH" | awk '{ print $1 }' || true)
 
   # If specific branch is not found then try master
-  if [ ! -n "$tip" ]; then
+  if [[ ! -n "$tip" ]]; then
     tip=$(git ls-remote --heads "https://github.com/openbmc/${package}" |
          grep "refs/heads/master" | awk '{ print $1 }')
   fi
