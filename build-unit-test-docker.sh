@@ -96,6 +96,7 @@ declare -A PKG_REV=(
   [json]=v3.3.0
   # Snapshot from 2019-01-11
   [lcov]=04335632c371b5066e722298c9f8c6f11b210201
+  [linux-headers]=4.19
   # libvncserver commit dd873fce451e4b7d7cc69056a62e107aae7c8e7a is required for obmc-ikvm
   # Snapshot from 2018-10-08
   [libvncserver]=7b1ef0ffc4815cab9a96c7278394152bdc89dc4d
@@ -160,6 +161,8 @@ RUN apt-get update && apt-get install -yy \
     libc6-dbg \
     libc6-dev \
     libtool \
+    bison \
+    flex \
     cmake \
     python \
     python-dev \
@@ -252,6 +255,12 @@ make install
 FROM openbmc-base as openbmc-json
 RUN mkdir ${PREFIX}/include/nlohmann/ && \
 curl -L -o ${PREFIX}/include/nlohmann/json.hpp https://github.com/nlohmann/json/releases/download/${PKG_REV['json']}/json.hpp
+
+FROM openbmc-base as openbmc-linux-headers
+RUN curl -L https://cdn.kernel.org/pub/linux/kernel/v4.x/linux-${PKG_REV['linux-headers']}.tar.xz | tar -xJ && \
+cd linux-* && \
+make -j$(nproc) defconfig && \
+make INSTALL_HDR_PATH=/usr/local headers_install
 
 FROM openbmc-base as openbmc-boost
 RUN curl -L https://dl.bintray.com/boostorg/release/${PKG_REV['boost']}/source/boost_$(echo "${PKG_REV['boost']}" | tr '.' '_').tar.bz2 | tar -xj && \
