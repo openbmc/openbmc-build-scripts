@@ -424,6 +424,9 @@ def build_and_install(pkg, build_for_testing=False):
             check_call_cmd('meson', 'setup', 'build', *meson_flags)
         check_call_cmd('ninja', '-C', 'build')
         check_call_cmd('sudo', '-n', '--', 'ninja', '-C', 'build', 'install')
+        # Ensure we can overwrite already installed package during testing
+        if build_for_testing:
+            check_call_cmd('sudo', '-n', '--', 'ninja', '-C', 'build', 'install')
     # Assume we are autoconf otherwise
     else:
         conf_flags = [
@@ -446,6 +449,9 @@ def build_and_install(pkg, build_for_testing=False):
         check_call_cmd('./configure', *conf_flags)
         check_call_cmd(*make_parallel)
         check_call_cmd('sudo', '-n', '--', *(make_parallel + [ 'install' ]))
+        # Ensure we can overwrite already installed package during testing
+        if build_for_testing:
+            check_call_cmd('sudo', '-n', '--', *(make_parallel + [ 'install' ]))
 
 def build_dep_tree(pkg, pkgdir, dep_added, head, branch, dep_tree=None):
     """
