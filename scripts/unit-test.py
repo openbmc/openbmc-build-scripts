@@ -970,6 +970,7 @@ class Package(object):
         system.configure(True)
         system.build()
         system.install()
+        system.install()
         system.test()
         system.analyze()
 
