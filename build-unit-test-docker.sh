@@ -46,6 +46,7 @@ trap cleanup EXIT ERR INT TERM QUIT
 DEPCACHE_FILE="$(mktemp)"
 
 HEAD_PKGS=(
+  phosphor-host-ipmid
   phosphor-objmgr
   sdbusplus
   sdeventplus
@@ -350,6 +351,17 @@ cd phosphor-objmgr-* && \
 make -j$(nproc) && \
 make install
 
+FROM openbmc-base as openbmc-phosphor-host-ipmid
+COPY --from=openbmc-sdbusplus ${PREFIX} ${PREFIX}
+COPY --from=openbmc-phosphor-objmgr ${PREFIX} ${PREFIX}
+COPY --from=openbmc-json ${PREFIX} ${PREFIX}
+COPY --from=openbmc-sdeventplus ${PREFIX} ${PREFIX}
+RUN curl -L https://github.com/openbmc/phosphor-host-ipmid/archive/${PKG_REV['phosphor-host-ipmid']}.tar.gz | tar -xz && \
+cd phosphor-host-ipmid-* && \
+./bootstrap.sh && \
+./configure ${CONFIGURE_FLAGS[@]} && \
+make -j$(nproc) && \
+make install
 
 # Build the final output image
 FROM openbmc-base
