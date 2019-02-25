@@ -251,7 +251,8 @@ make install
 
 FROM openbmc-base as openbmc-json
 RUN mkdir ${PREFIX}/include/nlohmann/ && \
-curl -L -o ${PREFIX}/include/nlohmann/json.hpp https://github.com/nlohmann/json/releases/download/${PKG_REV['json']}/json.hpp
+curl -L -o ${PREFIX}/include/nlohmann/json.hpp https://github.com/nlohmann/json/releases/download/${PKG_REV['json']}/json.hpp && \
+ln -s ${PREFIX}/include/nlohmann/json.hpp ${PREFIX}/include/json.hpp
 
 FROM openbmc-base as openbmc-boost
 RUN curl -L https://dl.bintray.com/boostorg/release/${PKG_REV['boost']}/source/boost_$(echo "${PKG_REV['boost']}" | tr '.' '_').tar.bz2 | tar -xj && \
