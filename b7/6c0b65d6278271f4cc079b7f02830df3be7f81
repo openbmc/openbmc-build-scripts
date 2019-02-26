@@ -1,0 +1,9 @@
+Ok-To-Test+1: Jenkins <openbmc-ci-admin@ozlabs.org>
+Verified+1: Jenkins <openbmc-ci-admin@ozlabs.org>
+Code-Review+1: Michael Shepos <shepos@us.ibm.com>
+Code-Review+2: Andrew Geissler <geissonator@yahoo.com>
+Submitted-by: Andrew Geissler <geissonator@yahoo.com>
+Submitted-at: Tue, 26 Feb 2019 15:27:11 +0000
+Reviewed-on: https://gerrit.openbmc-project.xyz/18656
+Project: openbmc/openbmc-build-scripts
+Branch: refs/heads/master
