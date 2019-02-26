@@ -68,6 +68,7 @@ RUN apt-get update && apt-get install -yy \
 RUN easy_install \
     tox \
     pip \
+    pip3 \
     requests \
     lxml
 
@@ -78,7 +79,9 @@ RUN pip install \
     robotframework-sshlibrary \
     robotframework-scplibrary \
     pysnmp \
-    redfish \
+    redfish
+
+RUN pip3 install \
     beautifulsoup4
 
 RUN wget https://sourceforge.net/projects/ipmitool/files/ipmitool/1.8.18/ipmitool-1.8.18.tar.bz2
