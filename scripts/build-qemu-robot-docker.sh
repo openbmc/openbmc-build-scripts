@@ -69,7 +69,8 @@ RUN easy_install \
     tox \
     pip \
     requests \
-    lxml
+    lxml \
+    bs4
 
 RUN pip install \
     json2yaml \
