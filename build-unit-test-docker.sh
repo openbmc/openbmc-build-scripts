@@ -208,7 +208,8 @@ RUN apt-get update && apt-get install -yy \
     wget \
     libldap2-dev \
     libprotobuf-dev \
-    protobuf-compiler
+    protobuf-compiler \
+    libboost-dev
 
 # Make gcc8 and g++8 the default
 RUN update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-8 800 \
