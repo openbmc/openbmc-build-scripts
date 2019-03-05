@@ -82,9 +82,18 @@ RUN pip install \
 
 RUN pip3 install \
     beautifulsoup4 --upgrade \
-    lxml
+    lxml \
+    jsonschema
 
-RUN wget https://sourceforge.net/projects/ipmitool/files/ipmitool/1.8.18/ipmitool-1.8.18.tar.bz2
+while [ $count -lt 5 ]; do
+  RUN wget --no-check-certificate https://sourceforge.net/projects/ipmitool/files/ipmitool/1.8.18/ipmitool-1.8.18.tar.bz2
+  if [ $? -eq 0 ]; then
+    break
+  fi
+  let count=$count+1
+  sleep 10
+done
+
 RUN tar xvfj ipmitool-*.tar.bz2
 RUN ./ipmitool-1.8.18/configure
 RUN make
