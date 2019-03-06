@@ -88,7 +88,7 @@ wait
 # A list of package versions we are building
 # Start off by listing the stating versions of third-party sources
 declare -A PKG_REV=(
-  [boost]=1.68.0
+  [boost]=1.69.0
   [cereal]=v1.2.2
   [CLI11]=v1.7.1
   # Snapshot from 2018-12-17
