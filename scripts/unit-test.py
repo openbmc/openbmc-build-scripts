@@ -715,6 +715,7 @@ if __name__ == '__main__':
             'gpioplus': 'gpioplus',
             'phosphor-logging': 'phosphor-logging',
             'phosphor-snmp': 'phosphor-snmp',
+            'ipmiblob': 'ipmi-blob-tool',
         },
     }
 
