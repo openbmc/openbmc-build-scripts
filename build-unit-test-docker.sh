@@ -49,6 +49,7 @@ HEAD_PKGS=(
   phosphor-objmgr
   sdbusplus
   sdeventplus
+  stdplus
   gpioplus
   phosphor-logging
   phosphor-dbus-interfaces
@@ -276,6 +277,13 @@ cd build && \
 cmake ${CMAKE_FLAGS[@]} .. && \
 make -j$(nproc) && \
 make install
+
+FROM openbmc-base as openbmc-stdplus
+RUN curl -L https://github.com/openbmc/stdplus/archive/${PKG_REV['stdplus']}.tar.gz | tar -xz && \
+cd stdplus-* && \
+meson build -Dprefix=${PREFIX} -Dtests=disabled -Dexamples=false && \
+ninja -C build && \
+ninja -C build install
 
 FROM openbmc-base as openbmc-sdbusplus
 RUN curl -L https://github.com/openbmc/sdbusplus/archive/${PKG_REV['sdbusplus']}.tar.gz | tar -xz && \
