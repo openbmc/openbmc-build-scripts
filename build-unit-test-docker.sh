@@ -288,10 +288,9 @@ make install
 FROM openbmc-base as openbmc-sdeventplus
 RUN curl -L https://github.com/openbmc/sdeventplus/archive/${PKG_REV['sdeventplus']}.tar.gz | tar -xz && \
 cd sdeventplus-* && \
-./bootstrap.sh && \
-./configure ${CONFIGURE_FLAGS[@]} --disable-tests --disable-examples && \
-make -j$(nproc) && \
-make install
+meson build -Dprefix=${PREFIX} -Dtests=disabled -Dexamples=false && \
+ninja -C build && \
+ninja -C build install
 
 FROM openbmc-base as openbmc-gpioplus
 RUN curl -L https://github.com/openbmc/gpioplus/archive/${PKG_REV['gpioplus']}.tar.gz | tar -xz && \
