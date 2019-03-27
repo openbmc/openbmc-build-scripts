@@ -92,6 +92,8 @@ declare -A PKG_REV=(
   [boost]=1.69.0
   [cereal]=v1.2.2
   [CLI11]=v1.7.1
+  # Snapshot from 2019-03-10
+  [function2]=e3695b4b4fa3c672e25c6462d7900f8d2417a417
   # Snapshot from 2018-12-17
   [googletest]=9ab640ce5e5120021c5972d7e60f258bfca64d71
   [json]=v3.3.0
@@ -224,6 +226,9 @@ RUN curl -L https://github.com/linux-test-project/lcov/archive/${PKG_REV['lcov']
 cd lcov-* && \
 make -j$(nproc) && \
 make install
+
+FROM openbmc-base as openbmc-function2
+RUN curl --create-dirs -L -o ${PREFIX}/include/function2/function.hpp https://raw.githubusercontent.com/Naios/function2/${PKG_REV['function2']}/include/function2/function2.hpp
 
 FROM openbmc-base as openbmc-googletest
 RUN curl -L https://github.com/google/googletest/archive/${PKG_REV['googletest']}.tar.gz | tar -xz && \
