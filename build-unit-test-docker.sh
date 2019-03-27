@@ -309,6 +309,7 @@ make -j$(nproc) && \
 make install
 
 FROM openbmc-base as openbmc-sdeventplus
+COPY --from=openbmc-function2 ${PREFIX} ${PREFIX}
 COPY --from=openbmc-stdplus ${PREFIX} ${PREFIX}
 RUN curl -L https://github.com/openbmc/sdeventplus/archive/${PKG_REV['sdeventplus']}.tar.gz | tar -xz && \
 cd sdeventplus-* && \
