@@ -401,7 +401,9 @@ def build_and_install(pkg, build_for_testing=False):
     # Build & install this package
     # Always try using meson first
     if os.path.exists('meson.build'):
-        meson_options = parse_meson_options("meson_options.txt")
+        meson_options = sets.Set()
+        if os.path.exists("meson_options.txt"):
+            meson_options = parse_meson_options("meson_options.txt")
         meson_flags = [
             '-Db_colorout=never',
             '-Dwerror=true',
