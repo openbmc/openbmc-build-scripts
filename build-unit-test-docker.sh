@@ -186,6 +186,7 @@ RUN apt-get update && apt-get install -yy \
     autoconf \
     autoconf-archive \
     libsystemd-dev \
+    systemd \
     libsystemd0-dbgsym \
     libssl-dev \
     libevdev-dev \
