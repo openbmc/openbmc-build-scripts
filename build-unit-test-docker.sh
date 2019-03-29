@@ -228,7 +228,8 @@ make -j$(nproc) && \
 make install
 
 FROM openbmc-base as openbmc-function2
-RUN curl --create-dirs -L -o ${PREFIX}/include/function2/function.hpp https://raw.githubusercontent.com/Naios/function2/${PKG_REV['function2']}/include/function2/function2.hpp
+RUN mkdir ${PREFIX}/include/function2 && \
+curl -L -o ${PREFIX}/include/function2/function.hpp https://raw.githubusercontent.com/Naios/function2/${PKG_REV['function2']}/include/function2/function2.hpp
 
 FROM openbmc-base as openbmc-googletest
 RUN curl -L https://github.com/google/googletest/archive/${PKG_REV['googletest']}.tar.gz | tar -xz && \
