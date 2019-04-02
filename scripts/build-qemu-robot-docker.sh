@@ -83,7 +83,8 @@ RUN pip install \
 RUN pip3 install \
     beautifulsoup4 --upgrade \
     lxml \
-    jsonschema
+    jsonschema \
+    redfishtool
 
 RUN wget https://sourceforge.net/projects/ipmitool/files/ipmitool/1.8.18/ipmitool-1.8.18.tar.bz2
 RUN tar xvfj ipmitool-*.tar.bz2
