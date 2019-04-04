@@ -108,7 +108,7 @@ cd linux-aspeed
 if [ "${distro}" == "fedora" ]; then
   CROSS_COMPILER="arm-linux-gnu-"
 else
-  CROSS_COMPILER="arm-none-eabi-"
+  CROSS_COMPILER="arm-linux-gnueabi-"
 fi
 
 # Record the version in the logs
