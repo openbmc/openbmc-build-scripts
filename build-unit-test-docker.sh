@@ -365,7 +365,7 @@ COPY --from=openbmc-phosphor-logging ${PREFIX} ${PREFIX}
 RUN curl -L https://github.com/openbmc/phosphor-objmgr/archive/${PKG_REV['phosphor-objmgr']}.tar.gz | tar -xz && \
 cd phosphor-objmgr-* && \
 ./bootstrap.sh && \
-./configure ${CONFIGURE_FLAGS[@]} --enable-unpatched-systemd && \
+./configure ${CONFIGURE_FLAGS[@]} && \
 make -j$(nproc) && \
 make install
 
