@@ -321,7 +321,7 @@ TMPDIR="${build_dir}"
 EOF_CONF
 
 # Kick off a build
-bitbake ${BITBAKE_OPTS} obmc-phosphor-image
+bitbake ${BITBAKE_OPTS} obmc-phosphor-image obmc-phosphor-debug-tarball
 
 # Copy internal build directory into xtrct_path directory
 if [[ ${xtrct_small_copy_dir} ]]; then
