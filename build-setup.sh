@@ -36,6 +36,8 @@
 #                     evb-ast2500|palmetto|qemu|qemux86-64
 #                     romulus|s2600wf|witherspoon|zaius|tiogapass
 #                     Default: "qemu"
+#  no_tar             Set to true if you do not want the debug tar built
+#                     Default: "false"
 #
 # Deployment Variables:
 #  obmc_dir           Path of the OpenBMC repo directory used as a reference
@@ -65,6 +67,7 @@ build_scripts_dir=${build_scripts_dir:-"$( cd "$( dirname "${BASH_SOURCE[0]}" )"
 http_proxy=${http_proxy:-}
 WORKSPACE=${WORKSPACE:-${HOME}/${RANDOM}${RANDOM}}
 num_cpu=${num_cpu:-$(nproc)}
+no_tar=${no_tar:-false}
 
 # Docker Image Build Variables:
 build_dir=${build_dir:-/tmp/openbmc}
@@ -260,6 +263,14 @@ export PROXY_PORT=${http_proxy/#http*:\/\/*:}
 
 mkdir -p ${WORKSPACE}
 
+# Determine command for bitbake image build
+bitbake_image=""
+if [ $no_tar = "true" ]; then
+    bitbake_image="obmc-phosphor-image"
+else
+    bitbake_image="obmc-phosphor-image obmc-phosphor-debug-tarball"
+fi
+
 cat > "${WORKSPACE}"/build.sh << EOF_SCRIPT
 #!/bin/bash
 
@@ -321,7 +332,7 @@ TMPDIR="${build_dir}"
 EOF_CONF
 
 # Kick off a build
-bitbake ${BITBAKE_OPTS} obmc-phosphor-image obmc-phosphor-debug-tarball
+bitbake ${BITBAKE_OPTS} ${bitbake_image}
 
 # Copy internal build directory into xtrct_path directory
 if [[ ${xtrct_small_copy_dir} ]]; then
