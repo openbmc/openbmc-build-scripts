@@ -683,7 +683,6 @@ def maybe_make_coverage():
 if __name__ == '__main__':
     # CONFIGURE_FLAGS = [GIT REPO]:[CONFIGURE FLAGS]
     CONFIGURE_FLAGS = {
-        'phosphor-objmgr': ['--enable-unpatched-systemd'],
         'sdbusplus': ['--enable-transaction'],
         'phosphor-logging':
         ['--enable-metadata-processing',
