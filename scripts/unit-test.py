@@ -559,6 +559,8 @@ def is_valgrind_safe():
     src = 'unit-test-vg.c'
     exe = './unit-test-vg'
     with open(src, 'w') as h:
+        h.write('#include <errno.h>\n')
+        h.write('#include <stdio.h>\n')
         h.write('#include <stdlib.h>\n')
         h.write('#include <string.h>\n')
         h.write('int main() {\n')
@@ -566,6 +568,9 @@ def is_valgrind_safe():
         h.write('strcpy(heap_str, "RandString");\n')
         h.write('int res = strcmp("RandString", heap_str);\n')
         h.write('free(heap_str);\n')
+        h.write('char errstr[64];\n')
+        h.write('strerror_r(EINVAL, errstr, sizeof(errstr));\n')
+        h.write('printf("%s\\n", errstr);\n')
         h.write('return res;\n')
         h.write('}\n')
     try:
