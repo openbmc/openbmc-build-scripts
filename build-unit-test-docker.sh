@@ -99,8 +99,8 @@ declare -A PKG_REV=(
   [json]=v3.3.0
   # Snapshot from 2019-01-11
   [lcov]=04335632c371b5066e722298c9f8c6f11b210201
-  # dev-5.0 2019-03-26
-  [linux-headers]=c8733f5abd0656acfef17d462e72ef105db9924d
+  # dev-5.0 2019-05-03
+  [linux-headers]=8bf6567e77f7aa68975b7c9c6d044bba690bf327
   # libvncserver commit dd873fce451e4b7d7cc69056a62e107aae7c8e7a is required for obmc-ikvm
   # Snapshot from 2018-10-08
   [libvncserver]=7b1ef0ffc4815cab9a96c7278394152bdc89dc4d
