@@ -686,7 +686,7 @@ if __name__ == '__main__':
         'sdbusplus': ['--enable-transaction'],
         'phosphor-logging':
         ['--enable-metadata-processing',
-         'YAML_DIR=/usr/local/share/phosphor-dbus-yaml/yaml']
+         'YAML_DIR=/usr/local/share/phosphor-dbus-yaml/yaml'],
     }
 
     # MESON_FLAGS = [GIT REPO]:[MESON FLAGS]
