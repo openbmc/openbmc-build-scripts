@@ -311,9 +311,9 @@ fi
 # Source our build env
 ${BITBAKE_CMD}
 
-# Change MACHINE name when given for build target
+# Export MACHINE name when given for build target
 if [[ -n "${MACHINE}" ]]; then
-  sed "s/^MACHINE\ ??=.*/MACHINE\ ??=\ \"${MACHINE}\"/" -i conf/local.conf
+  export MACHINE="${MACHINE}"; export BB_ENV_EXTRAWHITE="$BB_ENV_EXTRAWHITE MACHINE"
 fi
 
 # Custom BitBake config settings
