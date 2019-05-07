@@ -121,6 +121,10 @@ case ${target} in
   palmetto)
     LAYER_DIR="meta-ibm/meta-palmetto"
     ;;
+  swift)
+    LAYER_DIR="meta-ibm/meta-witherspoon"
+    MACHINE="swift"
+    ;;
   witherspoon)
     LAYER_DIR="meta-ibm/meta-witherspoon"
     ;;
