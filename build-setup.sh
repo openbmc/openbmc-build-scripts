@@ -118,8 +118,16 @@ case ${target} in
   palmetto)
     LAYER_DIR="meta-ibm/meta-palmetto"
     ;;
+  swift)
+    LAYER_DIR="meta-ibm/meta-witherspoon"
+    MACHINE="swift"
+    ;;
   witherspoon)
     LAYER_DIR="meta-ibm/meta-witherspoon"
+    ;;
+  witherspoon-128)
+    LAYER_DIR="meta-ibm/meta-witherspoon"
+    MACHINE="witherspoon-128"
     ;;
   evb-ast2500)
     LAYER_DIR="meta-evb/meta-evb-aspeed/meta-evb-ast2500"
