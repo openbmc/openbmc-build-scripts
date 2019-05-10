@@ -34,7 +34,7 @@
 #                     Default: "latest"
 #  target             The target we aim to build:
 #                     evb-ast2500|palmetto|qemu|qemux86-64
-#                     romulus|s2600wf|witherspoon|zaius|tiogapass
+#                     romulus|s2600wf|witherspoon|zaius|tiogapass|gsj
 #                     Default: "qemu"
 #  no_tar             Set to true if you do not want the debug tar built
 #                     Default: "false"
@@ -151,6 +151,9 @@ case ${target} in
     ;;
   tiogapass)
     LAYER_DIR="meta-facebook/meta-tiogapass"
+    ;;
+  gsj)
+    LAYER_DIR="meta-quanta//meta-gsj"
     ;;
   *)
     exit 1
