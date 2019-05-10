@@ -152,6 +152,9 @@ case ${target} in
   tiogapass)
     LAYER_DIR="meta-facebook/meta-tiogapass"
     ;;
+  gsj)
+    LAYER_DIR="meta-quanta//meta-gsj"
+    ;;
   *)
     exit 1
     ;;
