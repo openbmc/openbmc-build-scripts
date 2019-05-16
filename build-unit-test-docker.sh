@@ -220,7 +220,7 @@ RUN apt-get update && apt-get install -yy \
 
 RUN pip install inflection
 RUN pip install pycodestyle
-RUN pip3 install meson==0.49.0
+RUN pip3 install meson==0.50.1
 
 FROM openbmc-base as openbmc-lcov
 RUN curl -L https://github.com/linux-test-project/lcov/archive/${PKG_REV['lcov']}.tar.gz | tar -xz && \
