@@ -216,7 +216,8 @@ RUN apt-get update && apt-get install -yy \
     wget \
     libldap2-dev \
     libprotobuf-dev \
-    protobuf-compiler
+    protobuf-compiler \
+    libgpiod-dev
 
 RUN pip install inflection
 RUN pip install pycodestyle
