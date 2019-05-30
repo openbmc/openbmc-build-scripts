@@ -6,12 +6,12 @@
 #   parm1:  <optional, the name of the docker image to generate>
 #            default is openbmc/ubuntu-robot-qemu
 #   param2: <optional, the distro to build a docker image against>
-#            default is ubuntu:artful
+#            default is ubuntu:bionic
 
 set -uo pipefail
 
 DOCKER_IMG_NAME=${1:-"openbmc/ubuntu-robot-qemu"}
-DISTRO=${2:-"ubuntu:artful"}
+DISTRO=${2:-"ubuntu:bionic"}
 
 # Determine our architecture, ppc64le or the other one
 if [ $(uname -m) == "ppc64le" ]; then
