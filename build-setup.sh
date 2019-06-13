@@ -38,6 +38,12 @@
 #                     Default: "qemu"
 #  no_tar             Set to true if you do not want the debug tar built
 #                     Default: "false"
+#  nice_priority      Set nice priotity for bitbake command.
+#                     Nice:
+#                       Run with an adjusted niceness, which affects process
+#                       scheduling. Nice values range from -20 (most favorable
+#                       to the process) to 19 (least favorable to the process).
+#                     Default: "", nice is not used if nice_priority is not set
 #
 # Deployment Variables:
 #  obmc_dir           Path of the OpenBMC repo directory used as a reference
@@ -74,6 +80,7 @@ distro=${distro:-ubuntu}
 img_tag=${img_tag:-latest}
 target=${target:-qemu}
 no_tar=${no_tar:-false}
+nice_priority=${nice_priority:-}
 
 # Deployment variables
 obmc_dir=${obmc_dir:-${WORKSPACE}/openbmc}
@@ -341,7 +348,11 @@ TMPDIR="${build_dir}"
 EOF_CONF
 
 # Kick off a build
-bitbake ${BITBAKE_OPTS} ${bitbake_image}
+if [[ -n "${nice_priority}" ]]; then
+    nice -${nice_priority} bitbake ${BITBAKE_OPTS} ${bitbake_image}
+else
+    bitbake ${BITBAKE_OPTS} ${bitbake_image}
+fi
 
 # Copy internal build directory into xtrct_path directory
 if [[ ${xtrct_small_copy_dir} ]]; then
@@ -379,6 +390,7 @@ fi
 # Run the Docker container, execute the build.sh script
 docker run \
 --cap-add=sys_admin \
+--cap-add=sys_nice \
 --net=host \
 --rm=true \
 -e WORKSPACE=${WORKSPACE} \
