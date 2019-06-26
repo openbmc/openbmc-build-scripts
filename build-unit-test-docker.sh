@@ -6,7 +6,7 @@
 #   DOCKER_IMG_NAME:  <optional, the name of the docker image to generate>
 #                     default is openbmc/ubuntu-unit-test
 #   DISTRO:           <optional, the distro to build a docker image against>
-#                     default is ubuntu:disco
+#                     default is ubuntu:eoan
 #   BRANCH:           <optional, branch to build from each of the openbmc/
 #                     respositories>
 #                     default is master, which will be used if input branch not
@@ -15,7 +15,7 @@
 set -uo pipefail
 
 DOCKER_IMG_NAME=${DOCKER_IMG_NAME:-"openbmc/ubuntu-unit-test"}
-DISTRO=${DISTRO:-"ubuntu:disco"}
+DISTRO=${DISTRO:-"ubuntu:eoan"}
 BRANCH=${BRANCH:-"master"}
 
 # Determine the architecture
@@ -160,8 +160,8 @@ RUN sed -i '/-\(backports\|security\) /d' /etc/apt/sources.list.d/debug.list
 RUN cat /etc/apt/sources.list.d/debug.list
 
 RUN apt-get update && apt-get install -yy \
-    gcc \
-    g++ \
+    gcc-9 \
+    g++-9 \
     libc6-dbg \
     libc6-dev \
     libtool \
@@ -218,6 +218,12 @@ RUN apt-get update && apt-get install -yy \
     libprotobuf-dev \
     protobuf-compiler \
     libgpiod-dev
+
+RUN update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-9 900 \
+  --slave /usr/bin/g++ g++ /usr/bin/g++-9 \
+  --slave /usr/bin/gcov gcov /usr/bin/gcov-9 \
+  --slave /usr/bin/gcov-dump gcov-dump /usr/bin/gcov-dump-9 \
+  --slave /usr/bin/gcov-tool gcov-tool /usr/bin/gcov-tool-9
 
 RUN pip install inflection
 RUN pip install pycodestyle
