@@ -25,7 +25,7 @@ if [[ -f "setup.cfg" ]]; then
 fi
 
 # Allow called scripts to know which clang format we are using
-export CLANG_FORMAT="clang-format-6.0"
+export CLANG_FORMAT="clang-format-8"
 IGNORE_FILE=".clang-ignore"
 declare -a IGNORE_LIST
 

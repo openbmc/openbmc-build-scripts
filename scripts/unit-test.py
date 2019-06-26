@@ -809,11 +809,11 @@ if __name__ == '__main__':
 
                 # Run clang-tidy only if the project has a configuration
                 if os.path.isfile('.clang-tidy'):
-                    check_call_cmd('run-clang-tidy-6.0.py', '-p',
+                    check_call_cmd('run-clang-tidy-8.py', '-p',
                                    'build')
                 # Run the basic clang static analyzer otherwise
                 else:
-                    os.environ['SCANBUILD'] = 'scan-build-6.0'
+                    os.environ['SCANBUILD'] = 'scan-build-8'
                     check_call_cmd('ninja', '-C', 'build',
                                    'scan-build')
 
@@ -875,7 +875,7 @@ if __name__ == '__main__':
             maybe_make_coverage()
             run_cppcheck()
             if os.path.isfile('.clang-tidy'):
-                check_call_cmd('run-clang-tidy-6.0.py', '-p', '.')
+                check_call_cmd('run-clang-tidy-8.py', '-p', '.')
 
     else:
         print "Not a supported repo for CI Tests, exit"
