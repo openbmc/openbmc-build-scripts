@@ -97,8 +97,8 @@ declare -A PKG_REV=(
   # Snapshot from 2018-12-17
   [googletest]=9ab640ce5e5120021c5972d7e60f258bfca64d71
   [json]=v3.3.0
-  # Snapshot from 2019-01-11
-  [lcov]=04335632c371b5066e722298c9f8c6f11b210201
+  # Snapshot from 2019-05-24
+  [lcov]=75fbae1cfc5027f818a0bb865bf6f96fab3202da
   # dev-5.0 2019-05-03
   [linux-headers]=8bf6567e77f7aa68975b7c9c6d044bba690bf327
   # libvncserver commit dd873fce451e4b7d7cc69056a62e107aae7c8e7a is required for obmc-ikvm
@@ -216,6 +216,8 @@ RUN apt-get update && apt-get install -yy \
     wget \
     libldap2-dev \
     libprotobuf-dev \
+    libperlio-gzip-perl \
+    libjson-perl \
     protobuf-compiler \
     libgpiod-dev
 
