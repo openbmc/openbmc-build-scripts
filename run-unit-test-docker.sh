@@ -31,7 +31,7 @@ set -uo pipefail
 # Default variables
 BRANCH=${BRANCH:-"master"}
 DOCKER_IMG_NAME=${DOCKER_IMG_NAME:-"openbmc/ubuntu-unit-test-${BRANCH}"}
-DISTRO=${DISTRO:-ubuntu:disco}
+DISTRO=${DISTRO:-ubuntu:eoan}
 OBMC_BUILD_SCRIPTS="openbmc-build-scripts"
 UNIT_TEST_PY_DIR="scripts"
 UNIT_TEST_PY="unit-test.py"
