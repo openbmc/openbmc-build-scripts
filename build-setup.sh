@@ -331,7 +331,7 @@ ${BITBAKE_CMD}
 
 # Export MACHINE name when given for build target
 if [[ -n "${MACHINE}" ]]; then
-  export MACHINE="${MACHINE}"; export BB_ENV_EXTRAWHITE="$BB_ENV_EXTRAWHITE MACHINE"
+  export MACHINE="${MACHINE}"
 fi
 
 # Custom BitBake config settings
