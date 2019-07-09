@@ -92,6 +92,7 @@ declare -A PKG_REV=(
   [boost]=1.69.0
   [cereal]=v1.2.2
   [CLI11]=v1.7.1
+  [fmt]=5.3.0
   # Snapshot from 2019-03-10
   [function2]=e3695b4b4fa3c672e25c6462d7900f8d2417a417
   # Snapshot from 2018-12-17
@@ -260,6 +261,15 @@ cd CLI11-* && \
 mkdir build && \
 cd build && \
 cmake ${CMAKE_FLAGS[@]} -DCLI11_TESTING=OFF -DCLI11_EXAMPLES=OFF .. && \
+make -j$(nproc) && \
+make install
+
+FROM openbmc-base as openbmc-fmt
+RUN curl -L https://github.com/fmtlib/fmt/archive/${PKG_REV['fmt']}.tar.gz | tar -xz && \
+cd fmt-* && \
+mkdir build && \
+cd build && \
+cmake ${CMAKE_FLAGS[@]} -DFMT_DOC=OFF -DFMT_TEST=OFF .. && \
 make -j$(nproc) && \
 make install
 
