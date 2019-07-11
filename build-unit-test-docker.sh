@@ -203,6 +203,7 @@ RUN apt-get update && apt-get install -yy \
     clang-format-8 \
     clang-tidy-8 \
     clang-tools-8 \
+    npm \
     iproute2 \
     libnl-3-dev \
     libnl-genl-3-dev \
@@ -230,6 +231,8 @@ RUN update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-9 900 \
 RUN pip install inflection
 RUN pip install pycodestyle
 RUN pip3 install meson==0.50.1
+RUN npm install eslint
+RUN npm install prettier
 
 FROM openbmc-base as openbmc-lcov
 RUN curl -L https://github.com/linux-test-project/lcov/archive/${PKG_REV['lcov']}.tar.gz | tar -xz && \
