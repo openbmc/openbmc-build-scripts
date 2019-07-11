@@ -204,6 +204,7 @@ RUN apt-get update && apt-get install -yy \
     clang-format-8 \
     clang-tidy-8 \
     clang-tools-8 \
+    npm \
     iproute2 \
     libnl-3-dev \
     libnl-genl-3-dev \
