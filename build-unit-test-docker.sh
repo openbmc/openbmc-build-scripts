@@ -401,7 +401,7 @@ RUN echo '$(LC_COLLATE=C sort -s "$DEPCACHE_FILE" | tr '\n' ',')' > /tmp/depcach
 
 # Final configuration for the workspace
 RUN grep -q ${GROUPS} /etc/group || groupadd -g ${GROUPS} ${USER}
-RUN mkdir -p $(dirname ${HOME})
+RUN mkdir -p "$(dirname "${HOME}")"
 RUN grep -q ${UID} /etc/passwd || useradd -d ${HOME} -m -u ${UID} -g ${GROUPS} ${USER}
 RUN sed -i '1iDefaults umask=000' /etc/sudoers
 RUN echo "${USER} ALL=(ALL) NOPASSWD: ALL" >>/etc/sudoers
