@@ -1,0 +1,13 @@
+Code-Review+1: Patrick Venture <venture@google.com>
+Ok-To-Test+1: Jenkins <openbmc-ci-admin@ozlabs.org>
+Verified+1: Jenkins <openbmc-ci-admin@ozlabs.org>
+Code-Review+1: Matthew Barth <msbarth@linux.ibm.com>
+Code-Review+1: Matt Spinler <spinler@us.ibm.com>
+Code-Review+1: Zane Shelley <zshelle@us.ibm.com>
+Code-Review+1: James Feist <james.feist@linux.intel.com>
+Code-Review+2: Joel Stanley <joel@jms.id.au>
+Submitted-by: Joel Stanley <joel@jms.id.au>
+Submitted-at: Thu, 18 Jul 2019 04:45:12 +0000
+Reviewed-on: https://gerrit.openbmc-project.xyz/c/openbmc/openbmc-build-scripts/+/23578
+Project: openbmc/openbmc-build-scripts
+Branch: refs/heads/master
