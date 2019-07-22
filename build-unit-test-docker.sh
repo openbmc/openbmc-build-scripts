@@ -8,7 +8,7 @@
 #   DISTRO:           <optional, the distro to build a docker image against>
 #                     default is ubuntu:eoan
 #   BRANCH:           <optional, branch to build from each of the openbmc/
-#                     respositories>
+#                     repositories>
 #                     default is master, which will be used if input branch not
 #                     provided or not found
 

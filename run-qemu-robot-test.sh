@@ -140,7 +140,7 @@ if [[ ${LAUNCH} == "local" ]]; then
     result=$(docker logs $obmc_qemu_docker)
     if grep -q 'OPENBMC-READY' <<< $result ; then
       echo "QEMU is ready!"
-      # Give QEMU a few secs to stablize
+      # Give QEMU a few secs to stabilize
       sleep $delay
       break
     fi

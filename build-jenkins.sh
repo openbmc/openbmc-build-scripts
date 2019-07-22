@@ -213,7 +213,7 @@ if [[ ${launch} == "docker" ]]; then
     mkdir -p ${home_mnt}
   fi
 
-  # Ensure directories tht will be mounted are owned by the jenkins user
+  # Ensure directories that will be mounted are owned by the jenkins user
   if [[ "$(id -u)" != 0 ]]; then
     echo "Not running as root:"
     echo "Checking if j_gid and j_uid are the owners of mounted directories"
