@@ -357,6 +357,7 @@ make install
 
 FROM openbmc-base as openbmc-openpower-dbus-interfaces
 COPY --from=openbmc-sdbusplus ${PREFIX} ${PREFIX}
+COPY --from=openbmc-phosphor-dbus-interfaces ${PREFIX} ${PREFIX}
 RUN curl -L https://github.com/openbmc/openpower-dbus-interfaces/archive/${PKG_REV['openpower-dbus-interfaces']}.tar.gz | tar -xz && \
 cd openpower-dbus-interfaces-* && \
 ./bootstrap.sh && \
