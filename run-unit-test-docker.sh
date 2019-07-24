@@ -106,3 +106,9 @@ docker run --cap-add=sys_admin --rm=true \
 
 # Timestamp for build
 echo "Unit test build completed, $(date)"
+
+# Clean up copied scripts.
+rm ${WORKSPACE}/${UNIT_TEST_PY}
+rm ${WORKSPACE}/${DBUS_UNIT_TEST_PY}
+rm ${WORKSPACE}/${FORMAT_CODE_SH}
+
