@@ -46,14 +46,14 @@ trap cleanup EXIT ERR INT TERM QUIT
 DEPCACHE_FILE="$(mktemp)"
 
 HEAD_PKGS=(
-  phosphor-objmgr
-  sdbusplus
-  sdeventplus
-  stdplus
-  gpioplus
-  phosphor-logging
-  phosphor-dbus-interfaces
-  openpower-dbus-interfaces
+  openbmc/phosphor-objmgr
+  openbmc/sdbusplus
+  openbmc/sdeventplus
+  openbmc/stdplus
+  openbmc/gpioplus
+  openbmc/phosphor-logging
+  openbmc/phosphor-dbus-interfaces
+  openbmc/openpower-dbus-interfaces
 )
 
 # Generate a list of depcache entries
@@ -66,12 +66,12 @@ generate_depcache_entry() {
 
   local tip
   # Need to continue if branch not found, hence || true at end
-  tip=$(git ls-remote --heads "https://github.com/openbmc/${package}" |
+  tip=$(git ls-remote --heads "https://github.com/${package}" |
         grep "refs/heads/$BRANCH" | awk '{ print $1 }' || true)
 
   # If specific branch is not found then try master
   if [[ ! -n "$tip" ]]; then
-    tip=$(git ls-remote --heads "https://github.com/openbmc/${package}" |
+    tip=$(git ls-remote --heads "https://github.com/${package}" |
          grep "refs/heads/master" | awk '{ print $1 }')
   fi
 
@@ -127,12 +127,23 @@ CMAKE_FLAGS=(
   "-DCMAKE_INSTALL_PREFIX:PATH=${PREFIX}"
 )
 
+stagename()
+{
+  local cooked="$1"
+
+  if ! echo "$cooked" | grep -q '/';
+  then
+    cooked=openbmc-"$cooked"
+  fi
+  echo "$cooked" | tr '/' '-'
+}
+
 # Build the commands needed to compose our final image
 COPY_CMDS=""
 # We must sort the packages, otherwise we might produce an unstable
 # docker file and rebuild the image unnecessarily
 for pkg in $(echo "${!PKG_REV[@]}" | tr ' ' '\n' | LC_COLLATE=C sort -s); do
-  COPY_CMDS+="COPY --from=openbmc-${pkg} ${PREFIX} ${PREFIX}"$'\n'
+  COPY_CMDS+="COPY --from=$(stagename ${pkg}) ${PREFIX} ${PREFIX}"$'\n'
   # Workaround for upstream docker bug and multiple COPY cmds
   # https://github.com/moby/moby/issues/37965
   COPY_CMDS+="RUN true"$'\n'
@@ -316,14 +327,14 @@ make -j$(nproc) && \
 make install
 
 FROM openbmc-base as openbmc-stdplus
-RUN curl -L https://github.com/openbmc/stdplus/archive/${PKG_REV['stdplus']}.tar.gz | tar -xz && \
+RUN curl -L https://github.com/openbmc/stdplus/archive/${PKG_REV['openbmc/stdplus']}.tar.gz | tar -xz && \
 cd stdplus-* && \
 meson build -Dprefix=${PREFIX} -Dtests=disabled -Dexamples=false && \
 ninja -C build && \
 ninja -C build install
 
 FROM openbmc-base as openbmc-sdbusplus
-RUN curl -L https://github.com/openbmc/sdbusplus/archive/${PKG_REV['sdbusplus']}.tar.gz | tar -xz && \
+RUN curl -L https://github.com/openbmc/sdbusplus/archive/${PKG_REV['openbmc/sdbusplus']}.tar.gz | tar -xz && \
 cd sdbusplus-* && \
 ./bootstrap.sh && \
 ./configure ${CONFIGURE_FLAGS[@]} --disable-tests --enable-transaction && \
@@ -333,7 +344,7 @@ make install
 FROM openbmc-base as openbmc-sdeventplus
 COPY --from=openbmc-function2 ${PREFIX} ${PREFIX}
 COPY --from=openbmc-stdplus ${PREFIX} ${PREFIX}
-RUN curl -L https://github.com/openbmc/sdeventplus/archive/${PKG_REV['sdeventplus']}.tar.gz | tar -xz && \
+RUN curl -L https://github.com/openbmc/sdeventplus/archive/${PKG_REV['openbmc/sdeventplus']}.tar.gz | tar -xz && \
 cd sdeventplus-* && \
 meson build -Dprefix=${PREFIX} -Dtests=disabled -Dexamples=false && \
 ninja -C build && \
@@ -341,7 +352,7 @@ ninja -C build install
 
 FROM openbmc-base as openbmc-gpioplus
 COPY --from=openbmc-stdplus ${PREFIX} ${PREFIX}
-RUN curl -L https://github.com/openbmc/gpioplus/archive/${PKG_REV['gpioplus']}.tar.gz | tar -xz && \
+RUN curl -L https://github.com/openbmc/gpioplus/archive/${PKG_REV['openbmc/gpioplus']}.tar.gz | tar -xz && \
 cd gpioplus-* && \
 meson build -Dprefix=${PREFIX} -Dtests=disabled -Dexamples=false && \
 ninja -C build && \
@@ -349,7 +360,7 @@ ninja -C build install
 
 FROM openbmc-base as openbmc-phosphor-dbus-interfaces
 COPY --from=openbmc-sdbusplus ${PREFIX} ${PREFIX}
-RUN curl -L https://github.com/openbmc/phosphor-dbus-interfaces/archive/${PKG_REV['phosphor-dbus-interfaces']}.tar.gz | tar -xz && \
+RUN curl -L https://github.com/openbmc/phosphor-dbus-interfaces/archive/${PKG_REV['openbmc/phosphor-dbus-interfaces']}.tar.gz | tar -xz && \
 cd phosphor-dbus-interfaces-* && \
 ./bootstrap.sh && \
 ./configure ${CONFIGURE_FLAGS[@]} && \
@@ -359,7 +370,7 @@ make install
 FROM openbmc-base as openbmc-openpower-dbus-interfaces
 COPY --from=openbmc-sdbusplus ${PREFIX} ${PREFIX}
 COPY --from=openbmc-phosphor-dbus-interfaces ${PREFIX} ${PREFIX}
-RUN curl -L https://github.com/openbmc/openpower-dbus-interfaces/archive/${PKG_REV['openpower-dbus-interfaces']}.tar.gz | tar -xz && \
+RUN curl -L https://github.com/openbmc/openpower-dbus-interfaces/archive/${PKG_REV['openbmc/openpower-dbus-interfaces']}.tar.gz | tar -xz && \
 cd openpower-dbus-interfaces-* && \
 ./bootstrap.sh && \
 ./configure ${CONFIGURE_FLAGS[@]} && \
@@ -372,7 +383,7 @@ COPY --from=openbmc-sdbusplus ${PREFIX} ${PREFIX}
 COPY --from=openbmc-sdeventplus ${PREFIX} ${PREFIX}
 COPY --from=openbmc-phosphor-dbus-interfaces ${PREFIX} ${PREFIX}
 COPY --from=openbmc-openpower-dbus-interfaces ${PREFIX} ${PREFIX}
-RUN curl -L https://github.com/openbmc/phosphor-logging/archive/${PKG_REV['phosphor-logging']}.tar.gz | tar -xz && \
+RUN curl -L https://github.com/openbmc/phosphor-logging/archive/${PKG_REV['openbmc/phosphor-logging']}.tar.gz | tar -xz && \
 cd phosphor-logging-* && \
 ./bootstrap.sh && \
 ./configure ${CONFIGURE_FLAGS[@]} --enable-metadata-processing YAML_DIR=${PREFIX}/share/phosphor-dbus-yaml/yaml && \
@@ -384,7 +395,7 @@ COPY --from=openbmc-boost ${PREFIX} ${PREFIX}
 COPY --from=openbmc-sdbusplus ${PREFIX} ${PREFIX}
 COPY --from=openbmc-tinyxml2 ${PREFIX} ${PREFIX}
 COPY --from=openbmc-phosphor-logging ${PREFIX} ${PREFIX}
-RUN curl -L https://github.com/openbmc/phosphor-objmgr/archive/${PKG_REV['phosphor-objmgr']}.tar.gz | tar -xz && \
+RUN curl -L https://github.com/openbmc/phosphor-objmgr/archive/${PKG_REV['openbmc/phosphor-objmgr']}.tar.gz | tar -xz && \
 cd phosphor-objmgr-* && \
 ./bootstrap.sh && \
 ./configure ${CONFIGURE_FLAGS[@]} && \
