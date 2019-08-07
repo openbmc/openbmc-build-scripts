@@ -54,6 +54,7 @@ HEAD_PKGS=(
   openbmc/phosphor-logging
   openbmc/phosphor-dbus-interfaces
   openbmc/openpower-dbus-interfaces
+  open-power/pdbg
 )
 
 # Generate a list of depcache entries
@@ -232,7 +233,8 @@ RUN apt-get update && apt-get install -yy \
     libperlio-gzip-perl \
     libjson-perl \
     protobuf-compiler \
-    libgpiod-dev
+    libgpiod-dev \
+    device-tree-compiler
 
 RUN update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-9 900 \
   --slave /usr/bin/g++ g++ /usr/bin/g++-9 \
@@ -402,6 +404,13 @@ cd phosphor-objmgr-* && \
 make -j$(nproc) && \
 make install
 
+FROM openbmc-base as open-power-pdbg
+RUN curl -L https://github.com/open-power/pdbg/archive/${PKG_REV['open-power/pdbg']}.tar.gz | tar -xz && \
+cd pdbg-* && \
+./bootstrap.sh && \
+./configure ${CONFIGURE_FLAGS[@]} && \
+make -j$(nproc) && \
+make install
 
 # Build the final output image
 FROM openbmc-base
