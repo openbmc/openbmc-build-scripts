@@ -70,6 +70,7 @@ RUN apt-get update && apt-get install -yy \
 RUN pip3 install \
     tox \
     requests \
+    retrying \
     json2yaml \
     robotframework \
     robotframework-requests \
