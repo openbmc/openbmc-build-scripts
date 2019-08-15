@@ -34,7 +34,7 @@
 #                     Default: "latest"
 #  target             The target we aim to build:
 #                     evb-ast2500|palmetto|qemu|qemux86-64
-#                     romulus|s2600wf|witherspoon|zaius|tiogapass|gsj
+#                     romulus|s2600wf|witherspoon|zaius|tiogapass|gsj|mihawk
 #                     Default: "qemu"
 #  no_tar             Set to true if you do not want the debug tar built
 #                     Default: "false"
@@ -131,6 +131,10 @@ case ${target} in
   swift)
     LAYER_DIR="meta-ibm/meta-witherspoon"
     MACHINE="swift"
+    ;;
+  mihawk)
+    LAYER_DIR="meta-ibm/meta-witherspoon"
+    MACHINE="mihawk"
     ;;
   witherspoon)
     LAYER_DIR="meta-ibm/meta-witherspoon"
