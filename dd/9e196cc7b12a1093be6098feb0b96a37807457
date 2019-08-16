@@ -1,0 +1,10 @@
+Ok-To-Test+1: Jenkins <openbmc-ci-admin@ozlabs.org>
+Verified+1: Jenkins <openbmc-ci-admin@ozlabs.org>
+Code-Review+1: Adriana Kobylak <anoo@linux.ibm.com>
+Code-Review+1: Alvin Wang <alvinwang@msn.com>
+Code-Review+2: Joel Stanley <joel@jms.id.au>
+Submitted-by: Joel Stanley <joel@jms.id.au>
+Submitted-at: Fri, 16 Aug 2019 11:36:36 +0000
+Reviewed-on: https://gerrit.openbmc-project.xyz/c/openbmc/openbmc-build-scripts/+/24461
+Project: openbmc/openbmc-build-scripts
+Branch: refs/heads/master
