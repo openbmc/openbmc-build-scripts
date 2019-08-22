@@ -244,6 +244,7 @@ RUN update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-9 900 \
 
 RUN pip install inflection
 RUN pip install pycodestyle
+RUN npm install prettier@1.17.1 eslint@5.16.0 babel-eslint@10.0.1 eslint-config-prettier@4.3.0 eslint-plugin-prettier@3.1.0 eslint-config-google@0.13.0
 RUN pip3 install meson==0.50.1
 
 FROM openbmc-base as openbmc-lcov
