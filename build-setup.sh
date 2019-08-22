@@ -155,15 +155,6 @@ case ${target} in
   romulus)
     LAYER_DIR="meta-ibm/meta-romulus"
     ;;
-  qemu)
-    LAYER_DIR="meta-phosphor"
-    # MACHINE defaults to `qemuarm` in this layer, no change necessary
-    ;;
-  qemux86-64)
-    LAYER_DIR="meta-phosphor"
-    # MACHINE defaults to `qemuarm` in this layer, change to `qemux86-64`
-    MACHINE="qemux86-64"
-    ;;
   tiogapass)
     LAYER_DIR="meta-facebook/meta-tiogapass"
     ;;
