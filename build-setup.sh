@@ -127,39 +127,58 @@ MACHINE=""
 case ${target} in
   palmetto)
     LAYER_DIR="meta-ibm/meta-palmetto"
+    MACHINE="palmetto"
+    DISTRO="openbmc-openpower"
     ;;
   swift)
     LAYER_DIR="meta-ibm/meta-witherspoon"
     MACHINE="swift"
+    DISTRO="openbmc-witherspoon"
     ;;
   mihawk)
     LAYER_DIR="meta-ibm/meta-witherspoon"
     MACHINE="mihawk"
+    DISTRO="openbmc-witherspoon"
     ;;
   witherspoon)
     LAYER_DIR="meta-ibm/meta-witherspoon"
+    MACHINE="witherspoon"
+    DISTRO="openbmc-witherspoon"
     ;;
   witherspoon-128)
     LAYER_DIR="meta-ibm/meta-witherspoon"
     MACHINE="witherspoon-128"
+    DISTRO="openbmc-witherspoon"
     ;;
   evb-ast2500)
     LAYER_DIR="meta-evb/meta-evb-aspeed/meta-evb-ast2500"
+    MACHINE="evb-ast2500"
+    DISTRO="openbmc-phosphor"
     ;;
   s2600wf)
     LAYER_DIR="meta-intel/meta-s2600wf"
+    MACHINE="s2600wf"
+    DISTRO="openbmc-phosphor"
     ;;
   zaius)
     LAYER_DIR="meta-ingrasys/meta-zaius"
+    MACHINE="zaius"
+    DISTRO="openbmc-openpower"
     ;;
   romulus)
     LAYER_DIR="meta-ibm/meta-romulus"
+    MACHINE="romulus"
+    DISTRO="openbmc-openpower"
     ;;
   tiogapass)
     LAYER_DIR="meta-facebook/meta-tiogapass"
+    MACHINE="tiogapass"
+    DISTRO="openbmc-phosphor"
     ;;
   gsj)
     LAYER_DIR="meta-quanta/meta-gsj"
+    MACHINE="gsj"
+    DISTRO="openbmc-phosphor"
     ;;
   *)
     exit 1
@@ -324,10 +343,13 @@ fi
 # Source our build env
 ${BITBAKE_CMD}
 
-# Export MACHINE name when given for build target
-if [[ -n "${MACHINE}" ]]; then
-  export MACHINE="${MACHINE}"
+if [[ -n "${MACHINE}" || -n "${DISTRO}" ]]; then
+  echo "MACHINE or DISTRO is not configured for ${target}"
+  exit 1
 fi
+
+export MACHINE="${MACHINE}"
+export DISTRO="${DISTRO}"
 
 # Custom BitBake config settings
 cat >> conf/local.conf << EOF_CONF
