@@ -79,7 +79,7 @@ generate_depcache_entry() {
 
   # Lock the file to avoid interlaced writes
   exec 3>> "$DEPCACHE_FILE"
-  flock -x 3
+  flock 3
   echo "$package:$tip" >&3
   exec 3>&-
 }
