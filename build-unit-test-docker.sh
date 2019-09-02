@@ -1,4 +1,4 @@
-#!/bin/bash -xe
+#!/usr/bin/env bash
 #
 # Build the required docker image to run package unit tests
 #
@@ -12,6 +12,7 @@
 #                     default is master, which will be used if input branch not
 #                     provided or not found
 
+set -xe
 set -uo pipefail
 
 DOCKER_IMG_NAME=${DOCKER_IMG_NAME:-"openbmc/ubuntu-unit-test"}
