@@ -1,4 +1,4 @@
-#!/bin/bash -xe
+#!/usr/bin/env bash -xe
 #
 # Build the required docker image to run package unit tests
 #
