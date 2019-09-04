@@ -343,7 +343,7 @@ fi
 # Source our build env
 ${BITBAKE_CMD}
 
-if [[ -n "${MACHINE}" || -n "${DISTRO}" ]]; then
+if [[ -z "${MACHINE}" || -z "${DISTRO}" ]]; then
   echo "MACHINE or DISTRO is not configured for ${target}"
   exit 1
 fi
