@@ -103,9 +103,9 @@ declare -A PKG_REV=(
   [lcov]=75fbae1cfc5027f818a0bb865bf6f96fab3202da
   # dev-5.0 2019-05-03
   [linux-headers]=8bf6567e77f7aa68975b7c9c6d044bba690bf327
-  # libvncserver commit dd873fce451e4b7d7cc69056a62e107aae7c8e7a is required for obmc-ikvm
-  # Snapshot from 2018-10-08
-  [libvncserver]=7b1ef0ffc4815cab9a96c7278394152bdc89dc4d
+  # libvncserver commit 1354f7f1bb6962dab209eddb9d6aac1f03408110 is required for obmc-ikvm
+  # Snapshot from 2019-09-03
+  [libvncserver]=1354f7f1bb6962dab209eddb9d6aac1f03408110
   # version from meta-openembedded/meta-oe/recipes-support/libtinyxml2/libtinyxml2_5.0.1.bb
   [tinyxml2]=37bc3aca429f0164adf68c23444540b4a24b5778
   [cppcheck]=df32b0fb05f0c951ab0efa691292c7428f3f50a9
