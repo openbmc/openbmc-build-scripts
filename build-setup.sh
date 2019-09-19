@@ -150,6 +150,11 @@ case ${target} in
     MACHINE="witherspoon-128"
     DISTRO="openbmc-witherspoon"
     ;;
+  witherspoon-tacoma)
+    LAYER_DIR="meta-ibm/meta-witherspoon"
+    MACHINE="witherspoon-tacoma"
+    DISTRO="openbmc-openpower"
+    ;;
   evb-ast2500)
     LAYER_DIR="meta-evb/meta-evb-aspeed/meta-evb-ast2500"
     MACHINE="evb-ast2500"
