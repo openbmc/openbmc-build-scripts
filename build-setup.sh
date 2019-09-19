@@ -35,6 +35,7 @@
 #  target             The target we aim to build:
 #                     evb-ast2500|palmetto|qemu|qemux86-64
 #                     romulus|s2600wf|witherspoon|zaius|tiogapass|gsj|mihawk
+#                     witherspoon-tacoma|
 #                     Default: "qemu"
 #  no_tar             Set to true if you do not want the debug tar built
 #                     Default: "false"
@@ -89,6 +90,7 @@ xtrct_small_copy_dir=${xtrct_small_copy_dir:-deploy/images}
 xtrct_path="${obmc_dir}/build/tmp"
 xtrct_copy_timeout="300"
 
+bitbake_target="obmc-phosphor-image"
 PROXY=""
 
 # Determine the architecture
@@ -149,6 +151,12 @@ case ${target} in
     LAYER_DIR="meta-ibm/meta-witherspoon"
     MACHINE="witherspoon-128"
     DISTRO="openbmc-witherspoon"
+    ;;
+  witherspoon-tacoma)
+    LAYER_DIR="meta-ibm/meta-witherspoon"
+    MACHINE="witherspoon-tacoma"
+    DISTRO="openbmc-openpower"
+    bitbake_target="aspeed-image-norootfs"
     ;;
   evb-ast2500)
     LAYER_DIR="meta-evb/meta-evb-aspeed/meta-evb-ast2500"
@@ -296,7 +304,7 @@ export PROXY_PORT=${http_proxy/#http*:\/\/*:}
 mkdir -p ${WORKSPACE}
 
 # Determine command for bitbake image build
-bitbake_image="obmc-phosphor-image"
+bitbake_image=${bitbake_target}
 if [ $no_tar = "false" ]; then
     bitbake_image="${bitbake_image} obmc-phosphor-debug-tarball"
 fi
