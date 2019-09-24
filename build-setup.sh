@@ -163,6 +163,13 @@ case ${target} in
     MACHINE="evb-ast2500"
     DISTRO="openbmc-phosphor"
     ;;
+  evb-ast2600)
+    LAYER_DIR="meta-aspeed"
+    MACHINE="evb-ast2600"
+    DISTRO=""
+    bitbake_target="aspeed-image-norootfs"
+    no_tar=true
+    ;;
   s2600wf)
     LAYER_DIR="meta-intel/meta-s2600wf"
     MACHINE="s2600wf"
@@ -350,8 +357,8 @@ fi
 # Source our build env
 ${BITBAKE_CMD}
 
-if [[ -z "${MACHINE}" || -z "${DISTRO}" ]]; then
-  echo "MACHINE or DISTRO is not configured for ${target}"
+if [ -z "${MACHINE}" ]; then
+  echo "MACHINE is not configured for ${target}"
   exit 1
 fi
 
