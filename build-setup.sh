@@ -156,7 +156,6 @@ case ${target} in
     LAYER_DIR="meta-ibm/meta-witherspoon"
     MACHINE="witherspoon-tacoma"
     DISTRO="openbmc-openpower"
-    bitbake_target="aspeed-image-norootfs"
     ;;
   rainier)
     LAYER_DIR="meta-ibm/meta-witherspoon"
