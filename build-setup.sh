@@ -35,7 +35,7 @@
 #  target             The target we aim to build:
 #                     evb-ast2500|palmetto|qemu|qemux86-64
 #                     romulus|s2600wf|witherspoon|zaius|tiogapass|gsj|mihawk
-#                     witherspoon-tacoma|
+#                     witherspoon-tacoma|rainier
 #                     Default: "qemu"
 #  no_tar             Set to true if you do not want the debug tar built
 #                     Default: "false"
@@ -157,6 +157,11 @@ case ${target} in
     MACHINE="witherspoon-tacoma"
     DISTRO="openbmc-openpower"
     bitbake_target="aspeed-image-norootfs"
+    ;;
+  rainier)
+    LAYER_DIR="meta-ibm/meta-witherspoon"
+    MACHINE="rainier"
+    DISTRO="openbmc-openpower"
     ;;
   evb-ast2500)
     LAYER_DIR="meta-evb/meta-evb-aspeed/meta-evb-ast2500"
