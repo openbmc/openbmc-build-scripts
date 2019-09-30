@@ -71,7 +71,7 @@ RUN pip3 install \
     tox \
     requests \
     retrying \
-    websocket \
+    websocket-client \
     json2yaml \
     robotframework \
     robotframework-requests \
