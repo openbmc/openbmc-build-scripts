@@ -82,7 +82,8 @@ RUN pip3 install \
     beautifulsoup4 --upgrade \
     lxml \
     jsonschema \
-    redfishtool
+    redfishtool \
+    redfish_utilities
 
 RUN grep -q ${GROUPS} /etc/group || groupadd -g ${GROUPS} ${USER}
 RUN grep -q ${UID} /etc/passwd || useradd -d ${HOME} -m -u ${UID} -g ${GROUPS} \
