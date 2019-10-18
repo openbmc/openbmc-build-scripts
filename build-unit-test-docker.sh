@@ -92,6 +92,7 @@ wait
 declare -A PKG_REV=(
   [boost]=1.69.0
   [cereal]=v1.2.2
+  [catch2]=v2.10.0
   [CLI11]=v1.7.1
   [fmt]=5.3.0
   # Snapshot from 2019-03-10
@@ -262,6 +263,15 @@ cd googletest-* && \
 mkdir build && \
 cd build && \
 cmake ${CMAKE_FLAGS[@]} -DTHREADS_PREFER_PTHREAD_FLAG=ON .. && \
+make -j$(nproc) && \
+make install
+
+FROM openbmc-base as openbmc-catch2
+RUN curl -L https://github.com/catchorg/Catch2/archive/${PKG_REV['catch2']}.tar.gz | tar -xz && \
+cd Catch2-* && \
+mkdir build && \
+cd build && \
+cmake ${CMAKE_FLAGS[@]} -DCATCH_BUILD_TESTING=OFF -DCATCH_INSTALL_DOCS=OFF .. && \
 make -j$(nproc) && \
 make install
 
