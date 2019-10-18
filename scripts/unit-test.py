@@ -813,7 +813,6 @@ if __name__ == '__main__':
                                    'build')
                 # Run the basic clang static analyzer otherwise
                 else:
-                    os.environ['SCANBUILD'] = 'scan-build-8'
                     check_call_cmd('ninja', '-C', 'build',
                                    'scan-build')
 
