@@ -105,6 +105,7 @@ declare -A PKG_REV=(
   [linux-headers]=8bf6567e77f7aa68975b7c9c6d044bba690bf327
   # Snapshot from 2019-09-03
   [libvncserver]=1354f7f1bb6962dab209eddb9d6aac1f03408110
+  [span-lite]=v0.6.0
   # version from meta-openembedded/meta-oe/recipes-support/libtinyxml2/libtinyxml2_5.0.1.bb
   [tinyxml2]=37bc3aca429f0164adf68c23444540b4a24b5778
 )
@@ -289,6 +290,15 @@ make install
 FROM openbmc-base as openbmc-json
 RUN mkdir ${PREFIX}/include/nlohmann/ && \
 curl -L -o ${PREFIX}/include/nlohmann/json.hpp https://github.com/nlohmann/json/releases/download/${PKG_REV['json']}/json.hpp
+
+FROM openbmc-base as openbmc-span-lite
+RUN curl -L https://github.com/martinmoene/span-lite/archive/${PKG_REV['span-lite']}.tar.gz | tar -xz && \
+cd span-lite-* && \
+mkdir build && \
+cd build && \
+cmake ${CMAKE_FLAGS[@]} -DSPAN_LITE_OPT_BUILD_TESTS=OFF .. && \
+make -j$(nproc) && \
+make install
 
 FROM openbmc-base as openbmc-linux-headers
 RUN curl -L https://github.com/openbmc/linux/archive/${PKG_REV['linux-headers']}.tar.gz | tar -xz && \
