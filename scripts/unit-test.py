@@ -685,6 +685,22 @@ def maybe_make_coverage():
     except CalledProcessError:
         raise Exception('Code coverage failed')
 
+def find_file(filename, basedir):
+    """
+    Finds all occurrences of a file in the base directory
+    and passes them back with their relative paths.
+
+    Parameter descriptions:
+    filename              The name of the file to find
+    basedir               The base directory search in
+    """
+
+    filepaths = []
+    for root, dirs, files in os.walk(basedir):
+        if filename in files:
+                filepaths.append(os.path.join(root, filename))
+    return filepaths
+
 if __name__ == '__main__':
     # CONFIGURE_FLAGS = [GIT REPO]:[CONFIGURE FLAGS]
     CONFIGURE_FLAGS = {
@@ -879,3 +895,11 @@ if __name__ == '__main__':
     else:
         print "Not a supported repo for CI Tests, exit"
         quit()
+
+    # Run any custom CI scripts the repo has, of which there can be
+    # multiple of and anywhere in the repository.
+    ci_scripts = find_file('run-ci.sh', os.path.join(WORKSPACE, UNIT_TEST_PKG))
+    if ci_scripts:
+        os.chdir(os.path.join(WORKSPACE, UNIT_TEST_PKG))
+        for ci_script in ci_scripts:
+            check_call_cmd('sh', ci_script, )
