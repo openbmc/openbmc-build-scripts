@@ -41,6 +41,20 @@ TEST_ONLY="${TEST_ONLY:-}"
 DBUS_SYS_CONFIG_FILE=${dbus_sys_config_file:-"/usr/share/dbus-1/system.conf"}
 MAKEFLAGS="${MAKEFLAGS:-""}"
 DOCKER_WORKDIR="${DOCKER_WORKDIR:-$WORKSPACE}"
+NO_FORMAT_CODE=
+
+# Parse the parameters
+while test $# -gt 0; do
+  case "$1" in
+    --noformat*)
+      NO_FORMAT_CODE=",-n"
+      shift
+      ;;
+    *)
+      break
+      ;;
+  esac
+done
 
 # Timestamp for job
 echo "Unit test build started, $(date)"
@@ -90,7 +104,7 @@ export BRANCH
 
 # Unit test and parameters
 UNIT_TEST="${DOCKER_WORKDIR}/${UNIT_TEST_PY},-w,${DOCKER_WORKDIR},\
--p,${UNIT_TEST_PKG},-b,$BRANCH,-v${TEST_ONLY:+,-t}"
+-p,${UNIT_TEST_PKG},-b,$BRANCH,-v${TEST_ONLY:+,-t}${NO_FORMAT_CODE}"
 
 # Run the docker unit test container with the unit test execution script
 echo "Executing docker image"
