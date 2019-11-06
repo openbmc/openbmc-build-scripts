@@ -772,11 +772,15 @@ if __name__ == '__main__':
     parser.add_argument("-b", "--branch", dest="BRANCH", required=False,
                         help="Branch to target for dependent repositories",
                         default="master")
+    parser.add_argument("-n", "--noformat", dest="FORMAT",
+                        action="store_false", required=False,
+                        help="Whether or not to run format code")
     args = parser.parse_args(sys.argv[1:])
     WORKSPACE = args.WORKSPACE
     UNIT_TEST_PKG = args.PACKAGE
     TEST_ONLY = args.TEST_ONLY
     BRANCH = args.BRANCH
+    FORMAT_CODE = args.FORMAT
     if args.verbose:
         def printline(*line):
             for arg in line:
@@ -785,10 +789,12 @@ if __name__ == '__main__':
     else:
         printline = lambda *l: None
 
+    CODE_SCAN_DIR = WORKSPACE + "/" + UNIT_TEST_PKG
+
     # First validate code formatting if repo has style formatting files.
     # The format-code.sh checks for these files.
-    CODE_SCAN_DIR = WORKSPACE + "/" + UNIT_TEST_PKG
-    check_call_cmd("./format-code.sh", CODE_SCAN_DIR)
+    if FORMAT_CODE:
+        check_call_cmd("./format-code.sh", CODE_SCAN_DIR)
 
     # Automake and meson
     if (os.path.isfile(CODE_SCAN_DIR + "/configure.ac") or
