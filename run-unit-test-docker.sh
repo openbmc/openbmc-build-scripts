@@ -24,6 +24,7 @@
 #                    -$BRANCH replacing -master if $BRANCH provided
 #   dbus_sys_config_file: Optional, with the default being
 #                         `/usr/share/dbus-1/system.conf`
+#   NO_FORMAT_CODE:  Optional, do not run format-code.sh
 
 # Trace bash processing. Set -e so when a step fails, we fail the build
 set -uo pipefail
@@ -41,6 +42,7 @@ TEST_ONLY="${TEST_ONLY:-}"
 DBUS_SYS_CONFIG_FILE=${dbus_sys_config_file:-"/usr/share/dbus-1/system.conf"}
 MAKEFLAGS="${MAKEFLAGS:-""}"
 DOCKER_WORKDIR="${DOCKER_WORKDIR:-$WORKSPACE}"
+NO_FORMAT_CODE="${NO_FORMAT_CODE:-}"
 
 # Timestamp for job
 echo "Unit test build started, $(date)"
@@ -90,7 +92,7 @@ export BRANCH
 
 # Unit test and parameters
 UNIT_TEST="${DOCKER_WORKDIR}/${UNIT_TEST_PY},-w,${DOCKER_WORKDIR},\
--p,${UNIT_TEST_PKG},-b,$BRANCH,-v${TEST_ONLY:+,-t}"
+-p,${UNIT_TEST_PKG},-b,$BRANCH,-v${TEST_ONLY:+,-t}${NO_FORMAT_CODE:+,-n}"
 
 # Run the docker unit test container with the unit test execution script
 echo "Executing docker image"
