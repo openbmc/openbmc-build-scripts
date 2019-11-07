@@ -300,7 +300,8 @@ make install
 
 FROM openbmc-base as openbmc-json
 RUN mkdir ${PREFIX}/include/nlohmann/ && \
-curl -L -o ${PREFIX}/include/nlohmann/json.hpp https://github.com/nlohmann/json/releases/download/${PKG_REV['json']}/json.hpp
+curl -L -o ${PREFIX}/include/nlohmann/json.hpp https://github.com/nlohmann/json/releases/download/${PKG_REV['json']}/json.hpp && \
+ln -s nlohmann/json.hpp ${PREFIX}/include/json.hpp
 
 FROM openbmc-base as openbmc-span-lite
 RUN curl -L https://github.com/martinmoene/span-lite/archive/${PKG_REV['span-lite']}.tar.gz | tar -xz && \
