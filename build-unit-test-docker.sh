@@ -109,6 +109,8 @@ declare -A PKG_REV=(
   [span-lite]=v0.6.0
   # version from meta-openembedded/meta-oe/recipes-support/libtinyxml2/libtinyxml2_5.0.1.bb
   [tinyxml2]=37bc3aca429f0164adf68c23444540b4a24b5778
+  # version from meta-openembedded/meta-oe/recipes-devtools/valijson/valijson_git.bb
+  [valijson]=c2f22fddf599d04dc33fcd7ed257c698a05345d9
 )
 
 # Turn the depcache into a dictionary so we can reference the HEAD of each repo
@@ -330,6 +332,15 @@ cd tinyxml2-* && \
 mkdir build && \
 cd build && \
 cmake ${CMAKE_FLAGS[@]} .. && \
+make -j$(nproc) && \
+make install
+
+FROM openbmc-base as openbmc-valijson
+RUN curl -L https://github.com/tristanpenman/valijson/archive/${PKG_REV['valijson']}.tar.gz | tar -xz && \
+cd valijson-* && \
+mkdir build && \
+cd build && \
+cmake ${CMAKE_FLAGS[@]} -DINSTALL_HEADERS=1 -DBUILD_TESTS=0 .. && \
 make -j$(nproc) && \
 make install
 
