@@ -133,32 +133,32 @@ case ${target} in
     DISTRO="openbmc-openpower"
     ;;
   swift)
-    LAYER_DIR="meta-ibm/meta-witherspoon"
+    LAYER_DIR="meta-ibm"
     MACHINE="swift"
     DISTRO="openbmc-witherspoon"
     ;;
   mihawk)
-    LAYER_DIR="meta-ibm/meta-witherspoon"
+    LAYER_DIR="meta-ibm"
     MACHINE="mihawk"
     DISTRO="openbmc-witherspoon"
     ;;
   witherspoon)
-    LAYER_DIR="meta-ibm/meta-witherspoon"
+    LAYER_DIR="meta-ibm"
     MACHINE="witherspoon"
     DISTRO="openbmc-witherspoon"
     ;;
   witherspoon-128)
-    LAYER_DIR="meta-ibm/meta-witherspoon"
+    LAYER_DIR="meta-ibm"
     MACHINE="witherspoon-128"
     DISTRO="openbmc-witherspoon"
     ;;
   witherspoon-tacoma)
-    LAYER_DIR="meta-ibm/meta-witherspoon"
+    LAYER_DIR="meta-ibm"
     MACHINE="witherspoon-tacoma"
     DISTRO="openbmc-openpower"
     ;;
   rainier)
-    LAYER_DIR="meta-ibm/meta-witherspoon"
+    LAYER_DIR="meta-ibm"
     MACHINE="rainier"
     DISTRO="openbmc-openpower"
     ;;
