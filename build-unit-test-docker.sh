@@ -55,6 +55,7 @@ HEAD_PKGS=(
   openbmc/phosphor-dbus-interfaces
   openbmc/openpower-dbus-interfaces
   open-power/pdbg
+  openbmc/pldm
 )
 
 # Generate a list of depcache entries
@@ -436,6 +437,20 @@ cd pdbg-* && \
 ./configure ${CONFIGURE_FLAGS[@]} && \
 make -j$(nproc) && \
 make install
+
+FROM openbmc-base as openbmc-pldm
+COPY --from=openbmc-sdbusplus ${PREFIX} ${PREFIX}
+COPY --from=openbmc-sdeventplus ${PREFIX} ${PREFIX}
+COPY --from=openbmc-boost ${PREFIX} ${PREFIX}
+COPY --from=openbmc-phosphor-dbus-interfaces ${PREFIX} ${PREFIX}
+COPY --from=openbmc-phosphor-logging ${PREFIX} ${PREFIX}
+COPY --from=openbmc-json ${PREFIX} ${PREFIX}
+COPY --from=openbmc-CLI11 ${PREFIX} ${PREFIX}
+RUN curl -L https://github.com/openbmc/pldm/archive/${PKG_REV['openbmc/pldm']}.tar.gz | tar -xz && \
+cd pldm-* && \
+meson build -Dprefix=${PREFIX} -Dtests=disabled -Dutilities=enabled && \
+ninja -C build && \
+ninja -C build install
 
 # Build the final output image
 FROM openbmc-base
