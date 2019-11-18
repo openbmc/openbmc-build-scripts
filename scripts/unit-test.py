@@ -626,6 +626,19 @@ def meson_setup_exists(setup):
         output = e.output
     return not re.search('Test setup .* not found from project', output)
 
+def run_unit_tests_meson():
+    """
+    Runs the unit tests for the meson based package
+    """
+    try:
+        check_call_cmd('meson', 'test', '-C', 'build')
+    except CalledProcessError:
+        for root, _, files in os.walk(os.getcwd()):
+            if 'testlog.txt' not in files:
+                continue
+            check_call_cmd('cat', os.path.join(root, 'testlog.txt'))
+        raise Exception('Unit tests failed')
+
 def maybe_meson_valgrind():
     """
     Potentially runs the unit tests through valgrind for the package
@@ -862,7 +875,7 @@ if __name__ == '__main__':
                 # Run coverage checks
                 check_call_cmd('meson', 'configure', 'build',
                                '-Db_coverage=true')
-                check_call_cmd('meson', 'test', '-C', 'build')
+                run_unit_tests_meson()
                 # Only build coverage HTML if coverage files were produced
                 for root, dirs, files in os.walk('build'):
                     if any([f.endswith('.gcda') for f in files]):
@@ -872,7 +885,8 @@ if __name__ == '__main__':
                 check_call_cmd('meson', 'configure', 'build',
                                '-Db_coverage=false')
             else:
-                check_call_cmd('meson', 'test', '-C', 'build')
+                run_unit_tests_meson()
+
         else:
             run_unit_tests()
             if not TEST_ONLY:
