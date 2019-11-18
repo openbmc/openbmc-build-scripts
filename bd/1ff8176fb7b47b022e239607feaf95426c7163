@@ -1,0 +1,10 @@
+Ok-To-Test+1: Jenkins <openbmc-ci-admin@ozlabs.org>
+Verified+1: Jenkins <openbmc-ci-admin@ozlabs.org>
+Code-Review+1: Deepak Kodihalli <dkodihal@in.ibm.com>
+Code-Review+1: Matthew Barth <msbarth@linux.ibm.com>
+Code-Review+2: Andrew Geissler <geissonator@yahoo.com>
+Submitted-by: Andrew Geissler <geissonator@yahoo.com>
+Submitted-at: Mon, 18 Nov 2019 18:44:24 +0000
+Reviewed-on: https://gerrit.openbmc-project.xyz/c/openbmc/openbmc-build-scripts/+/27276
+Project: openbmc/openbmc-build-scripts
+Branch: refs/heads/master
