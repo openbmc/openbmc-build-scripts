@@ -45,16 +45,38 @@ for path in "${IGNORE_LIST[@]}"; do
 
   # All paths must start with ./ for find's path prune expectation.
   if [[ "${path}" =~ ^\.\/.+$ ]]; then
-    ignorepaths+=" -o -path ${path} -prune"
+    ignorepaths+=" ${path}"
   else
-    ignorefiles+=" -not -name ${path}"
+    ignorefiles+=" ${path}"
   fi
 done
 
+searchfiles=""
+while read path; do
+  # skip ignorefiles
+  if [[ $ignorefiles == *"$(basename "${path}")"* ]]; then
+    continue
+  fi
+
+  skip=false
+  #skip paths in ingorepaths
+  for pathname in $ignorepaths; do
+    if [[ "./${path}" == "${pathname}"* ]]; then
+       skip=true
+       break
+    fi
+  done
+
+  if [ "$skip" = true ]; then
+   continue
+  fi
+  searchfiles+="\"./${path}\" "
+
+# Get C and C++ files managed by git and skip the mako files
+done <<<$(git ls-files | grep -e '\.[ch]pp$' -e '\.[ch]$' | grep -v '\.mako\.')
+
 if [[ -f ".clang-format" ]]; then
-  find . \( -regextype sed -regex ".*\.[hc]\(pp\)\?" ${ignorepaths} \) \
-    -not -name "*mako*" ${ignorefiles} -not -type d -print0 |\
-    xargs -0 "${CLANG_FORMAT}" -i
+  echo ${searchfiles} | xargs "${CLANG_FORMAT}" -i
   git --no-pager diff --exit-code
 fi
 
