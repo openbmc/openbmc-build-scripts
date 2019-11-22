@@ -52,9 +52,7 @@ for path in "${IGNORE_LIST[@]}"; do
 done
 
 if [[ -f ".clang-format" ]]; then
-  find . \( -regextype sed -regex ".*\.[hc]\(pp\)\?" ${ignorepaths} \) \
-    -not -name "*mako*" ${ignorefiles} -not -type d -print0 |\
-    xargs -0 "${CLANG_FORMAT}" -i
+  git ls-files *\.hpp *\.cpp *\.h *\.c | xargs "${CLANG_FORMAT}" -i
   git --no-pager diff --exit-code
 fi
 
