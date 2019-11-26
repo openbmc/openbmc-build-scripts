@@ -100,7 +100,8 @@ declare -A PKG_REV=(
   [function2]=e3695b4b4fa3c672e25c6462d7900f8d2417a417
   # Snapshot from 2018-12-17
   [googletest]=9ab640ce5e5120021c5972d7e60f258bfca64d71
-  [json]=v3.3.0
+  # Release 2019-11-17
+  [json]=v3.7.3
   # Snapshot from 2019-05-24
   [lcov]=75fbae1cfc5027f818a0bb865bf6f96fab3202da
   # dev-5.0 2019-05-03
