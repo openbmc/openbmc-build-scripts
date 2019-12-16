@@ -42,4 +42,4 @@ cp -Rf $META_REPO/* ./openbmc/$META_REPO/
 
 # Create a dummy commit so code update will pick it up
 cd openbmc
-git add -A && git commit -m "Dummy commit to cause code update"
+git add -A && git commit --allow-empty -m "Dummy commit to cause code update"
