@@ -65,7 +65,19 @@ RUN apt-get update && apt-get install -yy \
     libxml2-dev \
     libxslt-dev \
     python3-pip \
-    ipmitool
+    ipmitool \
+    xvfb
+
+RUN apt-get update -qqy \
+  && apt-get -qqy --no-install-recommends install firefox \
+  && rm -rf /var/lib/apt/lists/* /var/cache/apt/* \
+  && wget --no-verbose -O /tmp/firefox.tar.bz2 https://download-installer.cdn.mozilla.net/pub/firefox/releases/57.0/linux-x86_64/en-US/firefox-57.0.tar.bz2 \
+  && apt-get -y purge firefox \
+  && rm -rf /opt/firefox \
+  && tar -C /opt -xjf /tmp/firefox.tar.bz2 \
+  && rm /tmp/firefox.tar.bz2 \
+  && mv /opt/firefox /opt/firefox-57.0 \
+  && ln -fs /opt/firefox-57.0/firefox /usr/bin/firefox
 
 RUN pip3 install \
     tox \
@@ -83,7 +95,24 @@ RUN pip3 install \
     lxml \
     jsonschema \
     redfishtool \
-    redfish_utilities
+    redfish_utilities \
+    robotframework-httplibrary \
+    robotframework-requests \
+    robotframework-seleniumlibrary \
+    robotframework-sshlibrary \
+    robotframework-xvfb \
+    robotframework-scplibrary \
+    robotframework-angularjs \
+    scp \
+    selenium==3.141.0 \
+    urllib3 \
+    xvfbwrapper
+
+RUN wget https://github.com/mozilla/geckodriver/releases/download/v0.24.0/geckodriver-v0.24.0-linux64.tar.gz \
+        && tar xvzf geckodriver-*.tar.gz \
+        && rm geckodriver-*.tar.gz \
+        && mv geckodriver /usr/local/bin \
+        && chmod a+x /usr/local/bin/geckodriver
 
 RUN grep -q ${GROUPS} /etc/group || groupadd -g ${GROUPS} ${USER}
 RUN grep -q ${UID} /etc/passwd || useradd -d ${HOME} -m -u ${UID} -g ${GROUPS} \
