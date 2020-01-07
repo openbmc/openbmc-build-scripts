@@ -538,6 +538,10 @@ def run_unit_tests():
         raise Exception('Unit tests failed')
 
 def run_cppcheck():
+    if not find_c_or_cpp_files(os.getcwd()):
+        # skip cppcheck if there arent' any c or cpp sources.
+        return None
+
     try:
         # http://cppcheck.sourceforge.net/manual.pdf
         ignore_list = ['-i%s' % path for path in os.listdir(os.getcwd()) \
@@ -697,6 +701,42 @@ def maybe_make_coverage():
         check_call_cmd(*cmd)
     except CalledProcessError:
         raise Exception('Code coverage failed')
+
+
+def find_files(basedir, *suffixes):
+    """
+    Finds all occurrences of files with the provided suffixes (case
+    insensitive) in the base directory and passes them back with their relative
+    paths.
+
+    Parameter descriptions:
+    basedir               The base directory search in
+    suffixes            One or more extentions to find
+    """
+    filepaths = []
+
+    for root, _, files in os.walk(basedir):
+        for f in files:
+            if any([f.lower().endswith(x.lower()) for x in suffixes]):
+                filepaths.append(os.path.join(root, f))
+    return filepaths
+
+def find_c_or_cpp_files(basedir):
+    """
+    Finds all occurrences of cpp or c source files in the base directory and
+    passes them back with their relative paths.
+
+    Parameter descriptions:
+    basedir               The base directory search in
+    """
+
+    suffixes = [
+        ".cpp",
+        ".hpp",
+        ".c",
+        ".h",
+    ]
+    return find_files(basedir, *suffixes)
 
 def find_file(filename, basedir):
     """
