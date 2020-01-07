@@ -538,19 +538,43 @@ def run_unit_tests():
         raise Exception('Unit tests failed')
 
 def run_cppcheck():
-    try:
-        # http://cppcheck.sourceforge.net/manual.pdf
-        ignore_list = ['-i%s' % path for path in os.listdir(os.getcwd()) \
-                       if path.endswith('-src') or path.endswith('-build')]
-        ignore_list.extend(('-itest', '-iscripts'))
-        params = ['cppcheck', '-j', str(multiprocessing.cpu_count()),
-                  '--enable=all']
-        params.extend(ignore_list)
-        params.append('.')
+    match_re = re.compile('((?!mako).)*\.[ch](?:pp)?$', re.I)
+    cppcheck_files = []
+    pwd = os.getcwd()
+    ignore_dirs = ['test', 'scripts']
+    ignore_suffixes = ['-src', '-build']
 
-        check_call_cmd(*params)
-    except CalledProcessError:
+    for root, _, files in os.walk(pwd):
+        path_segments = set(root.split(os.sep)).difference(pwd.split(os.sep))
+        if set(ignore_dirs).intersection(path_segments):
+            continue
+        if any([any([x.endswith(y) for y in ignore_suffixes])
+                for x in path_segments]):
+            continue
+        for f in files:
+            if match_re.match(f):
+                cppcheck_files.append(os.path.join(root, f))
+
+    if not cppcheck_files:
+        # skip cppcheck if there arent' any c or cpp sources.
+        return None
+
+    # http://cppcheck.sourceforge.net/manual.pdf
+    params = ['cppcheck', '-j', str(multiprocessing.cpu_count()),
+              '--enable=all', '--file-list=-']
+
+    cppcheck_process = subprocess.Popen(
+        params,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+        stdin=subprocess.PIPE)
+    (stdout, stderr) = cppcheck_process.communicate(
+        input='\n'.join(cppcheck_files))
+
+    if cppcheck_process.wait():
         raise Exception('Cppcheck failed')
+    print(stdout)
+    print(stderr)
 
 def is_valgrind_safe():
     """
