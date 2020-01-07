@@ -538,19 +538,35 @@ def run_unit_tests():
         raise Exception('Unit tests failed')
 
 def run_cppcheck():
-    try:
-        # http://cppcheck.sourceforge.net/manual.pdf
-        ignore_list = ['-i%s' % path for path in os.listdir(os.getcwd()) \
-                       if path.endswith('-src') or path.endswith('-build')]
-        ignore_list.extend(('-itest', '-iscripts'))
-        params = ['cppcheck', '-j', str(multiprocessing.cpu_count()),
-                  '--enable=all']
-        params.extend(ignore_list)
-        params.append('.')
+    match_re = re.compile('((?!mako).)*\.[ch](?:pp)?$', re.I)
+    cppcheck_files = []
+    stdout = subprocess.check_output(['git', 'ls-files'])
 
-        check_call_cmd(*params)
-    except CalledProcessError:
+    for f in stdout.decode('utf-8').split():
+        if match_re.match(f):
+            cppcheck_files.append(f)
+
+    if not cppcheck_files:
+        # skip cppcheck if there arent' any c or cpp sources.
+        print("no files")
+        return None
+
+    # http://cppcheck.sourceforge.net/manual.pdf
+    params = ['cppcheck', '-j', str(multiprocessing.cpu_count()),
+              '--enable=all', '--file-list=-']
+
+    cppcheck_process = subprocess.Popen(
+        params,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+        stdin=subprocess.PIPE)
+    (stdout, stderr) = cppcheck_process.communicate(
+        input='\n'.join(cppcheck_files))
+
+    if cppcheck_process.wait():
         raise Exception('Cppcheck failed')
+    print(stdout)
+    print(stderr)
 
 def is_valgrind_safe():
     """
