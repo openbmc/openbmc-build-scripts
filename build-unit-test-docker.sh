@@ -392,7 +392,7 @@ COPY --from=openbmc-sdbusplus ${PREFIX} ${PREFIX}
 RUN curl -L https://github.com/openbmc/phosphor-dbus-interfaces/archive/${PKG_REV['openbmc/phosphor-dbus-interfaces']}.tar.gz | tar -xz && \
 cd phosphor-dbus-interfaces-* && \
 ./bootstrap.sh && \
-./configure ${CONFIGURE_FLAGS[@]} && \
+./configure ${CONFIGURE_FLAGS[@]} --enable-openpower-dbus-interfaces && \
 make -j$(nproc) && \
 make install
 
