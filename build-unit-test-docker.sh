@@ -113,6 +113,8 @@ declare -A PKG_REV=(
   [tinyxml2]=37bc3aca429f0164adf68c23444540b4a24b5778
   # version from meta-openembedded/meta-oe/recipes-devtools/valijson/valijson_git.bb
   [valijson]=c2f22fddf599d04dc33fcd7ed257c698a05345d9
+  # version from meta-openembedded/meta-oe/recipes-devtools/nlohmann-fifo/nlohmann-fifo_git.bb
+  [fifo_map]=0dfbf5dacbb15a32c43f912a7e66a54aae39d0f9
 )
 
 # Turn the depcache into a dictionary so we can reference the HEAD of each repo
@@ -307,6 +309,10 @@ RUN mkdir ${PREFIX}/include/nlohmann/ && \
 curl -L -o ${PREFIX}/include/nlohmann/json.hpp https://github.com/nlohmann/json/releases/download/${PKG_REV['json']}/json.hpp && \
 ln -s nlohmann/json.hpp ${PREFIX}/include/json.hpp
 
+FROM openbmc-base as openbmc-fifo_map
+RUN curl -L https://github.com/nlohmann/fifo_map/archive/${PKG_REV['fifo_map']}.tar.gz | tar -xz && \
+cd fifo_map-*/src && cp fifo_map.hpp ${PREFIX}/include/
+
 FROM openbmc-base as openbmc-span-lite
 RUN curl -L https://github.com/martinmoene/span-lite/archive/${PKG_REV['span-lite']}.tar.gz | tar -xz && \
 cd span-lite-* && \
@@ -412,6 +418,7 @@ COPY --from=openbmc-sdbusplus ${PREFIX} ${PREFIX}
 COPY --from=openbmc-sdeventplus ${PREFIX} ${PREFIX}
 COPY --from=openbmc-phosphor-dbus-interfaces ${PREFIX} ${PREFIX}
 COPY --from=openbmc-openpower-dbus-interfaces ${PREFIX} ${PREFIX}
+COPY --from=openbmc-fifo_map ${PREFIX} ${PREFIX}
 RUN curl -L https://github.com/openbmc/phosphor-logging/archive/${PKG_REV['openbmc/phosphor-logging']}.tar.gz | tar -xz && \
 cd phosphor-logging-* && \
 ./bootstrap.sh && \
