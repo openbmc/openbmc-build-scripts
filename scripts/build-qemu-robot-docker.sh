@@ -70,7 +70,7 @@ RUN apt-get update && apt-get install -yy \
 
 RUN apt-get update -qqy \
   && apt-get -qqy --no-install-recommends install firefox \
-  && wget --no-verbose -O /tmp/firefox.tar.bz2 https://download-installer.cdn.mozilla.net/pub/firefox/releases/57.0/linux-x86_64/en-US/firefox-57.0.tar.bz2 \
+  && wget --no-verbose -O /tmp/firefox.tar.bz2 https://download-installer.cdn.mozilla.net/pub/firefox/releases/72.0/linux-x86_64/en-US/firefox-72.0.tar.bz2 \
   && apt-get -y purge firefox \
   && tar -C /opt -xjf /tmp/firefox.tar.bz2 \
   && mv /opt/firefox /opt/firefox-57.0 \
@@ -102,7 +102,7 @@ RUN pip3 install \
     urllib3 \
     xvfbwrapper
 
-RUN wget https://github.com/mozilla/geckodriver/releases/download/v0.24.0/geckodriver-v0.24.0-linux64.tar.gz \
+RUN wget https://github.com/mozilla/geckodriver/releases/download/v0.26.0/geckodriver-v0.26.0-linux64.tar.gz \
         && tar xvzf geckodriver-*.tar.gz \
         && mv geckodriver /usr/local/bin \
         && chmod a+x /usr/local/bin/geckodriver
