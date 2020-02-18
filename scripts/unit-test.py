@@ -664,12 +664,19 @@ def maybe_meson_valgrind():
     if not is_valgrind_safe():
         sys.stderr.write("###### Skipping valgrind ######\n")
         return
-    if meson_setup_exists('valgrind'):
-        check_call_cmd('meson', 'test', '-C', 'build',
-                       '--setup', 'valgrind')
-    else:
-        check_call_cmd('meson', 'test', '-C', 'build',
-                       '--wrapper', 'valgrind')
+    try:
+        if meson_setup_exists('valgrind'):
+            check_call_cmd('meson', 'test', '-C', 'build',
+                           '--setup', 'valgrind')
+        else:
+            check_call_cmd('meson', 'test', '-C', 'build',
+                           '--wrapper', 'valgrind')
+    except CalledProcessError:
+        for root, _, files in os.walk(os.getcwd()):
+            if 'testlog-valgrind.txt' not in files:
+                continue
+            check_call_cmd('cat', os.path.join(root, 'testlog-valgrind.txt'))
+        raise Exception('Unit tests failed')
 
 def maybe_make_valgrind():
     """
