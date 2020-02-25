@@ -94,7 +94,7 @@ declare -A PKG_REV=(
   [boost]=1.71.0
   [cereal]=v1.2.2
   [catch2]=v2.11.1
-  [CLI11]=v1.8.0
+  [CLI11]=v1.9.0
   [fmt]=5.3.0
   # Snapshot from 2019-03-10
   [function2]=e3695b4b4fa3c672e25c6462d7900f8d2417a417
@@ -292,7 +292,7 @@ RUN curl -L https://github.com/CLIUtils/CLI11/archive/${PKG_REV['CLI11']}.tar.gz
 cd CLI11-* && \
 mkdir build && \
 cd build && \
-cmake ${CMAKE_FLAGS[@]} -DCLI11_TESTING=OFF -DCLI11_EXAMPLES=OFF .. && \
+cmake ${CMAKE_FLAGS[@]} -DCLI11_BUILD_DOCS=OFF -DBUILD_TESTING=OFF -DCLI11_BUILD_EXAMPLES=OFF .. && \
 make -j$(nproc) && \
 make install
 
