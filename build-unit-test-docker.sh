@@ -253,7 +253,7 @@ RUN update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-9 900 \
 RUN pip install inflection
 RUN pip install pycodestyle
 RUN pip3 install inflection
-RUN pip3 install meson==0.52.0
+RUN pip3 install meson==0.53.2
 
 FROM openbmc-base as openbmc-lcov
 RUN curl -L https://github.com/linux-test-project/lcov/archive/${PKG_REV['lcov']}.tar.gz | tar -xz && \
