@@ -96,8 +96,8 @@ declare -A PKG_REV=(
   [catch2]=v2.11.1
   [CLI11]=v1.9.0
   [fmt]=6.1.2
-  # Snapshot from 2019-03-10
-  [function2]=e3695b4b4fa3c672e25c6462d7900f8d2417a417
+  # Snapshot from 2020-01-03
+  [function2]=3a0746bf5f601dfed05330aefcb6854354fce07d
   # Snapshot from 2018-12-17
   [googletest]=9ab640ce5e5120021c5972d7e60f258bfca64d71
   # Release 2019-11-17
