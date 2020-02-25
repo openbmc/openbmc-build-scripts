@@ -98,8 +98,8 @@ declare -A PKG_REV=(
   [fmt]=6.1.2
   # Snapshot from 2020-01-03
   [function2]=3a0746bf5f601dfed05330aefcb6854354fce07d
-  # Snapshot from 2018-12-17
-  [googletest]=9ab640ce5e5120021c5972d7e60f258bfca64d71
+  # Snapshot from 2020-02-13
+  [googletest]=23b2a3b1cf803999fb38175f6e9e038a4495c8a5
   # Release 2019-11-17
   [json]=v3.7.3
   # Snapshot from 2019-05-24
