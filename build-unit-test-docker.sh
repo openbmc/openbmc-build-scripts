@@ -195,7 +195,6 @@ RUN apt-get update && apt-get install -yy \
     python-pip \
     python-setuptools \
     python-socks \
-    python-jsonschema \
     python3 \
     python3-dev\
     python3-yaml \
@@ -252,7 +251,9 @@ RUN update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-9 900 \
 
 RUN pip install inflection
 RUN pip install pycodestyle
+RUN pip install jsonschema
 RUN pip3 install inflection
+RUN pip3 install jsonschema
 RUN pip3 install meson==0.53.2
 
 FROM openbmc-base as openbmc-lcov
