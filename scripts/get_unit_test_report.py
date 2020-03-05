@@ -73,6 +73,11 @@ except OSError as e:
     quit()
 
 
+# List contains archived repos and those repos which are not expected to contain
+# a UT. Will be moved to a file in future.
+skip_list = ["openbmc-tools", "phosphor-mboxd", "boost-dbus", "inarp"]
+
+
 # Log files
 debug_file = os.path.join(log_dir, "debug.log")
 output_file = os.path.join(log_dir, "output.log")
@@ -130,21 +135,26 @@ coverage_count = 0
 unit_test_count = 0
 no_report_count = 0
 error_count = 0
+skip_count = 0
 for url in url_list:
     ci_exists = "NO"
     skip = False
     sandbox_name = url.strip().split('/')[-1].split(";")[0].split(".")[0]
-    checkout_cmd = "git clone " + url
-
-    try:
-        result = subprocess.check_output(checkout_cmd, shell=True, cwd=working_dir,
-                                         stderr=subprocess.STDOUT)
-    except subprocess.CalledProcessError as e:
-        logger.debug(e.output)
-        logger.debug(e.cmd)
-        logger.debug("Failed to clone " + sandbox_name)
-        ci_exists = "ERROR"
+    if sandbox_name in skip_list:
         skip = True
+        ci_exists = "SKIPPED"
+    else:
+        checkout_cmd = "git clone " + url
+
+        try:
+            result = subprocess.check_output(checkout_cmd, shell=True, cwd=working_dir,
+                                             stderr=subprocess.STDOUT)
+        except subprocess.CalledProcessError as e:
+            logger.debug(e.output)
+            logger.debug(e.cmd)
+            logger.debug("Failed to clone " + sandbox_name)
+            ci_exists = "ERROR"
+            skip = True
 
     if not(skip):
         docker_cmd = "WORKSPACE=$(pwd) UNIT_TEST_PKG=" + sandbox_name + " " + \
@@ -190,6 +200,8 @@ for url in url_list:
         error_count += 1
     elif ci_exists == "NO":
         no_report_count += 1
+    elif ci_exists == "SKIPPED":
+        skip_count += 1
 
     coverage_report.append("{:<65}{:<10}".format(url.strip(), ci_exists))
     counter += 1
@@ -210,4 +222,5 @@ logger.info("ERROR                  : " + str(error_count))
 logger.info("COVERAGE REPORT        : " + str(coverage_count))
 logger.info("UNIT TEST REPORT       : " + str(unit_test_count))
 logger.info("NO REPORT              : " + str(no_report_count))
+logger.info("SKIPPED                : " + str(skip_count))
 logger.info("*" * 85)
