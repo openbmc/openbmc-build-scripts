@@ -102,8 +102,6 @@ declare -A PKG_REV=(
   [googletest]=23b2a3b1cf803999fb38175f6e9e038a4495c8a5
   # Release 2019-11-17
   [json]=v3.7.3
-  # Snapshot from 2019-05-24
-  [lcov]=75fbae1cfc5027f818a0bb865bf6f96fab3202da
   # dev-5.0 2019-05-03
   [linux-headers]=8bf6567e77f7aa68975b7c9c6d044bba690bf327
   # Snapshot from 2019-09-03
@@ -254,12 +252,7 @@ RUN pip install inflection
 RUN pip install pycodestyle
 RUN pip3 install inflection
 RUN pip3 install meson==0.53.2
-
-FROM openbmc-base as openbmc-lcov
-RUN curl -L https://github.com/linux-test-project/lcov/archive/${PKG_REV['lcov']}.tar.gz | tar -xz && \
-cd lcov-* && \
-make -j$(nproc) && \
-make install
+RUN pip3 install gcovr
 
 FROM openbmc-base as openbmc-function2
 RUN mkdir ${PREFIX}/include/function2 && \
