@@ -255,78 +255,22 @@ def clone_pkg(pkg, branch):
     return repo_inst
 
 
-def get_autoconf_deps(pkgdir):
+def make_target_exists(target):
     """
-    Parse the given 'configure.ac' file for package dependencies and return
-    a list of the dependencies found. If the package is not autoconf it is just
-    ignored.
+    Runs a check against the makefile in the current directory to determine
+    if the target exists so that it can be built.
 
     Parameter descriptions:
-    pkgdir              Directory where package source is located
+    target              The make target we are checking
     """
-    configure_ac = os.path.join(pkgdir, 'configure.ac')
-    if not os.path.exists(configure_ac):
-        return []
+    try:
+        cmd = [ 'make', '-n', target ]
+        with open(os.devnull, 'w') as devnull:
+            check_call(cmd, stdout=devnull, stderr=devnull)
+        return True
+    except CalledProcessError:
+        return False
 
-    configure_ac_contents = ''
-    # Prepend some special function overrides so we can parse out dependencies
-    for macro in DEPENDENCIES.iterkeys():
-        configure_ac_contents += ('m4_define([' + macro + '], [' +
-                macro + '_START$' + str(DEPENDENCIES_OFFSET[macro] + 1) +
-                macro + '_END])\n')
-    with open(configure_ac, "rt") as f:
-        configure_ac_contents += f.read()
-
-    autoconf_process = subprocess.Popen(['autoconf', '-Wno-undefined', '-'],
-            stdin=subprocess.PIPE, stdout=subprocess.PIPE,
-            stderr=subprocess.PIPE)
-    (stdout, stderr) = autoconf_process.communicate(input=configure_ac_contents)
-    if not stdout:
-        print(stderr)
-        raise Exception("Failed to run autoconf for parsing dependencies")
-
-    # Parse out all of the dependency text
-    matches = []
-    for macro in DEPENDENCIES.iterkeys():
-        pattern = '(' + macro + ')_START(.*?)' + macro + '_END'
-        for match in re.compile(pattern).finditer(stdout):
-            matches.append((match.group(1), match.group(2)))
-
-    # Look up dependencies from the text
-    found_deps = []
-    for macro, deptext in matches:
-        for potential_dep in deptext.split(' '):
-            for known_dep in DEPENDENCIES[macro].iterkeys():
-                if potential_dep.startswith(known_dep):
-                    found_deps.append(DEPENDENCIES[macro][known_dep])
-
-    return found_deps
-
-def get_meson_deps(pkgdir):
-    """
-    Parse the given 'meson.build' file for package dependencies and return
-    a list of the dependencies found. If the package is not meson compatible
-    it is just ignored.
-
-    Parameter descriptions:
-    pkgdir              Directory where package source is located
-    """
-    meson_build = os.path.join(pkgdir, 'meson.build')
-    if not os.path.exists(meson_build):
-        return []
-
-    found_deps = []
-    for root, dirs, files in os.walk(pkgdir):
-        if 'meson.build' not in files:
-            continue
-        with open(os.path.join(root, 'meson.build'), 'rt') as f:
-            build_contents = f.read()
-        for match in re.finditer(r"dependency\('([^']*)'.*?\)\n", build_contents):
-            maybe_dep = DEPENDENCIES['PKG_CHECK_MODULES'].get(match.group(1))
-            if maybe_dep is not None:
-                found_deps.append(maybe_dep)
-
-    return found_deps
 
 make_parallel = [
     'make',
@@ -338,51 +282,6 @@ make_parallel = [
     '-O',
 ]
 
-def enFlag(flag, enabled):
-    """
-    Returns an configure flag as a string
-
-    Parameters:
-    flag                The name of the flag
-    enabled             Whether the flag is enabled or disabled
-    """
-    return '--' + ('enable' if enabled else 'disable') + '-' + flag
-
-def mesonFeature(val):
-    """
-    Returns the meson flag which signifies the value
-
-    True is enabled which requires the feature.
-    False is disabled which disables the feature.
-    None is auto which autodetects the feature.
-
-    Parameters:
-    val                 The value being converted
-    """
-    if val is True:
-        return "enabled"
-    elif val is False:
-        return "disabled"
-    elif val is None:
-        return "auto"
-    else:
-        raise Exception("Bad meson feature value")
-
-def parse_meson_options(options_file):
-    """
-    Returns a set of options defined in the provides meson_options.txt file
-
-    Parameters:
-    options_file        The file containing options
-    """
-    options_contents = ''
-    with open(options_file, "rt") as f:
-        options_contents += f.read()
-    options = sets.Set()
-    pattern = 'option\\(\\s*\'([^\']*)\''
-    for match in re.compile(pattern).finditer(options_contents):
-        options.add(match.group(1))
-    return options
 
 def build_and_install(name, build_for_testing=False):
     """
@@ -398,63 +297,18 @@ def build_and_install(name, build_for_testing=False):
     # Refresh dynamic linker run time bindings for dependencies
     check_call_cmd('sudo', '-n', '--', 'ldconfig')
 
-    # Build & install this package
-    # Always try using meson first
-    if os.path.exists('meson.build'):
-        meson_options = sets.Set()
-        if os.path.exists("meson_options.txt"):
-            meson_options = parse_meson_options("meson_options.txt")
-        meson_flags = [
-            '-Db_colorout=never',
-            '-Dwerror=true',
-            '-Dwarning_level=3',
-        ]
-        if build_for_testing:
-            meson_flags.append('--buildtype=debug')
-        else:
-            meson_flags.append('--buildtype=debugoptimized')
-        if 'tests' in meson_options:
-            meson_flags.append('-Dtests=' + mesonFeature(build_for_testing))
-        if 'examples' in meson_options:
-            meson_flags.append('-Dexamples=' + str(build_for_testing).lower())
-        if MESON_FLAGS.get(name) is not None:
-            meson_flags.extend(MESON_FLAGS.get(name))
-        try:
-            check_call_cmd('meson', 'setup', '--reconfigure', 'build', *meson_flags)
-        except:
-            shutil.rmtree('build')
-            check_call_cmd('meson', 'setup', 'build', *meson_flags)
-        check_call_cmd('ninja', '-C', 'build')
-        check_call_cmd('sudo', '-n', '--', 'ninja', '-C', 'build', 'install')
-    # Assume we are autoconf otherwise
+    pkg = Package()
+    if build_for_testing:
+        pkg.test()
     else:
-        conf_flags = [
-            enFlag('silent-rules', False),
-            enFlag('examples', build_for_testing),
-            enFlag('tests', build_for_testing),
-        ]
-        if not TEST_ONLY:
-            conf_flags.extend([
-                enFlag('code-coverage', build_for_testing),
-                enFlag('valgrind', build_for_testing),
-            ])
-        # Add any necessary configure flags for package
-        if CONFIGURE_FLAGS.get(name) is not None:
-            conf_flags.extend(CONFIGURE_FLAGS.get(name))
-        for bootstrap in ['bootstrap.sh', 'bootstrap', 'autogen.sh']:
-            if os.path.exists(bootstrap):
-                check_call_cmd('./' + bootstrap)
-                break
-        check_call_cmd('./configure', *conf_flags)
-        check_call_cmd(*make_parallel)
-        check_call_cmd('sudo', '-n', '--', *(make_parallel + [ 'install' ]))
+        pkg.install()
+
 
 def build_dep_tree(name, pkgdir, dep_added, head, branch, dep_tree=None):
     """
     For each package (name), starting with the package to be unit tested,
-    parse its 'configure.ac' file from within the package's directory(pkgdir)
-    for each package dependency defined recursively doing the same thing
-    on each package found as a dependency.
+    extract its dependencies. For each package dependency defined, recursively
+    apply the same strategy
 
     Parameter descriptions:
     name                Name of the package
@@ -471,11 +325,9 @@ def build_dep_tree(name, pkgdir, dep_added, head, branch, dep_tree=None):
         cache = depcache.readline()
 
     # Read out pkg dependencies
-    pkg_deps = []
-    pkg_deps += get_autoconf_deps(pkgdir)
-    pkg_deps += get_meson_deps(pkgdir)
+    pkg = Package(name, pkgdir)
 
-    for dep in sets.Set(pkg_deps):
+    for dep in sets.Set(pkg.build_system().dependencies()):
         if dep in cache:
             continue
         # Dependency package not already known
@@ -506,36 +358,6 @@ def build_dep_tree(name, pkgdir, dep_added, head, branch, dep_tree=None):
 
     return dep_added
 
-def make_target_exists(target):
-    """
-    Runs a check against the makefile in the current directory to determine
-    if the target exists so that it can be built.
-
-    Parameter descriptions:
-    target              The make target we are checking
-    """
-    try:
-        cmd = [ 'make', '-n', target ]
-        with open(os.devnull, 'w') as devnull:
-            check_call(cmd, stdout=devnull, stderr=devnull)
-        return True
-    except CalledProcessError:
-        return False
-
-def run_unit_tests():
-    """
-    Runs the unit tests for the package via `make check`
-    """
-    try:
-        cmd = make_parallel + [ 'check' ]
-        for i in range(0, args.repeat):
-            check_call_cmd(*cmd)
-    except CalledProcessError:
-        for root, _, files in os.walk(os.getcwd()):
-            if 'test-suite.log' not in files:
-                continue
-            check_call_cmd('cat', os.path.join(root, 'test-suite.log'))
-        raise Exception('Unit tests failed')
 
 def run_cppcheck():
     match_re = re.compile('((?!\.mako\.).)*\.[ch](?:pp)?$', re.I)
@@ -625,58 +447,6 @@ def is_sanitize_safe():
         os.remove(src)
         os.remove(exe)
 
-def meson_setup_exists(setup):
-    """
-    Returns whether the meson build supports the named test setup.
-
-    Parameter descriptions:
-    setup              The setup target to check
-    """
-    try:
-        with open(os.devnull, 'w') as devnull:
-            output = subprocess.check_output(
-                    ['meson', 'test', '-C', 'build',
-                     '--setup', setup, '-t', '0'],
-                    stderr=subprocess.STDOUT)
-    except CalledProcessError as e:
-        output = e.output
-    return not re.search('Test setup .* not found from project', output)
-
-def run_unit_tests_meson():
-    """
-    Runs the unit tests for the meson based package
-    """
-    try:
-        check_call_cmd('meson', 'test', '-C', 'build')
-    except CalledProcessError:
-        for root, _, files in os.walk(os.getcwd()):
-            if 'testlog.txt' not in files:
-                continue
-            check_call_cmd('cat', os.path.join(root, 'testlog.txt'))
-        raise Exception('Unit tests failed')
-
-def maybe_meson_valgrind():
-    """
-    Potentially runs the unit tests through valgrind for the package
-    via `meson test`. The package can specify custom valgrind configurations
-    by utilizing add_test_setup() in a meson.build
-    """
-    if not is_valgrind_safe():
-        sys.stderr.write("###### Skipping valgrind ######\n")
-        return
-    try:
-        if meson_setup_exists('valgrind'):
-            check_call_cmd('meson', 'test', '-C', 'build',
-                           '--setup', 'valgrind')
-        else:
-            check_call_cmd('meson', 'test', '-C', 'build',
-                           '--wrapper', 'valgrind')
-    except CalledProcessError:
-        for root, _, files in os.walk(os.getcwd()):
-            if 'testlog-valgrind.txt' not in files:
-                continue
-            check_call_cmd('cat', os.path.join(root, 'testlog-valgrind.txt'))
-        raise Exception('Valgrind tests failed')
 
 def maybe_make_valgrind():
     """
@@ -720,6 +490,394 @@ def maybe_make_coverage():
         check_call_cmd(*cmd)
     except CalledProcessError:
         raise Exception('Code coverage failed')
+
+
+class BuildSystem(object):
+    def __init__(self, package, path):
+        self.path = "." if not path else path
+        self.package = package if package else os.path.basename(os.path.realpath(self.path))
+        self.build_for_testing=False
+
+    def probe(self):
+        raise NotImplemented
+
+    def dependencies(self):
+        raise NotImplemented
+
+    def configure(self, build_for_testing):
+        raise NotImplemented
+
+    def build(self):
+        raise NotImplemented
+
+    def install(self):
+        raise NotImplemented
+
+    def test(self):
+        raise NotImplemented
+
+    def analyze(self):
+        raise NotImplemented
+
+
+class Autotools(BuildSystem):
+    def __init__(self, package=None, path=None):
+        super(Autotools, self).__init__(package, path)
+
+    def probe(self):
+        return os.path.isfile(os.path.join(self.path, 'configure.ac'))
+
+    def dependencies(self):
+        configure_ac = os.path.join(self.path, 'configure.ac')
+
+        configure_ac_contents = ''
+        # Prepend some special function overrides so we can parse out dependencies
+        for macro in DEPENDENCIES.iterkeys():
+            configure_ac_contents += ('m4_define([' + macro + '], [' +
+                    macro + '_START$' + str(DEPENDENCIES_OFFSET[macro] + 1) +
+                    macro + '_END])\n')
+        with open(configure_ac, "rt") as f:
+            configure_ac_contents += f.read()
+
+        autoconf_process = subprocess.Popen(['autoconf', '-Wno-undefined', '-'],
+                stdin=subprocess.PIPE, stdout=subprocess.PIPE,
+                stderr=subprocess.PIPE)
+        (stdout, stderr) = autoconf_process.communicate(input=configure_ac_contents)
+        if not stdout:
+            print(stderr)
+            raise Exception("Failed to run autoconf for parsing dependencies")
+
+        # Parse out all of the dependency text
+        matches = []
+        for macro in DEPENDENCIES.iterkeys():
+            pattern = '(' + macro + ')_START(.*?)' + macro + '_END'
+            for match in re.compile(pattern).finditer(stdout):
+                matches.append((match.group(1), match.group(2)))
+
+        # Look up dependencies from the text
+        found_deps = []
+        for macro, deptext in matches:
+            for potential_dep in deptext.split(' '):
+                for known_dep in DEPENDENCIES[macro].iterkeys():
+                    if potential_dep.startswith(known_dep):
+                        found_deps.append(DEPENDENCIES[macro][known_dep])
+
+        return found_deps
+
+    def _configure_feature(self, flag, enabled):
+        """
+        Returns an configure flag as a string
+
+        Parameters:
+        flag                The name of the flag
+        enabled             Whether the flag is enabled or disabled
+        """
+        return '--' + ('enable' if enabled else 'disable') + '-' + flag
+
+    def configure(self, build_for_testing):
+        self.build_for_testing = build_for_testing
+        conf_flags = [
+            self._configure_feature('silent-rules', False),
+            self._configure_feature('examples', build_for_testing),
+            self._configure_feature('tests', build_for_testing),
+        ]
+        if not TEST_ONLY:
+            conf_flags.extend([
+                self._configure_feature('code-coverage', build_for_testing),
+                self._configure_feature('valgrind', build_for_testing),
+            ])
+        # Add any necessary configure flags for package
+        if CONFIGURE_FLAGS.get(self.package) is not None:
+            conf_flags.extend(CONFIGURE_FLAGS.get(self.package))
+        for bootstrap in ['bootstrap.sh', 'bootstrap', 'autogen.sh']:
+            if os.path.exists(bootstrap):
+                check_call_cmd('./' + bootstrap)
+                break
+        check_call_cmd('./configure', *conf_flags)
+
+    def build(self):
+        check_call_cmd(*make_parallel)
+
+    def install(self):
+        check_call_cmd('sudo', '-n', '--', *(make_parallel + [ 'install' ]))
+
+    def test(self):
+        try:
+            cmd = make_parallel + [ 'check' ]
+            for i in range(0, args.repeat):
+                check_call_cmd(*cmd)
+        except CalledProcessError:
+            for root, _, files in os.walk(os.getcwd()):
+                if 'test-suite.log' not in files:
+                    continue
+                check_call_cmd('cat', os.path.join(root, 'test-suite.log'))
+            raise Exception('Unit tests failed')
+
+    def analyze(self):
+        maybe_make_valgrind()
+        maybe_make_coverage()
+        run_cppcheck()
+
+
+class CMake(BuildSystem):
+    def __init__(self, package=None, path=None):
+        super(CMake, self).__init__(package, path)
+
+    def probe(self):
+        return os.path.isfile(os.path.join(self.path, 'CMakeLists.txt'))
+
+    def dependencies(self):
+        return []
+
+    def configure(self, build_for_testing):
+        self.build_for_testing = build_for_testing
+        check_call_cmd('cmake', '-DCMAKE_EXPORT_COMPILE_COMMANDS=ON', '.')
+
+    def build(self):
+        check_call_cmd('cmake', '--build', '.', '--', '-j',
+                       str(multiprocessing.cpu_count()))
+
+    def install(self):
+        pass
+
+    def test(self):
+        if make_target_exists('test'):
+            check_call_cmd('ctest', '.')
+
+    def analyze(self):
+        if os.path.isfile('.clang-tidy'):
+            check_call_cmd('run-clang-tidy-8.py', '-p', '.')
+        maybe_make_valgrind()
+        maybe_make_coverage()
+        run_cppcheck()
+
+
+class Meson(BuildSystem):
+    def __init__(self, package=None, path=None):
+        super(Meson, self).__init__(package, path)
+
+    def probe(self):
+        return os.path.isfile(os.path.join(self.path, 'meson.build'))
+
+    def dependencies(self):
+        meson_build = os.path.join(self.path, 'meson.build')
+        if not os.path.exists(meson_build):
+            return []
+
+        found_deps = []
+        for root, dirs, files in os.walk(self.path):
+            if 'meson.build' not in files:
+                continue
+            with open(os.path.join(root, 'meson.build'), 'rt') as f:
+                build_contents = f.read()
+            for match in re.finditer(r"dependency\('([^']*)'.*?\)\n", build_contents):
+                maybe_dep = DEPENDENCIES['PKG_CHECK_MODULES'].get(match.group(1))
+                if maybe_dep is not None:
+                    found_deps.append(maybe_dep)
+
+        return found_deps
+
+    def _parse_options(self, options_file):
+        """
+        Returns a set of options defined in the provides meson_options.txt file
+
+        Parameters:
+        options_file        The file containing options
+        """
+        options_contents = ''
+        with open(options_file, "rt") as f:
+            options_contents += f.read()
+        options = sets.Set()
+        pattern = 'option\\(\\s*\'([^\']*)\''
+        for match in re.compile(pattern).finditer(options_contents):
+            options.add(match.group(1))
+        return options
+
+    def _configure_feature(self, val):
+        """
+        Returns the meson flag which signifies the value
+
+        True is enabled which requires the feature.
+        False is disabled which disables the feature.
+        None is auto which autodetects the feature.
+
+        Parameters:
+        val                 The value being converted
+        """
+        if val is True:
+            return "enabled"
+        elif val is False:
+            return "disabled"
+        elif val is None:
+            return "auto"
+        else:
+            raise Exception("Bad meson feature value")
+
+    def configure(self, build_for_testing):
+        self.build_for_testing = build_for_testing
+        meson_options = sets.Set()
+        if os.path.exists("meson_options.txt"):
+            meson_options = self._parse_options("meson_options.txt")
+        meson_flags = [
+            '-Db_colorout=never',
+            '-Dwerror=true',
+            '-Dwarning_level=3',
+        ]
+        if build_for_testing:
+            meson_flags.append('--buildtype=debug')
+        else:
+            meson_flags.append('--buildtype=debugoptimized')
+        if 'tests' in meson_options:
+            meson_flags.append('-Dtests=' + self._configure_feature(build_for_testing))
+        if 'examples' in meson_options:
+            meson_flags.append('-Dexamples=' + str(build_for_testing).lower())
+        if MESON_FLAGS.get(self.package) is not None:
+            meson_flags.extend(MESON_FLAGS.get(self.package))
+        try:
+            check_call_cmd('meson', 'setup', '--reconfigure', 'build', *meson_flags)
+        except:
+            shutil.rmtree('build')
+            check_call_cmd('meson', 'setup', 'build', *meson_flags)
+
+    def build(self):
+        check_call_cmd('ninja', '-C', 'build')
+
+    def install(self):
+        check_call_cmd('sudo', '-n', '--', 'ninja', '-C', 'build', 'install')
+
+    def test(self):
+        try:
+            check_call_cmd('meson', 'test', '-C', 'build')
+        except CalledProcessError:
+            for root, _, files in os.walk(os.getcwd()):
+                if 'testlog.txt' not in files:
+                    continue
+                check_call_cmd('cat', os.path.join(root, 'testlog.txt'))
+            raise Exception('Unit tests failed')
+
+    def _setup_exists(self, setup):
+        """
+        Returns whether the meson build supports the named test setup.
+
+        Parameter descriptions:
+        setup              The setup target to check
+        """
+        try:
+            with open(os.devnull, 'w') as devnull:
+                output = subprocess.check_output(
+                        ['meson', 'test', '-C', 'build',
+                         '--setup', setup, '-t', '0'],
+                        stderr=subprocess.STDOUT)
+        except CalledProcessError as e:
+            output = e.output
+        return not re.search('Test setup .* not found from project', output)
+
+    def _maybe_valgrind(self):
+        """
+        Potentially runs the unit tests through valgrind for the package
+        via `meson test`. The package can specify custom valgrind configurations
+        by utilizing add_test_setup() in a meson.build
+        """
+        if not is_valgrind_safe():
+            sys.stderr.write("###### Skipping valgrind ######\n")
+            return
+        try:
+            if self._setup_exists('valgrind'):
+                check_call_cmd('meson', 'test', '-C', 'build',
+                               '--setup', 'valgrind')
+            else:
+                check_call_cmd('meson', 'test', '-C', 'build',
+                               '--wrapper', 'valgrind')
+        except CalledProcessError:
+            for root, _, files in os.walk(os.getcwd()):
+                if 'testlog-valgrind.txt' not in files:
+                    continue
+                check_call_cmd('cat', os.path.join(root, 'testlog-valgrind.txt'))
+            raise Exception('Valgrind tests failed')
+
+    def analyze(self):
+        self._maybe_valgrind()
+
+        # Run clang-tidy only if the project has a configuration
+        if os.path.isfile('.clang-tidy'):
+            check_call_cmd('run-clang-tidy-8.py', '-p',
+                           'build')
+        # Run the basic clang static analyzer otherwise
+        else:
+            check_call_cmd('ninja', '-C', 'build',
+                           'scan-build')
+
+        # Run tests through sanitizers
+        # b_lundef is needed if clang++ is CXX since it resolves the
+        # asan symbols at runtime only. We don't want to set it earlier
+        # in the build process to ensure we don't have undefined
+        # runtime code.
+        if is_sanitize_safe():
+            check_call_cmd('meson', 'configure', 'build',
+                           '-Db_sanitize=address,undefined',
+                           '-Db_lundef=false')
+            check_call_cmd('meson', 'test', '-C', 'build',
+                           '--logbase', 'testlog-ubasan')
+            # TODO: Fix memory sanitizer
+            #check_call_cmd('meson', 'configure', 'build',
+            #               '-Db_sanitize=memory')
+            #check_call_cmd('meson', 'test', '-C', 'build'
+            #               '--logbase', 'testlog-msan')
+            check_call_cmd('meson', 'configure', 'build',
+                           '-Db_sanitize=none', '-Db_lundef=true')
+        else:
+            sys.stderr.write("###### Skipping sanitizers ######\n")
+
+        # Run coverage checks
+        check_call_cmd('meson', 'configure', 'build',
+                       '-Db_coverage=true')
+        self.test()
+        # Only build coverage HTML if coverage files were produced
+        for root, dirs, files in os.walk('build'):
+            if any([f.endswith('.gcda') for f in files]):
+                check_call_cmd('ninja', '-C', 'build',
+                               'coverage-html')
+                break
+        check_call_cmd('meson', 'configure', 'build',
+                       '-Db_coverage=false')
+        run_cppcheck()
+
+
+class Package(object):
+    def __init__(self, name=None, path=None):
+        self.supported = [ Autotools, Meson, CMake ]
+        self.name = name
+        self.path = path
+        self.test_only = False
+
+    def build_systems(self):
+        instances = ( system(self.name, self.path) for system in self.supported )
+        return ( instance for instance in instances if instance.probe() )
+
+    def build_system(self, preferred=None):
+        systems = self.build_systems()
+
+        if preferred:
+            return { type(system): system for system in systems }[preferred]
+
+        return next(iter(systems))
+
+    def install(self, system=None):
+        if not system:
+            system = self.build_system()
+
+        system.configure(False)
+        system.build()
+        system.install()
+
+    def test(self):
+        system = self.build_system()
+        system.configure(True)
+        system.build()
+        system.install()
+        system.test()
+        system.analyze()
+
 
 def find_file(filename, basedir):
     """
@@ -832,112 +990,39 @@ if __name__ == '__main__':
     if FORMAT_CODE:
         check_call_cmd("./format-code.sh", CODE_SCAN_DIR)
 
-    # Automake and meson
-    if (os.path.isfile(CODE_SCAN_DIR + "/configure.ac") or
-        os.path.isfile(CODE_SCAN_DIR + '/meson.build')):
-        prev_umask = os.umask(000)
-        # Determine dependencies and add them
-        dep_added = dict()
-        dep_added[UNIT_TEST_PKG] = False
-        # Create dependency tree
-        dep_tree = DepTree(UNIT_TEST_PKG)
-        build_dep_tree(UNIT_TEST_PKG,
-                       os.path.join(WORKSPACE, UNIT_TEST_PKG),
-                       dep_added,
-                       dep_tree,
-                       BRANCH)
+    prev_umask = os.umask(000)
 
-        # Reorder Dependency Tree
-        for pkg_name, regex_str in DEPENDENCIES_REGEX.iteritems():
-            dep_tree.ReorderDeps(pkg_name, regex_str)
-        if args.verbose:
-            dep_tree.PrintTree()
-        install_list = dep_tree.GetInstallList()
-        # We don't want to treat our package as a dependency
-        install_list.remove(UNIT_TEST_PKG)
-        # install reordered dependencies
-        for dep in install_list:
-            build_and_install(dep, False)
-        os.chdir(os.path.join(WORKSPACE, UNIT_TEST_PKG))
-        # Run package unit tests
-        build_and_install(UNIT_TEST_PKG, True)
-        if os.path.isfile(CODE_SCAN_DIR + '/meson.build'):
-            if not TEST_ONLY:
-                maybe_meson_valgrind()
+    # Determine dependencies and add them
+    dep_added = dict()
+    dep_added[UNIT_TEST_PKG] = False
 
-                # Run clang-tidy only if the project has a configuration
-                if os.path.isfile('.clang-tidy'):
-                    check_call_cmd('run-clang-tidy-8.py', '-p',
-                                   'build')
-                # Run the basic clang static analyzer otherwise
-                else:
-                    check_call_cmd('ninja', '-C', 'build',
-                                   'scan-build')
+    # Create dependency tree
+    dep_tree = DepTree(UNIT_TEST_PKG)
+    build_dep_tree(UNIT_TEST_PKG,
+                   os.path.join(WORKSPACE, UNIT_TEST_PKG),
+                   dep_added,
+                   dep_tree,
+                   BRANCH)
 
-                # Run tests through sanitizers
-                # b_lundef is needed if clang++ is CXX since it resolves the
-                # asan symbols at runtime only. We don't want to set it earlier
-                # in the build process to ensure we don't have undefined
-                # runtime code.
-                if is_sanitize_safe():
-                    check_call_cmd('meson', 'configure', 'build',
-                                   '-Db_sanitize=address,undefined',
-                                   '-Db_lundef=false')
-                    check_call_cmd('meson', 'test', '-C', 'build',
-                                   '--logbase', 'testlog-ubasan')
-                    # TODO: Fix memory sanitizer
-                    #check_call_cmd('meson', 'configure', 'build',
-                    #               '-Db_sanitize=memory')
-                    #check_call_cmd('meson', 'test', '-C', 'build'
-                    #               '--logbase', 'testlog-msan')
-                    check_call_cmd('meson', 'configure', 'build',
-                                   '-Db_sanitize=none', '-Db_lundef=true')
-                else:
-                    sys.stderr.write("###### Skipping sanitizers ######\n")
+    # Reorder Dependency Tree
+    for pkg_name, regex_str in DEPENDENCIES_REGEX.iteritems():
+        dep_tree.ReorderDeps(pkg_name, regex_str)
+    if args.verbose:
+        dep_tree.PrintTree()
 
-                # Run coverage checks
-                check_call_cmd('meson', 'configure', 'build',
-                               '-Db_coverage=true')
-                run_unit_tests_meson()
-                # Only build coverage HTML if coverage files were produced
-                for root, dirs, files in os.walk('build'):
-                    if any([f.endswith('.gcda') for f in files]):
-                        check_call_cmd('ninja', '-C', 'build',
-                                       'coverage-html')
-                        break
-                check_call_cmd('meson', 'configure', 'build',
-                               '-Db_coverage=false')
-            else:
-                run_unit_tests_meson()
+    install_list = dep_tree.GetInstallList()
 
-        else:
-            run_unit_tests()
-            if not TEST_ONLY:
-                maybe_make_valgrind()
-                maybe_make_coverage()
-        if not TEST_ONLY:
-            run_cppcheck()
+    # We don't want to treat our package as a dependency
+    install_list.remove(UNIT_TEST_PKG)
 
-        os.umask(prev_umask)
+    # Install reordered dependencies
+    for dep in install_list:
+        build_and_install(dep, False)
 
-    # Cmake
-    elif os.path.isfile(CODE_SCAN_DIR + "/CMakeLists.txt"):
-        os.chdir(os.path.join(WORKSPACE, UNIT_TEST_PKG))
-        check_call_cmd('cmake', '-DCMAKE_EXPORT_COMPILE_COMMANDS=ON', '.')
-        check_call_cmd('cmake', '--build', '.', '--', '-j',
-                       str(multiprocessing.cpu_count()))
-        if make_target_exists('test'):
-            check_call_cmd('ctest', '.')
-        if not TEST_ONLY:
-            maybe_make_valgrind()
-            maybe_make_coverage()
-            run_cppcheck()
-            if os.path.isfile('.clang-tidy'):
-                check_call_cmd('run-clang-tidy-8.py', '-p', '.')
+    # Run package unit tests
+    build_and_install(UNIT_TEST_PKG, True)
 
-    else:
-        print "Not a supported repo for CI Tests, exit"
-        quit()
+    os.umask(prev_umask)
 
     # Run any custom CI scripts the repo has, of which there can be
     # multiple of and anywhere in the repository.
