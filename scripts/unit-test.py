@@ -384,16 +384,16 @@ def parse_meson_options(options_file):
         options.add(match.group(1))
     return options
 
-def build_and_install(pkg, build_for_testing=False):
+def build_and_install(name, build_for_testing=False):
     """
     Builds and installs the package in the environment. Optionally
     builds the examples and test cases for package.
 
     Parameter description:
-    pkg                 The package we are building
+    name                The name of the package we are building
     build_for_testing   Enable options related to testing on the package?
     """
-    os.chdir(os.path.join(WORKSPACE, pkg))
+    os.chdir(os.path.join(WORKSPACE, name))
 
     # Refresh dynamic linker run time bindings for dependencies
     check_call_cmd('sudo', '-n', '--', 'ldconfig')
@@ -417,8 +417,8 @@ def build_and_install(pkg, build_for_testing=False):
             meson_flags.append('-Dtests=' + mesonFeature(build_for_testing))
         if 'examples' in meson_options:
             meson_flags.append('-Dexamples=' + str(build_for_testing).lower())
-        if MESON_FLAGS.get(pkg) is not None:
-            meson_flags.extend(MESON_FLAGS.get(pkg))
+        if MESON_FLAGS.get(name) is not None:
+            meson_flags.extend(MESON_FLAGS.get(name))
         try:
             check_call_cmd('meson', 'setup', '--reconfigure', 'build', *meson_flags)
         except:
@@ -439,8 +439,8 @@ def build_and_install(pkg, build_for_testing=False):
                 enFlag('valgrind', build_for_testing),
             ])
         # Add any necessary configure flags for package
-        if CONFIGURE_FLAGS.get(pkg) is not None:
-            conf_flags.extend(CONFIGURE_FLAGS.get(pkg))
+        if CONFIGURE_FLAGS.get(name) is not None:
+            conf_flags.extend(CONFIGURE_FLAGS.get(name))
         for bootstrap in ['bootstrap.sh', 'bootstrap', 'autogen.sh']:
             if os.path.exists(bootstrap):
                 check_call_cmd('./' + bootstrap)
