@@ -174,7 +174,7 @@ for url in url_list:
         folder_name = os.path.join(working_dir, sandbox_name)
         repo_report_dir = os.path.join(report_dir, sandbox_name)
 
-        report_names = ("coveragereport", "test-suite.log")
+        report_names = ("coveragereport", "test-suite.log", "LastTest.log")
         find_cmd = "".join("find " + folder_name + " -name " + report + ";"
                            for report in report_names)
         result = subprocess.check_output(find_cmd, shell=True)
@@ -184,7 +184,7 @@ for url in url_list:
             if result.__contains__("coveragereport"):
                 ci_exists += ", COVERAGE"
                 coverage_count += 1
-            if result.__contains__("test-suite.log"):
+            elif any(name in result for name in ("test-suite.log", "LastTest.log")):
                 ci_exists += ", UNIT TEST"
                 unit_test_count += 1
 
