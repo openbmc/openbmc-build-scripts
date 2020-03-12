@@ -449,15 +449,15 @@ def build_and_install(name, build_for_testing=False):
         check_call_cmd(*make_parallel)
         check_call_cmd('sudo', '-n', '--', *(make_parallel + [ 'install' ]))
 
-def build_dep_tree(pkg, pkgdir, dep_added, head, branch, dep_tree=None):
+def build_dep_tree(name, pkgdir, dep_added, head, branch, dep_tree=None):
     """
-    For each package(pkg), starting with the package to be unit tested,
+    For each package (name), starting with the package to be unit tested,
     parse its 'configure.ac' file from within the package's directory(pkgdir)
     for each package dependency defined recursively doing the same thing
     on each package found as a dependency.
 
     Parameter descriptions:
-    pkg                 Name of the package
+    name                Name of the package
     pkgdir              Directory where package source is located
     dep_added           Current dict of dependencies and added status
     head                Head node of the dependency tree
@@ -499,10 +499,10 @@ def build_dep_tree(pkg, pkgdir, dep_added, head, branch, dep_tree=None):
                 continue
             else:
                 # Cyclic dependency failure
-                raise Exception("Cyclic dependencies found in "+pkg)
+                raise Exception("Cyclic dependencies found in "+name)
 
-    if not dep_added[pkg]:
-        dep_added[pkg] = True
+    if not dep_added[name]:
+        dep_added[name] = True
 
     return dep_added
 
