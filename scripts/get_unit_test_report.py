@@ -174,19 +174,27 @@ for url in url_list:
         folder_name = os.path.join(working_dir, sandbox_name)
         repo_report_dir = os.path.join(report_dir, sandbox_name)
 
-        report_names = ("coveragereport", "test-suite.log")
+        report_names = ("coveragereport", "test-suite.log", "LastTest.log")
         find_cmd = "".join("find " + folder_name + " -name " + report + ";"
                            for report in report_names)
         result = subprocess.check_output(find_cmd, shell=True)
         if result:
             total_report_count += 1
-            ci_exists = "YES"
             if result.__contains__("coveragereport"):
-                ci_exists += ", COVERAGE"
+                ci_exists = "YES, COVERAGE"
                 coverage_count += 1
-            if result.__contains__("test-suite.log"):
-                ci_exists += ", UNIT TEST"
+            elif "test-suite.log" in result:
+                ci_exists = "YES, UNIT TEST"
                 unit_test_count += 1
+            elif "LastTest.log" in result:
+                file_names = result.splitlines()
+                for file in file_names:
+                    cmd = "sed -n '/Start testing/,/End testing/p;' " + \
+                          file + "|wc -l"
+                    num_of_lines = subprocess.check_output(cmd, shell=True)
+                    if int(num_of_lines.strip()) > 5:
+                        ci_exists = "YES, UNIT TEST"
+                        unit_test_count += 1
 
             result = result.splitlines()
             for file_path in result:
