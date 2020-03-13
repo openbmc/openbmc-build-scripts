@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 """
 This script determines the given package's openbmc dependencies from its
@@ -8,14 +8,13 @@ prior to executing its unit tests.
 """
 
 from git import Repo
-from urlparse import urljoin
+from urllib.parse import urljoin
 from subprocess import check_call, call, CalledProcessError
 import os
 import sys
 import argparse
 import multiprocessing
 import re
-import sets
 import subprocess
 import shutil
 import platform
@@ -211,7 +210,7 @@ class DepTree():
         level              Current depth level
         """
         INDENT_PER_LEVEL = 4
-        print ' ' * (level * INDENT_PER_LEVEL) + self.name
+        print(' ' * (level * INDENT_PER_LEVEL) + self.name)
         for child in self.children:
             child.PrintTree(level + 1)
 
@@ -327,7 +326,7 @@ def build_dep_tree(name, pkgdir, dep_added, head, branch, dep_tree=None):
     # Read out pkg dependencies
     pkg = Package(name, pkgdir)
 
-    for dep in sets.Set(pkg.build_system().dependencies()):
+    for dep in set(pkg.build_system().dependencies()):
         if dep in cache:
             continue
         # Dependency package not already known
@@ -383,12 +382,12 @@ def run_cppcheck():
         stderr=subprocess.PIPE,
         stdin=subprocess.PIPE)
     (stdout, stderr) = cppcheck_process.communicate(
-        input='\n'.join(cppcheck_files))
+        input='\n'.join(cppcheck_files).encode('utf-8'))
 
     if cppcheck_process.wait():
         raise Exception('Cppcheck failed')
-    print(stdout)
-    print(stderr)
+    print(stdout.decode('utf-8'))
+    print(stderr.decode('utf-8'))
 
 
 def is_valgrind_safe():
@@ -537,7 +536,7 @@ class Autotools(BuildSystem):
         contents = ''
         # Prepend some special function overrides so we can parse out
         # dependencies
-        for macro in DEPENDENCIES.iterkeys():
+        for macro in DEPENDENCIES.keys():
             contents += ('m4_define([' + macro + '], [' + macro + '_START$' +
                          str(DEPENDENCIES_OFFSET[macro] + 1) +
                          macro + '_END])\n')
@@ -549,23 +548,24 @@ class Autotools(BuildSystem):
                                             stdin=subprocess.PIPE,
                                             stdout=subprocess.PIPE,
                                             stderr=subprocess.PIPE)
-        (stdout, stderr) = autoconf_process.communicate(input=contents)
+        document = contents.encode('utf-8')
+        (stdout, stderr) = autoconf_process.communicate(input=document)
         if not stdout:
             print(stderr)
             raise Exception("Failed to run autoconf for parsing dependencies")
 
         # Parse out all of the dependency text
         matches = []
-        for macro in DEPENDENCIES.iterkeys():
+        for macro in DEPENDENCIES.keys():
             pattern = '(' + macro + ')_START(.*?)' + macro + '_END'
-            for match in re.compile(pattern).finditer(stdout):
+            for match in re.compile(pattern).finditer(stdout.decode('utf-8')):
                 matches.append((match.group(1), match.group(2)))
 
         # Look up dependencies from the text
         found_deps = []
         for macro, deptext in matches:
             for potential_dep in deptext.split(' '):
-                for known_dep in DEPENDENCIES[macro].iterkeys():
+                for known_dep in DEPENDENCIES[macro].keys():
                     if potential_dep.startswith(known_dep):
                         found_deps.append(DEPENDENCIES[macro][known_dep])
 
@@ -696,7 +696,7 @@ class Meson(BuildSystem):
         options_contents = ''
         with open(options_file, "rt") as f:
             options_contents += f.read()
-        options = sets.Set()
+        options = set()
         pattern = 'option\\(\\s*\'([^\']*)\''
         for match in re.compile(pattern).finditer(options_contents):
             options.add(match.group(1))
@@ -724,7 +724,7 @@ class Meson(BuildSystem):
 
     def configure(self, build_for_testing):
         self.build_for_testing = build_for_testing
-        meson_options = sets.Set()
+        meson_options = set()
         if os.path.exists("meson_options.txt"):
             meson_options = self._parse_options("meson_options.txt")
         meson_flags = [
@@ -781,6 +781,7 @@ class Meson(BuildSystem):
                         stderr=subprocess.STDOUT)
         except CalledProcessError as e:
             output = e.output
+        output = output.decode('utf-8')
         return not re.search('Test setup .* not found from project', output)
 
     def _maybe_valgrind(self):
@@ -994,8 +995,8 @@ if __name__ == '__main__':
     if args.verbose:
         def printline(*line):
             for arg in line:
-                print arg,
-            print
+                print(arg, end=' ')
+            print()
     else:
         def printline(*line):
             pass
@@ -1022,7 +1023,7 @@ if __name__ == '__main__':
                    BRANCH)
 
     # Reorder Dependency Tree
-    for pkg_name, regex_str in DEPENDENCIES_REGEX.iteritems():
+    for pkg_name, regex_str in DEPENDENCIES_REGEX.items():
         dep_tree.ReorderDeps(pkg_name, regex_str)
     if args.verbose:
         dep_tree.PrintTree()
