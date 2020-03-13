@@ -201,6 +201,7 @@ RUN apt-get update && apt-get install -yy \
     python3-mako \
     python3-pip \
     python3-setuptools \
+    python3-git \
     pkg-config \
     autoconf \
     autoconf-archive \
