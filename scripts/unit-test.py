@@ -360,7 +360,7 @@ def build_dep_tree(name, pkgdir, dep_added, head, branch, dep_tree=None):
 
 
 def run_cppcheck():
-    match_re = re.compile('((?!\.mako\.).)*\.[ch](?:pp)?$', re.I)
+    match_re = re.compile(r'((?!\.mako\.).)*\.[ch](?:pp)?$', re.I)
     cppcheck_files = []
     stdout = subprocess.check_output(['git', 'ls-files'])
 
