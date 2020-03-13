@@ -264,7 +264,7 @@ def make_target_exists(target):
     target              The make target we are checking
     """
     try:
-        cmd = [ 'make', '-n', target ]
+        cmd = ['make', '-n', target]
         with open(os.devnull, 'w') as devnull:
             check_call(cmd, stdout=devnull, stderr=devnull)
         return True
@@ -465,7 +465,7 @@ def maybe_make_valgrind():
         return
 
     try:
-        cmd = make_parallel + [ 'check-valgrind' ]
+        cmd = make_parallel + ['check-valgrind']
         check_call_cmd(*cmd)
     except CalledProcessError:
         for root, _, files in os.walk(os.getcwd()):
@@ -486,7 +486,7 @@ def maybe_make_coverage():
 
     # Actually run code coverage
     try:
-        cmd = make_parallel + [ 'check-code-coverage' ]
+        cmd = make_parallel + ['check-code-coverage']
         check_call_cmd(*cmd)
     except CalledProcessError:
         raise Exception('Code coverage failed')
@@ -602,11 +602,11 @@ class Autotools(BuildSystem):
         check_call_cmd(*make_parallel)
 
     def install(self):
-        check_call_cmd('sudo', '-n', '--', *(make_parallel + [ 'install' ]))
+        check_call_cmd('sudo', '-n', '--', *(make_parallel + ['install']))
 
     def test(self):
         try:
-            cmd = make_parallel + [ 'check' ]
+            cmd = make_parallel + ['check']
             for i in range(0, args.repeat):
                 check_call_cmd(*cmd)
         except CalledProcessError:
@@ -848,20 +848,20 @@ class Meson(BuildSystem):
 
 class Package(object):
     def __init__(self, name=None, path=None):
-        self.supported = [ Autotools, Meson, CMake ]
+        self.supported = [Autotools, Meson, CMake]
         self.name = name
         self.path = path
         self.test_only = False
 
     def build_systems(self):
-        instances = ( system(self.name, self.path) for system in self.supported )
-        return ( instance for instance in instances if instance.probe() )
+        instances = (system(self.name, self.path) for system in self.supported)
+        return (instance for instance in instances if instance.probe())
 
     def build_system(self, preferred=None):
         systems = self.build_systems()
 
         if preferred:
-            return { type(system): system for system in systems }[preferred]
+            return {type(system): system for system in systems}[preferred]
 
         return next(iter(systems))
 
