@@ -108,7 +108,7 @@ declare -A PKG_REV=(
   [linux-headers]=8bf6567e77f7aa68975b7c9c6d044bba690bf327
   # Snapshot from 2019-09-03
   [libvncserver]=1354f7f1bb6962dab209eddb9d6aac1f03408110
-  [span-lite]=v0.6.0
+  [span-lite]=v0.7.0
   # version from meta-openembedded/meta-oe/recipes-support/libtinyxml2/libtinyxml2_5.0.1.bb
   [tinyxml2]=37bc3aca429f0164adf68c23444540b4a24b5778
   # version from meta-openembedded/meta-oe/recipes-devtools/valijson/valijson_git.bb
