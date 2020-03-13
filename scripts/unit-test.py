@@ -246,12 +246,12 @@ def clone_pkg(pkg, branch):
     printline(pkg_dir, "> git clone", pkg_repo, branch, "./")
     try:
         # first try the branch
-        repo_inst = Repo.clone_from(pkg_repo, pkg_dir,
-                branch=branch).working_dir
+        clone = Repo.clone_from(pkg_repo, pkg_dir, branch=branch)
+        repo_inst = clone.working_dir
     except:
         printline("Input branch not found, default to master")
-        repo_inst = Repo.clone_from(pkg_repo, pkg_dir,
-                branch="master").working_dir
+        clone = Repo.clone_from(pkg_repo, pkg_dir, branch="master")
+        repo_inst = clone.working_dir
     return repo_inst
 
 
@@ -531,17 +531,20 @@ class Autotools(BuildSystem):
         configure_ac = os.path.join(self.path, 'configure.ac')
 
         configure_ac_contents = ''
-        # Prepend some special function overrides so we can parse out dependencies
+        # Prepend some special function overrides so we can parse out
+        # dependencies
         for macro in DEPENDENCIES.iterkeys():
             configure_ac_contents += ('m4_define([' + macro + '], [' +
-                    macro + '_START$' + str(DEPENDENCIES_OFFSET[macro] + 1) +
-                    macro + '_END])\n')
+                                      macro + '_START$' +
+                                      str(DEPENDENCIES_OFFSET[macro] + 1) +
+                                      macro + '_END])\n')
         with open(configure_ac, "rt") as f:
             configure_ac_contents += f.read()
 
         autoconf_process = subprocess.Popen(['autoconf', '-Wno-undefined', '-'],
-                stdin=subprocess.PIPE, stdout=subprocess.PIPE,
-                stderr=subprocess.PIPE)
+                                            stdin=subprocess.PIPE,
+                                            stdout=subprocess.PIPE,
+                                            stderr=subprocess.PIPE)
         (stdout, stderr) = autoconf_process.communicate(input=configure_ac_contents)
         if not stdout:
             print(stderr)
