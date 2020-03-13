@@ -335,7 +335,7 @@ def build_dep_tree(name, pkgdir, dep_added, head, branch, dep_tree=None):
             # Dependency package not added
             new_child = dep_tree.AddChild(dep)
             dep_added[dep] = False
-            dep_pkgdir = clone_pkg(dep,branch)
+            dep_pkgdir = clone_pkg(dep, branch)
             # Determine this dependency package's
             # dependencies and add them before
             # returning to add this package
