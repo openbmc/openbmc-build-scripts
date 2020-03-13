@@ -900,13 +900,17 @@ class Package(object):
         system.install()
 
 
-    def test(self):
-        system = self.build_system()
+    def _test_one(self, system):
         system.configure(True)
         system.build()
         system.install()
         system.test()
         system.analyze()
+
+
+    def test(self):
+        for system in self.build_systems():
+            self._test_one(system)
 
 
 def find_file(filename, basedir):
