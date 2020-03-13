@@ -997,7 +997,8 @@ if __name__ == '__main__':
                 print arg,
             print
     else:
-        printline = lambda *l: None
+        def printline(*line):
+            pass
 
     CODE_SCAN_DIR = WORKSPACE + "/" + UNIT_TEST_PKG
 
