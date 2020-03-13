@@ -822,10 +822,10 @@ class Meson(BuildSystem):
             check_call_cmd('meson', 'test', '-C', 'build',
                            '--logbase', 'testlog-ubasan')
             # TODO: Fix memory sanitizer
-            #check_call_cmd('meson', 'configure', 'build',
-            #               '-Db_sanitize=memory')
-            #check_call_cmd('meson', 'test', '-C', 'build'
-            #               '--logbase', 'testlog-msan')
+            # check_call_cmd('meson', 'configure', 'build',
+            #                '-Db_sanitize=memory')
+            # check_call_cmd('meson', 'test', '-C', 'build'
+            #                '--logbase', 'testlog-msan')
             check_call_cmd('meson', 'configure', 'build',
                            '-Db_sanitize=none', '-Db_lundef=true')
         else:
