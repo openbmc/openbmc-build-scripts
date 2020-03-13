@@ -498,7 +498,8 @@ def maybe_make_coverage():
 class BuildSystem(object):
     def __init__(self, package, path):
         self.path = "." if not path else path
-        self.package = package if package else os.path.basename(os.path.realpath(self.path))
+        realpath = os.path.realpath(self.path)
+        self.package = package if package else os.path.basename(realpath)
         self.build_for_testing = False
 
     def probe(self):
@@ -533,22 +534,22 @@ class Autotools(BuildSystem):
     def dependencies(self):
         configure_ac = os.path.join(self.path, 'configure.ac')
 
-        configure_ac_contents = ''
+        contents = ''
         # Prepend some special function overrides so we can parse out
         # dependencies
         for macro in DEPENDENCIES.iterkeys():
-            configure_ac_contents += ('m4_define([' + macro + '], [' +
-                                      macro + '_START$' +
-                                      str(DEPENDENCIES_OFFSET[macro] + 1) +
-                                      macro + '_END])\n')
+            contents += ('m4_define([' + macro + '], [' + macro + '_START$' +
+                         str(DEPENDENCIES_OFFSET[macro] + 1) +
+                         macro + '_END])\n')
         with open(configure_ac, "rt") as f:
-            configure_ac_contents += f.read()
+            contents += f.read()
 
-        autoconf_process = subprocess.Popen(['autoconf', '-Wno-undefined', '-'],
+        autoconf_cmdline = ['autoconf', '-Wno-undefined', '-']
+        autoconf_process = subprocess.Popen(autoconf_cmdline,
                                             stdin=subprocess.PIPE,
                                             stdout=subprocess.PIPE,
                                             stderr=subprocess.PIPE)
-        (stdout, stderr) = autoconf_process.communicate(input=configure_ac_contents)
+        (stdout, stderr) = autoconf_process.communicate(input=contents)
         if not stdout:
             print(stderr)
             raise Exception("Failed to run autoconf for parsing dependencies")
@@ -676,8 +677,10 @@ class Meson(BuildSystem):
                 continue
             with open(os.path.join(root, 'meson.build'), 'rt') as f:
                 build_contents = f.read()
-            for match in re.finditer(r"dependency\('([^']*)'.*?\)\n", build_contents):
-                maybe_dep = DEPENDENCIES['PKG_CHECK_MODULES'].get(match.group(1))
+            pattern = r"dependency\('([^']*)'.*?\)\n"
+            for match in re.finditer(pattern, build_contents):
+                group = match.group(1)
+                maybe_dep = DEPENDENCIES['PKG_CHECK_MODULES'].get(group)
                 if maybe_dep is not None:
                     found_deps.append(maybe_dep)
 
@@ -734,13 +737,15 @@ class Meson(BuildSystem):
         else:
             meson_flags.append('--buildtype=debugoptimized')
         if 'tests' in meson_options:
-            meson_flags.append('-Dtests=' + self._configure_feature(build_for_testing))
+            flag_args = self._configure_feature(build_for_testing)
+            meson_flags.append('-Dtests=' + flag_args)
         if 'examples' in meson_options:
             meson_flags.append('-Dexamples=' + str(build_for_testing).lower())
         if MESON_FLAGS.get(self.package) is not None:
             meson_flags.extend(MESON_FLAGS.get(self.package))
         try:
-            check_call_cmd('meson', 'setup', '--reconfigure', 'build', *meson_flags)
+            check_call_cmd('meson', 'setup', '--reconfigure', 'build',
+                           *meson_flags)
         except:
             shutil.rmtree('build')
             check_call_cmd('meson', 'setup', 'build', *meson_flags)
@@ -781,8 +786,8 @@ class Meson(BuildSystem):
     def _maybe_valgrind(self):
         """
         Potentially runs the unit tests through valgrind for the package
-        via `meson test`. The package can specify custom valgrind configurations
-        by utilizing add_test_setup() in a meson.build
+        via `meson test`. The package can specify custom valgrind
+        configurations by utilizing add_test_setup() in a meson.build
         """
         if not is_valgrind_safe():
             sys.stderr.write("###### Skipping valgrind ######\n")
@@ -798,7 +803,8 @@ class Meson(BuildSystem):
             for root, _, files in os.walk(os.getcwd()):
                 if 'testlog-valgrind.txt' not in files:
                     continue
-                check_call_cmd('cat', os.path.join(root, 'testlog-valgrind.txt'))
+                cat_args = os.path.join(root, 'testlog-valgrind.txt')
+                check_call_cmd('cat', cat_args)
             raise Exception('Valgrind tests failed')
 
     def analyze(self):
