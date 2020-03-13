@@ -390,6 +390,7 @@ def run_cppcheck():
     print(stdout)
     print(stderr)
 
+
 def is_valgrind_safe():
     """
     Returns whether it is safe to run valgrind on our platform
@@ -424,6 +425,7 @@ def is_valgrind_safe():
     finally:
         os.remove(src)
         os.remove(exe)
+
 
 def is_sanitize_safe():
     """
@@ -474,6 +476,7 @@ def maybe_make_valgrind():
                     continue
                 check_call_cmd('cat', os.path.join(root, f))
         raise Exception('Valgrind tests failed')
+
 
 def maybe_make_coverage():
     """
