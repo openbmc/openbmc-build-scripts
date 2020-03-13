@@ -509,7 +509,7 @@ class BuildSystem(object):
         """
         self.path = "." if not path else path
         self.package = package if package else os.path.basename(os.path.realpath(self.path))
-        self.build_for_testing=False
+        self.build_for_testing = False
 
     def probe(self):
         """Test if the build system driver can be applied to the package
