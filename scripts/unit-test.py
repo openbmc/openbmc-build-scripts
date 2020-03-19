@@ -726,11 +726,12 @@ class CMake(BuildSystem):
             check_call_cmd('ctest', '.')
 
     def analyze(self):
-        if os.path.isfile('.clang-tidy'):
-            check_call_cmd('run-clang-tidy-8.py', '-p', '.')
-        maybe_make_valgrind()
-        maybe_make_coverage()
-        run_cppcheck()
+        if not TEST_ONLY:
+            if os.path.isfile('.clang-tidy'):
+                check_call_cmd('run-clang-tidy-8.py', '-p', '.')
+            maybe_make_valgrind()
+            maybe_make_coverage()
+            run_cppcheck()
 
 
 class Meson(BuildSystem):
@@ -883,51 +884,52 @@ class Meson(BuildSystem):
             raise Exception('Valgrind tests failed')
 
     def analyze(self):
-        self._maybe_valgrind()
+        if not TEST_ONLY:
+            self._maybe_valgrind()
 
-        # Run clang-tidy only if the project has a configuration
-        if os.path.isfile('.clang-tidy'):
-            check_call_cmd('run-clang-tidy-8.py', '-p',
-                           'build')
-        # Run the basic clang static analyzer otherwise
-        else:
-            check_call_cmd('ninja', '-C', 'build',
-                           'scan-build')
-
-        # Run tests through sanitizers
-        # b_lundef is needed if clang++ is CXX since it resolves the
-        # asan symbols at runtime only. We don't want to set it earlier
-        # in the build process to ensure we don't have undefined
-        # runtime code.
-        if is_sanitize_safe():
-            check_call_cmd('meson', 'configure', 'build',
-                           '-Db_sanitize=address,undefined',
-                           '-Db_lundef=false')
-            check_call_cmd('meson', 'test', '-C', 'build',
-                           '--logbase', 'testlog-ubasan')
-            # TODO: Fix memory sanitizer
-            # check_call_cmd('meson', 'configure', 'build',
-            #                '-Db_sanitize=memory')
-            # check_call_cmd('meson', 'test', '-C', 'build'
-            #                '--logbase', 'testlog-msan')
-            check_call_cmd('meson', 'configure', 'build',
-                           '-Db_sanitize=none', '-Db_lundef=true')
-        else:
-            sys.stderr.write("###### Skipping sanitizers ######\n")
-
-        # Run coverage checks
-        check_call_cmd('meson', 'configure', 'build',
-                       '-Db_coverage=true')
-        self.test()
-        # Only build coverage HTML if coverage files were produced
-        for root, dirs, files in os.walk('build'):
-            if any([f.endswith('.gcda') for f in files]):
+            # Run clang-tidy only if the project has a configuration
+            if os.path.isfile('.clang-tidy'):
+                check_call_cmd('run-clang-tidy-8.py', '-p',
+                               'build')
+            # Run the basic clang static analyzer otherwise
+            else:
                 check_call_cmd('ninja', '-C', 'build',
-                               'coverage-html')
-                break
-        check_call_cmd('meson', 'configure', 'build',
-                       '-Db_coverage=false')
-        run_cppcheck()
+                               'scan-build')
+
+            # Run tests through sanitizers
+            # b_lundef is needed if clang++ is CXX since it resolves the
+            # asan symbols at runtime only. We don't want to set it earlier
+            # in the build process to ensure we don't have undefined
+            # runtime code.
+            if is_sanitize_safe():
+                check_call_cmd('meson', 'configure', 'build',
+                               '-Db_sanitize=address,undefined',
+                               '-Db_lundef=false')
+                check_call_cmd('meson', 'test', '-C', 'build',
+                               '--logbase', 'testlog-ubasan')
+                # TODO: Fix memory sanitizer
+                # check_call_cmd('meson', 'configure', 'build',
+                #                '-Db_sanitize=memory')
+                # check_call_cmd('meson', 'test', '-C', 'build'
+                #                '--logbase', 'testlog-msan')
+                check_call_cmd('meson', 'configure', 'build',
+                               '-Db_sanitize=none', '-Db_lundef=true')
+            else:
+                sys.stderr.write("###### Skipping sanitizers ######\n")
+
+            # Run coverage checks
+            check_call_cmd('meson', 'configure', 'build',
+                           '-Db_coverage=true')
+            self.test()
+            # Only build coverage HTML if coverage files were produced
+            for root, dirs, files in os.walk('build'):
+                if any([f.endswith('.gcda') for f in files]):
+                    check_call_cmd('ninja', '-C', 'build',
+                                   'coverage-html')
+                    break
+            check_call_cmd('meson', 'configure', 'build',
+                           '-Db_coverage=false')
+            run_cppcheck()
 
 
 class Package(object):
