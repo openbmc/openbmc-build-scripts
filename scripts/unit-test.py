@@ -726,6 +726,9 @@ class CMake(BuildSystem):
             check_call_cmd('ctest', '.')
 
     def analyze(self):
+        if TEST_ONLY:
+            return
+
         if os.path.isfile('.clang-tidy'):
             check_call_cmd('run-clang-tidy-8.py', '-p', '.')
         maybe_make_valgrind()
@@ -883,6 +886,9 @@ class Meson(BuildSystem):
             raise Exception('Valgrind tests failed')
 
     def analyze(self):
+        if TEST_ONLY:
+            return
+
         self._maybe_valgrind()
 
         # Run clang-tidy only if the project has a configuration
