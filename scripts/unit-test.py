@@ -942,7 +942,10 @@ class Package(object):
         return (instance for instance in instances if instance.probe())
 
     def build_system(self, preferred=None):
-        systems = self.build_systems()
+        systems = list(self.build_systems())
+
+        if not systems:
+            return None
 
         if preferred:
             return {type(system): system for system in systems}[preferred]
@@ -1081,6 +1084,12 @@ if __name__ == '__main__':
     # The format-code.sh checks for these files.
     if FORMAT_CODE:
         check_call_cmd("./format-code.sh", CODE_SCAN_DIR)
+
+    # Check if this repo has a supported make infrastructure
+    pkg = Package(UNIT_TEST_PKG, os.path.join(WORKSPACE, UNIT_TEST_PKG))
+    if not pkg.build_system():
+        print("No valid build system, exit")
+        sys.exit(0)
 
     prev_umask = os.umask(000)
 
