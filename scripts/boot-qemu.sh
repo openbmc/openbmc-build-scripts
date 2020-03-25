@@ -91,6 +91,21 @@ if [[ "$IP" != *.*.*.* ]]; then
   IP=127.0.0.1
 fi
 
+# Forward all needed ports for the robot test framework to run
+# Since this is run in docker, the standard ports can be used
+NET_FORWARDING=hostfwd=:${IP}:22-:22,hostfwd=:${IP}:443-:443,hostfwd=tcp:${IP}:80-:80,hostfwd=tcp:${IP}:2200-:2200,hostfwd=udp:${IP}:623-:623,hostfwd=udp:${IP}:664-:664
+
+# Most system only have one NIC so set this as default
+NIC="-net nic,model=ftgmac100,netdev=netdev1 -netdev user,id=netdev1,$NET_FORWARDING"
+if [ ${MACHINE} = "tacoma" ]; then
+    # Tacoma requires us to specify up to four NICs, with the third one being
+    # the active device.
+    NIC="-net nic,model=ftgmac100,netdev=netdev1 -netdev user,id=netdev1 "
+    NIC+="-net nic,model=ftgmac100,netdev=netdev2 -netdev user,id=netdev2 "
+    NIC+="-net nic,model=ftgmac100,netdev=netdev3 -netdev user,id=netdev3,$NET_FORWARDING "
+    NIC+="-net nic,model=ftgmac100,netdev=netdev4 -netdev user,id=netdev4"
+fi
+
 # The syntax to start old qemu / default version requires different syntax
 # then new qemu with the real platforms
 if [ ${MACHINE} = ${DEFAULT_MACHINE} ]; then
@@ -113,10 +128,8 @@ if [ ${MACHINE} = ${DEFAULT_MACHINE} ]; then
         -dtb ${DEFAULT_IMAGE_LOC}/qemuarm/zImage-versatile-pb.dtb
 else
     ${QEMU_BIN} \
-        -m 256 \
         -machine ${MACHINE}-bmc \
         -nographic \
         -drive file=${TMP_DRIVE_PATH},format=raw,if=mtd \
-        -net nic \
-        -net user,hostfwd=:${IP}:22-:22,hostfwd=:${IP}:443-:443,hostfwd=tcp:${IP}:80-:80,hostfwd=tcp:${IP}:2200-:2200,hostfwd=udp:${IP}:623-:623,hostfwd=udp:${IP}:664-:664,hostname=qemu
+        ${NIC}
 fi
