@@ -91,6 +91,12 @@ if [[ "$IP" != *.*.*.* ]]; then
   IP=127.0.0.1
 fi
 
+NIC=" -nic user "
+if [ ${MACHINE} = "tacoma" ]; then
+    # Tacoma requires an extra nic in it's startup
+    NIC=${NIC}${NIC}
+fi
+
 # The syntax to start old qemu / default version requires different syntax
 # then new qemu with the real platforms
 if [ ${MACHINE} = ${DEFAULT_MACHINE} ]; then
@@ -117,6 +123,6 @@ else
         -machine ${MACHINE}-bmc \
         -nographic \
         -drive file=${TMP_DRIVE_PATH},format=raw,if=mtd \
-        -net nic \
-        -net user,hostfwd=:${IP}:22-:22,hostfwd=:${IP}:443-:443,hostfwd=tcp:${IP}:80-:80,hostfwd=tcp:${IP}:2200-:2200,hostfwd=udp:${IP}:623-:623,hostfwd=udp:${IP}:664-:664,hostname=qemu
+        ${NIC} \
+        -nic user,hostfwd=:${IP}:22-:22,hostfwd=:${IP}:443-:443,hostfwd=tcp:${IP}:80-:80,hostfwd=tcp:${IP}:2200-:2200,hostfwd=udp:${IP}:623-:623,hostfwd=udp:${IP}:664-:664,hostname=qemu
 fi
