@@ -164,6 +164,8 @@ FROM ${DOCKER_BASE}${DISTRO} as openbmc-base
 
 ENV DEBIAN_FRONTEND noninteractive
 
+ENV PYTHONPATH "/usr/local/lib/python3.7/site-packages/"
+
 # We need the keys to be imported for dbgsym repos
 # New releases have a package, older ones fall back to manual fetching
 # https://wiki.ubuntu.com/Debug%20Symbol%20Packages
@@ -187,14 +189,6 @@ RUN apt-get update && apt-get install -yy \
     bison \
     flex \
     cmake \
-    python \
-    python-dev \
-    python-git \
-    python-yaml \
-    python-mako \
-    python-pip \
-    python-setuptools \
-    python-socks \
     python3 \
     python3-dev\
     python3-yaml \
@@ -250,10 +244,8 @@ RUN update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-9 900 \
   --slave /usr/bin/gcov-dump gcov-dump /usr/bin/gcov-dump-9 \
   --slave /usr/bin/gcov-tool gcov-tool /usr/bin/gcov-tool-9
 
-RUN pip install inflection
-RUN pip install pycodestyle
-RUN pip install jsonschema
 RUN pip3 install inflection
+RUN pip3 install pycodestyle
 RUN pip3 install jsonschema
 RUN pip3 install meson==0.53.2
 
