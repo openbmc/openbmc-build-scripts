@@ -91,7 +91,7 @@ wait
 # A list of package versions we are building
 # Start off by listing the stating versions of third-party sources
 declare -A PKG_REV=(
-  [boost]=1.71.0
+  [boost]=1.72.0
   [cereal]=v1.2.2
   [catch2]=v2.11.1
   [CLI11]=v1.9.0
@@ -164,6 +164,8 @@ FROM ${DOCKER_BASE}${DISTRO} as openbmc-base
 
 ENV DEBIAN_FRONTEND noninteractive
 
+ENV PYTHONPATH "/usr/local/lib/python3.7/site-packages/"
+
 # We need the keys to be imported for dbgsym repos
 # New releases have a package, older ones fall back to manual fetching
 # https://wiki.ubuntu.com/Debug%20Symbol%20Packages
@@ -187,14 +189,6 @@ RUN apt-get update && apt-get install -yy \
     bison \
     flex \
     cmake \
-    python \
-    python-dev \
-    python-git \
-    python-yaml \
-    python-mako \
-    python-pip \
-    python-setuptools \
-    python-socks \
     python3 \
     python3-dev\
     python3-yaml \
@@ -250,9 +244,6 @@ RUN update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-9 900 \
   --slave /usr/bin/gcov-dump gcov-dump /usr/bin/gcov-dump-9 \
   --slave /usr/bin/gcov-tool gcov-tool /usr/bin/gcov-tool-9
 
-RUN pip install inflection
-RUN pip install pycodestyle
-RUN pip install jsonschema
 RUN pip3 install inflection
 RUN pip3 install jsonschema
 RUN pip3 install meson==0.53.2
@@ -332,8 +323,9 @@ make -j$(nproc) defconfig && \
 make INSTALL_HDR_PATH=/usr/local headers_install
 
 FROM openbmc-base as openbmc-boost
-RUN curl -L https://dl.bintray.com/boostorg/release/${PKG_REV['boost']}/source/boost_$(echo "${PKG_REV['boost']}" | tr '.' '_').tar.bz2 | tar -xj && \
+RUN curl -L https://sourceforge.net/projects/boost/files/boost/${PKG_REV['boost']}/boost_$(echo "${PKG_REV['boost']}" | tr '.' '_').tar.bz2 | tar -xj && \
 cd boost_*/ && \
+curl -L https://www.boost.org/patches/1_72_0/0001-revert-cease-dependence-on-range.patch | patch -p1 && \
 ./bootstrap.sh --prefix=${PREFIX} --with-libraries=context,coroutine && \
 ./b2 && ./b2 install --prefix=${PREFIX}
 
