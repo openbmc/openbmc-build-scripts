@@ -250,6 +250,10 @@ RUN pip3 install pycodestyle
 RUN pip3 install jsonschema
 RUN pip3 install meson==0.53.2
 
+# run-clang-tidy-8.py has not moved to python3 yet however it
+# supports it for our needs to just switch it over
+RUN sed -i '1s/python/python3/' /usr/bin/run-clang-tidy-8.py
+
 FROM openbmc-base as openbmc-lcov
 RUN curl -L https://github.com/linux-test-project/lcov/archive/${PKG_REV['lcov']}.tar.gz | tar -xz && \
 cd lcov-* && \
