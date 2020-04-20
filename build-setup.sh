@@ -190,7 +190,7 @@ case ${target} in
   gsj)
     LAYER_DIR="meta-quanta/meta-gsj"
     MACHINE="gsj"
-    DISTRO="openbmc-phosphor"
+    # Use default DISTRO from layer
     ;;
   *)
     exit 1
@@ -354,13 +354,18 @@ fi
 # Source our build env
 ${BITBAKE_CMD}
 
-if [[ -z "${MACHINE}" || -z "${DISTRO}" ]]; then
-  echo "MACHINE or DISTRO is not configured for ${target}"
+if [[ -z "${MACHINE}" ]]; then
+  echo "MACHINE is not configured for ${target}"
   exit 1
 fi
 
 export MACHINE="${MACHINE}"
-export DISTRO="${DISTRO}"
+if [[ -z "${DISTRO}" ]]; then
+  echo "DISTRO is not configured for ${target} so will use default"
+  unset DISTRO
+else
+  export DISTRO="${DISTRO}"
+fi
 
 # Custom BitBake config settings
 cat >> conf/local.conf << EOF_CONF
