@@ -3,12 +3,18 @@
 # This script generates the unit test coverage report for openbmc project.
 #
 # Usage:
-# get_unit_test_report.py target_dir
+# get_unit_test_report.py target_dir [url_file]
 #
-# Description of arguments:
+# Positional arguments:
 # target_dir  Target directory in pwd to place all cloned repos and logs.
+# url_file    Text file containing url of repositories. Optional.
+#             By using this argument, the user can get a report only for
+#             specific repositories given in the file.
+#             Refer ./scripts/repositories.txt
 #
-# Eg: get_unit_test_report.py target_dir
+# Examples:
+#     get_unit_test_report.py target_dir
+#     get_unit_test_report.py target_dir repositories.txt
 #
 # Output format:
 #
@@ -28,14 +34,50 @@ import shutil
 import sys
 import subprocess
 
+# Repo list not expected to contain UT. Will be moved to a file in future.
+skip_list = ["openbmc-tools", "inarp", "openbmc", "openbmc.github.io",
+             "phosphor-ecc", "phosphor-pcie-presence", "phosphor-u-boot-env-mgr",
+             "rrd-ipmi-blob", "librrdplus", "openpower-inventory-upload",
+             "openpower-logging", "openpower-power-control", "docs",
+             "openbmc-test-automation", "openbmc-build-scripts", "skeleton",
+             "linux",
+             # Not active, expected to be archived soon.
+             "ibm-pldm-oem"]
+
 
 # Create parser.
-parser = argparse.ArgumentParser(usage='%(prog)s file target_dir',
+text = '''%(prog)s target_dir [url_file]
+
+Example usages:
+get_unit_test_report.py target_dir
+get_unit_test_report.py target_dir repositories.txt'''
+
+parser = argparse.ArgumentParser(usage=text,
                                  description="Script generates the unit test coverage report")
 parser.add_argument("target_dir", type=str,
                     help='''Name of a non-existing directory in pwd to store all
                             cloned repos, logs and UT reports''')
+parser.add_argument("url_file", type=str, nargs='?',
+                    help='''Text file containing url of repositories.
+                            By using this argument, the user can get a report only for
+                            specific repositories given in the file.
+                            Refer ./scripts/repositories.txt''')
 args = parser.parse_args()
+
+input_urls = []
+if args.url_file:
+    try:
+        # Get URLs from the file.
+        with open(args.url_file) as reader:
+            file_content = reader.read().splitlines()
+            input_urls = list(filter(lambda x:x, file_content))
+        if not(input_urls):
+            print("Input file {} is empty. Quitting...".format(args.url_file))
+            quit()
+    except IOError as e:
+        print("Issue in reading file '{}'. Reason: {}".format(args.url_file,
+                                                                  str(e)))
+        quit()
 
 
 # Create target working directory.
@@ -66,16 +108,6 @@ except OSError as e:
     print(str(e))
     quit()
 
-
-# Repo list not expected to contain UT. Will be moved to a file in future.
-skip_list = ["openbmc-tools", "inarp", "openbmc", "openbmc.github.io",
-             "phosphor-ecc", "phosphor-pcie-presence", "phosphor-u-boot-env-mgr",
-             "rrd-ipmi-blob", "librrdplus", "openpower-inventory-upload",
-             "openpower-logging", "openpower-power-control", "docs",
-             "openbmc-test-automation", "openbmc-build-scripts", "skeleton",
-             "linux",
-             # Not active, expected to be archived soon.
-             "ibm-pldm-oem"]
 
 # Log files
 debug_file = os.path.join(log_dir, "debug.log")
@@ -115,32 +147,61 @@ try:
                                      shell=True, cwd=working_dir, stderr=subprocess.STDOUT)
     logger.debug(output)
 except subprocess.CalledProcessError as e:
-    logger.debug(e.output)
-    logger.debug(e.cmd)
-    logger.debug("Unable to clone openbmc-build-scripts")
+    logger.error(e.output)
+    logger.error(e.cmd)
+    logger.error("Unable to clone openbmc-build-scripts")
     quit()
 
-# Get number of pages.
-resp = requests.head('https://api.github.com/users/openbmc/repos')
-if resp.status_code != 200:
-    logger.error("Error! Unable to get repositories")
-    logger.debug(resp.status_code)
-    logger.debug(resp.text)
-    quit()
-num_of_pages = int(resp.links['last']['url'].split('page=')[-1])
-logger.debug("No. of pages: " + str(num_of_pages))
-
-# Fetch data from all pages.
 repo_data = []
-for page in range(1, num_of_pages+1):
-    resp = requests.get('https://api.github.com/users/openbmc/repos?page=' + str(page))
-    data = resp.json()
-    repo_data.extend(data)
+if input_urls:
+    api_url = "https://api.github.com/repos/openbmc/"
+    for url in input_urls:
+        try:
+            repo_name = url.strip().split('/')[-1].split(";")[0].split(".")[0]
+        except IndexError as e:
+            logger.error("ERROR: Unable to get sandbox name for url " + url)
+            logger.error("Reason: " + str(e))
+            continue
+
+        try:
+            resp = requests.get(api_url + repo_name)
+            if resp.status_code != 200:
+                logger.info(api_url + repo_name + " ==> " + resp.reason)
+                continue
+            repo_data.extend([resp.json()])
+        except ValueError as e:
+            logger.error("ERROR: Failed to get response for " + repo_name)
+            logger.error(resp)
+            continue
+
+else:
+    # Get number of pages.
+    resp = requests.head('https://api.github.com/users/openbmc/repos')
+    if resp.status_code != 200:
+        logger.error("Error! Unable to get repositories")
+        logger.error(resp.status_code)
+        logger.error(resp.reason)
+        quit()
+    num_of_pages = int(resp.links['last']['url'].split('page=')[-1])
+    logger.debug("No. of pages: " + str(num_of_pages))
+
+    # Fetch data from all pages.
+    for page in range(1, num_of_pages+1):
+        resp = requests.get('https://api.github.com/users/openbmc/repos?page='
+                            + str(page))
+        data = resp.json()
+        repo_data.extend(data)
+
 
 # Get URLs and their archive status from response.
 url_info = {}
 for repo in repo_data:
-    url_info[repo["clone_url"]] = repo["archived"]
+    try:
+        url_info[repo["clone_url"]] = repo["archived"]
+    except KeyError as e:
+        logger.error("Failed to get archived status of {}".format(repo))
+        url_info[repo["clone_url"]] = False
+        continue
 logger.debug(url_info)
 repo_count = len(url_info)
 logger.info("Number of repositories (Including archived): " + str(repo_count))
@@ -168,8 +229,9 @@ for url in url_list:
             #     sandbox_name = "u-boot"
             sandbox_name = url.strip().split('/')[-1].split(";")[0].split(".")[0]
         except IndexError as e:
-            logger.debug("ERROR: Unable to get sandbox name for url " + url)
-            logger.debug("Reason: " + str(e))
+            logger.error("ERROR: Unable to get sandbox name for url " + url)
+            logger.error("Reason: " + str(e))
+            continue
 
         if (sandbox_name in skip_list or
             re.match(r'meta-', sandbox_name)):
