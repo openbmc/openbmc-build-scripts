@@ -29,6 +29,28 @@
 # Trace bash processing. Set -e so when a step fails, we fail the build
 set -uo pipefail
 
+opts=$(getopt \
+    --longoptions "interactive," \
+    --name "$(basename "$0")" \
+    --options "" \
+    -- "$@"
+)
+
+eval set --$opts
+
+INTERACTIVE="no"
+while [[ $# -gt 0 ]]; do
+    case "$1" in
+        --interactive)
+            INTERACTIVE="yes"
+            shift 1
+            ;;
+        *)
+            break
+            ;;
+    esac
+done
+
 # Default variables
 BRANCH=${BRANCH:-"master"}
 DOCKER_IMG_NAME=${DOCKER_IMG_NAME:-"openbmc/ubuntu-unit-test-${BRANCH}"}
@@ -94,6 +116,17 @@ export BRANCH
 UNIT_TEST="${DOCKER_WORKDIR}/${UNIT_TEST_PY},-w,${DOCKER_WORKDIR},\
 -p,${UNIT_TEST_PKG},-b,$BRANCH,-v${TEST_ONLY:+,-t}${NO_FORMAT_CODE:+,-n}"
 
+RUN_ARGS=(
+    -t ${DOCKER_IMG_NAME}
+    "${DOCKER_WORKDIR}/${DBUS_UNIT_TEST_PY}"
+    -u ${UNIT_TEST}
+    -f ${DBUS_SYS_CONFIG_FILE}
+)
+
+if [ "X${INTERACTIVE}" == "Xyes" ]; then
+    RUN_ARGS=(-it ${DOCKER_IMG_NAME} /bin/bash)
+fi
+
 # Run the docker unit test container with the unit test execution script
 echo "Executing docker image"
 docker run --cap-add=sys_admin --rm=true \
@@ -102,9 +135,7 @@ docker run --cap-add=sys_admin --rm=true \
     -u "$USER" \
     -w "${DOCKER_WORKDIR}" -v "${WORKSPACE}":"${DOCKER_WORKDIR}" \
     -e "MAKEFLAGS=${MAKEFLAGS}" \
-    -t ${DOCKER_IMG_NAME} \
-    "${DOCKER_WORKDIR}"/${DBUS_UNIT_TEST_PY} -u ${UNIT_TEST} \
-    -f ${DBUS_SYS_CONFIG_FILE}
+    ${RUN_ARGS[@]}
 
 # Timestamp for build
 echo "Unit test build completed, $(date)"
