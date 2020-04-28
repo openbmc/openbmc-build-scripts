@@ -413,11 +413,15 @@ docker build -t ${img_name} - <<< "${Dockerfile}"
 # If obmc_dir or ssc_dir are ${HOME} or a subdirectory they will not be mounted
 mount_obmc_dir="-v ""${obmc_dir}"":""${obmc_dir}"" "
 mount_ssc_dir="-v ""${ssc_dir}"":""${ssc_dir}"" "
+mount_workspace_dir="-v ""${WORKSPACE}"":""${WORKSPACE}"" "
 if [[ "${obmc_dir}" = "${HOME}/"* || "${obmc_dir}" = "${HOME}" ]];then
 mount_obmc_dir=""
 fi
 if [[ "${ssc_dir}" = "${HOME}/"* || "${ssc_dir}" = "${HOME}" ]];then
 mount_ssc_dir=""
+fi
+if [[ "${WORKSPACE}" = "${HOME}/"* || "${WORKSPACE}" = "${HOME}" ]];then
+mount_workspace_dir=""
 fi
 
 # Run the Docker container, execute the build.sh script
@@ -431,6 +435,7 @@ docker run \
 -v "${HOME}":"${HOME}" \
 ${mount_obmc_dir} \
 ${mount_ssc_dir} \
+${mount_workspace_dir} \
 --cpus="$num_cpu" \
 -t ${img_name} \
 ${WORKSPACE}/build.sh
