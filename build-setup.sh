@@ -349,6 +349,16 @@ EOF_GIT
   http-proxy-host = ${PROXY_HOST}
   http-proxy-port = ${PROXY_PORT}
 EOF_SVN
+
+  cat > ~/.wgetrc << EOF_WGETRC
+  https_proxy = ${http_proxy}
+  http_proxy = ${http_proxy}
+  use_proxy = on
+EOF_WGETRC
+
+  cat > ~/.curlrc << EOF_CURLRC
+  proxy = ${PROXY_HOST}:${PROXY_PORT}
+EOF_CURLRC
 fi
 
 # Source our build env
