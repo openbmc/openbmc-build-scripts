@@ -330,7 +330,7 @@ mkdir -p ${WORKSPACE}/bin
 # Configure proxies for BitBake
 if [[ -n "${http_proxy}" ]]; then
 
-  cat > ${WORKSPACE}/bin/git-proxy << \EOF_GIT
+  flock /tmp/build-setup.lock cat > ${WORKSPACE}/bin/git-proxy << \EOF_GIT
   #!/bin/bash
   # \$1 = hostname, \$2 = port
   PROXY=${PROXY_HOST}
@@ -338,25 +338,26 @@ if [[ -n "${http_proxy}" ]]; then
   exec socat STDIO PROXY:\${PROXY}:\${1}:\${2},proxyport=\${PROXY_PORT}
 EOF_GIT
 
-  chmod a+x ${WORKSPACE}/bin/git-proxy
+  flock /tmp/build-setup.lock chmod a+x ${WORKSPACE}/bin/git-proxy
   export PATH=${WORKSPACE}/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:${PATH}
-  git config core.gitProxy git-proxy
+  flock /tmp/build-setup.lock git config --global core.gitProxy ${WORKSPACE}/bin/git-proxy
+  flock /tmp/build-setup.lock git config --global http.proxy ${http_proxy}
 
   mkdir -p ~/.subversion
 
-  cat > ~/.subversion/servers << EOF_SVN
+  flock /tmp/build-setup.lock cat > ~/.subversion/servers << EOF_SVN
   [global]
   http-proxy-host = ${PROXY_HOST}
   http-proxy-port = ${PROXY_PORT}
 EOF_SVN
 
-  cat > ~/.wgetrc << EOF_WGETRC
+  flock /tmp/build-setup.lock cat > ~/.wgetrc << EOF_WGETRC
   https_proxy = ${http_proxy}
   http_proxy = ${http_proxy}
   use_proxy = on
 EOF_WGETRC
 
-  cat > ~/.curlrc << EOF_CURLRC
+  flock /tmp/build-setup.lock cat > ~/.curlrc << EOF_CURLRC
   proxy = ${PROXY_HOST}:${PROXY_PORT}
 EOF_CURLRC
 fi
