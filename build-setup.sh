@@ -340,24 +340,25 @@ EOF_GIT
 
   chmod a+x ${WORKSPACE}/bin/git-proxy
   export PATH=${WORKSPACE}/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:${PATH}
-  git config --global core.gitProxy ${WORKSPACE}/bin/git-proxy
-  git config --global http.proxy ${http_proxy}
 
-  mkdir -p ~/.subversion
+  lock=${HOME}/build-setup.lock
+  flock \${lock} git config --global core.gitProxy ${WORKSPACE}/bin/git-proxy
+  flock \${lock} git config --global http.proxy ${http_proxy}
 
-  cat > ~/.subversion/servers << EOF_SVN
+  flock \${lock} mkdir -p ~/.subversion
+  flock \${lock} cat > ~/.subversion/servers << EOF_SVN
   [global]
   http-proxy-host = ${PROXY_HOST}
   http-proxy-port = ${PROXY_PORT}
 EOF_SVN
 
-  cat > ~/.wgetrc << EOF_WGETRC
+  flock \${lock} cat > ~/.wgetrc << EOF_WGETRC
   https_proxy = ${http_proxy}
   http_proxy = ${http_proxy}
   use_proxy = on
 EOF_WGETRC
 
-  cat > ~/.curlrc << EOF_CURLRC
+  flock \${lock} cat > ~/.curlrc << EOF_CURLRC
   proxy = ${PROXY_HOST}:${PROXY_PORT}
 EOF_CURLRC
 fi
