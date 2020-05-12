@@ -10,6 +10,8 @@
 
 set -uo pipefail
 
+http_proxy=${http_proxy:-}
+
 DOCKER_IMG_NAME=${1:-"openbmc/ubuntu-robot-qemu"}
 DISTRO=${2:-"ubuntu:bionic"}
 
@@ -118,5 +120,10 @@ EOF
 
 ################################# docker img # #################################
 
+proxy_args=""
+if [[ -n "${http_proxy}" ]]; then
+  proxy_args="--build-arg http_proxy=${http_proxy} --build-arg https_proxy=${http_proxy}"
+fi
+
 # Build above image
-docker build -t ${DOCKER_IMG_NAME} - <<< "${Dockerfile}"
+docker build ${proxy_args} -t ${DOCKER_IMG_NAME} - <<< "${Dockerfile}"
