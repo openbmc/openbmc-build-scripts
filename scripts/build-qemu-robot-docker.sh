@@ -1,6 +1,11 @@
 #!/bin/bash -xe
 #
 # Build the required docker image to run QEMU and Robot test cases
+
+# Script Variables:
+#  UBUNTU_MIRROR:    <optional, the URL of a mirror of Ubuntu to override the
+#                    default ones in /etc/apt/sources.list>
+#                    default is empty, and no mirror is used.
 #
 #  Parameters:
 #   parm1:  <optional, the name of the docker image to generate>
@@ -14,6 +19,7 @@ http_proxy=${http_proxy:-}
 
 DOCKER_IMG_NAME=${1:-"openbmc/ubuntu-robot-qemu"}
 DISTRO=${2:-"ubuntu:bionic"}
+UBUNTU_MIRROR=${UBUNTU_MIRROR:-""}
 
 # Determine our architecture, ppc64le or the other one
 if [ $(uname -m) == "ppc64le" ]; then
@@ -22,10 +28,21 @@ else
     DOCKER_BASE=""
 fi
 
+MIRROR=""
+if [[ -n "${UBUNTU_MIRROR}" ]]; then
+    MIRROR="RUN echo \"deb ${UBUNTU_MIRROR} \$(. /etc/os-release && echo \$VERSION_CODENAME) main restricted universe multiverse\" > /etc/apt/sources.list && \
+        echo \"deb ${UBUNTU_MIRROR} \$(. /etc/os-release && echo \$VERSION_CODENAME)-updates main restricted universe multiverse\" >> /etc/apt/sources.list && \
+        echo \"deb ${UBUNTU_MIRROR} \$(. /etc/os-release && echo \$VERSION_CODENAME)-security main restricted universe multiverse\" >> /etc/apt/sources.list && \
+        echo \"deb ${UBUNTU_MIRROR} \$(. /etc/os-release && echo \$VERSION_CODENAME)-proposed main restricted universe multiverse\" >> /etc/apt/sources.list && \
+        echo \"deb ${UBUNTU_MIRROR} \$(. /etc/os-release && echo \$VERSION_CODENAME)-backports main restricted universe multiverse\" >> /etc/apt/sources.list"
+fi
+
 ################################# docker img # #################################
 # Create docker image that can run QEMU and Robot Tests
 Dockerfile=$(cat << EOF
 FROM ${DOCKER_BASE}${DISTRO}
+
+${MIRROR}
 
 ENV DEBIAN_FRONTEND noninteractive
 
