@@ -6,6 +6,8 @@
 #  UBUNTU_MIRROR:    <optional, the URL of a mirror of Ubuntu to override the
 #                    default ones in /etc/apt/sources.list>
 #                    default is empty, and no mirror is used.
+#  PIP_MIRROR:       <optional, the URL of a PIP mirror>
+#                    default is empty, and no mirror is used.
 #
 #  Parameters:
 #   parm1:  <optional, the name of the docker image to generate>
@@ -20,6 +22,7 @@ http_proxy=${http_proxy:-}
 DOCKER_IMG_NAME=${1:-"openbmc/ubuntu-robot-qemu"}
 DISTRO=${2:-"ubuntu:bionic"}
 UBUNTU_MIRROR=${UBUNTU_MIRROR:-""}
+PIP_MIRROR=${PIP_MIRROR:-""}
 
 # Determine our architecture, ppc64le or the other one
 if [ $(uname -m) == "ppc64le" ]; then
@@ -37,6 +40,16 @@ if [[ -n "${UBUNTU_MIRROR}" ]]; then
         echo \"deb ${UBUNTU_MIRROR} \$(. /etc/os-release && echo \$VERSION_CODENAME)-backports main restricted universe multiverse\" >> /etc/apt/sources.list"
 fi
 
+PIP_MIRROR_CMD=""
+if [[ -n "${PIP_MIRROR}" ]]; then
+    PIP_HOSTNAME=$(echo ${PIP_MIRROR} | awk -F[/:] '{print $4}')
+    PIP_MIRROR_CMD="RUN mkdir -p \${HOME}/.pip && \
+        echo \"[global]\" > \${HOME}/.pip/pip.conf && \
+        echo \"index-url=${PIP_MIRROR}\" >> \${HOME}/.pip/pip.conf &&\
+        echo \"[install]\" >> \${HOME}/.pip/pip.conf &&\
+        echo \"trusted-host=${PIP_HOSTNAME}\" >> \${HOME}/.pip/pip.conf"
+fi
+
 ################################# docker img # #################################
 # Create docker image that can run QEMU and Robot Tests
 Dockerfile=$(cat << EOF
@@ -44,7 +57,7 @@ FROM ${DOCKER_BASE}${DISTRO}
 
 ${MIRROR}
 
-ENV DEBIAN_FRONTEND noninteractive
+ARG DEBIAN_FRONTEND=noninteractive
 
 RUN apt-get update && apt-get install -yy \
     debianutils \
@@ -95,6 +108,10 @@ RUN apt-get update -qqy \
   && mv /opt/firefox /opt/firefox-72.0 \
   && ln -fs /opt/firefox-72.0/firefox /usr/bin/firefox
 
+ENV HOME ${HOME}
+
+${PIP_MIRROR_CMD}
+
 RUN pip3 install \
     tox \
     requests \
@@ -130,7 +147,6 @@ RUN grep -q ${GROUPS} /etc/group || groupadd -g ${GROUPS} ${USER}
 RUN grep -q ${UID} /etc/passwd || useradd -d ${HOME} -m -u ${UID} -g ${GROUPS} \
                     ${USER}
 USER ${USER}
-ENV HOME ${HOME}
 RUN /bin/bash
 EOF
 )
