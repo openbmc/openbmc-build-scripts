@@ -15,7 +15,7 @@
 set -xeuo pipefail
 
 DOCKER_IMG_NAME=${DOCKER_IMG_NAME:-"openbmc/ubuntu-unit-test"}
-DISTRO=${DISTRO:-"ubuntu:eoan"}
+DISTRO=${DISTRO:-"ubuntu:focal"}
 BRANCH=${BRANCH:-"master"}
 
 # Determine the architecture
@@ -181,8 +181,8 @@ RUN sed -i '/-\(backports\|security\) /d' /etc/apt/sources.list.d/debug.list
 RUN cat /etc/apt/sources.list.d/debug.list
 
 RUN apt-get update && apt-get install -yy \
-    gcc-9 \
-    g++-9 \
+    gcc-10 \
+    g++-10 \
     libc6-dbg \
     libc6-dev \
     libtool \
@@ -239,11 +239,11 @@ RUN apt-get update && apt-get install -yy \
     device-tree-compiler \
     cppcheck
 
-RUN update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-9 900 \
-  --slave /usr/bin/g++ g++ /usr/bin/g++-9 \
-  --slave /usr/bin/gcov gcov /usr/bin/gcov-9 \
-  --slave /usr/bin/gcov-dump gcov-dump /usr/bin/gcov-dump-9 \
-  --slave /usr/bin/gcov-tool gcov-tool /usr/bin/gcov-tool-9
+RUN update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-10 1000 \
+  --slave /usr/bin/g++ g++ /usr/bin/g++-10 \
+  --slave /usr/bin/gcov gcov /usr/bin/gcov-10 \
+  --slave /usr/bin/gcov-dump gcov-dump /usr/bin/gcov-dump-10 \
+  --slave /usr/bin/gcov-tool gcov-tool /usr/bin/gcov-tool-10
 
 RUN pip3 install inflection
 RUN pip3 install pycodestyle
