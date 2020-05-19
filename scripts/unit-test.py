@@ -998,7 +998,6 @@ def find_file(filename, basedir):
 if __name__ == '__main__':
     # CONFIGURE_FLAGS = [GIT REPO]:[CONFIGURE FLAGS]
     CONFIGURE_FLAGS = {
-        'sdbusplus': ['--enable-transaction'],
         'phosphor-logging':
         ['--enable-metadata-processing', '--enable-openpower-pel-extension',
          'YAML_DIR=/usr/local/share/phosphor-dbus-yaml/yaml']
