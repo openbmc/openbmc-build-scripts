@@ -216,10 +216,10 @@ RUN apt-get update && apt-get install -yy \
     git \
     dbus \
     iputils-ping \
-    clang-8 \
-    clang-format-8 \
-    clang-tidy-8 \
-    clang-tools-8 \
+    clang-10 \
+    clang-format-10 \
+    clang-tidy-10 \
+    clang-tools-10 \
     npm \
     iproute2 \
     libnl-3-dev \
@@ -251,10 +251,6 @@ RUN pip3 install inflection
 RUN pip3 install pycodestyle
 RUN pip3 install jsonschema
 RUN pip3 install meson==0.53.2
-
-# run-clang-tidy-8.py has not moved to python3 yet however it
-# supports it for our needs to just switch it over
-RUN sed -i '1s/python$/python3/' /usr/bin/run-clang-tidy-8.py
 
 FROM openbmc-base as openbmc-lcov
 RUN curl -L https://github.com/linux-test-project/lcov/archive/${PKG_REV['lcov']}.tar.gz | tar -xz && \

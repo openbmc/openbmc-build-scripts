@@ -730,7 +730,7 @@ class CMake(BuildSystem):
             return
 
         if os.path.isfile('.clang-tidy'):
-            check_call_cmd('run-clang-tidy-8.py', '-p', '.')
+            check_call_cmd('run-clang-tidy-10.py', '-p', '.')
         maybe_make_valgrind()
         maybe_make_coverage()
         run_cppcheck()
@@ -893,7 +893,7 @@ class Meson(BuildSystem):
 
         # Run clang-tidy only if the project has a configuration
         if os.path.isfile('.clang-tidy'):
-            check_call_cmd('run-clang-tidy-8.py', '-p',
+            check_call_cmd('run-clang-tidy-10.py', '-p',
                            'build')
         # Run the basic clang static analyzer otherwise
         else:
