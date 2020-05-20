@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 """
 This script launches a dbus session, sets the DBUS_SESSION_BUS_ADDRESS
@@ -46,7 +46,7 @@ def launch_session_dbus(dbus_dir, dbus_config_file):
     command = ['dbus-daemon', '--config-file=%s' % dbus_local_conf, \
                '--print-address']
     out = check_output(command).splitlines()
-    os.environ['DBUS_SESSION_BUS_ADDRESS'] = out[0]
+    os.environ['DBUS_SESSION_BUS_ADDRESS'] = out[0].decode("utf-8")
     os.environ['DBUS_STARTER_BUS_TYPE'] = 'session'
 
 def dbus_cleanup(dbus_dir):
