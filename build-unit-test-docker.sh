@@ -11,12 +11,16 @@
 #                     repositories>
 #                     default is master, which will be used if input branch not
 #                     provided or not found
+#   UBUNTU_MIRROR:    <optional, the URL of a mirror of Ubuntu to override the
+#                     default ones in /etc/apt/sources.list>
+#                     default is empty, and no mirror is used.
 
 set -xeuo pipefail
 
 DOCKER_IMG_NAME=${DOCKER_IMG_NAME:-"openbmc/ubuntu-unit-test"}
 DISTRO=${DISTRO:-"ubuntu:focal"}
 BRANCH=${BRANCH:-"master"}
+UBUNTU_MIRROR=${UBUNTU_MIRROR:-""}
 
 # Determine the architecture
 ARCH=$(uname -m)
@@ -161,8 +165,21 @@ done
 ################################# docker img # #################################
 # Create docker image that can run package unit tests
 if [[ "${DISTRO}" == "ubuntu"* ]]; then
+
+MIRROR=""
+if [[ -n "${UBUNTU_MIRROR}" ]]; then
+    MIRROR="RUN echo \"deb ${UBUNTU_MIRROR} \$(. /etc/os-release && echo \$VERSION_CODENAME) main restricted universe multiverse\" > /etc/apt/sources.list && \
+        echo \"deb ${UBUNTU_MIRROR} \$(. /etc/os-release && echo \$VERSION_CODENAME)-updates main restricted universe multiverse\" >> /etc/apt/sources.list && \
+        echo \"deb ${UBUNTU_MIRROR} \$(. /etc/os-release && echo \$VERSION_CODENAME)-security main restricted universe multiverse\" >> /etc/apt/sources.list && \
+        echo \"deb ${UBUNTU_MIRROR} \$(. /etc/os-release && echo \$VERSION_CODENAME)-proposed main restricted universe multiverse\" >> /etc/apt/sources.list && \
+        echo \"deb ${UBUNTU_MIRROR} \$(. /etc/os-release && echo \$VERSION_CODENAME)-backports main restricted universe multiverse\" >> /etc/apt/sources.list"
+
+fi
+
 Dockerfile=$(cat << EOF
 FROM ${DOCKER_BASE}${DISTRO} as openbmc-base
+
+${MIRROR}
 
 ENV DEBIAN_FRONTEND noninteractive
 
@@ -482,5 +499,11 @@ EOF
 fi
 ################################# docker img # #################################
 
+http_proxy=${http_proxy:-}
+proxy_args=""
+if [[ -n "${http_proxy}" ]]; then
+  proxy_args="--build-arg http_proxy=${http_proxy} --build-arg https_proxy=${http_proxy}"
+fi
+
 # Build above image
-docker build --network=host -t ${DOCKER_IMG_NAME} - <<< "${Dockerfile}"
+docker build ${proxy_args} --network=host -t ${DOCKER_IMG_NAME} - <<< "${Dockerfile}"
