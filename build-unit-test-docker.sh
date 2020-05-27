@@ -182,7 +182,7 @@ RUN sed -i '/-\(backports\|security\) /d' /etc/apt/sources.list.d/debug.list
 
 RUN cat /etc/apt/sources.list.d/debug.list
 
-RUN apt-get update && apt-get install -yy \
+RUN apt-get update && apt-get dist-upgrade -yy && apt-get install -yy \
     gcc-10 \
     g++-10 \
     libc6-dbg \
