@@ -386,12 +386,14 @@ ninja -C build && \
 ninja -C build install
 
 FROM openbmc-base as openbmc-sdbusplus
+COPY --from=openbmc-googletest ${PREFIX} ${PREFIX}
 RUN curl -L https://github.com/openbmc/sdbusplus/archive/${PKG_REV['openbmc/sdbusplus']}.tar.gz | tar -xz && \
 cd sdbusplus-* && \
-./bootstrap.sh && \
-./configure ${CONFIGURE_FLAGS[@]} --disable-tests && \
-make -j$(nproc) && \
-make install
+meson build -Dprefix=${PREFIX} && \
+ninja -C build && \
+ninja -C build install && \
+cd tools && \
+./setup.py install --root=/ --prefix=${PREFIX}
 
 FROM openbmc-base as openbmc-sdeventplus
 COPY --from=openbmc-function2 ${PREFIX} ${PREFIX}
