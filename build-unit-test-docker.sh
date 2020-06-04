@@ -139,6 +139,9 @@ CMAKE_FLAGS=(
   "-DBUILD_SHARED_LIBS=ON"
   "-DCMAKE_INSTALL_PREFIX:PATH=${PREFIX}"
 )
+MESON_FLAGS=(
+  "-Dprefix=${PREFIX}"
+)
 
 stagename()
 {
@@ -383,7 +386,7 @@ COPY --from=openbmc-fmt ${PREFIX} ${PREFIX}
 COPY --from=openbmc-span-lite ${PREFIX} ${PREFIX}
 RUN curl -L https://github.com/openbmc/stdplus/archive/${PKG_REV['openbmc/stdplus']}.tar.gz | tar -xz && \
 cd stdplus-* && \
-meson build -Dprefix=${PREFIX} -Dtests=disabled -Dexamples=false && \
+meson build ${MESON_FLAGS[@]} -Dtests=disabled -Dexamples=false && \
 ninja -C build && \
 ninja -C build install
 
@@ -391,7 +394,7 @@ FROM openbmc-base as openbmc-sdbusplus
 COPY --from=openbmc-googletest ${PREFIX} ${PREFIX}
 RUN curl -L https://github.com/openbmc/sdbusplus/archive/${PKG_REV['openbmc/sdbusplus']}.tar.gz | tar -xz && \
 cd sdbusplus-* && \
-meson build -Dprefix=${PREFIX} && \
+meson build ${MESON_FLAGS[@]} && \
 ninja -C build && \
 ninja -C build install && \
 cd tools && \
@@ -402,7 +405,7 @@ COPY --from=openbmc-function2 ${PREFIX} ${PREFIX}
 COPY --from=openbmc-stdplus ${PREFIX} ${PREFIX}
 RUN curl -L https://github.com/openbmc/sdeventplus/archive/${PKG_REV['openbmc/sdeventplus']}.tar.gz | tar -xz && \
 cd sdeventplus-* && \
-meson build -Dprefix=${PREFIX} -Dtests=disabled -Dexamples=false && \
+meson build ${MESON_FLAGS[@]} -Dtests=disabled -Dexamples=false && \
 ninja -C build && \
 ninja -C build install
 
@@ -410,7 +413,7 @@ FROM openbmc-base as openbmc-gpioplus
 COPY --from=openbmc-stdplus ${PREFIX} ${PREFIX}
 RUN curl -L https://github.com/openbmc/gpioplus/archive/${PKG_REV['openbmc/gpioplus']}.tar.gz | tar -xz && \
 cd gpioplus-* && \
-meson build -Dprefix=${PREFIX} -Dtests=disabled -Dexamples=false && \
+meson build ${MESON_FLAGS[@]} -Dtests=disabled -Dexamples=false && \
 ninja -C build && \
 ninja -C build install
 
@@ -477,7 +480,7 @@ COPY --from=openbmc-json ${PREFIX} ${PREFIX}
 COPY --from=openbmc-CLI11 ${PREFIX} ${PREFIX}
 RUN curl -L https://github.com/openbmc/pldm/archive/${PKG_REV['openbmc/pldm']}.tar.gz | tar -xz && \
 cd pldm-* && \
-meson build -Dprefix=${PREFIX} -Dtests=disabled && \
+meson build ${MESON_FLAGS[@]} -Dtests=disabled && \
 ninja -C build && \
 ninja -C build install
 
