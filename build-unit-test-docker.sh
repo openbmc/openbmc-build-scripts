@@ -393,11 +393,10 @@ ninja -C build && \
 ninja -C build install
 
 FROM openbmc-base as openbmc-sdbusplus
-COPY --from=openbmc-googletest ${PREFIX} ${PREFIX}
 RUN curl -L https://github.com/openbmc/sdbusplus/archive/${PKG_REV['openbmc/sdbusplus']}.tar.gz | tar -xz && \
 cd sdbusplus-* && \
 cd tools && ./setup.py install --root=/ --prefix=${PREFIX} && \
-cd .. && meson build ${MESON_FLAGS[@]} && \
+cd .. && meson build ${MESON_FLAGS[@]} -Dtests=disabled -Dexamples=disabled && \
 ninja -C build && \
 ninja -C build install
 
