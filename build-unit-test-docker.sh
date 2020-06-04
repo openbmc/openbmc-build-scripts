@@ -97,9 +97,9 @@ wait
 declare -A PKG_REV=(
   [boost]=1.73.0
   [cereal]=v1.2.2
-  [catch2]=v2.11.1
+  [catch2]=v2.12.2
   [CLI11]=v1.9.0
-  [fmt]=6.1.2
+  [fmt]=6.2.1
   # Snapshot from 2020-01-03
   [function2]=3a0746bf5f601dfed05330aefcb6854354fce07d
   # Snapshot from 2020-02-13
