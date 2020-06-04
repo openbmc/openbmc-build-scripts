@@ -8,6 +8,7 @@ prior to executing its unit tests.
 """
 
 from git import Repo
+from mesonbuild import optinterpreter
 from urllib.parse import urljoin
 from subprocess import check_call, call, CalledProcessError
 import os
@@ -770,14 +771,9 @@ class Meson(BuildSystem):
         Parameters:
         options_file        The file containing options
         """
-        options_contents = ''
-        with open(options_file, "rt") as f:
-            options_contents += f.read()
-        options = set()
-        pattern = 'option\\(\\s*\'([^\']*)\''
-        for match in re.compile(pattern).finditer(options_contents):
-            options.add(match.group(1))
-        return options
+        oi = optinterpreter.OptionInterpreter('')
+        oi.process(options_file)
+        return oi.options
 
     def _configure_feature(self, val):
         """
@@ -801,7 +797,7 @@ class Meson(BuildSystem):
 
     def configure(self, build_for_testing):
         self.build_for_testing = build_for_testing
-        meson_options = set()
+        meson_options = {}
         if os.path.exists("meson_options.txt"):
             meson_options = self._parse_options("meson_options.txt")
         meson_flags = [
