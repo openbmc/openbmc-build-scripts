@@ -140,6 +140,7 @@ CMAKE_FLAGS=(
   "-DCMAKE_INSTALL_PREFIX:PATH=${PREFIX}"
 )
 MESON_FLAGS=(
+  "--wrap-mode=nodownload"
   "-Dprefix=${PREFIX}"
 )
 
