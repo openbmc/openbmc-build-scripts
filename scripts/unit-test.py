@@ -8,7 +8,7 @@ prior to executing its unit tests.
 """
 
 from git import Repo
-from mesonbuild import optinterpreter
+from mesonbuild import coredata, optinterpreter
 from urllib.parse import urljoin
 from subprocess import check_call, call, CalledProcessError
 import os
@@ -775,6 +775,23 @@ class Meson(BuildSystem):
         oi.process(options_file)
         return oi.options
 
+    def _configure_boolean(self, val):
+        """
+        Returns the meson flag which signifies the value
+
+        True is true which requires the boolean.
+        False is false which disables the boolean.
+
+        Parameters:
+        val                 The value being converted
+        """
+        if val is True:
+            return 'true'
+        elif val is False:
+            return 'false'
+        else:
+            raise Exception("Bad meson boolean value")
+
     def _configure_feature(self, val):
         """
         Returns the meson flag which signifies the value
@@ -827,10 +844,9 @@ class Meson(BuildSystem):
         else:
             meson_flags.append('--buildtype=debugoptimized')
         if 'tests' in meson_options:
-            flag_args = self._configure_feature(build_for_testing)
-            meson_flags.append('-Dtests=' + flag_args)
+            meson_flags.append(self._configure_option(meson_options, 'tests', build_for_testing))
         if 'examples' in meson_options:
-            meson_flags.append('-Dexamples=' + str(build_for_testing).lower())
+            meson_flags.append(self._configure_option(meson_options, 'examples', build_for_testing))
         if MESON_FLAGS.get(self.package) is not None:
             meson_flags.extend(MESON_FLAGS.get(self.package))
         try:
