@@ -8,6 +8,7 @@ prior to executing its unit tests.
 """
 
 from git import Repo
+from mesonbuild import optinterpreter
 from urllib.parse import urljoin
 from subprocess import check_call, call, CalledProcessError
 import os
@@ -770,14 +771,9 @@ class Meson(BuildSystem):
         Parameters:
         options_file        The file containing options
         """
-        options_contents = ''
-        with open(options_file, "rt") as f:
-            options_contents += f.read()
-        options = set()
-        pattern = 'option\\(\\s*\'([^\']*)\''
-        for match in re.compile(pattern).finditer(options_contents):
-            options.add(match.group(1))
-        return options
+        oi = optinterpreter.OptionInterpreter('')
+        oi.process(options_file)
+        return oi.options
 
     def _configure_feature(self, val):
         """
@@ -799,9 +795,26 @@ class Meson(BuildSystem):
         else:
             raise Exception("Bad meson feature value")
 
+    def _configure_option(self, opts, key, val):
+        """
+        Returns the meson flag which signifies the value
+        based on the type of the opt
+
+        Parameters:
+        opt                 The meson option which we are setting
+        val                 The value being converted
+        """
+        if isinstance(opts[key], coredata.UserBooleanOption):
+            str_val = self._configure_boolean(val)
+        elif isinstance(opts[key], coredata.UserFeatureOption):
+            str_val = self._configure_feature(val)
+        else:
+            raise Exception('Unknown meson option type')
+        return "-D{}={}".format(key, str_val)
+
     def configure(self, build_for_testing):
         self.build_for_testing = build_for_testing
-        meson_options = set()
+        meson_options = {}
         if os.path.exists("meson_options.txt"):
             meson_options = self._parse_options("meson_options.txt")
         meson_flags = [
