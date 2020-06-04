@@ -379,6 +379,8 @@ make -j$(nproc) && \
 make install
 
 FROM openbmc-base as openbmc-stdplus
+COPY --from=openbmc-fmt ${PREFIX} ${PREFIX}
+COPY --from=openbmc-span-lite ${PREFIX} ${PREFIX}
 RUN curl -L https://github.com/openbmc/stdplus/archive/${PKG_REV['openbmc/stdplus']}.tar.gz | tar -xz && \
 cd stdplus-* && \
 meson build -Dprefix=${PREFIX} -Dtests=disabled -Dexamples=false && \
