@@ -967,7 +967,7 @@ class Meson(BuildSystem):
 
 class Package(object):
     def __init__(self, name=None, path=None):
-        self.supported = [Autotools, Meson, CMake]
+        self.supported = [Meson, Autotools, CMake]
         self.name = name
         self.path = path
         self.test_only = False
