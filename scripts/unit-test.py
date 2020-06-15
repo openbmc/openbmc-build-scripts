@@ -19,6 +19,7 @@ import re
 import subprocess
 import shutil
 import platform
+import traceback
 
 
 class DepTree():
@@ -1025,145 +1026,149 @@ def find_file(filename, basedir):
 
 
 if __name__ == '__main__':
-    # CONFIGURE_FLAGS = [GIT REPO]:[CONFIGURE FLAGS]
-    CONFIGURE_FLAGS = {
-        'phosphor-logging':
-        ['--enable-metadata-processing', '--enable-openpower-pel-extension',
-         'YAML_DIR=/usr/local/share/phosphor-dbus-yaml/yaml']
-    }
+    try:
+        # CONFIGURE_FLAGS = [GIT REPO]:[CONFIGURE FLAGS]
+        CONFIGURE_FLAGS = {
+            'phosphor-logging':
+            ['--enable-metadata-processing', '--enable-openpower-pel-extension',
+             'YAML_DIR=/usr/local/share/phosphor-dbus-yaml/yaml']
+        }
 
-    # MESON_FLAGS = [GIT REPO]:[MESON FLAGS]
-    MESON_FLAGS = {
-    }
+        # MESON_FLAGS = [GIT REPO]:[MESON FLAGS]
+        MESON_FLAGS = {
+        }
 
-    # DEPENDENCIES = [MACRO]:[library/header]:[GIT REPO]
-    DEPENDENCIES = {
-        'AC_CHECK_LIB': {'mapper': 'phosphor-objmgr'},
-        'AC_CHECK_HEADER': {
-            'host-ipmid': 'phosphor-host-ipmid',
-            'blobs-ipmid': 'phosphor-ipmi-blobs',
-            'sdbusplus': 'sdbusplus',
-            'sdeventplus': 'sdeventplus',
-            'stdplus': 'stdplus',
-            'gpioplus': 'gpioplus',
-            'phosphor-logging/log.hpp': 'phosphor-logging',
-        },
-        'AC_PATH_PROG': {'sdbus++': 'sdbusplus'},
-        'PKG_CHECK_MODULES': {
-            'phosphor-dbus-interfaces': 'phosphor-dbus-interfaces',
-            'openpower-dbus-interfaces': 'openpower-dbus-interfaces',
-            'ibm-dbus-interfaces': 'ibm-dbus-interfaces',
-            'libipmid': 'phosphor-host-ipmid',
-            'libipmid-host': 'phosphor-host-ipmid',
-            'sdbusplus': 'sdbusplus',
-            'sdeventplus': 'sdeventplus',
-            'stdplus': 'stdplus',
-            'gpioplus': 'gpioplus',
-            'phosphor-logging': 'phosphor-logging',
-            'phosphor-snmp': 'phosphor-snmp',
-            'ipmiblob': 'ipmi-blob-tool',
-            'hei': 'openpower-libhei',
-        },
-    }
+        # DEPENDENCIES = [MACRO]:[library/header]:[GIT REPO]
+        DEPENDENCIES = {
+            'AC_CHECK_LIB': {'mapper': 'phosphor-objmgr'},
+            'AC_CHECK_HEADER': {
+                'host-ipmid': 'phosphor-host-ipmid',
+                'blobs-ipmid': 'phosphor-ipmi-blobs',
+                'sdbusplus': 'sdbusplus',
+                'sdeventplus': 'sdeventplus',
+                'stdplus': 'stdplus',
+                'gpioplus': 'gpioplus',
+                'phosphor-logging/log.hpp': 'phosphor-logging',
+            },
+            'AC_PATH_PROG': {'sdbus++': 'sdbusplus'},
+            'PKG_CHECK_MODULES': {
+                'phosphor-dbus-interfaces': 'phosphor-dbus-interfaces',
+                'openpower-dbus-interfaces': 'openpower-dbus-interfaces',
+                'ibm-dbus-interfaces': 'ibm-dbus-interfaces',
+                'libipmid': 'phosphor-host-ipmid',
+                'libipmid-host': 'phosphor-host-ipmid',
+                'sdbusplus': 'sdbusplus',
+                'sdeventplus': 'sdeventplus',
+                'stdplus': 'stdplus',
+                'gpioplus': 'gpioplus',
+                'phosphor-logging': 'phosphor-logging',
+                'phosphor-snmp': 'phosphor-snmp',
+                'ipmiblob': 'ipmi-blob-tool',
+                'hei': 'openpower-libhei',
+            },
+        }
 
-    # Offset into array of macro parameters MACRO(0, 1, ...N)
-    DEPENDENCIES_OFFSET = {
-        'AC_CHECK_LIB': 0,
-        'AC_CHECK_HEADER': 0,
-        'AC_PATH_PROG': 1,
-        'PKG_CHECK_MODULES': 1,
-    }
+        # Offset into array of macro parameters MACRO(0, 1, ...N)
+        DEPENDENCIES_OFFSET = {
+            'AC_CHECK_LIB': 0,
+            'AC_CHECK_HEADER': 0,
+            'AC_PATH_PROG': 1,
+            'PKG_CHECK_MODULES': 1,
+        }
 
-    # DEPENDENCIES_REGEX = [GIT REPO]:[REGEX STRING]
-    DEPENDENCIES_REGEX = {
-        'phosphor-logging': r'\S+-dbus-interfaces$'
-    }
+        # DEPENDENCIES_REGEX = [GIT REPO]:[REGEX STRING]
+        DEPENDENCIES_REGEX = {
+            'phosphor-logging': r'\S+-dbus-interfaces$'
+        }
 
-    # Set command line arguments
-    parser = argparse.ArgumentParser()
-    parser.add_argument("-w", "--workspace", dest="WORKSPACE", required=True,
-                        help="Workspace directory location(i.e. /home)")
-    parser.add_argument("-p", "--package", dest="PACKAGE", required=True,
-                        help="OpenBMC package to be unit tested")
-    parser.add_argument("-t", "--test-only", dest="TEST_ONLY",
-                        action="store_true", required=False, default=False,
-                        help="Only run test cases, no other validation")
-    parser.add_argument("-v", "--verbose", action="store_true",
-                        help="Print additional package status messages")
-    parser.add_argument("-r", "--repeat", help="Repeat tests N times",
-                        type=int, default=1)
-    parser.add_argument("-b", "--branch", dest="BRANCH", required=False,
-                        help="Branch to target for dependent repositories",
-                        default="master")
-    parser.add_argument("-n", "--noformat", dest="FORMAT",
-                        action="store_false", required=False,
-                        help="Whether or not to run format code")
-    args = parser.parse_args(sys.argv[1:])
-    WORKSPACE = args.WORKSPACE
-    UNIT_TEST_PKG = args.PACKAGE
-    TEST_ONLY = args.TEST_ONLY
-    BRANCH = args.BRANCH
-    FORMAT_CODE = args.FORMAT
-    if args.verbose:
-        def printline(*line):
-            for arg in line:
-                print(arg, end=' ')
-            print()
-    else:
-        def printline(*line):
-            pass
+        # Set command line arguments
+        parser = argparse.ArgumentParser()
+        parser.add_argument("-w", "--workspace", dest="WORKSPACE", required=True,
+                            help="Workspace directory location(i.e. /home)")
+        parser.add_argument("-p", "--package", dest="PACKAGE", required=True,
+                            help="OpenBMC package to be unit tested")
+        parser.add_argument("-t", "--test-only", dest="TEST_ONLY",
+                            action="store_true", required=False, default=False,
+                            help="Only run test cases, no other validation")
+        parser.add_argument("-v", "--verbose", action="store_true",
+                            help="Print additional package status messages")
+        parser.add_argument("-r", "--repeat", help="Repeat tests N times",
+                            type=int, default=1)
+        parser.add_argument("-b", "--branch", dest="BRANCH", required=False,
+                            help="Branch to target for dependent repositories",
+                            default="master")
+        parser.add_argument("-n", "--noformat", dest="FORMAT",
+                            action="store_false", required=False,
+                            help="Whether or not to run format code")
+        args = parser.parse_args(sys.argv[1:])
+        WORKSPACE = args.WORKSPACE
+        UNIT_TEST_PKG = args.PACKAGE
+        TEST_ONLY = args.TEST_ONLY
+        BRANCH = args.BRANCH
+        FORMAT_CODE = args.FORMAT
+        if args.verbose:
+            def printline(*line):
+                for arg in line:
+                    print(arg, end=' ')
+                print()
+        else:
+            def printline(*line):
+                pass
 
-    CODE_SCAN_DIR = WORKSPACE + "/" + UNIT_TEST_PKG
+        CODE_SCAN_DIR = WORKSPACE + "/" + UNIT_TEST_PKG
 
-    # First validate code formatting if repo has style formatting files.
-    # The format-code.sh checks for these files.
-    if FORMAT_CODE:
-        check_call_cmd("./format-code.sh", CODE_SCAN_DIR)
+        # First validate code formatting if repo has style formatting files.
+        # The format-code.sh checks for these files.
+        if FORMAT_CODE:
+            check_call_cmd("./format-code.sh", CODE_SCAN_DIR)
 
-    # Check if this repo has a supported make infrastructure
-    pkg = Package(UNIT_TEST_PKG, os.path.join(WORKSPACE, UNIT_TEST_PKG))
-    if not pkg.build_system():
-        print("No valid build system, exit")
-        sys.exit(0)
+        # Check if this repo has a supported make infrastructure
+        pkg = Package(UNIT_TEST_PKG, os.path.join(WORKSPACE, UNIT_TEST_PKG))
+        if not pkg.build_system():
+            print("No valid build system, exit")
+            sys.exit(0)
 
-    prev_umask = os.umask(000)
+        prev_umask = os.umask(000)
 
-    # Determine dependencies and add them
-    dep_added = dict()
-    dep_added[UNIT_TEST_PKG] = False
+        # Determine dependencies and add them
+        dep_added = dict()
+        dep_added[UNIT_TEST_PKG] = False
 
-    # Create dependency tree
-    dep_tree = DepTree(UNIT_TEST_PKG)
-    build_dep_tree(UNIT_TEST_PKG,
-                   os.path.join(WORKSPACE, UNIT_TEST_PKG),
-                   dep_added,
-                   dep_tree,
-                   BRANCH)
+        # Create dependency tree
+        dep_tree = DepTree(UNIT_TEST_PKG)
+        build_dep_tree(UNIT_TEST_PKG,
+                       os.path.join(WORKSPACE, UNIT_TEST_PKG),
+                       dep_added,
+                       dep_tree,
+                       BRANCH)
 
-    # Reorder Dependency Tree
-    for pkg_name, regex_str in DEPENDENCIES_REGEX.items():
-        dep_tree.ReorderDeps(pkg_name, regex_str)
-    if args.verbose:
-        dep_tree.PrintTree()
+        # Reorder Dependency Tree
+        for pkg_name, regex_str in DEPENDENCIES_REGEX.items():
+            dep_tree.ReorderDeps(pkg_name, regex_str)
+        if args.verbose:
+            dep_tree.PrintTree()
 
-    install_list = dep_tree.GetInstallList()
+        install_list = dep_tree.GetInstallList()
 
-    # We don't want to treat our package as a dependency
-    install_list.remove(UNIT_TEST_PKG)
+        # We don't want to treat our package as a dependency
+        install_list.remove(UNIT_TEST_PKG)
 
-    # Install reordered dependencies
-    for dep in install_list:
-        build_and_install(dep, False)
+        # Install reordered dependencies
+        for dep in install_list:
+            build_and_install(dep, False)
 
-    # Run package unit tests
-    build_and_install(UNIT_TEST_PKG, True)
+        # Run package unit tests
+        build_and_install(UNIT_TEST_PKG, True)
 
-    os.umask(prev_umask)
+        os.umask(prev_umask)
 
-    # Run any custom CI scripts the repo has, of which there can be
-    # multiple of and anywhere in the repository.
-    ci_scripts = find_file('run-ci.sh', os.path.join(WORKSPACE, UNIT_TEST_PKG))
-    if ci_scripts:
-        os.chdir(os.path.join(WORKSPACE, UNIT_TEST_PKG))
-        for ci_script in ci_scripts:
-            check_call_cmd('sh', ci_script)
+        # Run any custom CI scripts the repo has, of which there can be
+        # multiple of and anywhere in the repository.
+        ci_scripts = find_file('run-ci.sh', os.path.join(WORKSPACE, UNIT_TEST_PKG))
+        if ci_scripts:
+            os.chdir(os.path.join(WORKSPACE, UNIT_TEST_PKG))
+            for ci_script in ci_scripts:
+                check_call_cmd('sh', ci_script)
+    except Exception as e:
+        traceback.print_exc(file=sys.stdout)
+        os._exit(-1)
