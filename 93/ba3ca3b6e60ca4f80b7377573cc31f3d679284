@@ -1,0 +1,9 @@
+Code-Review+1: Lei YU <mine260309@gmail.com>
+Code-Review+2: Joel Stanley <joel@jms.id.au>
+Ok-To-Test+1: Jenkins <openbmc-ci-admin@ozlabs.org>
+Verified+1: Jenkins <openbmc-ci-admin@ozlabs.org>
+Submitted-by: Lei YU <mine260309@gmail.com>
+Submitted-at: Tue, 16 Jun 2020 02:15:42 +0000
+Reviewed-on: https://gerrit.openbmc-project.xyz/c/openbmc/openbmc-build-scripts/+/32029
+Project: openbmc/openbmc-build-scripts
+Branch: refs/heads/master
