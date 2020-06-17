@@ -15,6 +15,9 @@
 #                     Default: "~/{RandomNumber}"
 #  num_cpu            Number of cpu's to give bitbake, default is total amount
 #                     in system
+#  UBUNTU_MIRROR:     <optional, the URL of a mirror of Ubuntu to override the
+#                     default ones in /etc/apt/sources.list>
+#                     default is empty, and no mirror is used.
 #
 # Docker Image Build Variables:
 #  BITBAKE_OPTS       Set to "-c populate_sdk" or whatever other BitBake options
@@ -74,6 +77,7 @@ build_scripts_dir=${build_scripts_dir:-"$( cd "$( dirname "${BASH_SOURCE[0]}" )"
 http_proxy=${http_proxy:-}
 WORKSPACE=${WORKSPACE:-${HOME}/${RANDOM}${RANDOM}}
 num_cpu=${num_cpu:-$(nproc)}
+UBUNTU_MIRROR=${UBUNTU_MIRROR:-""}
 
 # Docker Image Build Variables:
 build_dir=${build_dir:-/tmp/openbmc}
@@ -92,6 +96,15 @@ xtrct_copy_timeout="300"
 
 bitbake_target="obmc-phosphor-image"
 PROXY=""
+
+MIRROR=""
+if [[ -n "${UBUNTU_MIRROR}" ]]; then
+    MIRROR="RUN echo \"deb ${UBUNTU_MIRROR} \$(. /etc/os-release && echo \$VERSION_CODENAME) main restricted universe multiverse\" > /etc/apt/sources.list && \
+        echo \"deb ${UBUNTU_MIRROR} \$(. /etc/os-release && echo \$VERSION_CODENAME)-updates main restricted universe multiverse\" >> /etc/apt/sources.list && \
+        echo \"deb ${UBUNTU_MIRROR} \$(. /etc/os-release && echo \$VERSION_CODENAME)-security main restricted universe multiverse\" >> /etc/apt/sources.list && \
+        echo \"deb ${UBUNTU_MIRROR} \$(. /etc/os-release && echo \$VERSION_CODENAME)-proposed main restricted universe multiverse\" >> /etc/apt/sources.list && \
+        echo \"deb ${UBUNTU_MIRROR} \$(. /etc/os-release && echo \$VERSION_CODENAME)-backports main restricted universe multiverse\" >> /etc/apt/sources.list"
+fi
 
 # Determine the architecture
 ARCH=$(uname -m)
@@ -261,6 +274,7 @@ elif [[ "${distro}" == ubuntu ]]; then
   FROM ${DOCKER_BASE}${distro}:${img_tag}
 
   ${PROXY}
+  ${MIRROR}
 
   ENV DEBIAN_FRONTEND noninteractive
 
