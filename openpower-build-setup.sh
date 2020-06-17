@@ -6,6 +6,13 @@
 #   target = palmetto|qemu|habanero|firestone|garrison
 #   distro = ubuntu|fedora
 #   WORKSPACE = Random Number by Default
+# Optional variables
+#   nice_priority = Set nice priotity for op-build command.
+#        Nice:
+#             Run with an adjusted niceness, which affects process
+#             scheduling. Nice values range from -20 (most favorable
+#             to the process) to 19 (least favorable to the process).
+#        Default: "", nice is not used if nice_priority is not set
 
 # Trace bash processing
 set -x
@@ -14,6 +21,7 @@ set -x
 target=${target:-palmetto}
 distro=${distro:-ubuntu}
 WORKSPACE=${WORKSPACE:-${HOME}/${RANDOM}${RANDOM}}
+nice_priority=${nice_priority:-}
 
 # Timestamp for job
 echo "Build started, $(date)"
@@ -164,7 +172,11 @@ cd ${WORKSPACE}/op-build
 op-build ${target}_defconfig
 
 # Kick off a build
-op-build
+if [[ -n "${nice_priority}" ]]; then
+    nice -${nice_priority} op-build
+else
+    op-build
+fi
 
 EOF_SCRIPT
 
