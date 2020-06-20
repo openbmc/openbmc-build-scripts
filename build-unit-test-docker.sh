@@ -100,6 +100,7 @@ declare -A PKG_REV=(
   [catch2]=v2.12.2
   [CLI11]=v1.9.0
   [fmt]=6.2.1
+  [mimetic]=0.9.8
   # Snapshot from 2020-01-03
   [function2]=3a0746bf5f601dfed05330aefcb6854354fce07d
   # Snapshot from 2020-02-13
@@ -282,6 +283,13 @@ make install
 FROM openbmc-base as openbmc-function2
 RUN mkdir ${PREFIX}/include/function2 && \
 curl -L -o ${PREFIX}/include/function2/function2.hpp https://raw.githubusercontent.com/Naios/function2/${PKG_REV['function2']}/include/function2/function2.hpp
+
+FROM openbmc-base as openbmc-mimetic
+RUN curl -L https://github.com/LadislavSopko/mimetic/archive/${PKG_REV['mimetic']}.tar.gz | tar -xz && \
+cd mimetic-* && \
+sh configure ${CONFIGURE_FLAGS[@]} && \
+make -j$(nproc) && \
+make install
 
 FROM openbmc-base as openbmc-googletest
 RUN curl -L https://github.com/google/googletest/archive/${PKG_REV['googletest']}.tar.gz | tar -xz && \
