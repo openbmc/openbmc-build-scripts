@@ -110,6 +110,8 @@ declare -A PKG_REV=(
   [json]=5cfa8a586ee1a656190491c1de20a82fb40fab5d
   # Snapshot from 2019-05-24
   [lcov]=75fbae1cfc5027f818a0bb865bf6f96fab3202da
+  # Snapshot from 2020-06-20
+  [mimetic]=50486af99b4f9b35522d7b3de40b6ce107505279
   # dev-5.0 2019-05-03
   [linux-headers]=8bf6567e77f7aa68975b7c9c6d044bba690bf327
   # Snapshot from 2019-09-03
@@ -282,6 +284,13 @@ make install
 FROM openbmc-base as openbmc-function2
 RUN mkdir ${PREFIX}/include/function2 && \
 curl -L -o ${PREFIX}/include/function2/function2.hpp https://raw.githubusercontent.com/Naios/function2/${PKG_REV['function2']}/include/function2/function2.hpp
+
+FROM openbmc-base as openbmc-mimetic
+RUN curl -L http://www.codesink.org/download/mimetic-0.9.8.tar.gz | tar -xz && \
+cd mimetic-* && \
+./configure ${CONFIGURE_FLAGS[@]} && \
+make -j$(nproc) && \
+make install
 
 FROM openbmc-base as openbmc-googletest
 RUN curl -L https://github.com/google/googletest/archive/${PKG_REV['googletest']}.tar.gz | tar -xz && \
