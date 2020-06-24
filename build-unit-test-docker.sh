@@ -260,7 +260,8 @@ RUN apt-get update && apt-get dist-upgrade -yy && apt-get install -yy \
     libgpiod-dev \
     device-tree-compiler \
     cppcheck \
-    libpciaccess-dev
+    libpciaccess-dev \
+	libmimetic
 
 RUN update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-10 1000 \
   --slave /usr/bin/g++ g++ /usr/bin/g++-10 \
