@@ -57,7 +57,6 @@ HEAD_PKGS=(
   openbmc/gpioplus
   openbmc/phosphor-logging
   openbmc/phosphor-dbus-interfaces
-  openbmc/openpower-dbus-interfaces
   open-power/pdbg
   openbmc/pldm
 )
@@ -427,22 +426,11 @@ cd phosphor-dbus-interfaces-* && \
 make -j$(nproc) && \
 make install
 
-FROM openbmc-base as openbmc-openpower-dbus-interfaces
-COPY --from=openbmc-sdbusplus ${PREFIX} ${PREFIX}
-COPY --from=openbmc-phosphor-dbus-interfaces ${PREFIX} ${PREFIX}
-RUN curl -L https://github.com/openbmc/openpower-dbus-interfaces/archive/${PKG_REV['openbmc/openpower-dbus-interfaces']}.tar.gz | tar -xz && \
-cd openpower-dbus-interfaces-* && \
-./bootstrap.sh && \
-./configure ${CONFIGURE_FLAGS[@]} && \
-make -j$(nproc) && \
-make install
-
 FROM openbmc-base as openbmc-phosphor-logging
 COPY --from=openbmc-cereal ${PREFIX} ${PREFIX}
 COPY --from=openbmc-sdbusplus ${PREFIX} ${PREFIX}
 COPY --from=openbmc-sdeventplus ${PREFIX} ${PREFIX}
 COPY --from=openbmc-phosphor-dbus-interfaces ${PREFIX} ${PREFIX}
-COPY --from=openbmc-openpower-dbus-interfaces ${PREFIX} ${PREFIX}
 COPY --from=openbmc-fifo_map ${PREFIX} ${PREFIX}
 RUN curl -L https://github.com/openbmc/phosphor-logging/archive/${PKG_REV['openbmc/phosphor-logging']}.tar.gz | tar -xz && \
 cd phosphor-logging-* && \
