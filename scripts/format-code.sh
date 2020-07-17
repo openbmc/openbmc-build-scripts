@@ -24,6 +24,14 @@ if [[ -f "setup.cfg" ]]; then
   fi
 fi
 
+if [[ -f ".shellcheck" ]]; then
+  shell_scripts="$(git ls-files | xargs -n1 file -0 | \
+                   grep -a "shell script" | cut -d '' -f 1)"
+  for script in $shell_scripts; do
+    shellcheck -x "$script"
+  done
+fi
+
 # Allow called scripts to know which clang format we are using
 export CLANG_FORMAT="clang-format-10"
 IGNORE_FILE=".clang-ignore"
