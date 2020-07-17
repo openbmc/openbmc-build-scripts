@@ -239,6 +239,7 @@ RUN apt-get update && apt-get dist-upgrade -yy && apt-get install -yy \
     clang-format-10 \
     clang-tidy-10 \
     clang-tools-10 \
+    shellcheck \
     npm \
     iproute2 \
     libnl-3-dev \
