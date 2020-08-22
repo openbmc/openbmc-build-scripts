@@ -375,7 +375,7 @@ def run_cppcheck():
 
     # http://cppcheck.sourceforge.net/manual.pdf
     params = ['cppcheck', '-j', str(multiprocessing.cpu_count()),
-              '--enable=all', '--file-list=-']
+              '--enable=all', '--library=googletest', '--file-list=-']
 
     cppcheck_process = subprocess.Popen(
         params,
