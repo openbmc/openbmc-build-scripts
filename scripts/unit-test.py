@@ -864,7 +864,9 @@ class Meson(BuildSystem):
 
     def test(self):
         try:
-            check_call_cmd('meson', 'test', '-C', 'build')
+            test_args = ('--repeat', str(args.repeat), '-C', 'build')
+            check_call_cmd('meson', 'test', *test_args)
+
         except CalledProcessError:
             for root, _, files in os.walk(os.getcwd()):
                 if 'testlog.txt' not in files:
