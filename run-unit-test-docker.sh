@@ -90,9 +90,14 @@ export DISTRO
 export BRANCH
 ./build-unit-test-docker.sh
 
+# Allow the user to pass options through to unit-test.py:
+#   EXTRA_UNIT_TEST_ARGS="-r 100" ...
+EXTRA_UNIT_TEST_ARGS="${EXTRA_UNIT_TEST_ARGS:+,${EXTRA_UNIT_TEST_ARGS/ /,}}"
+
 # Unit test and parameters
 UNIT_TEST="${DOCKER_WORKDIR}/${UNIT_TEST_PY},-w,${DOCKER_WORKDIR},\
--p,${UNIT_TEST_PKG},-b,$BRANCH,-v${TEST_ONLY:+,-t}${NO_FORMAT_CODE:+,-n}"
+-p,${UNIT_TEST_PKG},-b,$BRANCH,-v${TEST_ONLY:+,-t}${NO_FORMAT_CODE:+,-n}\
+${EXTRA_UNIT_TEST_ARGS}"
 
 # Run the docker unit test container with the unit test execution script
 echo "Executing docker image"
