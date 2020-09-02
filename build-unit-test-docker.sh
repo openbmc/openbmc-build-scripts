@@ -273,6 +273,7 @@ RUN pip3 install inflection
 RUN pip3 install pycodestyle
 RUN pip3 install jsonschema
 RUN pip3 install meson==0.54.3
+RUN pip3 install protobuf
 
 FROM openbmc-base as openbmc-lcov
 RUN curl -L https://github.com/linux-test-project/lcov/archive/${PKG_REV['lcov']}.tar.gz | tar -xz && \
