@@ -53,6 +53,9 @@
 #  obmc_dir           Path of the OpenBMC repo directory used as a reference
 #                     for the build inside the container.
 #                     Default: "${WORKSPACE}/openbmc"
+#  ssc_dir            Path of the OpenBMC shared directory that contains the
+#                     downloads dir and the sstate dir.
+#                     Default: "${HOME}"
 #  xtrct_small_copy_dir
 #                     Directory within build_dir that should be copied to
 #                     xtrct_path. The directory and all parents up to, but not
@@ -89,7 +92,7 @@ nice_priority=${nice_priority:-}
 
 # Deployment variables
 obmc_dir=${obmc_dir:-${WORKSPACE}/openbmc}
-ssc_dir=${HOME}
+ssc_dir=${ssc_dir:-${HOME}}
 xtrct_small_copy_dir=${xtrct_small_copy_dir:-deploy/images}
 xtrct_path="${obmc_dir}/build/tmp"
 xtrct_copy_timeout="300"
