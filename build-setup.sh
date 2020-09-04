@@ -227,12 +227,6 @@ if [[ "${distro}" == fedora ]];then
 
   ${PROXY}
 
-  # Set the locale
-  RUN locale-gen en_US.UTF-8
-  ENV LANG en_US.UTF-8
-  ENV LANGUAGE en_US:en
-  ENV LC_ALL en_US.UTF-8
-
   RUN dnf --refresh install -y \
       bzip2 \
       chrpath \
@@ -256,7 +250,15 @@ if [[ "${distro}" == fedora ]];then
       texinfo \
       wget \
       which \
-      iputils-ping
+      file \
+      hostname \
+      rpcgen \
+      glibc-langpack-en \
+      glibc-locale-source
+
+  # Set the locale
+  ENV LANG=en_US.utf8
+  RUN localedef -f UTF-8 -i en_US en_US.UTF-8
 
   RUN grep -q ${GROUPS} /etc/group || groupadd -g ${GROUPS} ${USER}
   RUN grep -q ${UID} /etc/passwd || useradd -d ${HOME} -m -u ${UID} -g ${GROUPS} ${USER}
