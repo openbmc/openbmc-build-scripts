@@ -25,7 +25,7 @@
 #                     Default: "", no options set
 #  build_dir          Path where the actual BitBake build occurs inside the
 #                     container, path cannot be located on network storage.
-#                     Default: "/tmp/openbmc"
+#                     Default: "$WORKSPACE/openbmc"
 #  distro             The distro used as the base image for the build image:
 #                     fedora|ubuntu
 #                     Default: "ubuntu"
@@ -80,7 +80,7 @@ num_cpu=${num_cpu:-$(nproc)}
 UBUNTU_MIRROR=${UBUNTU_MIRROR:-""}
 
 # Docker Image Build Variables:
-build_dir=${build_dir:-/tmp/openbmc}
+build_dir=${build_dir:-${WORKSPACE}/openbmc}
 distro=${distro:-ubuntu}
 img_tag=${img_tag:-latest}
 target=${target:-qemu}
