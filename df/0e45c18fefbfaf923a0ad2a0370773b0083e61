@@ -1,0 +1,10 @@
+Ok-To-Test+1: OpenBMC CI <openbmcbump-ci@yahoo.com>
+Verified+1: OpenBMC CI <openbmcbump-ci@yahoo.com>
+Code-Review+1: Matthew Barth <msbarth@linux.ibm.com>
+Code-Review+1: John Wang <wangzhiqiang.bj@bytedance.com>
+Code-Review+2: Andrew Geissler <geissonator@yahoo.com>
+Submitted-by: Andrew Geissler <geissonator@yahoo.com>
+Submitted-at: Tue, 08 Sep 2020 12:52:23 +0000
+Reviewed-on: https://gerrit.openbmc-project.xyz/c/openbmc/openbmc-build-scripts/+/36192
+Project: openbmc/openbmc-build-scripts
+Branch: refs/heads/master
