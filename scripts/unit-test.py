@@ -1036,6 +1036,8 @@ if __name__ == '__main__':
 
     # MESON_FLAGS = [GIT REPO]:[MESON FLAGS]
     MESON_FLAGS = {
+        'phosphor-dbus-interfaces':
+        ['-Ddata_com_ibm=true', '-Ddata_org_open_power=true']
     }
 
     # DEPENDENCIES = [MACRO]:[library/header]:[GIT REPO]
