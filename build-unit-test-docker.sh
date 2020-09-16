@@ -423,10 +423,9 @@ FROM openbmc-base as openbmc-phosphor-dbus-interfaces
 COPY --from=openbmc-sdbusplus ${PREFIX} ${PREFIX}
 RUN curl -L https://github.com/openbmc/phosphor-dbus-interfaces/archive/${PKG_REV['openbmc/phosphor-dbus-interfaces']}.tar.gz | tar -xz && \
 cd phosphor-dbus-interfaces-* && \
-./bootstrap.sh && \
-./configure ${CONFIGURE_FLAGS[@]} --enable-openpower-dbus-interfaces --enable-ibm-dbus-interfaces && \
-make -j$(nproc) && \
-make install
+meson build ${MESON_FLAGS[@]} -Ddata_org_open_power=true -Ddata_com_ibm=true && \
+ninja -C build && \
+ninja -C build install
 
 FROM openbmc-base as openbmc-phosphor-logging
 COPY --from=openbmc-cereal ${PREFIX} ${PREFIX}
