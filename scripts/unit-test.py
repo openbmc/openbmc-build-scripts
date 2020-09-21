@@ -948,7 +948,7 @@ class Meson(BuildSystem):
             # check_call_cmd('meson', 'test', '-C', 'build'
             #                '--logbase', 'testlog-msan')
             check_call_cmd('meson', 'configure', 'build',
-                           '-Db_sanitize=none', '-Db_lundef=true')
+                           '-Db_sanitize=none')
         else:
             sys.stderr.write("###### Skipping sanitizers ######\n")
 
