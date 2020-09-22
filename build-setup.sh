@@ -15,9 +15,12 @@
 #                     Default: "~/{RandomNumber}"
 #  num_cpu            Number of cpu's to give bitbake, default is total amount
 #                     in system
-#  UBUNTU_MIRROR:     <optional, the URL of a mirror of Ubuntu to override the
-#                     default ones in /etc/apt/sources.list>
+#  UBUNTU_MIRROR      [optional] The URL of a mirror of Ubuntu to override the
+#                     default ones in /etc/apt/sources.list
 #                     default is empty, and no mirror is used.
+#  ENV_LOCAL_CONF     [optional] The environment variables to inject into the
+#                     build, which will be written into local.conf.
+#                     default is empty.
 #
 # Docker Image Build Variables:
 #  BITBAKE_OPTS       Set to "-c populate_sdk" or whatever other BitBake options
@@ -81,6 +84,7 @@ http_proxy=${http_proxy:-}
 WORKSPACE=${WORKSPACE:-${HOME}/${RANDOM}${RANDOM}}
 num_cpu=${num_cpu:-$(nproc)}
 UBUNTU_MIRROR=${UBUNTU_MIRROR:-""}
+ENV_LOCAL_CONF=${ENV_LOCAL_CONF:-""}
 
 # Docker Image Build Variables:
 build_dir=${build_dir:-${WORKSPACE}/build}
@@ -409,6 +413,7 @@ SSTATE_DIR="${ssc_dir}/bitbake_sharedstatecache"
 USER_CLASSES += "buildstats"
 INHERIT_remove = "uninative"
 TMPDIR="${build_dir}"
+${ENV_LOCAL_CONF}
 EOF_CONF
 
 # Kick off a build
