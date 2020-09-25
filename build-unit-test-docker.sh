@@ -103,10 +103,8 @@ declare -A PKG_REV=(
   [function2]=3a0746bf5f601dfed05330aefcb6854354fce07d
   # Snapshot from 2020-02-13
   [googletest]=23b2a3b1cf803999fb38175f6e9e038a4495c8a5
-  # TODO - Move back to released json once gcc10 fix is available
-  # [json]=v3.7.3
-  # Snapshot from 2020-05-19
-  [json]=5cfa8a586ee1a656190491c1de20a82fb40fab5d
+  # Release 2020-08-06
+  [json]=v3.9.1
   # Snapshot from 2019-05-24
   [lcov]=75fbae1cfc5027f818a0bb865bf6f96fab3202da
   # dev-5.0 2019-05-03
@@ -325,12 +323,9 @@ cmake ${CMAKE_FLAGS[@]} -DFMT_DOC=OFF -DFMT_TEST=OFF .. && \
 make -j$(nproc) && \
 make install
 
-# nlohmann json provides all of its function in a single header file
-# TODO - Go back to using a release once gcc 10 fixes are in
-# curl -L -o ${PREFIX}/include/nlohmann/json.hpp https://github.com/nlohmann/json/releases/download/${PKG_REV['json']}/json.hpp
 FROM openbmc-base as openbmc-json
 RUN mkdir ${PREFIX}/include/nlohmann/ && \
-curl -L -o ${PREFIX}/include/nlohmann/json.hpp https://raw.githubusercontent.com/nlohmann/json/${PKG_REV['json']}/single_include/nlohmann/json.hpp && \
+curl -L -o ${PREFIX}/include/nlohmann/json.hpp https://github.com/nlohmann/json/releases/download/${PKG_REV['json']}/json.hpp && \
 ln -s nlohmann/json.hpp ${PREFIX}/include/json.hpp
 
 FROM openbmc-base as openbmc-fifo_map
