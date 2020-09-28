@@ -20,7 +20,7 @@ DOCKER_IMG_NAME=${DOCKER_IMG_NAME:-"openbmc/ubuntu-rootfs-size"}
 DISTRO=${DISTRO:-ubuntu:bionic}
 OBMC_BUILD_SCRIPTS="openbmc-build-scripts"
 OBMC_TOOLS="openbmc-tools"
-ROOTFS_SIZE_PY_DIR="edtanous"
+ROOTFS_SIZE_PY_DIR="edtanous/rootfs_size"
 ROOTFS_SIZE_PY="rootfs_size.py"
 
 # Timestamp for job
