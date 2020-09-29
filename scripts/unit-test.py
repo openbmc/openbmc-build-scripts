@@ -731,7 +731,18 @@ class CMake(BuildSystem):
             return
 
         if os.path.isfile('.clang-tidy'):
-            check_call_cmd('run-clang-tidy-10.py', '-p', '.')
+            os.mkdir("tidy-build")
+            os.chdir("tidy-build")
+            try:
+                # clang-tidy needs to run on a clang-specific build
+                check_call_cmd('cmake', '-DCMAKE_C_COMPILER=clang',
+                               '-DCMAKE_CXX_COMPILER=clang++',
+                               '-DCMAKE_EXPORT_COMPILE_COMMANDS=ON', '..')
+
+                check_call_cmd('run-clang-tidy-10.py', '-p', '.')
+                os.chdir("tidy-build")
+            except:
+                os.chdir("..")
         maybe_make_valgrind()
         maybe_make_coverage()
         run_cppcheck()
