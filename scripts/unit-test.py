@@ -503,6 +503,7 @@ class BuildSystem(object):
     be implemented, separating out the phases to control whether a package
     should merely be installed or also tested and analyzed.
     """
+
     def __init__(self, package, path):
         """Initialise the driver with properties independent of the build system
 
@@ -731,7 +732,18 @@ class CMake(BuildSystem):
             return
 
         if os.path.isfile('.clang-tidy'):
-            check_call_cmd('run-clang-tidy-10.py', '-p', '.')
+            os.mkdir("tidy-build")
+            os.chdir("tidy-build")
+            try:
+                # clang-tidy needs to run on a clang-specific build
+                check_call_cmd('cmake', '-DCMAKE_C_COMPILER=clang',
+                               '-DCMAKE_CXX_COMPILER=clang++',
+                               '-DCMAKE_EXPORT_COMPILE_COMMANDS=ON', '..')
+
+                check_call_cmd('run-clang-tidy-10.py', '-p', '.')
+            finally:
+                os.chdir("..")
+
         maybe_make_valgrind()
         maybe_make_coverage()
         run_cppcheck()
@@ -844,9 +856,11 @@ class Meson(BuildSystem):
         else:
             meson_flags.append('--buildtype=debugoptimized')
         if 'tests' in meson_options:
-            meson_flags.append(self._configure_option(meson_options, 'tests', build_for_testing))
+            meson_flags.append(self._configure_option(
+                meson_options, 'tests', build_for_testing))
         if 'examples' in meson_options:
-            meson_flags.append(self._configure_option(meson_options, 'examples', build_for_testing))
+            meson_flags.append(self._configure_option(
+                meson_options, 'examples', build_for_testing))
         if MESON_FLAGS.get(self.package) is not None:
             meson_flags.extend(MESON_FLAGS.get(self.package))
         try:
@@ -884,9 +898,9 @@ class Meson(BuildSystem):
         try:
             with open(os.devnull, 'w') as devnull:
                 output = subprocess.check_output(
-                        ['meson', 'test', '-C', 'build',
-                         '--setup', setup, '-t', '0'],
-                        stderr=subprocess.STDOUT)
+                    ['meson', 'test', '-C', 'build',
+                     '--setup', setup, '-t', '0'],
+                    stderr=subprocess.STDOUT)
         except CalledProcessError as e:
             output = e.output
         output = output.decode('utf-8')
