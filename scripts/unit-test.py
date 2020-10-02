@@ -935,8 +935,10 @@ class Meson(BuildSystem):
 
         # Run clang-tidy only if the project has a configuration
         if os.path.isfile('.clang-tidy'):
+            os.environ["CXX"]="clang++"
+            check_call_cmd('meson','setup','build-clang')
             check_call_cmd('run-clang-tidy-10.py', '-p',
-                           'build')
+                           'build-clang')
         # Run the basic clang static analyzer otherwise
         else:
             check_call_cmd('ninja', '-C', 'build',
