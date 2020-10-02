@@ -267,6 +267,13 @@ RUN update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-10 1000 \
   --slave /usr/bin/gcov-dump gcov-dump /usr/bin/gcov-dump-10 \
   --slave /usr/bin/gcov-tool gcov-tool /usr/bin/gcov-tool-10
 
+
+RUN update-alternatives --install /usr/bin/clang clang /usr/bin/clang-10 1000 \
+  --slave /usr/bin/clang++ clang++ /usr/bin/clang++-10 \
+  --slave /usr/bin/clang-tidy clang-tidy /usr/bin/clang-tidy-10 \
+  --slave /usr/bin/clang-format clang-format /usr/bin/clang-format-10 \
+  --slave /usr/bin/run-clang-tidy.py run-clang-tidy.py /usr/bin/run-clang-tidy-10.py
+
 RUN pip3 install inflection
 RUN pip3 install pycodestyle
 RUN pip3 install jsonschema

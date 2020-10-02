@@ -731,15 +731,24 @@ class CMake(BuildSystem):
             return
 
         if os.path.isfile('.clang-tidy'):
-            os.mkdir("tidy-build")
+            try:
+                os.mkdir("tidy-build")
+            except FileExistsError as e:
+                pass
+            # clang-tidy needs to run on a clang-specific build
+            check_call_cmd('cmake', '-DCMAKE_C_COMPILER=clang',
+                           '-DCMAKE_CXX_COMPILER=clang++',
+                           '-DCMAKE_EXPORT_COMPILE_COMMANDS=ON',
+                           '-H.',
+                           '-Btidy-build')
+            # we need to cd here because otherwise clang-tidy doesn't find the
+            # .clang-tidy file in the roots of repos.  Its arguably a "bug"
+            # with run-clang-tidy at a minimum it's "weird" that it requires
+            # the .clang-tidy to be up a dir
             os.chdir("tidy-build")
             try:
-                # clang-tidy needs to run on a clang-specific build
-                check_call_cmd('cmake', '-DCMAKE_C_COMPILER=clang',
-                               '-DCMAKE_CXX_COMPILER=clang++',
-                               '-DCMAKE_EXPORT_COMPILE_COMMANDS=ON', '..')
-
-                check_call_cmd('run-clang-tidy-10.py', '-p', '.')
+                check_call_cmd('run-clang-tidy.py', "-header-filter=.*", '-p',
+                               '.')
             finally:
                 os.chdir("..")
 
@@ -935,7 +944,7 @@ class Meson(BuildSystem):
 
         # Run clang-tidy only if the project has a configuration
         if os.path.isfile('.clang-tidy'):
-            check_call_cmd('run-clang-tidy-10.py', '-p',
+            check_call_cmd('run-clang-tidy.py', '-p',
                            'build')
         # Run the basic clang static analyzer otherwise
         else:
