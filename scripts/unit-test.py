@@ -739,9 +739,10 @@ class CMake(BuildSystem):
                                '-DCMAKE_CXX_COMPILER=clang++',
                                '-DCMAKE_EXPORT_COMPILE_COMMANDS=ON', '..')
 
-                check_call_cmd('run-clang-tidy-10.py', '-p', '.')
+                check_call_cmd('run-clang-tidy', '-p', '.')
             finally:
                 os.chdir("..")
+                raise
 
         maybe_make_valgrind()
         maybe_make_coverage()
