@@ -114,6 +114,8 @@ declare -A PKG_REV=(
   [span-lite]=v0.7.0
   # version from meta-openembedded/meta-oe/recipes-support/libtinyxml2/libtinyxml2_5.0.1.bb
   [tinyxml2]=37bc3aca429f0164adf68c23444540b4a24b5778
+  # version from /meta-openembedded/meta-oe/recipes-devtools/boost-url/boost-url_git.bb
+  [boost-url]=a56ae0df6d3078319755fbaa67822b4fa7fd352b
   # version from meta-openembedded/meta-oe/recipes-devtools/valijson/valijson_git.bb
   [valijson]=c2f22fddf599d04dc33fcd7ed257c698a05345d9
   # version from meta-openembedded/meta-oe/recipes-devtools/nlohmann-fifo/nlohmann-fifo_git.bb
@@ -366,6 +368,15 @@ cd tinyxml2-* && \
 mkdir build && \
 cd build && \
 cmake ${CMAKE_FLAGS[@]} .. && \
+make -j$(nproc) && \
+make install
+
+FROM openbmc-base as openbmc-boost-url
+RUN curl -L https://github.com/CPPAlliance/url/archive/${PKG_REV['boost-url']}.tar.gz | tar -xz && \
+cd url-* && \
+mkdir buildir && \
+cd buildir && \
+cmake ${CMAKE_FLAGS[@]} -DBOOST_URL_STANDALONE=ON -DBOOST_URL_BUILD_TESTS=OFF -DBOOST_URL_BUILD_EXAMPLES=OFF .. && \
 make -j$(nproc) && \
 make install
 
