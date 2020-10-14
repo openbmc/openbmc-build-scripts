@@ -297,7 +297,7 @@ RUN curl -L https://github.com/google/googletest/archive/${PKG_REV['googletest']
 cd googletest-* && \
 mkdir build && \
 cd build && \
-cmake ${CMAKE_FLAGS[@]} -DTHREADS_PREFER_PTHREAD_FLAG=ON .. && \
+CXXFLAGS=-std=c++17 cmake ${CMAKE_FLAGS[@]} -DTHREADS_PREFER_PTHREAD_FLAG=ON .. && \
 make -j$(nproc) && \
 make install
 
