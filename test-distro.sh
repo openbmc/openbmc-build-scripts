@@ -5,9 +5,9 @@ set -x
 
 util_ensure_available() {
   local bin=$1
-  if ! which ${bin}
+  if ! which "${bin}"
   then
-    echo Please install ${bin}
+    echo "Please install ${bin}"
     return 1
   fi
   return 0
@@ -16,10 +16,11 @@ util_ensure_available() {
 jenkins_get_job_config() {
   local host="$1"
   local job="$2"
-  local config="$(mktemp --suffix=.xml config.XXXXXX)"
+  local config
+  config="$(mktemp --suffix=.xml config.XXXXXX)"
   local url="https://${host}/job/${job}/config.xml"
   wget --output-document="${config}" "${url}"
-  echo ${config}
+  echo "${config}"
 }
 
 jenkins_get_job_repos() {
@@ -56,16 +57,16 @@ do
       shift 2
       ;;
     -h|--help)
-      echo USAGE: DISTRO=DOCKERBASE $0 --config config.xml
+      echo "USAGE: DISTRO=DOCKERBASE $0 --config config.xml"
       echo
-      echo DOCKERBASE is the Docker Hub tag of the base image against which to
-      echo build and test the repositories described in config.xml. Individual
-      echo repositories can be tested against DOCKERBASE with the --repository
-      echo option \(in place of --config\).
+      echo "DOCKERBASE is the Docker Hub tag of the base image against which to"
+      echo "build and test the repositories described in config.xml. Individual"
+      echo "repositories can be tested against DOCKERBASE with the --repository"
+      echo "option \(in place of --config\)."
       exit 0
       ;;
     *)
-      (>&2 echo Unrecognised argument \'$1\')
+      (>&2 echo Unrecognised argument \'"$1"\')
       shift
       ;;
   esac
@@ -81,7 +82,8 @@ export WORKSPACE=
 
 git_clone_repo() {
   local prj_package="$1"
-  local package="$(basename "${prj_package}")"
+  local package
+  package="$(basename "${prj_package}")"
   local workspace="$2"
   if [ -d "${prj_package}" ]
   then
@@ -91,9 +93,9 @@ git_clone_repo() {
   git clone https://gerrit.openbmc-project.xyz/openbmc/"${package}" "${workspace}"/"${package}"
 }
 
-jenkins_get_job_repos "${CONFIG}" | while read GERRIT_PROJECT
+jenkins_get_job_repos "${CONFIG}" | while read -r GERRIT_PROJECT
 do
-  UNIT_TEST_PKG=$(basename ${GERRIT_PROJECT})
+  UNIT_TEST_PKG=$(basename "${GERRIT_PROJECT}")
   WORKSPACE="$(mktemp -d --tmpdir openbmc-build-scripts.XXXXXX)"
   git clone . "${WORKSPACE}"/openbmc-build-scripts
   git_clone_repo "${GERRIT_PROJECT}" "${WORKSPACE}"

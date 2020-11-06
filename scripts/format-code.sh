@@ -10,7 +10,7 @@
 # Input parmameter must be full path to git repo to scan
 
 DIR=$1
-cd ${DIR}
+cd "${DIR}"
 
 set -e
 
@@ -66,7 +66,7 @@ for path in "${IGNORE_LIST[@]}"; do
 done
 
 searchfiles=""
-while read path; do
+while read -r path; do
   # skip ignorefiles
   if [[ $ignorefiles == *"$(basename "${path}")"* ]]; then
     continue
@@ -84,12 +84,14 @@ while read path; do
   if [ "$skip" = true ]; then
    continue
   fi
+  # shellcheck disable=2089
   searchfiles+="\"./${path}\" "
 
 # Get C and C++ files managed by git and skip the mako files
-done <<<$(git ls-files | grep -e '\.[ch]pp$' -e '\.[ch]$' | grep -v '\.mako\.')
+done <<<"$(git ls-files | grep -e '\.[ch]pp$' -e '\.[ch]$' | grep -v '\.mako\.')"
 
 if [[ -f ".clang-format" ]]; then
+  # shellcheck disable=SC2090 disable=SC2086
   echo ${searchfiles} | xargs "${CLANG_FORMAT}" -i
   git --no-pager diff --exit-code
 fi

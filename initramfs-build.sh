@@ -4,7 +4,7 @@
 #
 
 # Debug
-if grep -q debug <<< $@; then
+if grep -q debug <<< "$@"; then
 	set -x
 fi
 set -o errexit
@@ -84,8 +84,8 @@ RUN apt-get update && apt-get install -yy \
 	iputils-ping \
 	locales
 
-RUN grep -q ${GROUPS} /etc/group || groupadd -g ${GROUPS} ${USER}
-RUN grep -q ${UID} /etc/passwd || useradd -d ${HOME} -m -u ${UID} -g ${GROUPS} ${USER}
+RUN grep -q ${GROUPS[0]} /etc/group || groupadd -g ${GROUPS[0]} ${USER}
+RUN grep -q ${UID} /etc/passwd || useradd -d ${HOME} -m -u ${UID} -g ${GROUPS[0]} ${USER}
 
 RUN locale-gen en_AU.utf8
 
@@ -96,8 +96,7 @@ EOF
 )
 
 # Build the docker container
-docker build -t initramfs-build/ubuntu - <<< "${Dockerfile}"
-if [[ "$?" -ne 0 ]]; then
+if ! docker build -t initramfs-build/ubuntu - <<< "${Dockerfile}" ; then
 	echo "Failed to build docker container."
 	exit 1
 fi

@@ -25,7 +25,7 @@ UBUNTU_MIRROR=${UBUNTU_MIRROR:-""}
 PIP_MIRROR=${PIP_MIRROR:-""}
 
 # Determine our architecture, ppc64le or the other one
-if [ $(uname -m) == "ppc64le" ]; then
+if [ "$(uname -m)" == "ppc64le" ]; then
     DOCKER_BASE="ppc64le/"
 else
     DOCKER_BASE=""
@@ -42,7 +42,7 @@ fi
 
 PIP_MIRROR_CMD=""
 if [[ -n "${PIP_MIRROR}" ]]; then
-    PIP_HOSTNAME=$(echo ${PIP_MIRROR} | awk -F[/:] '{print $4}')
+    PIP_HOSTNAME=$(echo "${PIP_MIRROR}" | awk -F[/:] '{print $4}')
     PIP_MIRROR_CMD="RUN mkdir -p \${HOME}/.pip && \
         echo \"[global]\" > \${HOME}/.pip/pip.conf && \
         echo \"index-url=${PIP_MIRROR}\" >> \${HOME}/.pip/pip.conf &&\
@@ -143,8 +143,8 @@ RUN wget https://github.com/mozilla/geckodriver/releases/download/v0.26.0/geckod
         && mv geckodriver /usr/local/bin \
         && chmod a+x /usr/local/bin/geckodriver
 
-RUN grep -q ${GROUPS} /etc/group || groupadd -g ${GROUPS} ${USER}
-RUN grep -q ${UID} /etc/passwd || useradd -d ${HOME} -m -u ${UID} -g ${GROUPS} \
+RUN grep -q ${GROUPS[@]} /etc/group || groupadd -g ${GROUPS[@]} ${USER}
+RUN grep -q ${UID} /etc/passwd || useradd -d ${HOME} -m -u ${UID} -g ${GROUPS[@]} \
                     ${USER}
 USER ${USER}
 RUN /bin/bash
@@ -159,4 +159,5 @@ if [[ -n "${http_proxy}" ]]; then
 fi
 
 # Build above image
-docker build ${PROXY_ARGS} -t ${DOCKER_IMG_NAME} - <<< "${Dockerfile}"
+# shellcheck disable=SC2086 # PROXY_ARGS is intentionally word-split.
+docker build ${PROXY_ARGS} -t "${DOCKER_IMG_NAME}" - <<< "${Dockerfile}"

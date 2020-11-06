@@ -91,16 +91,16 @@ launch=${launch:-docker}
 j_url=https://repo.jenkins-ci.org/public/org/jenkins-ci/main/jenkins-war/${j_vrsn}/jenkins-war-${j_vrsn}.war
 
 # Make or Clean WORKSPACE
-if [[ -d ${workspace} ]]; then
-  rm -rf ${workspace}/Dockerfile \
-         ${workspace}/docker-jenkins \
-         ${workspace}/plugins.* \
-         ${workspace}/install-plugins.sh \
-         ${workspace}/jenkins.sh \
-         ${workspace}/jenkins-support \
-         ${workspace}/init.groovy
+if [[ -d "${workspace}" ]]; then
+  rm -rf "${workspace}/Dockerfile" \
+         "${workspace}/docker-jenkins" \
+         "${workspace}/plugins.*" \
+         "${workspace}/install-plugins.sh" \
+         "${workspace}/jenkins.sh" \
+         "${workspace}/jenkins-support" \
+         "${workspace}/init.groovy"
 else
-  mkdir -p ${workspace}
+  mkdir -p "${workspace}"
 fi
 
 # Determine the prefix of the Dockerfile's base image
@@ -119,7 +119,7 @@ case ${ARCH} in
 esac
 
 # Move Into the WORKSPACE
-cd ${workspace}
+cd "${workspace}"
 
 # Make the Dockerfile
 ################################################################################
@@ -200,31 +200,33 @@ EOF
 ################################################################################
 
 # Build the image
-docker build -t ${img_name} .
+docker build -t "${img_name}" .
 
-if [[ ${launch} == "docker" ]]; then
+if [[ "${launch}" == "docker" ]]; then
 
   # Ensure directories that will be mounted exist
-  if [[ ! -z ${host_import_mnt} && ! -d ${host_import_mnt} ]]; then
-      mkdir -p ${host_import_mnt}
+  if [[ -n "${host_import_mnt}" && ! -d "${host_import_mnt}" ]]; then
+      mkdir -p "${host_import_mnt}"
   fi
 
-  if [[ ! -d ${home_mnt} ]]; then
-    mkdir -p ${home_mnt}
+  if [[ ! -d "${home_mnt}" ]]; then
+    mkdir -p "${home_mnt}"
   fi
 
   # Ensure directories that will be mounted are owned by the jenkins user
   if [[ "$(id -u)" != 0 ]]; then
     echo "Not running as root:"
     echo "Checking if j_gid and j_uid are the owners of mounted directories"
-    test_1=$(ls -nd ${home_mnt} | awk '{print $3 " " $4}')
+    # shellcheck disable=SC2012 # use ls to get permissions.
+    test_1="$(ls -nd "${home_mnt}" | awk '{print $3 " " $4}')"
     if [[ "${test_1}" != "${j_uid} ${j_gid}" ]]; then
       echo "Owner of ${home_mnt} is not the jenkins user"
       echo "${test_1} != ${j_uid} ${j_gid}"
       will_fail=1
     fi
-    if [[ ! -z "${host_import_mnt}" ]]; then
-      test_2=$(ls -nd ${host_import_mnt} | awk '{print $3 " " $4}' )
+    if [[ -n "${host_import_mnt}" ]]; then
+      # shellcheck disable=SC2012 # use ls to get permissions.
+      test_2="$(ls -nd "${host_import_mnt}" | awk '{print $3 " " $4}' )"
       if [[ "${test_2}" != "${j_uid} ${j_gid}" ]]; then
         echo "Owner of ${host_import_mnt} is not the jenkins user"
         echo "${test_2} != ${j_uid} ${j_gid}"
@@ -237,27 +239,29 @@ if [[ ${launch} == "docker" ]]; then
       exit 1
     fi
   else
-    if [[ ! -z ${host_import_mnt} ]]; then
-      chown -R ${j_uid}:${j_gid} ${host_import_mnt}
+    if [[ -n "${host_import_mnt}" ]]; then
+      chown -R "${j_uid}:${j_gid}" "${host_import_mnt}"
     fi
-    chown -R ${j_uid}:${j_gid} ${home_mnt}
+    chown -R "${j_uid}:${j_gid}" "${home_mnt}"
   fi
 
   #If we don't have import mount don't add to docker command
-  if [[ ! -z ${host_import_mnt} ]]; then
+  if [[ -n "${host_import_mnt}" ]]; then
    import_vol_cmd="-v ${host_import_mnt}:${cont_import_mnt}"
   fi
   # Launch the jenkins image with Docker
+  # shellcheck disable=SC2086 # import_vol_cmd is intentially word-split.
   docker run -d \
     ${import_vol_cmd} \
-    -v ${home_mnt}:${j_home} \
-    -p ${http_port}:8080 \
-    -p ${agent_port}:${agent_port} \
-    --env JAVA_OPTS=\"${java_options}\" \
-    --env JENKINS_OPTS=\"${jenkins_options}\" \
-    ${img_name}
+    -v "${home_mnt}:${j_home}" \
+    -p "${http_port}:8080" \
+    -p "${agent_port}:${agent_port}" \
+    --env JAVA_OPTS=\""${java_options}"\" \
+    --env JENKINS_OPTS=\""${jenkins_options}"\" \
+    "${img_name}"
 
 elif [[ ${launch} == "k8s" ]]; then
   # launch using the k8s template
-  source ${build_scripts_dir}/kubernetes/kubernetes-launch.sh Build-Jenkins false false
+  # shellcheck source=kubernetes/kubernetes-launch.sh
+  source "${build_scripts_dir}/kubernetes/kubernetes-launch.sh" Build-Jenkins false false
 fi

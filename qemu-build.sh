@@ -96,7 +96,7 @@ make -j4
 
 EOF_SCRIPT
 
-chmod a+x ${WORKSPACE}/build.sh
+chmod a+x "${WORKSPACE}"/build.sh
 
 # Configure docker build
 Dockerfile=$(cat << EOF
@@ -120,24 +120,23 @@ RUN apt-get update && apt-get install -yy --no-install-recommends \
     python3-yaml \
     iputils-ping
 
-RUN grep -q ${GROUPS} /etc/group || groupadd -g ${GROUPS} ${USER}
-RUN grep -q ${UID} /etc/passwd || useradd -d ${HOME} -m -u ${UID} -g ${GROUPS} ${USER}
+RUN grep -q ${GROUPS[@]} /etc/group || groupadd -g ${GROUPS[@]} ${USER}
+RUN grep -q ${UID} /etc/passwd || useradd -d ${HOME} -m -u ${UID} -g ${GROUPS[@]} ${USER}
 USER ${USER}
 ENV HOME ${HOME}
 EOF
 )
 
-docker build -t ${img_name} - <<< "${Dockerfile}"
-if [[ "$?" -ne 0 ]]; then
+if ! docker build -t ${img_name} - <<< "${Dockerfile}" ; then
   echo "Failed to build docker container."
   exit 1
 fi
 
 docker run \
     --rm=true \
-    -e WORKSPACE=${WORKSPACE} \
+    -e WORKSPACE="${WORKSPACE}" \
     -w "${HOME}" \
     --user="${USER}" \
     -v "${HOME}":"${HOME}" \
     -t ${img_name} \
-    ${WORKSPACE}/build.sh
+    "${WORKSPACE}"/build.sh
