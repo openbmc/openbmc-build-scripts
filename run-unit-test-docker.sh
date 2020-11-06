@@ -62,28 +62,29 @@ if [ ! -d "${WORKSPACE}/${OBMC_BUILD_SCRIPTS}" ]; then
     echo "Package(${OBMC_BUILD_SCRIPTS}) not found in ${WORKSPACE}, exiting..."
     exit 1
 fi
+# shellcheck disable=SC2153 # UNIT_TEST_PKG is not misspelled.
 if [ ! -d "${WORKSPACE}/${UNIT_TEST_PKG}" ]; then
     echo "Package(${UNIT_TEST_PKG}) not found in ${WORKSPACE}, exiting..."
     exit 1
 fi
 
 # Copy unit test script into workspace
-cp ${WORKSPACE}/${OBMC_BUILD_SCRIPTS}/${UNIT_TEST_PY_DIR}/${UNIT_TEST_PY} \
-${WORKSPACE}/${UNIT_TEST_PY}
-chmod a+x ${WORKSPACE}/${UNIT_TEST_PY}
+cp "${WORKSPACE}"/${OBMC_BUILD_SCRIPTS}/${UNIT_TEST_PY_DIR}/${UNIT_TEST_PY} \
+"${WORKSPACE}"/${UNIT_TEST_PY}
+chmod a+x "${WORKSPACE}"/${UNIT_TEST_PY}
 
 # Copy dbus unit test script into workspace
-cp ${WORKSPACE}/${OBMC_BUILD_SCRIPTS}/${UNIT_TEST_PY_DIR}/${DBUS_UNIT_TEST_PY} \
-${WORKSPACE}/${DBUS_UNIT_TEST_PY}
-chmod a+x ${WORKSPACE}/${DBUS_UNIT_TEST_PY}
+cp "${WORKSPACE}"/${OBMC_BUILD_SCRIPTS}/${UNIT_TEST_PY_DIR}/${DBUS_UNIT_TEST_PY} \
+"${WORKSPACE}"/${DBUS_UNIT_TEST_PY}
+chmod a+x "${WORKSPACE}"/${DBUS_UNIT_TEST_PY}
 
 # Copy format code script into workspace
-cp ${WORKSPACE}/${OBMC_BUILD_SCRIPTS}/${UNIT_TEST_PY_DIR}/${FORMAT_CODE_SH} \
-${WORKSPACE}/${FORMAT_CODE_SH}
-chmod a+x ${WORKSPACE}/${FORMAT_CODE_SH}
+cp "${WORKSPACE}"/${OBMC_BUILD_SCRIPTS}/${UNIT_TEST_PY_DIR}/${FORMAT_CODE_SH} \
+"${WORKSPACE}"/${FORMAT_CODE_SH}
+chmod a+x "${WORKSPACE}"/${FORMAT_CODE_SH}
 
 # Configure docker build
-cd ${WORKSPACE}/${OBMC_BUILD_SCRIPTS}
+cd "${WORKSPACE}"/${OBMC_BUILD_SCRIPTS}
 echo "Building docker image with build-unit-test-docker.sh"
 # Export input env variables
 export DOCKER_IMG_NAME
@@ -108,15 +109,15 @@ docker run --cap-add=sys_admin --rm=true \
     -u "$USER" \
     -w "${DOCKER_WORKDIR}" -v "${WORKSPACE}":"${DOCKER_WORKDIR}" \
     -e "MAKEFLAGS=${MAKEFLAGS}" \
-    -t ${DOCKER_IMG_NAME} \
-    "${DOCKER_WORKDIR}"/${DBUS_UNIT_TEST_PY} -u ${UNIT_TEST} \
-    -f ${DBUS_SYS_CONFIG_FILE}
+    -t "${DOCKER_IMG_NAME}" \
+    "${DOCKER_WORKDIR}"/${DBUS_UNIT_TEST_PY} -u "${UNIT_TEST}" \
+    -f "${DBUS_SYS_CONFIG_FILE}"
 
 # Timestamp for build
 echo "Unit test build completed, $(date)"
 
 # Clean up copied scripts.
-rm ${WORKSPACE}/${UNIT_TEST_PY}
-rm ${WORKSPACE}/${DBUS_UNIT_TEST_PY}
-rm ${WORKSPACE}/${FORMAT_CODE_SH}
+rm "${WORKSPACE}"/${UNIT_TEST_PY}
+rm "${WORKSPACE}"/${DBUS_UNIT_TEST_PY}
+rm "${WORKSPACE}"/${FORMAT_CODE_SH}
 

@@ -49,9 +49,9 @@ RUN apt-get update && apt-get install -yy \
     squashfs-tools
 
 # Final configuration for the workspace
-RUN grep -q ${GROUPS} /etc/group || groupadd -g ${GROUPS} ${USER}
-RUN mkdir -p $(dirname ${HOME})
-RUN grep -q ${UID} /etc/passwd || useradd -d ${HOME} -m -u ${UID} -g ${GROUPS} ${USER}
+RUN grep -q ${GROUPS[0]} /etc/group || groupadd -g ${GROUPS[0]} ${USER}
+RUN mkdir -p $(dirname "${HOME}")
+RUN grep -q ${UID} /etc/passwd || useradd -d ${HOME} -m -u ${UID} -g ${GROUPS[0]} ${USER}
 RUN sed -i '1iDefaults umask=000' /etc/sudoers
 RUN echo "${USER} ALL=(ALL) NOPASSWD: ALL" >>/etc/sudoers
 
@@ -62,4 +62,4 @@ fi
 ################################# docker img # #################################
 
 # Build above image
-docker build --network=host -t ${DOCKER_IMG_NAME} - <<< "${Dockerfile}"
+docker build --network=host -t "${DOCKER_IMG_NAME}" - <<< "${Dockerfile}"

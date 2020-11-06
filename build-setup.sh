@@ -133,16 +133,16 @@ esac
 echo "Build started, $(date)"
 
 # If the obmc_dir directory doesn't exist clone it in
-if [ ! -d ${obmc_dir} ]; then
+if [ ! -d "${obmc_dir}" ]; then
   echo "Clone in openbmc master to ${obmc_dir}"
-  git clone https://github.com/openbmc/openbmc ${obmc_dir}
+  git clone https://github.com/openbmc/openbmc "${obmc_dir}"
 fi
 
 # Make and chown the xtrct_path directory to avoid permission errors
-if [ ! -d ${xtrct_path} ]; then
-  mkdir -p ${xtrct_path}
+if [ ! -d "${xtrct_path}" ]; then
+  mkdir -p "${xtrct_path}"
 fi
-chown ${UID}:${GROUPS} ${xtrct_path}
+chown "${UID}:${GROUPS[0]}" "${xtrct_path}"
 
 # Work out what build target we should be running and set BitBake command
 MACHINE=""
@@ -264,8 +264,8 @@ if [[ "${distro}" == fedora ]];then
   ENV LANG=en_US.utf8
   RUN localedef -f UTF-8 -i en_US en_US.UTF-8
 
-  RUN grep -q ${GROUPS} /etc/group || groupadd -g ${GROUPS} ${USER}
-  RUN grep -q ${UID} /etc/passwd || useradd -d ${HOME} -m -u ${UID} -g ${GROUPS} ${USER}
+  RUN grep -q ${GROUPS[0]} /etc/group || groupadd -g ${GROUPS[0]} ${USER}
+  RUN grep -q ${UID} /etc/passwd || useradd -d ${HOME} -m -u ${UID} -g ${GROUPS[0]} ${USER}
 
   USER ${USER}
   ENV HOME ${HOME}
@@ -313,8 +313,8 @@ elif [[ "${distro}" == ubuntu ]]; then
   ENV LANGUAGE en_US:en
   ENV LC_ALL en_US.UTF-8
 
-  RUN grep -q ${GROUPS} /etc/group || groupadd -g ${GROUPS} ${USER}
-  RUN grep -q ${UID} /etc/passwd || useradd -d ${HOME} -m -u ${UID} -g ${GROUPS} ${USER}
+  RUN grep -q ${GROUPS[0]} /etc/group || groupadd -g ${GROUPS[0]} ${USER}
+  RUN grep -q ${UID} /etc/passwd || useradd -d ${HOME} -m -u ${UID} -g ${GROUPS[0]} ${USER}
 
   USER ${USER}
   ENV HOME ${HOME}
@@ -328,10 +328,10 @@ export PROXY_HOST=${http_proxy/#http*:\/\/}
 export PROXY_HOST=${PROXY_HOST/%:[0-9]*}
 export PROXY_PORT=${http_proxy/#http*:\/\/*:}
 
-mkdir -p ${WORKSPACE}
+mkdir -p "${WORKSPACE}"
 
 # Determine command for bitbake image build
-if [ $no_tar = "false" ]; then
+if [ "$no_tar" = "false" ]; then
     bitbake_target="${bitbake_target} obmc-phosphor-debug-tarball"
 fi
 
@@ -438,13 +438,13 @@ fi
 
 EOF_SCRIPT
 
-chmod a+x ${WORKSPACE}/build.sh
+chmod a+x "${WORKSPACE}/build.sh"
 
 # Give the Docker image a name based on the distro,tag,arch,and target
 img_name=${img_name:-openbmc/${distro}:${img_tag}-${target}-${ARCH}}
 
 # Build the Docker image
-docker build -t ${img_name} - <<< "${Dockerfile}"
+docker build -t "${img_name}" - <<< "${Dockerfile}"
 
 # If obmc_dir or ssc_dir are ${HOME} or a subdirectory they will not be mounted
 mount_obmc_dir="-v ""${obmc_dir}"":""${obmc_dir}"" "
@@ -461,23 +461,24 @@ mount_workspace_dir=""
 fi
 
 # Run the Docker container, execute the build.sh script
+# shellcheck disable=SC2086 # mount commands word-split purposefully
 docker run \
 --cap-add=sys_admin \
 --cap-add=sys_nice \
 --net=host \
 --rm=true \
--e WORKSPACE=${WORKSPACE} \
+-e WORKSPACE="${WORKSPACE}" \
 -w "${HOME}" \
--v "${HOME}":"${HOME}" \
+-v "${HOME}:${HOME}" \
 ${mount_obmc_dir} \
 ${mount_ssc_dir} \
 ${mount_workspace_dir} \
 --cpus="$num_cpu" \
--t ${img_name} \
-${WORKSPACE}/build.sh
+-t "${img_name}" \
+"${WORKSPACE}/build.sh"
 
 # To maintain function of resources that used an older path, add a link
-ln -sf ${xtrct_path}/deploy ${WORKSPACE}/deploy
+ln -sf "${xtrct_path}/deploy" "${WORKSPACE}/deploy"
 
 # Timestamp for build
 echo "Build completed, $(date)"

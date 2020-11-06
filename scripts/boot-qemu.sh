@@ -39,7 +39,7 @@ QEMU_ARCH=${1:-$QEMU_ARCH}
 echo "QEMU_ARCH = $QEMU_ARCH"
 if [[ -z $QEMU_ARCH ]]; then
     echo "Did not pass in required QEMU arch parameter"
-    exit -1
+    exit 1
 fi
 
 BASE_DIR=${2:-$HOME}
@@ -47,7 +47,7 @@ BASE_DIR=${2:-$HOME}
 echo "BASE_DIR = $BASE_DIR"
 if [[ ! -d $BASE_DIR ]]; then
     echo "No input directory and HOME not set!"
-    exit -1
+    exit 1
 fi
 
 # Set the location of the qemu binary relative to BASE_DIR
@@ -57,18 +57,19 @@ DEFAULT_MACHINE=versatilepb
 MACHINE=${MACHINE:-${DEFAULT_MACHINE}}
 
 # Enter the base directory
-cd ${BASE_DIR}
+cd "${BASE_DIR}"
 
 # Find the correct drive file, and save its name.  OpenBMC has 3 different
 # image formats.  The UBI based one, the standard static.mtd one, and the
 # default QEMU basic image (rootfs.ext4).
 
 DEFAULT_IMAGE_LOC="./tmp/deploy/images/"
-if [ -f ${DEFAULT_IMAGE_LOC}/${MACHINE}/obmc-phosphor-image-${MACHINE}.ubi.mtd ]; then
-    DRIVE=obmc-phosphor-image-${MACHINE}.ubi.mtd
-elif [ -f ${DEFAULT_IMAGE_LOC}/${MACHINE}/obmc-phosphor-image-${MACHINE}.static.mtd ]; then
-    DRIVE=obmc-phosphor-image-${MACHINE}.static.mtd
+if [ -f ${DEFAULT_IMAGE_LOC}/"${MACHINE}"/obmc-phosphor-image-"${MACHINE}".ubi.mtd ]; then
+    DRIVE="obmc-phosphor-image-${MACHINE}.ubi.mtd"
+elif [ -f ${DEFAULT_IMAGE_LOC}/"${MACHINE}"/obmc-phosphor-image-"${MACHINE}".static.mtd ]; then
+    DRIVE="obmc-phosphor-image-${MACHINE}.static.mtd"
 else
+    # shellcheck disable=SC2010
     DRIVE=$(ls ${DEFAULT_IMAGE_LOC}/qemuarm | grep rootfs.ext4)
 fi
 
@@ -79,10 +80,10 @@ TMP_DRIVE_PATH=$(mktemp "/tmp/${DRIVE}-XXXXX")
 
 # The drive file is stored in different locations depending on if we are
 # using the default or real platforms.
-if [ ${MACHINE} = ${DEFAULT_MACHINE} ]; then
-    cp ${DEFAULT_IMAGE_LOC}/qemuarm/${DRIVE} ${TMP_DRIVE_PATH}
+if [ "${MACHINE}" = "${DEFAULT_MACHINE}" ]; then
+    cp ${DEFAULT_IMAGE_LOC}/qemuarm/"${DRIVE}" "${TMP_DRIVE_PATH}"
 else
-    cp ${DEFAULT_IMAGE_LOC}/${MACHINE}/${DRIVE} ${TMP_DRIVE_PATH}
+    cp ${DEFAULT_IMAGE_LOC}/"${MACHINE}"/"${DRIVE}" "${TMP_DRIVE_PATH}"
 fi
 
 # Obtain IP from /etc/hosts if IP is not valid set to localhost
@@ -97,7 +98,7 @@ NET_FORWARDING=hostfwd=:${IP}:22-:22,hostfwd=:${IP}:443-:443,hostfwd=tcp:${IP}:8
 
 # Most system only have one NIC so set this as default
 NIC="-net nic,model=ftgmac100,netdev=netdev1 -netdev user,id=netdev1,$NET_FORWARDING"
-if [ ${MACHINE} = "tacoma" ]; then
+if [ "${MACHINE}" = "tacoma" ]; then
     # Tacoma requires us to specify up to four NICs, with the third one being
     # the active device.
     NIC="-net nic,model=ftgmac100,netdev=netdev1 -netdev user,id=netdev1 "
@@ -108,14 +109,14 @@ fi
 
 # The syntax to start old qemu / default version requires different syntax
 # then new qemu with the real platforms
-if [ ${MACHINE} = ${DEFAULT_MACHINE} ]; then
+if [ "${MACHINE}" = "${DEFAULT_MACHINE}" ]; then
     # Launch default QEMU using the qemu-system-arm
     ${QEMU_BIN} \
         -device virtio-net,netdev=mynet \
         -netdev user,id=mynet,hostfwd=tcp:${IP}:22-:22,hostfwd=tcp:${IP}:443-:443,hostfwd=tcp:${IP}:80-:80,hostfwd=tcp:${IP}:2200-:2200,hostfwd=udp:${IP}:623-:623,hostfwd=udp:${IP}:664-:664 \
         -machine versatilepb \
         -m 256 \
-        -drive file=${TMP_DRIVE_PATH},if=virtio,format=raw \
+        -drive file="${TMP_DRIVE_PATH}",if=virtio,format=raw \
         -show-cursor \
         -usb \
         -usbdevice tablet \
@@ -127,9 +128,10 @@ if [ ${MACHINE} = ${DEFAULT_MACHINE} ]; then
         -append 'root=/dev/vda rw highres=off  console=ttyS0 mem=256M ip=dhcp console=ttyAMA0,115200 console=tty'\
         -dtb ${DEFAULT_IMAGE_LOC}/qemuarm/zImage-versatile-pb.dtb
 else
+    # shellcheck disable=SC2086 # NIC is intentionally word-split.
     ${QEMU_BIN} \
-        -machine ${MACHINE}-bmc \
+        -machine "${MACHINE}"-bmc \
         -nographic \
-        -drive file=${TMP_DRIVE_PATH},format=raw,if=mtd \
+        -drive file="${TMP_DRIVE_PATH}",format=raw,if=mtd \
         ${NIC}
 fi

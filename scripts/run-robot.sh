@@ -18,6 +18,8 @@
 
 # we don't want to fail on bad rc since robot tests may fail
 
+set -e
+
 MACHINE=${MACHINE:-"qemu"}
 ROBOT_CODE_HOME=${ROBOT_CODE_HOME:-/tmp/$(whoami)/${RANDOM}/obmc-robot/}
 ROBOT_TEST_CMD=${ROBOT_TEST_CMD:-"python3 -m robot\
@@ -27,19 +29,20 @@ ROBOT_TEST_CMD=${ROBOT_TEST_CMD:-"python3 -m robot\
     --argumentfile ./test_lists/QEMU_CI ./tests"}
 
 git clone https://github.com/openbmc/openbmc-test-automation.git \
-        ${ROBOT_CODE_HOME}
+        "${ROBOT_CODE_HOME}"
 
-cd ${ROBOT_CODE_HOME}
+cd "${ROBOT_CODE_HOME}"
 
-chmod ugo+rw -R ${ROBOT_CODE_HOME}/*
+chmod ugo+rw -R "${ROBOT_CODE_HOME}"/*
 
 # Execute the CI tests
-"$($ROBOT_TEST_CMD)"
+# shellcheck disable=SC2091 # intentionally executing ROBOT_TEST_CMD.
+$($ROBOT_TEST_CMD)
 
-cp ${ROBOT_CODE_HOME}/*.xml ${HOME}/
-cp ${ROBOT_CODE_HOME}/*.html ${HOME}/
+cp "${ROBOT_CODE_HOME}"/*.xml "${HOME}/"
+cp "${ROBOT_CODE_HOME}"/*.html "${HOME}/"
 if [ -d logs ] ; then
-    cp -Rf ${ROBOT_CODE_HOME}/logs ${HOME}/ ;
+    cp -Rf "${ROBOT_CODE_HOME}"/logs "${HOME}"/ ;
 fi
 
 #rm -rf ${ROBOT_CODE_HOME}
