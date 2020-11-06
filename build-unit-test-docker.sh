@@ -75,7 +75,7 @@ generate_depcache_entry() {
         grep "refs/heads/$BRANCH" | awk '{ print $1 }' || true)
 
   # If specific branch is not found then try master
-  if [[ ! -n "$tip" ]]; then
+  if [[ -z "$tip" ]]; then
     tip=$(git ls-remote --heads "https://github.com/${package}" |
          grep "refs/heads/master" | awk '{ print $1 }')
   fi
@@ -123,10 +123,11 @@ declare -A PKG_REV=(
 )
 
 # Turn the depcache into a dictionary so we can reference the HEAD of each repo
-for line in $(cat "$DEPCACHE_FILE"); do
+while IFS= read -r line; do
+  # shellcheck disable=SC2207 # Expecting to word-split tr results.
   linearr=($(echo "$line" | tr ':' ' '))
   PKG_REV["${linearr[0]}"]="${linearr[1]}"
-done
+done < "$DEPCACHE_FILE"
 
 # Define common flags used for builds
 PREFIX="/usr/local"
@@ -159,7 +160,7 @@ COPY_CMDS=""
 # We must sort the packages, otherwise we might produce an unstable
 # docker file and rebuild the image unnecessarily
 for pkg in $(echo "${!PKG_REV[@]}" | tr ' ' '\n' | LC_COLLATE=C sort -s); do
-  COPY_CMDS+="COPY --from=$(stagename ${pkg}) ${PREFIX} ${PREFIX}"$'\n'
+  COPY_CMDS+="COPY --from=$(stagename "${pkg}") ${PREFIX} ${PREFIX}"$'\n'
   # Workaround for upstream docker bug and multiple COPY cmds
   # https://github.com/moby/moby/issues/37965
   COPY_CMDS+="RUN true"$'\n'
@@ -498,9 +499,9 @@ ${COPY_CMDS}
 RUN echo '$(LC_COLLATE=C sort -s "$DEPCACHE_FILE" | tr '\n' ',')' > /tmp/depcache
 
 # Final configuration for the workspace
-RUN grep -q ${GROUPS} /etc/group || groupadd -g ${GROUPS} ${USER}
+RUN grep -q ${GROUPS[0]} /etc/group || groupadd -g ${GROUPS[0]} ${USER}
 RUN mkdir -p "$(dirname "${HOME}")"
-RUN grep -q ${UID} /etc/passwd || useradd -d ${HOME} -m -u ${UID} -g ${GROUPS} ${USER}
+RUN grep -q ${UID} /etc/passwd || useradd -d ${HOME} -m -u ${UID} -g ${GROUPS[0]} ${USER}
 RUN sed -i '1iDefaults umask=000' /etc/sudoers
 RUN echo "${USER} ALL=(ALL) NOPASSWD: ALL" >>/etc/sudoers
 
@@ -517,4 +518,5 @@ if [[ -n "${http_proxy}" ]]; then
 fi
 
 # Build above image
-docker build ${proxy_args} --network=host -t ${DOCKER_IMG_NAME} - <<< "${Dockerfile}"
+# shellcheck disable=SC2086 # proxy_args requires word splitting.
+docker build ${proxy_args} --network=host -t "${DOCKER_IMG_NAME}" - <<< "${Dockerfile}"

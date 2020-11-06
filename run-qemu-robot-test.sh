@@ -64,7 +64,7 @@ MACHINE=${MACHINE:-${DEFAULT_MACHINE}}
 # The automated test suite needs a real machine type so
 # if we're using versatilepb for our qemu start parameter
 # then we need to just let our run-robot use the default
-if [[ $MACHINE == $DEFAULT_MACHINE ]]; then
+if [[ "$MACHINE" == "$DEFAULT_MACHINE" ]]; then
     MACHINE_QEMU=
 else
     MACHINE_QEMU=${MACHINE}
@@ -76,11 +76,9 @@ ARCH=$(uname -m)
 # Determine the prefix of the Dockerfile's base image and the QEMU_ARCH variable
 case ${ARCH} in
   "ppc64le")
-    DOCKER_BASE="ppc64le/"
     QEMU_ARCH="ppc64le-linux"
     ;;
   "x86_64")
-    DOCKER_BASE=""
     QEMU_ARCH="x86_64-linux"
     ;;
   *)
@@ -95,10 +93,11 @@ QEMU_BIN=${QEMU_BIN:-./tmp/sysroots/${QEMU_ARCH}/usr/bin/qemu-system-arm}
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 # Create the base Docker image for QEMU and Robot
+# shellcheck source=scripts/build-qemu-robot-docker.sh
 . "$DIR/scripts/build-qemu-robot-docker.sh" "$DOCKER_IMG_NAME"
 
 # Copy the scripts to start and verify QEMU in the workspace
-cp $DIR/scripts/boot-qemu* ${UPSTREAM_WORKSPACE}
+cp "$DIR"/scripts/boot-qemu* "${UPSTREAM_WORKSPACE}"
 
 ################################################################################
 
@@ -109,15 +108,15 @@ if [[ ${LAUNCH} == "local" ]]; then
   obmc_qemu_docker=$(docker run --detach \
                                 --rm \
                                 --user root \
-                                --env HOME=${OBMC_BUILD_DIR} \
-                                --env QEMU_RUN_TIMER=${QEMU_RUN_TIMER} \
-                                --env QEMU_ARCH=${QEMU_ARCH} \
-                                --env QEMU_BIN=${QEMU_BIN} \
-                                --env MACHINE=${MACHINE} \
+                                --env HOME="${OBMC_BUILD_DIR}" \
+                                --env QEMU_RUN_TIMER="${QEMU_RUN_TIMER}" \
+                                --env QEMU_ARCH="${QEMU_ARCH}" \
+                                --env QEMU_BIN="${QEMU_BIN}" \
+                                --env MACHINE="${MACHINE}" \
                                 --workdir "${OBMC_BUILD_DIR}"           \
                                 --volume "${UPSTREAM_WORKSPACE}":"${OBMC_BUILD_DIR}" \
                                 --tty \
-                                ${DOCKER_IMG_NAME} ${OBMC_BUILD_DIR}/boot-qemu-test.exp)
+                                "${DOCKER_IMG_NAME}" "${OBMC_BUILD_DIR}"/boot-qemu-test.exp)
 
   # We can use default ports because we're going to have the 2
   # docker instances talk over their private network
@@ -129,17 +128,17 @@ if [[ ${LAUNCH} == "local" ]]; then
   # fine on these errors so just ignore the SIGPIPE
   trap '' PIPE
 
-  DOCKER_QEMU_IP_ADDR="$(docker inspect $obmc_qemu_docker |  \
+  DOCKER_QEMU_IP_ADDR="$(docker inspect "$obmc_qemu_docker" |  \
                        grep "IPAddress\":" | tail -n1 | cut -d '"' -f 4)"
 
   #Now wait for the OpenBMC QEMU Docker instance to get to standby
   delay=5
-  attempt=$(( $QEMU_LOGIN_TIMER / $delay ))
+  attempt=$(( QEMU_LOGIN_TIMER / delay ))
   while [ $attempt -gt 0 ]; do
-    attempt=$(( $attempt - 1 ))
+    attempt=$(( attempt - 1 ))
     echo "Waiting for qemu to get to standby (attempt: $attempt)..."
-    result=$(docker logs $obmc_qemu_docker)
-    if grep -q 'OPENBMC-READY' <<< $result ; then
+    result=$(docker logs "$obmc_qemu_docker")
+    if grep -q 'OPENBMC-READY' <<< "$result" ; then
       echo "QEMU is ready!"
       # Give QEMU a few secs to stabilize
       sleep $delay
@@ -158,34 +157,35 @@ if [[ ${LAUNCH} == "local" ]]; then
   # Timestamp for job
   echo "Robot Test started, $(date)"
 
-  mkdir -p ${WORKSPACE}
-  cd ${WORKSPACE}
+  mkdir -p "${WORKSPACE}"
+  cd "${WORKSPACE}"
 
   # Copy in the script which will execute the Robot tests
-  cp $DIR/scripts/run-robot.sh ${WORKSPACE}
+  cp "$DIR"/scripts/run-robot.sh "${WORKSPACE}"
 
   # Run the Docker container to execute the Robot test cases
   # The test results will be put in ${WORKSPACE}
   docker run --rm \
              --user root \
-             --env HOME=${HOME} \
-             --env IP_ADDR=${DOCKER_QEMU_IP_ADDR} \
-             --env SSH_PORT=${DOCKER_SSH_PORT} \
-             --env HTTPS_PORT=${DOCKER_HTTPS_PORT} \
-             --env MACHINE=${MACHINE_QEMU} \
-             --workdir ${HOME} \
-             --volume ${WORKSPACE}:${HOME} \
+             --env HOME="${HOME}" \
+             --env IP_ADDR="${DOCKER_QEMU_IP_ADDR}" \
+             --env SSH_PORT="${DOCKER_SSH_PORT}" \
+             --env HTTPS_PORT="${DOCKER_HTTPS_PORT}" \
+             --env MACHINE="${MACHINE_QEMU}" \
+             --workdir "${HOME}" \
+             --volume "${WORKSPACE}":"${HOME}" \
              --tty \
-             ${DOCKER_IMG_NAME} ${HOME}/run-robot.sh
+             "${DOCKER_IMG_NAME}" "${HOME}"/run-robot.sh
 
   # Now stop the QEMU Docker image
-  docker stop $obmc_qemu_docker
+  docker stop "$obmc_qemu_docker"
 
 elif [[ ${LAUNCH} == "k8s" ]]; then
   # Package the Upstream into an image based off the one created by the build-qemu-robot.sh
   # Dockerfile = $( cat << EOF
-  imgname=$DOCKER_IMG_NAME
-  cd $DIR
+  # shellcheck disable=SC2034
+  imgname="$DOCKER_IMG_NAME"
+  cd "$DIR"
   source ./kubernetes/kubernetes-launch.sh QEMU-launch false false deployment
 
   # Xcat Launch (NYI)

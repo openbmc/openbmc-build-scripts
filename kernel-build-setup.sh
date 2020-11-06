@@ -39,8 +39,8 @@ RUN dnf --refresh install -y \
 	make \
 	uboot-tools xz
 
-RUN grep -q ${GROUPS} /etc/group || groupadd -g ${GROUPS} ${USER}
-RUN grep -q ${UID} /etc/passwd || useradd -d ${HOME} -m -u ${UID} -g ${GROUPS} ${USER}
+RUN grep -q ${GROUPS[0]} /etc/group || groupadd -g ${GROUPS[0]} ${USER}
+RUN grep -q ${UID} /etc/passwd || useradd -d ${HOME} -m -u ${UID} -g ${GROUPS[0]} ${USER}
 
 USER ${USER}
 ENV HOME ${HOME}
@@ -70,8 +70,8 @@ RUN apt-get update && apt-get install -yy \
 	flex \
 	u-boot-tools
 
-RUN grep -q ${GROUPS} /etc/group || groupadd -g ${GROUPS} ${USER}
-RUN grep -q ${UID} /etc/passwd || useradd -d ${HOME} -m -u ${UID} -g ${GROUPS} ${USER}
+RUN grep -q ${GROUPS[0]} /etc/group || groupadd -g ${GROUPS[0]} ${USER}
+RUN grep -q ${UID} /etc/passwd || useradd -d ${HOME} -m -u ${UID} -g ${GROUPS[0]} ${USER}
 
 USER ${USER}
 ENV HOME ${HOME}
@@ -81,8 +81,7 @@ EOF
 fi
 
 # Build the docker container
-docker build -t linux-aspeed/${distro} - <<< "${Dockerfile}"
-if [[ "$?" -ne 0 ]]; then
+if ! docker build -t "linux-aspeed/${distro}" - <<< "${Dockerfile}" ; then
   echo "Failed to build docker container."
   exit 1
 fi
@@ -92,7 +91,7 @@ export PROXY_HOST=${http_proxy/#http*:\/\/}
 export PROXY_HOST=${PROXY_HOST/%:[0-9]*}
 export PROXY_PORT=${http_proxy/#http*:\/\/*:}
 
-mkdir -p ${WORKSPACE}
+mkdir -p "${WORKSPACE}"
 
 cat > "${WORKSPACE}"/build.sh << EOF_SCRIPT
 #!/bin/bash
@@ -124,11 +123,11 @@ cat arch/arm/boot/zImage arch/arm/boot/dts/aspeed-bmc-opp-palmetto.dtb > palmett
 
 EOF_SCRIPT
 
-chmod a+x ${WORKSPACE}/build.sh
+chmod a+x "${WORKSPACE}"/build.sh
 
 # Run the docker container, execute the build script we just built
-docker run --cap-add=sys_admin --net=host --rm=true -e WORKSPACE=${WORKSPACE} --user="${USER}" \
-  -w "${HOME}" -v "${HOME}":"${HOME}" -t linux-aspeed/${distro} ${WORKSPACE}/build.sh
+docker run --cap-add=sys_admin --net=host --rm=true -e WORKSPACE="${WORKSPACE}" --user="${USER}" \
+  -w "${HOME}" -v "${HOME}":"${HOME}" -t linux-aspeed/"${distro}" "${WORKSPACE}"/build.sh
 
 # Timestamp for build
 echo "Build completed, $(date)"

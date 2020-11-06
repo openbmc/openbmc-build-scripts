@@ -19,9 +19,9 @@ WORKSPACE=${WORKSPACE:-${HOME}/${RANDOM}${RANDOM}}
 echo "Build started, $(date)"
 
 # if there is no open-power directory clone in master into workspace
-if [ ! -e ${WORKSPACE}/op-build ]; then
+if [ ! -e "${WORKSPACE}"/op-build ]; then
         echo "Clone in openpower master to ${WORKSPACE}/op-build"
-        git clone --recursive https://github.com/open-power/op-build ${WORKSPACE}/op-build
+        git clone --recursive https://github.com/open-power/op-build "${WORKSPACE}"/op-build
 fi
 
 # Determine the architecture
@@ -84,8 +84,8 @@ RUN dnf --refresh repolist && dnf install -y \
 	zlib-static \
 	iputils-ping
 
-RUN grep -q ${GROUPS} /etc/group || groupadd -g ${GROUPS} ${USER}
-RUN grep -q ${UID} /etc/passwd || useradd -d ${HOME} -m -u ${UID} -g ${GROUPS} ${USER}
+RUN grep -q ${GROUPS[0]} /etc/group || groupadd -g ${GROUPS[0]} ${USER}
+RUN grep -q ${UID} /etc/passwd || useradd -d ${HOME} -m -u ${UID} -g ${GROUPS[0]} ${USER}
 
 USER ${USER}
 ENV HOME ${HOME}
@@ -127,8 +127,8 @@ RUN apt-get update && apt-get install -yy \
         libssl-dev \
 	iputils-ping
 
-RUN grep -q ${GROUPS} /etc/group || groupadd -g ${GROUPS} ${USER}
-RUN grep -q ${UID} /etc/passwd || useradd -d ${HOME} -m -u ${UID} -g ${GROUPS} ${USER}
+RUN grep -q ${GROUPS[0]} /etc/group || groupadd -g ${GROUPS[0]} ${USER}
+RUN grep -q ${UID} /etc/passwd || useradd -d ${HOME} -m -u ${UID} -g ${GROUPS[0]} ${USER}
 
 USER ${USER}
 ENV HOME ${HOME}
@@ -138,13 +138,12 @@ EOF
 fi
 
 # Build the docker container
-docker build -t op-build/${distro} - <<< "${Dockerfile}"
-if [[ "$?" -ne 0 ]]; then
+if ! docker build -t op-build/"${distro}" - <<< "${Dockerfile}" ; then
   echo "Failed to build docker container."
   exit 1
 fi
 
-mkdir -p ${WORKSPACE}
+mkdir -p "${WORKSPACE}"
 
 cat > "${WORKSPACE}"/build.sh << EOF_SCRIPT
 #!/bin/bash
@@ -155,27 +154,27 @@ set -x
 # avalaible in this script
 shopt -s expand_aliases
 
-cd ${WORKSPACE}/op-build
+cd "${WORKSPACE}"/op-build
 
 # Source our build env
 . op-build-env
 
 # Configure
-op-build ${target}_defconfig
+op-build "${target}_defconfig"
 
 # Kick off a build
 op-build
 
 EOF_SCRIPT
 
-chmod a+x ${WORKSPACE}/build.sh
+chmod a+x "${WORKSPACE}"/build.sh
 
 # Run the docker container, execute the build script we just built
-docker run --net=host --rm=true -e WORKSPACE=${WORKSPACE} --user="${USER}" \
-  -w "${HOME}" -v "${HOME}":"${HOME}" -t op-build/${distro} ${WORKSPACE}/build.sh
+docker run --net=host --rm=true -e WORKSPACE="${WORKSPACE}" --user="${USER}" \
+  -w "${HOME}" -v "${HOME}":"${HOME}" -t op-build/"${distro}" "${WORKSPACE}"/build.sh
 
 # Create link to images for archiving
-ln -sf ${WORKSPACE}/op-build/output/images ${WORKSPACE}/images
+ln -sf "${WORKSPACE}"/op-build/output/images "${WORKSPACE}"/images
 
 # Timestamp for build
 echo "Build completed, $(date)"

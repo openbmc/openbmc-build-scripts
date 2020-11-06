@@ -44,21 +44,21 @@ fi
 
 if [ ! -d "${WORKSPACE}/${OBMC_BUILD_SCRIPTS}" ]; then
     echo "Clone (${OBMC_BUILD_SCRIPTS}) in ${WORKSPACE}..."
-    git clone https://gerrit.openbmc-project.xyz/openbmc/${OBMC_BUILD_SCRIPTS} ${WORKSPACE}/${OBMC_BUILD_SCRIPTS}
+    git clone https://gerrit.openbmc-project.xyz/openbmc/${OBMC_BUILD_SCRIPTS} "${WORKSPACE}"/${OBMC_BUILD_SCRIPTS}
 fi
 
 if [ ! -d "${WORKSPACE}/${OBMC_TOOLS}" ]; then
     echo "Clone (${OBMC_TOOLS}) in ${WORKSPACE}..."
-    git clone https://gerrit.openbmc-project.xyz/openbmc/${OBMC_TOOLS} ${WORKSPACE}/${OBMC_TOOLS}
+    git clone https://gerrit.openbmc-project.xyz/openbmc/${OBMC_TOOLS} "${WORKSPACE}"/${OBMC_TOOLS}
 fi
 
 # Copy rootfs_size.py script into workspace
-cp ${WORKSPACE}/${OBMC_TOOLS}/${ROOTFS_SIZE_PY_DIR}/${ROOTFS_SIZE_PY} \
-${WORKSPACE}/${ROOTFS_SIZE_PY}
-chmod a+x ${WORKSPACE}/${ROOTFS_SIZE_PY}
+cp "${WORKSPACE}"/${OBMC_TOOLS}/${ROOTFS_SIZE_PY_DIR}/${ROOTFS_SIZE_PY} \
+"${WORKSPACE}"/${ROOTFS_SIZE_PY}
+chmod a+x "${WORKSPACE}"/${ROOTFS_SIZE_PY}
 
 # Configure docker build
-cd ${WORKSPACE}/${OBMC_BUILD_SCRIPTS}
+cd "${WORKSPACE}"/${OBMC_BUILD_SCRIPTS}
 echo "Building docker image with build-rootfs-size-docker.sh"
 
 # Export input env variables
@@ -73,8 +73,9 @@ docker run --cap-add=sys_admin --rm=true \
     --privileged=true \
     -u "$USER" \
     -w "${WORKSPACE}" -v "${WORKSPACE}":"${WORKSPACE}" \
-    -t ${DOCKER_IMG_NAME} \
-    "${WORKSPACE}"/${ROOTFS_SIZE_PY} --build_dir ${WORKSPACE}/ --squashfs_file ${SQUASHFS_FILE}
+    -t "${DOCKER_IMG_NAME}" \
+    "${WORKSPACE}"/${ROOTFS_SIZE_PY} --build_dir "${WORKSPACE}"/ \
+    --squashfs_file "${SQUASHFS_FILE}"
 
 # Timestamp for build
 echo "rootfs_size build completed, $(date)"
