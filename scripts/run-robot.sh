@@ -1,4 +1,4 @@
-#!/bin/bash -x
+#!/bin/bash -ex
 # Extract and run the OpenBMC robot test suite
 #
 # The robot test results will be copied to ${HOME}
@@ -18,8 +18,6 @@
 
 # we don't want to fail on bad rc since robot tests may fail
 
-set -e
-
 MACHINE=${MACHINE:-"qemu"}
 ROBOT_CODE_HOME=${ROBOT_CODE_HOME:-/tmp/$(whoami)/${RANDOM}/obmc-robot/}
 ROBOT_TEST_CMD=${ROBOT_TEST_CMD:-"python3 -m robot\
@@ -36,8 +34,7 @@ cd "${ROBOT_CODE_HOME}"
 chmod ugo+rw -R "${ROBOT_CODE_HOME}"/*
 
 # Execute the CI tests
-# shellcheck disable=SC2091 # intentionally executing ROBOT_TEST_CMD.
-$($ROBOT_TEST_CMD)
+eval "${ROBOT_TEST_CMD}"
 
 cp "${ROBOT_CODE_HOME}"/*.xml "${HOME}/"
 cp "${ROBOT_CODE_HOME}"/*.html "${HOME}/"
