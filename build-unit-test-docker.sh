@@ -210,7 +210,7 @@ RUN apt-get update && apt-get dist-upgrade -yy && apt-get install -yy \
     libc6-dev \
     libtool \
     bison \
-    dbus \
+    libdbus-1-dev \
     flex \
     cmake \
     python3 \
