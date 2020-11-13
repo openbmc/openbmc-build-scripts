@@ -1,4 +1,4 @@
-#!/bin/bash -ex
+#!/bin/bash -x
 # Extract and run the OpenBMC robot test suite
 #
 # The robot test results will be copied to ${HOME}
