@@ -662,6 +662,7 @@ class Autotools(BuildSystem):
             self._configure_feature('silent-rules', False),
             self._configure_feature('examples', build_for_testing),
             self._configure_feature('tests', build_for_testing),
+            self._configure_feature('itests', not DISABLE_INTEGRATION_TEST),
         ]
         if not TEST_ONLY:
             conf_flags.extend([
@@ -1112,6 +1113,9 @@ if __name__ == '__main__':
     parser.add_argument("-t", "--test-only", dest="TEST_ONLY",
                         action="store_true", required=False, default=False,
                         help="Only run test cases, no other validation")
+    parser.add_argument("-i", "--disable-integration-test", dest="DISABLE_INTEGRATION_TEST",
+                        action="store_true", required=False, default=False,
+                        help="Disable integration tests.")
     parser.add_argument("-v", "--verbose", action="store_true",
                         help="Print additional package status messages")
     parser.add_argument("-r", "--repeat", help="Repeat tests N times",
@@ -1126,6 +1130,7 @@ if __name__ == '__main__':
     WORKSPACE = args.WORKSPACE
     UNIT_TEST_PKG = args.PACKAGE
     TEST_ONLY = args.TEST_ONLY
+    DISABLE_INTEGRATION_TEST = args.DISABLE_INTEGRATION_TEST
     BRANCH = args.BRANCH
     FORMAT_CODE = args.FORMAT
     if args.verbose:
