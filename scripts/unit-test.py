@@ -662,6 +662,7 @@ class Autotools(BuildSystem):
             self._configure_feature('silent-rules', False),
             self._configure_feature('examples', build_for_testing),
             self._configure_feature('tests', build_for_testing),
+            self._configure_feature('itests', INTEGRATION_TEST),
         ]
         if not TEST_ONLY:
             conf_flags.extend([
@@ -713,7 +714,11 @@ class CMake(BuildSystem):
 
     def configure(self, build_for_testing):
         self.build_for_testing = build_for_testing
-        check_call_cmd('cmake', '-DCMAKE_EXPORT_COMPILE_COMMANDS=ON', '.')
+        if INTEGRATION_TEST:
+            check_call_cmd('cmake', '-DCMAKE_EXPORT_COMPILE_COMMANDS=ON',
+                           '-DITESTS=ON', '.')
+        else:
+            check_call_cmd('cmake', '-DCMAKE_EXPORT_COMPILE_COMMANDS=ON', '.')
 
     def build(self):
         check_call_cmd('cmake', '--build', '.', '--', '-j',
@@ -867,6 +872,8 @@ class Meson(BuildSystem):
             meson_flags.append(self._configure_option(meson_options, 'tests', build_for_testing))
         if 'examples' in meson_options:
             meson_flags.append(self._configure_option(meson_options, 'examples', build_for_testing))
+        if 'itests' in meson_options:
+            meson_flags.append(self._configure_option(meson_options, 'itests', INTEGRATION_TEST))
         if MESON_FLAGS.get(self.package) is not None:
             meson_flags.extend(MESON_FLAGS.get(self.package))
         try:
@@ -1112,6 +1119,9 @@ if __name__ == '__main__':
     parser.add_argument("-t", "--test-only", dest="TEST_ONLY",
                         action="store_true", required=False, default=False,
                         help="Only run test cases, no other validation")
+    parser.add_argument("--disable-integration-tests", dest="INTEGRATION_TEST",
+                        action="store_false", required=False, default=True,
+                        help="Disable integration tests.")
     parser.add_argument("-v", "--verbose", action="store_true",
                         help="Print additional package status messages")
     parser.add_argument("-r", "--repeat", help="Repeat tests N times",
@@ -1126,6 +1136,7 @@ if __name__ == '__main__':
     WORKSPACE = args.WORKSPACE
     UNIT_TEST_PKG = args.PACKAGE
     TEST_ONLY = args.TEST_ONLY
+    INTEGRATION_TEST = args.INTEGRATION_TEST
     BRANCH = args.BRANCH
     FORMAT_CODE = args.FORMAT
     if args.verbose:
