@@ -1087,6 +1087,7 @@ if __name__ == '__main__':
             'phosphor-snmp': 'phosphor-snmp',
             'ipmiblob': 'ipmi-blob-tool',
             'hei': 'openpower-libhei',
+            'phosphor-ipmi-blobs': 'phosphor-ipmi-blobs',
         },
     }
 
