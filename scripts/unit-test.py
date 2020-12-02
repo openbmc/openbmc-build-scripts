@@ -1119,10 +1119,11 @@ if __name__ == '__main__':
     parser.add_argument("-t", "--test-only", dest="TEST_ONLY",
                         action="store_true", required=False, default=False,
                         help="Only run test cases, no other validation")
-    parser.add_argument("--integration-tests", dest="INTEGRATION_TEST",
+    arg_inttests = parser.add_mutually_exclusive_group()
+    arg_inttests.add_argument("--integration-tests", dest="INTEGRATION_TEST",
                         action="store_true", required=False, default=True,
-                        help="Enable integration tests.")
-    parser.add_argument("--no-integration-tests", dest="INTEGRATION_TEST",
+                        help="Enable integration tests [default].")
+    arg_inttests.add_argument("--no-integration-tests", dest="INTEGRATION_TEST",
                         action="store_false", required=False,
                         help="Disable integration tests.")
     parser.add_argument("-v", "--verbose", action="store_true",
