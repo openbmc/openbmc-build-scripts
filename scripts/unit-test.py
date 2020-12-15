@@ -1158,7 +1158,7 @@ if __name__ == '__main__':
         def printline(*line):
             pass
 
-    CODE_SCAN_DIR = WORKSPACE + "/" + UNIT_TEST_PKG
+    CODE_SCAN_DIR = os.path.join(WORKSPACE, UNIT_TEST_PKG)
 
     # First validate code formatting if repo has style formatting files.
     # The format-code.sh checks for these files.
@@ -1166,7 +1166,7 @@ if __name__ == '__main__':
         check_call_cmd("./format-code.sh", CODE_SCAN_DIR)
 
     # Check if this repo has a supported make infrastructure
-    pkg = Package(UNIT_TEST_PKG, os.path.join(WORKSPACE, UNIT_TEST_PKG))
+    pkg = Package(UNIT_TEST_PKG, CODE_SCAN_DIR)
     if not pkg.build_system():
         print("No valid build system, exit")
         sys.exit(0)
@@ -1179,11 +1179,7 @@ if __name__ == '__main__':
 
     # Create dependency tree
     dep_tree = DepTree(UNIT_TEST_PKG)
-    build_dep_tree(UNIT_TEST_PKG,
-                   os.path.join(WORKSPACE, UNIT_TEST_PKG),
-                   dep_added,
-                   dep_tree,
-                   BRANCH)
+    build_dep_tree(UNIT_TEST_PKG, CODE_SCAN_DIR, dep_added, dep_tree, BRANCH)
 
     # Reorder Dependency Tree
     for pkg_name, regex_str in DEPENDENCIES_REGEX.items():
@@ -1207,9 +1203,8 @@ if __name__ == '__main__':
 
     # Run any custom CI scripts the repo has, of which there can be
     # multiple of and anywhere in the repository.
-    ci_scripts = find_file(['run-ci.sh', 'run-ci'],
-                           os.path.join(WORKSPACE, UNIT_TEST_PKG))
+    ci_scripts = find_file(['run-ci.sh', 'run-ci'], CODE_SCAN_DIR)
     if ci_scripts:
-        os.chdir(os.path.join(WORKSPACE, UNIT_TEST_PKG))
+        os.chdir(CODE_SCAN_DIR)
         for ci_script in ci_scripts:
             check_call_cmd(ci_script)
