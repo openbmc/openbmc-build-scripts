@@ -1161,7 +1161,10 @@ if __name__ == '__main__':
     # First validate code formatting if repo has style formatting files.
     # The format-code.sh checks for these files.
     if FORMAT_CODE:
-        check_call_cmd("./format-code.sh", CODE_SCAN_DIR)
+        format_scripts = find_file(['format-code.sh', 'format-code'],
+                                   CODE_SCAN_DIR)
+        for f in format_scripts:
+            check_call_cmd(f, CODE_SCAN_DIR)
 
     # Check if this repo has a supported make infrastructure
     pkg = Package(UNIT_TEST_PKG, CODE_SCAN_DIR)
