@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "c67c7643_a3ed80a0",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1000029
+      },
+      "writtenOn": "2020-12-29T21:36:08Z",
+      "side": 1,
+      "message": "Is there a difference here? or are these all just \"external projects via git\" to the repo downloading them?",
+      "range": {
+        "startLine": 9,
+        "startChar": 25,
+        "endLine": 9,
+        "endChar": 56
+      },
+      "revId": "196341cfe0950091bb4fbc9a61341db45c045b40",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "fcfe02d1_28278f93",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 1000029
+      },
+      "writtenOn": "2020-12-29T21:36:08Z",
+      "side": 1,
+      "message": "Something else seems to be wrong with dbus-sensors downloading nlohmann-json via git during ci when nlohmann-json is already included in the docker image.",
+      "range": {
+        "startLine": 15,
+        "startChar": 30,
+        "endLine": 16,
+        "endChar": 37
+      },
+      "revId": "196341cfe0950091bb4fbc9a61341db45c045b40",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c81bebe0_d5916298",
+        "filename": "build-unit-test-docker.sh",
+        "patchSetId": 1
+      },
+      "lineNbr": 517,
+      "author": {
+        "id": 1000029
+      },
+      "writtenOn": "2020-12-29T21:36:08Z",
+      "side": 1,
+      "message": "Wouldn\u0027t it be better to have this set for the base set of openbmc projects included above in the case they include any external projects via git or any other ones for that matter?",
+      "range": {
+        "startLine": 517,
+        "startChar": 0,
+        "endLine": 517,
+        "endChar": 12
+      },
+      "revId": "196341cfe0950091bb4fbc9a61341db45c045b40",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
