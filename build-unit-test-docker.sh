@@ -21,6 +21,7 @@ DOCKER_IMG_NAME=${DOCKER_IMG_NAME:-"openbmc/ubuntu-unit-test"}
 DISTRO=${DISTRO:-"ubuntu:focal"}
 BRANCH=${BRANCH:-"master"}
 UBUNTU_MIRROR=${UBUNTU_MIRROR:-""}
+http_proxy=${http_proxy:-}
 
 # Determine the architecture
 ARCH=$(uname -m)
@@ -178,6 +179,12 @@ if [[ -n "${UBUNTU_MIRROR}" ]]; then
         echo \"deb ${UBUNTU_MIRROR} \$(. /etc/os-release && echo \$VERSION_CODENAME)-proposed main restricted universe multiverse\" >> /etc/apt/sources.list && \
         echo \"deb ${UBUNTU_MIRROR} \$(. /etc/os-release && echo \$VERSION_CODENAME)-backports main restricted universe multiverse\" >> /etc/apt/sources.list"
 
+fi
+
+PROXY_CMD=""
+if [[ -n "${http_proxy}" ]]; then
+  PROXY_CMD="RUN echo \"[http]\" > \$HOME/.gitconfig && \
+      echo \"proxy = ${http_proxy}\" >> \$HOME/.gitconfig"
 fi
 
 Dockerfile=$(cat << EOF
@@ -507,13 +514,14 @@ RUN grep -q ${UID} /etc/passwd || useradd -d ${HOME} -m -u ${UID} -g ${GROUPS[0]
 RUN sed -i '1iDefaults umask=000' /etc/sudoers
 RUN echo "${USER} ALL=(ALL) NOPASSWD: ALL" >>/etc/sudoers
 
+${PROXY_CMD}
+
 RUN /bin/bash
 EOF
 )
 fi
 ################################# docker img # #################################
 
-http_proxy=${http_proxy:-}
 proxy_args=""
 if [[ -n "${http_proxy}" ]]; then
   proxy_args="--build-arg http_proxy=${http_proxy} --build-arg https_proxy=${http_proxy}"
