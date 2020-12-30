@@ -120,6 +120,30 @@
     },
     {
       "key": {
+        "uuid": "7d7faf9f_d445cc90",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 1000044
+      },
+      "writtenOn": "2020-12-30T08:31:49Z",
+      "side": 1,
+      "message": "When bmcweb was using cmake, I did send a patch to make \"YOCTO\" default so that repo-ci could use the docker image\u0027s environment to run the build and test. It was rejected.\nSo I assume that is really intended behavior for such repos.\nSee https://gerrit.openbmc-project.xyz/c/openbmc/bmcweb/+/27409",
+      "parentUuid": "ba886723_5b82fef6",
+      "range": {
+        "startLine": 15,
+        "startChar": 30,
+        "endLine": 16,
+        "endChar": 37
+      },
+      "revId": "196341cfe0950091bb4fbc9a61341db45c045b40",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "c81bebe0_d5916298",
         "filename": "build-unit-test-docker.sh",
         "patchSetId": 1
@@ -179,6 +203,30 @@
       "side": 1,
       "message": "Right, I\u0027m asking why it was added to the end of the docker image build instead of being done earlier so that the repos that are always included in the docker image build get the possible benefit of the proxy if they download any external projects via git.",
       "parentUuid": "5628906a_7e64c355",
+      "range": {
+        "startLine": 517,
+        "startChar": 0,
+        "endLine": 517,
+        "endChar": 12
+      },
+      "revId": "196341cfe0950091bb4fbc9a61341db45c045b40",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "15d041e8_fb5a4574",
+        "filename": "build-unit-test-docker.sh",
+        "patchSetId": 1
+      },
+      "lineNbr": 517,
+      "author": {
+        "id": 1000044
+      },
+      "writtenOn": "2020-12-30T08:31:49Z",
+      "side": 1,
+      "message": "\u003e if they download any external projects via git.\n\nAs explained above, the docker build step does not use the environment of the container, it uses the below `--build-arg` instead.\n\nBesides, you could see that the ${HOME} is created at the \"Final configuration for the workspace\", so the proxy settings are here after ${HOME} is created.\n\nLast, by putting it at the last step makes it could re-use previously downloaded docker images (cached), so it\u0027s faster if you already have built the docker image.",
+      "parentUuid": "bf729331_fa5cc04a",
       "range": {
         "startLine": 517,
         "startChar": 0,
