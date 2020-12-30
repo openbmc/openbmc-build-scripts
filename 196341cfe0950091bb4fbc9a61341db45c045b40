@@ -96,6 +96,30 @@
     },
     {
       "key": {
+        "uuid": "ba886723_5b82fef6",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 1000029
+      },
+      "writtenOn": "2020-12-30T02:51:33Z",
+      "side": 1,
+      "message": "I\u0027m not referring to doing a machine image build using Yocto. If dbus-sensors is using the `openbmc-build-scripts` to run repo-ci, then why is it explicitly downloading nlohmann-json when this script would already have that installed within the docker container? That\u0027s a question outside the scope of this change (however it\u0027s causing the need for this change) since many other repos do not explicitly download/install nlohmann-json for their repo-ci.",
+      "parentUuid": "6b8e2518_b7a1b698",
+      "range": {
+        "startLine": 15,
+        "startChar": 30,
+        "endLine": 16,
+        "endChar": 37
+      },
+      "revId": "196341cfe0950091bb4fbc9a61341db45c045b40",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "c81bebe0_d5916298",
         "filename": "build-unit-test-docker.sh",
         "patchSetId": 1
@@ -140,6 +164,30 @@
       "revId": "196341cfe0950091bb4fbc9a61341db45c045b40",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "bf729331_fa5cc04a",
+        "filename": "build-unit-test-docker.sh",
+        "patchSetId": 1
+      },
+      "lineNbr": 517,
+      "author": {
+        "id": 1000029
+      },
+      "writtenOn": "2020-12-30T02:51:33Z",
+      "side": 1,
+      "message": "Right, I\u0027m asking why it was added to the end of the docker image build instead of being done earlier so that the repos that are always included in the docker image build get the possible benefit of the proxy if they download any external projects via git.",
+      "parentUuid": "5628906a_7e64c355",
+      "range": {
+        "startLine": 517,
+        "startChar": 0,
+        "endLine": 517,
+        "endChar": 12
+      },
+      "revId": "196341cfe0950091bb4fbc9a61341db45c045b40",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
     }
   ]
 }
