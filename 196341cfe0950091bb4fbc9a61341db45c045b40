@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "c8419749_31bd5c77",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1000044
+      },
+      "writtenOn": "2020-12-30T02:14:29Z",
+      "side": 1,
+      "message": "I mention `subprojects` for meson and `externalprojects` for cmake.\nBut I did only test this case for dbus-sensors which is a cmake project.\n\nWill reword.",
+      "parentUuid": "c67c7643_a3ed80a0",
+      "range": {
+        "startLine": 9,
+        "startChar": 25,
+        "endLine": 9,
+        "endChar": 56
+      },
+      "revId": "196341cfe0950091bb4fbc9a61341db45c045b40",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "fcfe02d1_28278f93",
         "filename": "/COMMIT_MSG",
         "patchSetId": 1
@@ -36,6 +60,30 @@
       "writtenOn": "2020-12-29T21:36:08Z",
       "side": 1,
       "message": "Something else seems to be wrong with dbus-sensors downloading nlohmann-json via git during ci when nlohmann-json is already included in the docker image.",
+      "range": {
+        "startLine": 15,
+        "startChar": 30,
+        "endLine": 16,
+        "endChar": 37
+      },
+      "revId": "196341cfe0950091bb4fbc9a61341db45c045b40",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "6b8e2518_b7a1b698",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 1000044
+      },
+      "writtenOn": "2020-12-30T02:14:29Z",
+      "side": 1,
+      "message": "That is the intended behavior for the cmake repos, that it sets `YOCTO` OFF by default and runs repo CI by downloading and compiling all the dependencies as externalprojects.",
+      "parentUuid": "fcfe02d1_28278f93",
       "range": {
         "startLine": 15,
         "startChar": 30,
@@ -68,6 +116,30 @@
       "revId": "196341cfe0950091bb4fbc9a61341db45c045b40",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "5628906a_7e64c355",
+        "filename": "build-unit-test-docker.sh",
+        "patchSetId": 1
+      },
+      "lineNbr": 517,
+      "author": {
+        "id": 1000044
+      },
+      "writtenOn": "2020-12-30T02:14:29Z",
+      "side": 1,
+      "message": "The above steps runs at docker build stage, where the proxy settings are from the \"--build-arg\".\n\nThis ${PROXY_CMD} is intended to set the proxy in the docker image, so when the container runs, e.g. repo CI runs, it uses the proxy.",
+      "parentUuid": "c81bebe0_d5916298",
+      "range": {
+        "startLine": 517,
+        "startChar": 0,
+        "endLine": 517,
+        "endChar": 12
+      },
+      "revId": "196341cfe0950091bb4fbc9a61341db45c045b40",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
     }
   ]
 }
