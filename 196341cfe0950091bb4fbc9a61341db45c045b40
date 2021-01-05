@@ -144,6 +144,30 @@
     },
     {
       "key": {
+        "uuid": "32be02ca_2128bd75",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 1000029
+      },
+      "writtenOn": "2021-01-05T15:56:15Z",
+      "side": 1,
+      "message": "That\u0027s fine, it\u0027s inefficient for these repos in docker CI to download these dependencies twice since they may already present in the docker image. For example, it doesn\u0027t look like dbus-sensors checks for nlohmann json prior to downloading it into the repo directory.",
+      "parentUuid": "7d7faf9f_d445cc90",
+      "range": {
+        "startLine": 15,
+        "startChar": 30,
+        "endLine": 16,
+        "endChar": 37
+      },
+      "revId": "196341cfe0950091bb4fbc9a61341db45c045b40",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "c81bebe0_d5916298",
         "filename": "build-unit-test-docker.sh",
         "patchSetId": 1
