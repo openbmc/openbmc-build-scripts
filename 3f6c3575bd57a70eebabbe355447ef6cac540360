@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "9438aff5_3974ba18",
+        "filename": "build-unit-test-docker.sh",
+        "patchSetId": 2
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2021-01-06T16:56:46Z",
+      "side": 1,
+      "message": "Should document this option in the \"Script Variables\" section at top.",
+      "revId": "3f6c3575bd57a70eebabbe355447ef6cac540360",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
