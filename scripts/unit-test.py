@@ -1165,6 +1165,11 @@ if __name__ == '__main__':
     if FORMAT_CODE:
         format_scripts = find_file(['format-code.sh', 'format-code'],
                                    CODE_SCAN_DIR)
+
+        # use default format-code.sh if no other found
+        if not format_scripts:
+            format_scripts.append(os.path.join(WORKSPACE, "format-code.sh"))
+
         for f in format_scripts:
             check_call_cmd(f, CODE_SCAN_DIR)
 
