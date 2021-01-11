@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "dbba4ffc_17b6c62a",
+        "filename": "build-unit-test-docker.sh",
+        "patchSetId": 3
+      },
+      "lineNbr": 529,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2021-01-11T22:32:38Z",
+      "side": 1,
+      "message": "There is support for \u0027https_proxy\u0027 here but now not in the .gitconfig changes you made.  I think this is problematic and you should have a `[https]` section in the .gitconfig also.",
+      "range": {
+        "startLine": 529,
+        "startChar": 51,
+        "endLine": 529,
+        "endChar": 89
+      },
+      "revId": "b850977aaf474d6f57cb7e1e133f35b48295d963",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
