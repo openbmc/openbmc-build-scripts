@@ -22,6 +22,30 @@
       "revId": "b850977aaf474d6f57cb7e1e133f35b48295d963",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "be23a5b8_8cee5d6e",
+        "filename": "build-unit-test-docker.sh",
+        "patchSetId": 3
+      },
+      "lineNbr": 529,
+      "author": {
+        "id": 1000044
+      },
+      "writtenOn": "2021-01-12T01:58:53Z",
+      "side": 1,
+      "message": "In .gitconfig, there is only `http.proxy`, but not `https.proxy`.\nhttps://git-scm.com/docs/git-config#Documentation/git-config.txt-httpproxy\n\n\u003e http.proxy\n\u003e Override the HTTP proxy, normally configured using the http_proxy, https_proxy, and all_proxy environment variables",
+      "parentUuid": "dbba4ffc_17b6c62a",
+      "range": {
+        "startLine": 529,
+        "startChar": 51,
+        "endLine": 529,
+        "endChar": 89
+      },
+      "revId": "b850977aaf474d6f57cb7e1e133f35b48295d963",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
     }
   ]
 }
