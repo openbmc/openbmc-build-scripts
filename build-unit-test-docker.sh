@@ -496,7 +496,7 @@ COPY --from=openbmc-json ${PREFIX} ${PREFIX}
 COPY --from=openbmc-CLI11 ${PREFIX} ${PREFIX}
 RUN curl -L https://github.com/openbmc/pldm/archive/${PKG_REV['openbmc/pldm']}.tar.gz | tar -xz && \
 cd pldm-* && \
-meson build ${MESON_FLAGS[@]} -Dtests=disabled && \
+meson build ${MESON_FLAGS[@]} -Dlibpldm-only=enabled -Dtests=disabled && \
 ninja -C build && \
 ninja -C build install
 
