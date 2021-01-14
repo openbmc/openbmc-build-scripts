@@ -1168,7 +1168,7 @@ if __name__ == '__main__':
 
         # use default format-code.sh if no other found
         if not format_scripts:
-            format_scripts.append(os.path.join(WORKSPACE, "format-code.sh"))
+            format_scripts.append(os.path.join(WORKSPACE, "openbmc-build-scripts", "scripts", "format-code.sh"))
 
         for f in format_scripts:
             check_call_cmd(f, CODE_SCAN_DIR)
