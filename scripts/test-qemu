@@ -1,0 +1,110 @@
+#!/bin/sh
+
+set -eu
+set -x
+
+# AST2400
+PALMETTO_MTD_URL='https://jenkins.openbmc.org/job/ci-openbmc/distro=ubuntu,label=docker-builder,target=palmetto/lastStableBuild/artifact/openbmc/build/tmp/deploy/images/palmetto/obmc-phosphor-image-palmetto.static.mtd'
+PALMETTO_MTD="$(basename "$PALMETTO_MTD_URL")"
+
+# AST2500
+WITHERSPOON_MTD_URL='https://jenkins.openbmc.org/job/ci-openbmc/distro=ubuntu,label=docker-builder,target=witherspoon/lastStableBuild/artifact/openbmc/build/tmp/deploy/images/witherspoon/obmc-phosphor-image-witherspoon.ubi.mtd'
+WITHERSPOON_MTD="$(basename "$WITHERSPOON_MTD_URL")"
+
+# AST2600
+TACOMA_WIC_XZ_URL='https://jenkins.openbmc.org/job/ci-openbmc/distro=ubuntu,label=docker-builder,target=witherspoon-tacoma/lastStableBuild/artifact/openbmc/build/tmp/deploy/images/witherspoon-tacoma/obmc-phosphor-image-witherspoon-tacoma.wic.xz'
+TACOMA_WIC_XZ="$(basename "$TACOMA_WIC_XZ_URL")"
+TACOMA_MMC="$(basename "$TACOMA_WIC_XZ_URL" .xz)"
+
+TACOMA_FITIMAGE_URL='https://jenkins.openbmc.org/job/ci-openbmc/distro=ubuntu,label=docker-builder,target=witherspoon-tacoma/lastStableBuild/artifact/openbmc/build/tmp/deploy/images/witherspoon-tacoma/fitImage-obmc-phosphor-initramfs-witherspoon-tacoma-witherspoon-tacoma'
+TACOMA_FITIMAGE="$(basename "$TACOMA_FITIMAGE_URL")"
+
+TACOMA_SD1=$(mktemp --suffix .sd)
+TACOMA_SD2=$(mktemp --suffix .sd)
+TACOMA_KERNEL=$(mktemp --suffix .kernel)
+TACOMA_DTB=$(mktemp --suffix .dtb)
+TACOMA_INITRD=$(mktemp --suffix .initrd)
+
+cleanup() {
+    rm -f $PALMETTO_MTD
+    rm -f $WITHERSPOON_MTD
+    rm -f $TACOMA_SD1 $TACOMA_SD2
+    rm -f $TACOMA_WIC_XZ $TACOMA_MMC
+    rm -f $TACOMA_FITIMAGE
+    rm -f $TACOMA_KERNEL $TACOMA_DTB $TACOMA_INITRD
+}
+
+trap cleanup EXIT 2
+
+# AST2400
+wget "$PALMETTO_MTD_URL"
+expect \
+    -c "spawn qemu-system-arm \
+            -M palmetto-bmc \
+            -drive file=${PALMETTO_MTD},if=mtd,format=raw \
+            -nographic \
+            -net nic \
+            -net user,hostfwd=:127.0.0.1:2222-:22,hostfwd=:127.0.0.1:2443-:443,hostname=qemu" \
+    -c 'set timeout 120' \
+    -c 'expect timeout { exit 1 } "login:"' \
+    -c 'spawn sshpass -p 0penBmc \
+            ssh -o UserKnownHostsFile=/dev/null \
+                -o StrictHostKeyChecking=no \
+                -p2222 \
+                root@localhost \
+                journalctl -b' \
+    -c 'expect -i $spawn_id eof'
+
+# AST2500
+wget "$WITHERSPOON_MTD_URL"
+expect \
+    -c "spawn qemu-system-arm \
+            -M witherspoon-bmc \
+            -drive file=${WITHERSPOON_MTD},if=mtd,format=raw \
+            -nographic \
+            -net nic \
+            -net user,hostfwd=:127.0.0.1:2222-:22,hostfwd=:127.0.0.1:2443-:443,hostname=qemu" \
+    -c 'set timeout 120' \
+    -c 'expect timeout { exit 1 } "login:"' \
+    -c 'spawn sshpass -p 0penBmc \
+            ssh -o UserKnownHostsFile=/dev/null \
+                -o StrictHostKeyChecking=no \
+                -p2222 \
+                root@localhost \
+                journalctl -b' \
+    -c 'expect -i $spawn_id eof'
+
+# AST2600
+truncate -s 16M $TACOMA_SD1
+truncate -s 16M $TACOMA_SD2
+
+wget "$TACOMA_WIC_XZ_URL"
+unxz $TACOMA_WIC_XZ
+truncate -s 16G $TACOMA_MMC
+
+wget $TACOMA_FITIMAGE_URL
+dumpimage -T flat_dt -p 0 -o $TACOMA_KERNEL $TACOMA_FITIMAGE
+dumpimage -T flat_dt -p 1 -o $TACOMA_DTB $TACOMA_FITIMAGE
+dumpimage -T flat_dt -p 2 -o $TACOMA_INITRD $TACOMA_FITIMAGE
+
+expect \
+    -c "spawn qemu-system-arm -M tacoma-bmc \
+            -kernel $TACOMA_KERNEL \
+            -dtb $TACOMA_DTB \
+            -initrd $TACOMA_INITRD \
+            -drive file=${TACOMA_SD1},if=sd,format=raw \
+            -drive file=${TACOMA_SD2},if=sd,format=raw \
+            -drive file=${TACOMA_MMC},if=sd,format=raw \
+            -net nic \
+            -net user,hostfwd=:127.0.0.1:2222-:22,hostfwd=:127.0.0.1:2443-:443,hostname=qemu \
+            -nographic \
+            -append \"console=ttyS4,115200n8 rootwait root=PARTLABEL=rofs-a\"" \
+    -c 'set timeout 120' \
+    -c 'expect timeout { exit 1 } "login:"' \
+    -c 'spawn sshpass -p 0penBmc \
+            ssh -o UserKnownHostsFile=/dev/null \
+                -o StrictHostKeyChecking=no \
+                -p2222 \
+                root@localhost \
+                journalctl -b' \
+    -c 'expect -i $spawn_id eof'
