@@ -76,8 +76,18 @@ cd ${WORKSPACE}/qemu
 
 gcc --version
 git submodule update --init dtc
+
+if [ -f meson.build ]
+then
+    mkdir build
+    cd build
+    CONFIGURE=../configure
+else
+    CONFIGURE=./configure
+fi
+
 # disable anything that requires us to pull in X
-./configure \
+\$CONFIGURE \
     --target-list=arm-softmmu \
     --disable-spice \
     --disable-docs \
@@ -91,6 +101,7 @@ git submodule update --init dtc
     --disable-vnc \
     --disable-werror \
     --disable-vnc-png
+
 make clean
 make -j4
 
