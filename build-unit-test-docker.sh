@@ -265,9 +265,11 @@ RUN apt-get update && apt-get dist-upgrade -yy && apt-get install -yy \
     wget \
     libldap2-dev \
     libprotobuf-dev \
+    libgrpc++-dev \
     libperlio-gzip-perl \
     libjson-perl \
     protobuf-compiler \
+    protobuf-compiler-grpc \
     libgpiod-dev \
     device-tree-compiler \
     cppcheck \
