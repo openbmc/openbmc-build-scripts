@@ -107,6 +107,7 @@ ${PROXY}
 ENV DEBIAN_FRONTEND noninteractive
 RUN apt-get update && apt-get install -yy --no-install-recommends \
     bison \
+    bzip2 \
     ca-certificates \
     flex \
     gcc \
@@ -116,6 +117,7 @@ RUN apt-get update && apt-get install -yy --no-install-recommends \
     libglib2.0-dev \
     libpixman-1-dev \
     make \
+    ninja-build \
     python3-yaml \
     iputils-ping
 
