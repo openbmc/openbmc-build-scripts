@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "a885cfb9_90ff62aa",
+        "filename": "qemu-build.sh",
+        "patchSetId": 1
+      },
+      "lineNbr": 109,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2021-01-15T14:31:34Z",
+      "side": 1,
+      "message": "I\u0027m not a big fan of the \"latest\" because it\u0027s undefined. You have something working great and then suddenly under the covers it goes to something newer and if something breaks, it\u0027s tricky to track down. I\u0027d vote we just put focal in here (like the build-unit-test-docker.sh) but I don\u0027t feel strong enough to -1.",
+      "range": {
+        "startLine": 109,
+        "startChar": 26,
+        "endLine": 109,
+        "endChar": 32
+      },
+      "revId": "10e59a36f0d262f419d0f9cb1f7c85b1013a525d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
