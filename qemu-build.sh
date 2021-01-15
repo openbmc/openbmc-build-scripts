@@ -100,7 +100,7 @@ chmod a+x "${WORKSPACE}"/build.sh
 
 # Configure docker build
 Dockerfile=$(cat << EOF
-FROM ${DOCKER_BASE}ubuntu:16.04
+FROM ${DOCKER_BASE}ubuntu:20.10
 
 ${PROXY}
 
@@ -116,7 +116,6 @@ RUN apt-get update && apt-get install -yy --no-install-recommends \
     libglib2.0-dev \
     libpixman-1-dev \
     make \
-    python-yaml \
     python3-yaml \
     iputils-ping
 
