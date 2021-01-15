@@ -99,8 +99,14 @@ EOF_SCRIPT
 chmod a+x "${WORKSPACE}"/build.sh
 
 # Configure docker build
+
+# !!!
+# Keep the base docker image in sync with the image under which we run the
+# resulting qemu binary.
+# !!!
+
 Dockerfile=$(cat << EOF
-FROM ${DOCKER_BASE}ubuntu:16.04
+FROM ${DOCKER_BASE}ubuntu:latest
 
 ${PROXY}
 
@@ -116,7 +122,6 @@ RUN apt-get update && apt-get install -yy --no-install-recommends \
     libglib2.0-dev \
     libpixman-1-dev \
     make \
-    python-yaml \
     python3-yaml \
     iputils-ping
 
