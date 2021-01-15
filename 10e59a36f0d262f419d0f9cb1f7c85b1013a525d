@@ -22,6 +22,30 @@
       "revId": "10e59a36f0d262f419d0f9cb1f7c85b1013a525d",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e685890b_cfc15a80",
+        "filename": "qemu-build.sh",
+        "patchSetId": 1
+      },
+      "lineNbr": 109,
+      "author": {
+        "id": 1000029
+      },
+      "writtenOn": "2021-01-15T15:29:07Z",
+      "side": 1,
+      "message": "So which commit is intended? This one or https://gerrit.openbmc-project.xyz/c/openbmc/openbmc-build-scripts/+/39739 ? They look to be changing the same line.",
+      "parentUuid": "a885cfb9_90ff62aa",
+      "range": {
+        "startLine": 109,
+        "startChar": 26,
+        "endLine": 109,
+        "endChar": 32
+      },
+      "revId": "10e59a36f0d262f419d0f9cb1f7c85b1013a525d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
     }
   ]
 }
