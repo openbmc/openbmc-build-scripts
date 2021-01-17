@@ -70,6 +70,30 @@
       "revId": "10e59a36f0d262f419d0f9cb1f7c85b1013a525d",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "1a6ed5c8_3de62416",
+        "filename": "qemu-build.sh",
+        "patchSetId": 1
+      },
+      "lineNbr": 109,
+      "author": {
+        "id": 1000009
+      },
+      "writtenOn": "2021-01-17T23:28:36Z",
+      "side": 1,
+      "message": "$ git grep ubuntu:\n build-rootfs-size-docker.sh:#                     default is ubuntu:bionic\n build-rootfs-size-docker.sh:DISTRO\u003d${DISTRO:-\"ubuntu:bionic\"}\n build-setup.sh:#                     ubuntu: latest|16.04|14.04|trusty|xenial\n build-unit-test-docker.sh:#                     default is ubuntu:eoan\n build-unit-test-docker.sh:DISTRO\u003d${DISTRO:-\"ubuntu:focal\"}\n docs-build.sh:FROM ubuntu:16.04\n initramfs-build.sh:FROM ubuntu:18.04\n kernel-build-setup.sh:FROM ubuntu:latest\n kernel-build.sh:FROM ubuntu:latest\n kubernetes/XCAT-Kubernetes-Container/Dockerfile:FROM ubuntu:14.04\n openpower-build-setup.sh:FROM ${DOCKER_BASE}ubuntu:latest\n qemu-build.sh:FROM ${DOCKER_BASE}ubuntu:latest\n run-rootfs-size-docker.sh:DISTRO\u003d${DISTRO:-ubuntu:bionic}\n run-rootfs-size-docker.sh:    DISTRO\u003d\"ubuntu:bionic\"\n run-unit-test-docker.sh:DISTRO\u003d${DISTRO:-ubuntu:focal}\n run-unit-test-docker.sh:    DISTRO\u003d\"ubuntu:latest\"\n scripts/build-qemu-robot-docker.sh:#            default is ubuntu:bionic\n scripts/build-qemu-robot-docker.sh:DISTRO\u003d${2:-\"ubuntu:bionic\"}\n trace-kernel-build.sh:FROM ubuntu:latest\n u-boot-build.sh:FROM ubuntu:16.04\n\nWe should probably rationalise these...",
+      "parentUuid": "97122859_119b9a8a",
+      "range": {
+        "startLine": 109,
+        "startChar": 26,
+        "endLine": 109,
+        "endChar": 32
+      },
+      "revId": "10e59a36f0d262f419d0f9cb1f7c85b1013a525d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
     }
   ]
 }
