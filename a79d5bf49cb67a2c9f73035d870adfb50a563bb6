@@ -22,6 +22,30 @@
       "revId": "a79d5bf49cb67a2c9f73035d870adfb50a563bb6",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "75138cdb_eeeb4b0f",
+        "filename": "qemu-build.sh",
+        "patchSetId": 1
+      },
+      "lineNbr": 103,
+      "author": {
+        "id": 1000009
+      },
+      "writtenOn": "2021-01-18T00:28:25Z",
+      "side": 1,
+      "message": "39744 was the consequence of a bungled rebase. I\u0027ve abandoned it, this is the change we care about.",
+      "parentUuid": "c0353c26_a451e6e9",
+      "range": {
+        "startLine": 103,
+        "startChar": 0,
+        "endLine": 103,
+        "endChar": 31
+      },
+      "revId": "a79d5bf49cb67a2c9f73035d870adfb50a563bb6",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
     }
   ]
 }

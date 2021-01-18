@@ -22,6 +22,30 @@
       "revId": "f0fed44d9578317d015431544b0e489feb26d473",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "cdc7a626_4accfbac",
+        "filename": "qemu-build.sh",
+        "patchSetId": 1
+      },
+      "lineNbr": 119,
+      "author": {
+        "id": 1000009
+      },
+      "writtenOn": "2021-01-18T00:28:25Z",
+      "side": 0,
+      "message": "This is a hangover from PS1 that upgraded the base image to ubuntu:focal (which appeared to no-longer contain this package). However, everything still worked, so we might as well leave it out.",
+      "parentUuid": "cbd4419c_f0a87120",
+      "range": {
+        "startLine": 119,
+        "startChar": 4,
+        "endLine": 119,
+        "endChar": 17
+      },
+      "revId": "f0fed44d9578317d015431544b0e489feb26d473",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
     }
   ]
 }
