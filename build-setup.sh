@@ -101,6 +101,9 @@ xtrct_small_copy_dir=${xtrct_small_copy_dir:-deploy/images}
 xtrct_path="${obmc_dir}/build/tmp"
 xtrct_copy_timeout="300"
 
+# the teamcity "UI" provides much better build output when viewed in jenkins
+BITBAKE_UI="-u teamcity"
+
 bitbake_target="obmc-phosphor-image"
 PROXY=""
 
@@ -418,9 +421,9 @@ EOF_CONF
 
 # Kick off a build
 if [[ -n "${nice_priority}" ]]; then
-    nice -${nice_priority} bitbake ${BITBAKE_OPTS} ${bitbake_target}
+    nice -${nice_priority} bitbake ${BITBAKE_OPTS} ${BITBAKE_TEAMCITY} ${bitbake_target}
 else
-    bitbake ${BITBAKE_OPTS} ${bitbake_target}
+    bitbake ${BITBAKE_OPTS} ${BITBAKE_TEAMCITY} ${bitbake_target}
 fi
 
 # Copy internal build directory into xtrct_path directory
