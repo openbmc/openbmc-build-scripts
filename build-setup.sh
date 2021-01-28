@@ -474,7 +474,7 @@ ${mount_obmc_dir} \
 ${mount_ssc_dir} \
 ${mount_workspace_dir} \
 --cpus="$num_cpu" \
--t "${img_name}" \
+"${img_name}" \
 "${WORKSPACE}/build.sh"
 
 # To maintain function of resources that used an older path, add a link
