@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "4eba0e37_633a7360",
+        "filename": "build-setup.sh",
+        "patchSetId": 2
+      },
+      "lineNbr": 424,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2021-01-28T22:11:08Z",
+      "side": 1,
+      "message": "I think this is suppose to be BITBAKE_UI.",
+      "range": {
+        "startLine": 424,
+        "startChar": 53,
+        "endLine": 424,
+        "endChar": 69
+      },
+      "revId": "14f91772a29ce9da8054b3fbded012de82b7ae57",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c5f3a20e_55c52150",
+        "filename": "build-setup.sh",
+        "patchSetId": 2
+      },
+      "lineNbr": 426,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2021-01-28T22:11:08Z",
+      "side": 1,
+      "message": "And also here.",
+      "range": {
+        "startLine": 426,
+        "startChar": 30,
+        "endLine": 426,
+        "endChar": 46
+      },
+      "revId": "14f91772a29ce9da8054b3fbded012de82b7ae57",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
