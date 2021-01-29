@@ -402,6 +402,9 @@ else
   export DISTRO="${DISTRO}"
 fi
 
+# bitbake requires SDKMACHINE be x86
+export SDKMACHINE=x86_64
+
 # Custom BitBake config settings
 cat >> conf/local.conf << EOF_CONF
 BB_NUMBER_THREADS = "$(nproc)"
