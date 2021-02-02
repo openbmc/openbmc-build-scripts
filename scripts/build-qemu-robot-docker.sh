@@ -138,7 +138,7 @@ RUN pip3 install \
     urllib3 \
     xvfbwrapper
 
-RUN wget https://github.com/mozilla/geckodriver/releases/download/v0.26.0/geckodriver-v0.26.0-linux64.tar.gz \
+RUN wget https://github.com/mozilla/geckodriver/releases/download/v0.29.0/geckodriver-v0.29.0-linux64.tar.gz \
         && tar xvzf geckodriver-*.tar.gz \
         && mv geckodriver /usr/local/bin \
         && chmod a+x /usr/local/bin/geckodriver
