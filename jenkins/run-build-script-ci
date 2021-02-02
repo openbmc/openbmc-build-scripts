@@ -9,8 +9,8 @@
 
 export LANG=en_US.UTF8
 
-cd ${WORKSPACE}/openbmc-build-scripts
+cd "${WORKSPACE}"/openbmc-build-scripts
 
 # Now run some of our most used CI scripts
-./build-unit-test-docker.sh
+./scripts/build-unit-test-docker
 ./scripts/build-qemu-robot-docker.sh
