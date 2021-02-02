@@ -85,12 +85,12 @@ chmod a+x "${WORKSPACE}"/${FORMAT_CODE_SH}
 
 # Configure docker build
 cd "${WORKSPACE}"/${OBMC_BUILD_SCRIPTS}
-echo "Building docker image with build-unit-test-docker.sh"
+echo "Building docker image with build-unit-test-docker"
 # Export input env variables
 export DOCKER_IMG_NAME
 export DISTRO
 export BRANCH
-./build-unit-test-docker.sh
+./scripts/build-unit-test-docker
 
 # Allow the user to pass options through to unit-test.py:
 #   EXTRA_UNIT_TEST_ARGS="-r 100" ...
