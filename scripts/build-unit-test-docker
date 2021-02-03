@@ -47,32 +47,37 @@ else:
 
 # Packages to include in image.
 packages = {
-    "boost": {"rev": "1.74.0"},
-    "cereal": {"rev": "v1.3.0"},
-    "catch2": {"rev": "v2.12.2"},
-    "CLI11": {"rev": "v1.9.0"},
-    "fmt": {"rev": "6.2.1"},
+    "boost": {
+        "rev": "1.74.0",
+        "url": (
+            lambda pkg, rev: f"https://dl.bintray.com/boostorg/release/{rev}/source/{pkg}_{rev.replace('.', '_')}.tar.bz2"
+        ),
+    },
+    "USCiLab/cereal": {"rev": "v1.3.0"},
+    "catchorg/Catch2": {"rev": "v2.12.2"},
+    "CLIUtils/CLI11": {"rev": "v1.9.0"},
+    "fmtlib/fmt": {"rev": "6.2.1"},
     # Snapshot from 2020-01-03
-    "function2": {"rev": "3a0746bf5f601dfed05330aefcb6854354fce07d"},
+    "Naios/function2": {"rev": "3a0746bf5f601dfed05330aefcb6854354fce07d"},
     # Snapshot from 2020-02-13
-    "googletest": {"rev": "23b2a3b1cf803999fb38175f6e9e038a4495c8a5"},
+    "google/googletest": {"rev": "23b2a3b1cf803999fb38175f6e9e038a4495c8a5"},
     # Release 2020-08-06
-    "json": {"rev": "v3.9.1"},
+    "nlohmann/json": {"rev": "v3.9.1"},
     # Snapshot from 2019-05-24
-    "lcov": {"rev": "75fbae1cfc5027f818a0bb865bf6f96fab3202da"},
+    "linux-test-project/lcov": {"rev": "75fbae1cfc5027f818a0bb865bf6f96fab3202da"},
     # dev-5.0 2019-05-03
-    "linux-headers": {"rev": "8bf6567e77f7aa68975b7c9c6d044bba690bf327"},
+    "openbmc/linux": {"rev": "8bf6567e77f7aa68975b7c9c6d044bba690bf327"},
     # Snapshot from 2019-09-03
-    "libvncserver": {"rev": "1354f7f1bb6962dab209eddb9d6aac1f03408110"},
-    "span-lite": {"rev": "v0.7.0"},
+    "LibVNC/libvncserver": {"rev": "1354f7f1bb6962dab209eddb9d6aac1f03408110"},
+    "martinmoene/span-lite": {"rev": "v0.7.0"},
     # version from meta-openembedded/meta-oe/recipes-support/libtinyxml2/libtinyxml2_5.0.1.bb
-    "tinyxml2": {"rev": "37bc3aca429f0164adf68c23444540b4a24b5778"},
+    "leethomason/tinyxml2": {"rev": "37bc3aca429f0164adf68c23444540b4a24b5778"},
     # version from /meta-openembedded/meta-oe/recipes-devtools/boost-url/boost-url_git.bb
-    "boost-url": {"rev": "a56ae0df6d3078319755fbaa67822b4fa7fd352b"},
+    "CPPAlliance/url": {"rev": "a56ae0df6d3078319755fbaa67822b4fa7fd352b"},
     # version from meta-openembedded/meta-oe/recipes-devtools/valijson/valijson_git.bb
-    "valijson": {"rev": "c2f22fddf599d04dc33fcd7ed257c698a05345d9"},
+    "tristanpenman/valijson": {"rev": "c2f22fddf599d04dc33fcd7ed257c698a05345d9"},
     # version from meta-openembedded/meta-oe/recipes-devtools/nlohmann-fifo/nlohmann-fifo_git.bb
-    "fifo_map": {"rev": "0dfbf5dacbb15a32c43f912a7e66a54aae39d0f9"},
+    "nlohmann/fifo_map": {"rev": "0dfbf5dacbb15a32c43f912a7e66a54aae39d0f9"},
     "open-power/pdbg": {},
     "openbmc/gpioplus": {},
     "openbmc/phosphor-dbus-interfaces": {},
@@ -84,13 +89,22 @@ packages = {
     "openbmc/stdplus": {},
 }
 
+
 def pkg_rev(pkg):
     return packages[pkg]["rev"]
+
 
 def pkg_stagename(pkg):
     if not pkg.startswith("openbmc/"):
         pkg = "openbmc/" + pkg
     return pkg.replace("/", "-")
+
+
+def pkg_url(pkg):
+    if "url" in packages[pkg]:
+        return packages[pkg]["url"](pkg, pkg_rev(pkg))
+    return f"https://github.com/{pkg}/archive/{pkg_rev(pkg)}.tar.gz"
+
 
 # Look up the HEAD for missing a static rev.
 pkg_lookups = {}
@@ -279,18 +293,20 @@ RUN pip3 install jsonschema
 RUN pip3 install meson==0.54.3
 RUN pip3 install protobuf
 
-FROM openbmc-base as {pkg_stagename('lcov')}
-RUN curl -L https://github.com/linux-test-project/lcov/archive/{pkg_rev('lcov')}.tar.gz | tar -xz && \
+FROM openbmc-base as {pkg_stagename('linux-test-project/lcov')}
+RUN curl -L {pkg_url('linux-test-project/lcov')} | tar -xz && \
 cd lcov-* && \
 make -j{proc_count} && \
 make install
 
-FROM openbmc-base as {pkg_stagename('function2')}
-RUN mkdir {prefix}/include/function2 && \
-curl -L -o {prefix}/include/function2/function2.hpp https://raw.githubusercontent.com/Naios/function2/{pkg_rev('function2')}/include/function2/function2.hpp
+FROM openbmc-base as {pkg_stagename('Naios/function2')}
+RUN curl -L {pkg_url('Naios/function2')} | tar -xz && \
+cd function2-* && \
+mkdir {prefix}/include/function2 && \
+cp include/function2/function2.hpp {prefix}/include/function2/
 
-FROM openbmc-base as {pkg_stagename('googletest')}
-RUN curl -L https://github.com/google/googletest/archive/{pkg_rev('googletest')}.tar.gz | tar -xz && \
+FROM openbmc-base as {pkg_stagename('google/googletest')}
+RUN curl -L {pkg_url('google/googletest')} | tar -xz && \
 cd googletest-* && \
 mkdir build && \
 cd build && \
@@ -298,8 +314,8 @@ CXXFLAGS=-std=c++17 cmake {cmake_flags} -DTHREADS_PREFER_PTHREAD_FLAG=ON .. && \
 make -j{proc_count} && \
 make install
 
-FROM openbmc-base as {pkg_stagename('catch2')}
-RUN curl -L https://github.com/catchorg/Catch2/archive/{pkg_rev('catch2')}.tar.gz | tar -xz && \
+FROM openbmc-base as {pkg_stagename('catchorg/Catch2')}
+RUN curl -L {pkg_url('catchorg/Catch2')} | tar -xz && \
 cd Catch2-* && \
 mkdir build && \
 cd build && \
@@ -307,12 +323,12 @@ cmake {cmake_flags} -DBUILD_TESTING=OFF -DCATCH_INSTALL_DOCS=OFF .. && \
 make -j{proc_count} && \
 make install
 
-FROM openbmc-base as {pkg_stagename('cereal')}
-RUN curl -L https://github.com/USCiLab/cereal/archive/{pkg_rev('cereal')}.tar.gz | tar -xz && \
+FROM openbmc-base as {pkg_stagename('USCiLab/cereal')}
+RUN curl -L {pkg_url('USCiLab/cereal')} | tar -xz && \
 cp -a cereal-*/include/cereal/ {prefix}/include/
 
-FROM openbmc-base as {pkg_stagename('CLI11')}
-RUN curl -L https://github.com/CLIUtils/CLI11/archive/{pkg_rev('CLI11')}.tar.gz | tar -xz && \
+FROM openbmc-base as {pkg_stagename('CLIUtils/CLI11')}
+RUN curl -L {pkg_url('CLIUtils/CLI11')} | tar -xz && \
 cd CLI11-* && \
 mkdir build && \
 cd build && \
@@ -320,8 +336,8 @@ cmake {cmake_flags} -DCLI11_BUILD_DOCS=OFF -DBUILD_TESTING=OFF -DCLI11_BUILD_EXA
 make -j{proc_count} && \
 make install
 
-FROM openbmc-base as {pkg_stagename('fmt')}
-RUN curl -L https://github.com/fmtlib/fmt/archive/{pkg_rev('fmt')}.tar.gz | tar -xz && \
+FROM openbmc-base as {pkg_stagename('fmtlib/fmt')}
+RUN curl -L {pkg_url('fmtlib/fmt')} | tar -xz && \
 cd fmt-* && \
 mkdir build && \
 cd build && \
@@ -329,17 +345,19 @@ cmake {cmake_flags} -DFMT_DOC=OFF -DFMT_TEST=OFF .. && \
 make -j{proc_count} && \
 make install
 
-FROM openbmc-base as {pkg_stagename('json')}
-RUN mkdir {prefix}/include/nlohmann/ && \
-curl -L -o {prefix}/include/nlohmann/json.hpp https://github.com/nlohmann/json/releases/download/{pkg_rev('json')}/json.hpp && \
-ln -s nlohmann/json.hpp {prefix}/include/json.hpp
+FROM openbmc-base as {pkg_stagename('nlohmann/json')}
+RUN curl -L {pkg_url('nlohmann/json')} | tar -xz && \
+cd json-* && \
+mkdir {prefix}/include/nlohmann && \
+cp include/nlohmann/json.hpp {prefix}/include/nlohmann && \
+ln -s {prefix}/include/nlohmann/json.hpp {prefix}/include/json.hpp
 
-FROM openbmc-base as {pkg_stagename('fifo_map')}
-RUN curl -L https://github.com/nlohmann/fifo_map/archive/{pkg_rev('fifo_map')}.tar.gz | tar -xz && \
+FROM openbmc-base as {pkg_stagename('nlohmann/fifo_map')}
+RUN curl -L {pkg_url('nlohmann/fifo_map')} | tar -xz && \
 cd fifo_map-*/src && cp fifo_map.hpp {prefix}/include/
 
-FROM openbmc-base as {pkg_stagename('span-lite')}
-RUN curl -L https://github.com/martinmoene/span-lite/archive/{pkg_rev('span-lite')}.tar.gz | tar -xz && \
+FROM openbmc-base as {pkg_stagename('martinmoene/span-lite')}
+RUN curl -L {pkg_url('martinmoene/span-lite')} | tar -xz && \
 cd span-lite-* && \
 mkdir build && \
 cd build && \
@@ -347,20 +365,20 @@ cmake {cmake_flags} -DSPAN_LITE_OPT_BUILD_TESTS=OFF .. && \
 make -j{proc_count} && \
 make install
 
-FROM openbmc-base as {pkg_stagename('linux-headers')}
-RUN curl -L https://github.com/openbmc/linux/archive/{pkg_rev('linux-headers')}.tar.gz | tar -xz && \
+FROM openbmc-base as {pkg_stagename('openbmc/linux')}
+RUN curl -L {pkg_url('openbmc/linux')} | tar -xz && \
 cd linux-* && \
 make -j{proc_count} defconfig && \
 make INSTALL_HDR_PATH=/usr/local headers_install
 
 FROM openbmc-base as {pkg_stagename('boost')}
-RUN curl -L https://dl.bintray.com/boostorg/release/{pkg_rev('boost')}/source/boost_$(echo "{pkg_rev('boost')}" | tr '.' '_').tar.bz2 | tar -xj && \
+RUN curl -L {pkg_url('boost')} | tar -xj && \
 cd boost_*/ && \
 ./bootstrap.sh --prefix={prefix} --with-libraries=context,coroutine && \
 ./b2 && ./b2 install --prefix={prefix}
 
-FROM openbmc-base as {pkg_stagename('tinyxml2')}
-RUN curl -L https://github.com/leethomason/tinyxml2/archive/{pkg_rev('tinyxml2')}.tar.gz | tar -xz && \
+FROM openbmc-base as {pkg_stagename('leethomason/tinyxml2')}
+RUN curl -L {pkg_url('leethomason/tinyxml2')} | tar -xz && \
 cd tinyxml2-* && \
 mkdir build && \
 cd build && \
@@ -368,8 +386,8 @@ cmake {cmake_flags} .. && \
 make -j{proc_count} && \
 make install
 
-FROM openbmc-base as {pkg_stagename('boost-url')}
-RUN curl -L https://github.com/CPPAlliance/url/archive/{pkg_rev('boost-url')}.tar.gz | tar -xz && \
+FROM openbmc-base as {pkg_stagename('CPPAlliance/url')}
+RUN curl -L {pkg_url('CPPAlliance/url')} | tar -xz && \
 cd url-* && \
 mkdir buildir && \
 cd buildir && \
@@ -377,8 +395,8 @@ cmake {cmake_flags} -DBOOST_URL_STANDALONE=ON -DBOOST_URL_BUILD_TESTS=OFF -DBOOS
 make -j{proc_count} && \
 make install
 
-FROM openbmc-base as {pkg_stagename('valijson')}
-RUN curl -L https://github.com/tristanpenman/valijson/archive/{pkg_rev('valijson')}.tar.gz | tar -xz && \
+FROM openbmc-base as {pkg_stagename('tristanpenman/valijson')}
+RUN curl -L {pkg_url('tristanpenman/valijson')} | tar -xz && \
 cd valijson-* && \
 mkdir build && \
 cd build && \
@@ -386,8 +404,8 @@ cmake {cmake_flags} -DINSTALL_HEADERS=1 -DBUILD_TESTS=0 .. && \
 make -j{proc_count} && \
 make install
 
-FROM openbmc-base as {pkg_stagename('libvncserver')}
-RUN curl -L https://github.com/LibVNC/libvncserver/archive/{pkg_rev('libvncserver')}.tar.gz | tar -xz && \
+FROM openbmc-base as {pkg_stagename('LibVNC/libvncserver')}
+RUN curl -L {pkg_url('LibVNC/libvncserver')} | tar -xz && \
 cd libvncserver-* && \
 mkdir build && \
 cd build && \
@@ -396,16 +414,16 @@ make -j{proc_count} && \
 make install
 
 FROM openbmc-base as {pkg_stagename('openbmc/stdplus')}
-COPY --from={pkg_stagename('fmt')} {prefix} {prefix}
-COPY --from={pkg_stagename('span-lite')} {prefix} {prefix}
-RUN curl -L https://github.com/openbmc/stdplus/archive/{pkg_rev('openbmc/stdplus')}.tar.gz | tar -xz && \
+COPY --from={pkg_stagename('fmtlib/fmt')} {prefix} {prefix}
+COPY --from={pkg_stagename('martinmoene/span-lite')} {prefix} {prefix}
+RUN curl -L {pkg_url('openbmc/stdplus')} | tar -xz && \
 cd stdplus-* && \
 meson build {meson_flags} -Dtests=disabled -Dexamples=false && \
 ninja -C build && \
 ninja -C build install
 
 FROM openbmc-base as {pkg_stagename('openbmc/sdbusplus')}
-RUN curl -L https://github.com/openbmc/sdbusplus/archive/{pkg_rev('openbmc/sdbusplus')}.tar.gz | tar -xz && \
+RUN curl -L {pkg_url('openbmc/sdbusplus')} | tar -xz && \
 cd sdbusplus-* && \
 cd tools && ./setup.py install --root=/ --prefix={prefix} && \
 cd .. && meson build {meson_flags} -Dtests=disabled -Dexamples=disabled && \
@@ -413,9 +431,9 @@ ninja -C build && \
 ninja -C build install
 
 FROM openbmc-base as {pkg_stagename('openbmc/sdeventplus')}
-COPY --from={pkg_stagename('function2')} {prefix} {prefix}
+COPY --from={pkg_stagename('Naios/function2')} {prefix} {prefix}
 COPY --from={pkg_stagename('openbmc/stdplus')} {prefix} {prefix}
-RUN curl -L https://github.com/openbmc/sdeventplus/archive/{pkg_rev('openbmc/sdeventplus')}.tar.gz | tar -xz && \
+RUN curl -L {pkg_url('openbmc/sdeventplus')} | tar -xz && \
 cd sdeventplus-* && \
 meson build {meson_flags} -Dtests=disabled -Dexamples=false && \
 ninja -C build && \
@@ -423,7 +441,7 @@ ninja -C build install
 
 FROM openbmc-base as {pkg_stagename('openbmc/gpioplus')}
 COPY --from={pkg_stagename('openbmc/stdplus')} {prefix} {prefix}
-RUN curl -L https://github.com/openbmc/gpioplus/archive/{pkg_rev('openbmc/gpioplus')}.tar.gz | tar -xz && \
+RUN curl -L {pkg_url('openbmc/gpioplus')} | tar -xz && \
 cd gpioplus-* && \
 meson build {meson_flags} -Dtests=disabled -Dexamples=false && \
 ninja -C build && \
@@ -431,19 +449,19 @@ ninja -C build install
 
 FROM openbmc-base as {pkg_stagename('openbmc/phosphor-dbus-interfaces')}
 COPY --from={pkg_stagename('openbmc/sdbusplus')} {prefix} {prefix}
-RUN curl -L https://github.com/openbmc/phosphor-dbus-interfaces/archive/{pkg_rev('openbmc/phosphor-dbus-interfaces')}.tar.gz | tar -xz && \
+RUN curl -L {pkg_url('openbmc/phosphor-dbus-interfaces')} | tar -xz && \
 cd phosphor-dbus-interfaces-* && \
 meson build {meson_flags} -Ddata_org_open_power=true -Ddata_com_ibm=true && \
 ninja -C build && \
 ninja -C build install
 
 FROM openbmc-base as {pkg_stagename('openbmc/phosphor-logging')}
-COPY --from={pkg_stagename('cereal')} {prefix} {prefix}
+COPY --from={pkg_stagename('USCiLab/cereal')} {prefix} {prefix}
 COPY --from={pkg_stagename('openbmc/sdbusplus')} {prefix} {prefix}
 COPY --from={pkg_stagename('openbmc/sdeventplus')} {prefix} {prefix}
 COPY --from={pkg_stagename('openbmc/phosphor-dbus-interfaces')} {prefix} {prefix}
-COPY --from={pkg_stagename('fifo_map')} {prefix} {prefix}
-RUN curl -L https://github.com/openbmc/phosphor-logging/archive/{pkg_rev('openbmc/phosphor-logging')}.tar.gz | tar -xz && \
+COPY --from={pkg_stagename('nlohmann/fifo_map')} {prefix} {prefix}
+RUN curl -L {pkg_url('openbmc/phosphor-logging')} | tar -xz && \
 cd phosphor-logging-* && \
 ./bootstrap.sh && \
 ./configure {configure_flags} --enable-metadata-processing YAML_DIR={prefix}/share/phosphor-dbus-yaml/yaml && \
@@ -453,9 +471,9 @@ make install
 FROM openbmc-base as {pkg_stagename('openbmc/phosphor-objmgr')}
 COPY --from={pkg_stagename('boost')} {prefix} {prefix}
 COPY --from={pkg_stagename('openbmc/sdbusplus')} {prefix} {prefix}
-COPY --from={pkg_stagename('tinyxml2')} {prefix} {prefix}
+COPY --from={pkg_stagename('leethomason/tinyxml2')} {prefix} {prefix}
 COPY --from={pkg_stagename('openbmc/phosphor-logging')} {prefix} {prefix}
-RUN curl -L https://github.com/openbmc/phosphor-objmgr/archive/{pkg_rev('openbmc/phosphor-objmgr')}.tar.gz | tar -xz && \
+RUN curl -L {pkg_url('openbmc/phosphor-objmgr')} | tar -xz && \
 cd phosphor-objmgr-* && \
 ./bootstrap.sh && \
 ./configure {configure_flags} && \
@@ -463,7 +481,7 @@ make -j{proc_count} && \
 make install
 
 FROM openbmc-base as {pkg_stagename('open-power/pdbg')}
-RUN curl -L https://github.com/open-power/pdbg/archive/{pkg_rev('open-power/pdbg')}.tar.gz | tar -xz && \
+RUN curl -L {pkg_url('open-power/pdbg')} | tar -xz && \
 cd pdbg-* && \
 ./bootstrap.sh && \
 ./configure {configure_flags} && \
@@ -476,9 +494,9 @@ COPY --from={pkg_stagename('openbmc/sdeventplus')} {prefix} {prefix}
 COPY --from={pkg_stagename('boost')} {prefix} {prefix}
 COPY --from={pkg_stagename('openbmc/phosphor-dbus-interfaces')} {prefix} {prefix}
 COPY --from={pkg_stagename('openbmc/phosphor-logging')} {prefix} {prefix}
-COPY --from={pkg_stagename('json')} {prefix} {prefix}
-COPY --from={pkg_stagename('CLI11')} {prefix} {prefix}
-RUN curl -L https://github.com/openbmc/pldm/archive/{pkg_rev('openbmc/pldm')}.tar.gz | tar -xz && \
+COPY --from={pkg_stagename('nlohmann/json')} {prefix} {prefix}
+COPY --from={pkg_stagename('CLIUtils/CLI11')} {prefix} {prefix}
+RUN curl -L {pkg_url('openbmc/pldm')} | tar -xz && \
 cd pldm-* && \
 meson build {meson_flags} -Dlibpldm-only=enabled -Doem-ibm=enabled -Dtests=disabled && \
 ninja -C build && \
