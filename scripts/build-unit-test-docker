@@ -372,6 +372,36 @@ def pkg_build_meson(pkg):
     return result
 
 
+def pkg_generate(pkg):
+    if "__pkg_built" in packages[pkg]:
+        return None
+
+    result = ""
+
+    for deppkg in sorted(packages[pkg].get("depends", [])):
+        dep_build = pkg_generate(deppkg)
+        if not dep_build:
+            continue
+        result += dep_build + "\n"
+
+    result += f"FROM openbmc-base as {pkg_stagename(pkg)}\n"
+    result += pkg_copycmds(pkg)
+    result += pkg_build(pkg)
+
+    packages[pkg]["__pkg_built"] = True
+    return result
+
+
+def pkg_generate_packages():
+    result = ""
+    for pkg in sorted(packages.keys()):
+        build = pkg_generate(pkg)
+        if not build:
+            continue
+        result += build + "\n"
+    return result
+
+
 # Look up the HEAD for missing a static rev.
 pkg_lookups = {}
 for pkg in packages.keys():
@@ -553,105 +583,7 @@ RUN pip3 install jsonschema
 RUN pip3 install meson==0.54.3
 RUN pip3 install protobuf
 
-FROM openbmc-base as {pkg_stagename('linux-test-project/lcov')}
-{pkg_copycmds('linux-test-project/lcov')}
-{pkg_build('linux-test-project/lcov')}
-
-FROM openbmc-base as {pkg_stagename('Naios/function2')}
-{pkg_copycmds('Naios/function2')}
-{pkg_build('Naios/function2')}
-
-FROM openbmc-base as {pkg_stagename('google/googletest')}
-{pkg_copycmds('google/googletest')}
-{pkg_build('google/googletest')}
-
-FROM openbmc-base as {pkg_stagename('catchorg/Catch2')}
-{pkg_copycmds('catchorg/Catch2')}
-{pkg_build('catchorg/Catch2')}
-
-FROM openbmc-base as {pkg_stagename('USCiLab/cereal')}
-{pkg_copycmds('USCiLab/cereal')}
-{pkg_build('USCiLab/cereal')}
-
-FROM openbmc-base as {pkg_stagename('CLIUtils/CLI11')}
-{pkg_copycmds('CLIUtils/CLI11')}
-{pkg_build('CLIUtils/CLI11')}
-
-FROM openbmc-base as {pkg_stagename('fmtlib/fmt')}
-{pkg_copycmds('fmtlib/fmt')}
-{pkg_build('fmtlib/fmt')}
-
-FROM openbmc-base as {pkg_stagename('nlohmann/json')}
-{pkg_copycmds('nlohmann/json')}
-{pkg_build('nlohmann/json')}
-
-FROM openbmc-base as {pkg_stagename('nlohmann/fifo_map')}
-{pkg_copycmds('nlohmann/fifo_map')}
-{pkg_build('nlohmann/fifo_map')}
-
-FROM openbmc-base as {pkg_stagename('martinmoene/span-lite')}
-{pkg_copycmds('martinmoene/span-lite')}
-{pkg_build('martinmoene/span-lite')}
-
-FROM openbmc-base as {pkg_stagename('openbmc/linux')}
-{pkg_copycmds('openbmc/linux')}
-{pkg_build('openbmc/linux')}
-
-FROM openbmc-base as {pkg_stagename('boost')}
-{pkg_copycmds('boost')}
-{pkg_build('boost')}
-
-FROM openbmc-base as {pkg_stagename('leethomason/tinyxml2')}
-{pkg_copycmds('leethomason/tinyxml2')}
-{pkg_build('leethomason/tinyxml2')}
-
-FROM openbmc-base as {pkg_stagename('CPPAlliance/url')}
-{pkg_copycmds('CPPAlliance/url')}
-{pkg_build('CPPAlliance/url')}
-
-FROM openbmc-base as {pkg_stagename('tristanpenman/valijson')}
-{pkg_copycmds('tristanpenman/valijson')}
-{pkg_build('tristanpenman/valijson')}
-
-FROM openbmc-base as {pkg_stagename('LibVNC/libvncserver')}
-{pkg_copycmds('LibVNC/libvncserver')}
-{pkg_build('LibVNC/libvncserver')}
-
-FROM openbmc-base as {pkg_stagename('openbmc/stdplus')}
-{pkg_copycmds('openbmc/stdplus')}
-{pkg_build('openbmc/stdplus')}
-
-FROM openbmc-base as {pkg_stagename('openbmc/sdbusplus')}
-{pkg_copycmds('openbmc/sdbusplus')}
-{pkg_build('openbmc/sdbusplus')}
-
-FROM openbmc-base as {pkg_stagename('openbmc/sdeventplus')}
-{pkg_copycmds('openbmc/sdeventplus')}
-{pkg_build('openbmc/sdeventplus')}
-
-FROM openbmc-base as {pkg_stagename('openbmc/gpioplus')}
-{pkg_copycmds('openbmc/gpioplus')}
-{pkg_build('openbmc/gpioplus')}
-
-FROM openbmc-base as {pkg_stagename('openbmc/phosphor-dbus-interfaces')}
-{pkg_copycmds('openbmc/phosphor-dbus-interfaces')}
-{pkg_build('openbmc/phosphor-dbus-interfaces')}
-
-FROM openbmc-base as {pkg_stagename('openbmc/phosphor-logging')}
-{pkg_copycmds('openbmc/phosphor-logging')}
-{pkg_build('openbmc/phosphor-logging')}
-
-FROM openbmc-base as {pkg_stagename('openbmc/phosphor-objmgr')}
-{pkg_copycmds('openbmc/phosphor-objmgr')}
-{pkg_build('openbmc/phosphor-objmgr')}
-
-FROM openbmc-base as {pkg_stagename('open-power/pdbg')}
-{pkg_copycmds('open-power/pdbg')}
-{pkg_build('open-power/pdbg')}
-
-FROM openbmc-base as {pkg_stagename('openbmc/pldm')}
-{pkg_copycmds('openbmc/pldm')}
-{pkg_build('openbmc/pldm')}
+{pkg_generate_packages()}
 
 # Build the final output image
 FROM openbmc-base
