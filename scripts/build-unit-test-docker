@@ -19,6 +19,8 @@
 
 import os
 import sys
+from datetime import date
+from hashlib import sha256
 from sh import docker, git, nproc, uname
 
 # Read a bunch of environment variables.
@@ -262,9 +264,7 @@ def pkg_rev(pkg):
 
 
 def pkg_stagename(pkg):
-    if not pkg.startswith("openbmc/"):
-        pkg = "openbmc/" + pkg
-    return pkg.replace("/", "-")
+    return pkg.replace("/", "-").lower()
 
 
 def pkg_url(pkg):
@@ -296,7 +296,7 @@ def pkg_copycmds(pkg=None):
 
     copy_cmds = ""
     for p in pkgs:
-        copy_cmds += f"COPY --from={pkg_stagename(p)} {prefix} {prefix}\n"
+        copy_cmds += f"COPY --from={packages[p]['__tag']} {prefix} {prefix}\n"
         # Workaround for upstream docker bug and multiple COPY cmds
         # https://github.com/moby/moby/issues/37965
         copy_cmds += "RUN true\n"
@@ -376,30 +376,48 @@ def pkg_generate(pkg):
     if "__pkg_built" in packages[pkg]:
         return None
 
-    result = ""
-
     for deppkg in sorted(packages[pkg].get("depends", [])):
-        dep_build = pkg_generate(deppkg)
-        if not dep_build:
-            continue
-        result += dep_build + "\n"
+        pkg_generate(deppkg)
 
-    result += f"FROM openbmc-base as {pkg_stagename(pkg)}\n"
-    result += pkg_copycmds(pkg)
-    result += pkg_build(pkg)
+    dockerfile = f"""
+FROM {docker_base_img_name}
+{pkg_copycmds(pkg)}
+{pkg_build(pkg)}
+"""
+
+    tag = docker_img_tagname(pkg_stagename(pkg), dockerfile)
+    packages[pkg]["__tag"] = tag
+    docker_img_build(tag, dockerfile)
 
     packages[pkg]["__pkg_built"] = True
-    return result
 
 
 def pkg_generate_packages():
-    result = ""
     for pkg in sorted(packages.keys()):
-        build = pkg_generate(pkg)
-        if not build:
-            continue
-        result += build + "\n"
+        pkg_generate(pkg)
+
+
+def docker_img_tagname(pkgname, dockerfile):
+    result = docker_image_name
+    if pkgname:
+        result += "-" + pkgname
+    result += ":" + date.today().isoformat()
+    result += "-" + sha256(dockerfile.encode()).hexdigest()[0:16]
     return result
+
+
+def docker_img_build(tag, dockerfile):
+    for line in docker.build(
+        proxy_args,
+        "--network=host",
+        "--force-rm",
+        "-t",
+        tag,
+        "-",
+        _in=dockerfile,
+        _iter=True,
+    ):
+        print(line, end="", flush=True)
 
 
 # Look up the HEAD for missing a static rev.
@@ -445,11 +463,6 @@ meson_flags = " ".join(
     ]
 )
 
-# Build the commands needed to compose our final image
-# We must sort the packages, otherwise we might produce an unstable
-# docker file and rebuild the image unnecessarily
-copy_cmds = pkg_copycmds()
-
 # Special flags if setting up a deb mirror.
 mirror = ""
 if "ubuntu" in distro and ubuntu_mirror:
@@ -479,8 +492,8 @@ RUN echo "[http]" >> {homedir}/.gitconfig && \
     )
 
 # Create docker image that can run package unit tests
-dockerfile = f"""
-FROM {docker_base}{distro} as openbmc-base
+dockerfile_base = f"""
+FROM {docker_base}{distro}
 
 {mirror}
 
@@ -584,12 +597,17 @@ RUN pip3 install pycodestyle
 RUN pip3 install jsonschema
 RUN pip3 install meson==0.54.3
 RUN pip3 install protobuf
+"""
 
-{pkg_generate_packages()}
+# Build the stage docker images.
+docker_base_img_name = docker_img_tagname("base", dockerfile_base)
+docker_img_build(docker_base_img_name, dockerfile_base)
+pkg_generate_packages()
 
+dockerfile = f"""
 # Build the final output image
-FROM openbmc-base
-{copy_cmds}
+FROM {docker_base_img_name}
+{pkg_copycmds()}
 
 # Some of our infrastructure still relies on the presence of this file
 # even though it is no longer needed to rebuild the docker environment
@@ -608,14 +626,5 @@ RUN echo "{username} ALL=(ALL) NOPASSWD: ALL" >>/etc/sudoers
 RUN /bin/bash
 """
 
-# Do the docker build.
-for line in docker.build(
-    proxy_args,
-    "--network=host",
-    "-t",
-    docker_image_name,
-    "-",
-    _in=dockerfile,
-    _iter=True,
-):
-    print(line, end="", flush=True)
+# Do the final docker build
+docker_img_build(docker_image_name, dockerfile)
