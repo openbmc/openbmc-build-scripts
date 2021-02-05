@@ -348,8 +348,8 @@ def pkg_build_cmake(pkg):
     env = " ".join(packages[pkg].get("config_env", []))
     result = "mkdir builddir && cd builddir && "
     result += f"{env} cmake {cmake_flags} {options} .. && "
-    result += f"make -j{proc_count} && "
-    result += f"make install &&"
+    result += "cmake --build . --target all && "
+    result += "cmake --build . --target install && "
     result += "cd .. "
     return result
 
@@ -431,9 +431,11 @@ configure_flags = " ".join(
 )
 cmake_flags = " ".join(
     [
-        "-DCMAKE_BUILD_TYPE=RelWithDebInfo",
         "-DBUILD_SHARED_LIBS=ON",
+        "-DCMAKE_BUILD_TYPE=RelWithDebInfo",
         f"-DCMAKE_INSTALL_PREFIX:PATH={prefix}",
+        "-GNinja",
+        "-DCMAKE_MAKE_PROGRAM=ninja",
     ]
 )
 meson_flags = " ".join(
