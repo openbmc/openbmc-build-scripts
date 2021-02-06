@@ -19,6 +19,7 @@
 
 import os
 import sys
+import threading
 from datetime import date
 from hashlib import sha256
 from sh import docker, git, nproc, uname
@@ -45,7 +46,10 @@ if arch == "ppc64le":
 elif arch == "x86_64":
     docker_base = ""
 else:
-    print(f"Unsupported system architecture({arch}) found for docker image")
+    print(
+        f"Unsupported system architecture({arch}) found for docker image",
+        file=sys.stderr,
+    )
     sys.exit(1)
 
 # Packages to include in image.
@@ -371,31 +375,52 @@ def pkg_build_meson(pkg):
     result += "ninja -C builddir && ninja -C builddir install "
     return result
 
-
+pkg_lock = threading.Lock()
 def pkg_generate(pkg):
-    if "__pkg_built" in packages[pkg]:
-        return None
 
-    for deppkg in sorted(packages[pkg].get("depends", [])):
-        pkg_generate(deppkg)
+    class pkg_thread(threading.Thread):
+        def run(self):
+            pkg_lock.acquire()
+            deps = [ packages[deppkg]["__thread"] for deppkg in sorted(packages[pkg].get("depends", [])) ]
+            pkg_lock.release()
+            for deppkg in deps:
+                deppkg.join()
 
-    dockerfile = f"""
+            dockerfile = f"""
 FROM {docker_base_img_name}
 {pkg_copycmds(pkg)}
 {pkg_build(pkg)}
 """
 
-    tag = docker_img_tagname(pkg_stagename(pkg), dockerfile)
-    packages[pkg]["__tag"] = tag
-    docker_img_build(tag, dockerfile)
+            pkg_lock.acquire()
+            tag = docker_img_tagname(pkg_stagename(pkg), dockerfile)
+            packages[pkg]["__tag"] = tag
+            pkg_lock.release()
 
-    packages[pkg]["__pkg_built"] = True
+            try:
+                self.exception = None
+                docker_img_build(pkg, tag, dockerfile)
+            except Exception as e:
+                self.package = pkg
+                self.exception = e
 
+    packages[pkg]["__thread"] = pkg_thread()
 
 def pkg_generate_packages():
-    for pkg in sorted(packages.keys()):
+    for pkg in packages.keys():
         pkg_generate(pkg)
 
+    pkg_lock.acquire()
+    pkg_threads = [ packages[p]["__thread"] for p in packages.keys() ]
+    for t in pkg_threads:
+        t.start()
+    pkg_lock.release()
+
+    for t in pkg_threads:
+        t.join()
+        if t.exception:
+            print(f"Package {t.package} failed!", file=sys.stderr)
+            raise t.exception
 
 def docker_img_tagname(pkgname, dockerfile):
     result = docker_image_name
@@ -406,8 +431,8 @@ def docker_img_tagname(pkgname, dockerfile):
     return result
 
 
-def docker_img_build(tag, dockerfile):
-    for line in docker.build(
+def docker_img_build(pkg, tag, dockerfile):
+    docker.build(
         proxy_args,
         "--network=host",
         "--force-rm",
@@ -415,9 +440,8 @@ def docker_img_build(tag, dockerfile):
         tag,
         "-",
         _in=dockerfile,
-        _iter=True,
-    ):
-        print(line, end="", flush=True)
+        _out=(lambda line: print(pkg + ":", line, end="", file=sys.stderr, flush=True)),
+    )
 
 
 # Look up the HEAD for missing a static rev.
@@ -601,7 +625,7 @@ RUN pip3 install protobuf
 
 # Build the stage docker images.
 docker_base_img_name = docker_img_tagname("base", dockerfile_base)
-docker_img_build(docker_base_img_name, dockerfile_base)
+docker_img_build("base", docker_base_img_name, dockerfile_base)
 pkg_generate_packages()
 
 dockerfile = f"""
@@ -627,4 +651,4 @@ RUN /bin/bash
 """
 
 # Do the final docker build
-docker_img_build(docker_image_name, dockerfile)
+docker_img_build("final", docker_image_name, dockerfile)
