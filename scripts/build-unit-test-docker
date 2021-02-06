@@ -6,7 +6,11 @@
 #   DOCKER_IMG_NAME:  <optional, the name of the docker image to generate>
 #                     default is openbmc/ubuntu-unit-test
 #   DISTRO:           <optional, the distro to build a docker image against>
-#                     default is ubuntu:eoan
+#                     default is ubuntu:focal
+#   FORCE_DOCKER_BUILD: <optional, a non-zero value with force all Docker
+#                     images to be rebuilt rather than reusing caches.>
+#   BUILD_URL:        <optional, used to detect running under CI context
+#                     (ex. Jenkins)>
 #   BRANCH:           <optional, branch to build from each of the openbmc/
 #                     repositories>
 #                     default is master, which will be used if input branch not
@@ -26,6 +30,8 @@ from sh import docker, git, nproc, uname
 
 # Read a bunch of environment variables.
 docker_image_name = os.environ.get("DOCKER_IMAGE_NAME", "openbmc/ubuntu-unit-test")
+force_build = os.environ.get("FORCE_DOCKER_BUILD")
+is_automated_ci_build = os.environ.get("BUILD_URL", False)
 distro = os.environ.get("DISTRO", "ubuntu:focal")
 branch = os.environ.get("BRANCH", "master")
 ubuntu_mirror = os.environ.get("UBUNTU_MIRROR")
@@ -428,21 +434,33 @@ def pkg_generate_packages():
             print(f"Package {t.package} failed!", file=sys.stderr)
             raise t.exception
 
+def timestamp():
+    today = date.today().isocalendar()
+    return f"{today[0]}-W{today[1]:02}"
 
 def docker_img_tagname(pkgname, dockerfile):
     result = docker_image_name
     if pkgname:
         result += "-" + pkgname
-    result += ":" + date.today().isoformat()
+    result += ":" + timestamp()
     result += "-" + sha256(dockerfile.encode()).hexdigest()[0:16]
     return result
 
 
 def docker_img_build(pkg, tag, dockerfile):
+    if not force_build and pkg != "final":
+        # TODO: the 'final' is here because we do not tag the final image yet
+        # so we always need to rebuild it.  This will be changed in a future
+        # commit so that we tag even the final image.
+        if docker.image.ls(tag, "--format", '"{{.Repository}}:{{.Tag}}"'):
+            print(f"Image {tag} already exists.  Skipping.", file=sys.stderr)
+            return
+
     docker.build(
         proxy_args,
         "--network=host",
         "--force-rm",
+        "--no-cache=true" if force_build else "--no-cache=false",
         "-t",
         tag,
         "-",
@@ -537,8 +555,11 @@ ENV PYTHONPATH "/usr/local/lib/python3.8/site-packages/"
 # We need the keys to be imported for dbgsym repos
 # New releases have a package, older ones fall back to manual fetching
 # https://wiki.ubuntu.com/Debug%20Symbol%20Packages
-RUN apt-get update && ( apt-get install ubuntu-dbgsym-keyring || ( apt-get install -yy dirmngr && \
-    apt-key adv --keyserver keyserver.ubuntu.com --recv-keys F2EDC64DC5AEE1F6B9C621F0C8CAB6595FDFF622 ) )
+RUN apt-get update && apt-get dist-upgrade -yy && \
+    ( apt-get install ubuntu-dbgsym-keyring || \
+        ( apt-get install -yy dirmngr && \
+          apt-key adv --keyserver keyserver.ubuntu.com \
+                      --recv-keys F2EDC64DC5AEE1F6B9C621F0C8CAB6595FDFF622 ) )
 
 # Parse the current repo list into a debug repo list
 RUN sed -n '/^deb /s,^deb [^ ]* ,deb http://ddebs.ubuntu.com ,p' /etc/apt/sources.list >/etc/apt/sources.list.d/debug.list
@@ -618,13 +639,24 @@ RUN update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-10 1000 \
   --slave /usr/bin/gcov-dump gcov-dump /usr/bin/gcov-dump-10 \
   --slave /usr/bin/gcov-tool gcov-tool /usr/bin/gcov-tool-10
 
-
 RUN update-alternatives --install /usr/bin/clang clang /usr/bin/clang-10 1000 \
   --slave /usr/bin/clang++ clang++ /usr/bin/clang++-10 \
   --slave /usr/bin/clang-tidy clang-tidy /usr/bin/clang-tidy-10 \
   --slave /usr/bin/clang-format clang-format /usr/bin/clang-format-10 \
   --slave /usr/bin/run-clang-tidy.py run-clang-tidy.py /usr/bin/run-clang-tidy-10.py
 
+"""
+
+if is_automated_ci_build:
+    dockerfile_base += f"""
+# Run an arbitrary command to polute the docker cache regularly force us
+# to re-run `apt-get update` daily.
+RUN echo {timestamp()}
+RUN apt-get update && apt-get dist-upgrade -yy
+
+"""
+
+dockerfile_base += f"""
 RUN pip3 install inflection
 RUN pip3 install pycodestyle
 RUN pip3 install jsonschema
