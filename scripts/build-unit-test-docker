@@ -61,7 +61,7 @@ else:
 # Packages to include in image.
 packages = {
     "boost": {
-        "rev": "1.74.0",
+        "rev": "1.75.0",
         "url": (
             lambda pkg, rev: f"https://dl.bintray.com/boostorg/release/{rev}/source/{pkg}_{rev.replace('.', '_')}.tar.bz2"
         ),
@@ -83,7 +83,7 @@ packages = {
         "config_flags": ["-DBUILD_TESTING=OFF", "-DCATCH_INSTALL_DOCS=OFF"],
     },
     "CLIUtils/CLI11": {
-        "rev": "v1.9.0",
+        "rev": "v1.9.1",
         "build_type": "cmake",
         "config_flags": [
             "-DBUILD_TESTING=OFF",
@@ -92,7 +92,7 @@ packages = {
         ],
     },
     "fmtlib/fmt": {
-        "rev": "6.2.1",
+        "rev": "7.1.3",
         "build_type": "cmake",
         "config_flags": [
             "-DFMT_DOC=OFF",
@@ -108,9 +108,8 @@ packages = {
             f"cp include/function2/function2.hpp {prefix}/include/function2/",
         ],
     },
-    # Snapshot from 2020-02-13
     "google/googletest": {
-        "rev": "23b2a3b1cf803999fb38175f6e9e038a4495c8a5",
+        "rev": "release-1.10.0",
         "build_type": "cmake",
         "config_env": ["CXXFLAGS=-std=c++17"],
         "config_flags": ["-DTHREADS_PREFER_PTHREAD_FLAG=ON"],
@@ -121,39 +120,39 @@ packages = {
         "build_type": "custom",
         "build_steps": [
             f"mkdir {prefix}/include/nlohmann",
-            f"cp include/nlohmann/json.hpp {prefix}/include/nlohmann",
+            f"cp single_include/nlohmann/json.hpp {prefix}/include/nlohmann",
             f"ln -s {prefix}/include/nlohmann/json.hpp {prefix}/include/json.hpp",
         ],
     },
     # Snapshot from 2019-05-24
     "linux-test-project/lcov": {
-        "rev": "75fbae1cfc5027f818a0bb865bf6f96fab3202da",
+        "rev": "v1.15",
         "build_type": "make",
     },
-    # dev-5.0 2019-05-03
+    # dev-5.8 2021-01-11
     "openbmc/linux": {
-        "rev": "8bf6567e77f7aa68975b7c9c6d044bba690bf327",
+        "rev": "3cc95ae40716e56f81b69615781f54c78079042d",
         "build_type": "custom",
         "build_steps": [
             f"make -j{proc_count} defconfig",
             f"make INSTALL_HDR_PATH={prefix} headers_install",
         ],
     },
-    # Snapshot from 2019-09-03
+    # Snapshot from 2020-06-13
     "LibVNC/libvncserver": {
-        "rev": "1354f7f1bb6962dab209eddb9d6aac1f03408110",
+        "rev": "LibVNCServer-0.9.13",
         "build_type": "cmake",
     },
     "martinmoene/span-lite": {
-        "rev": "v0.7.0",
+        "rev": "v0.8.1",
         "build_type": "cmake",
         "config_flags": [
             "-DSPAN_LITE_OPT_BUILD_TESTS=OFF",
         ],
     },
-    # version from meta-openembedded/meta-oe/recipes-support/libtinyxml2/libtinyxml2_5.0.1.bb
+    # version from meta-openembedded/meta-oe/recipes-support/libtinyxml2/libtinyxml2_8.0.0.bb
     "leethomason/tinyxml2": {
-        "rev": "37bc3aca429f0164adf68c23444540b4a24b5778",
+        "rev": "8.0.0",
         "build_type": "cmake",
     },
     # version from /meta-openembedded/meta-oe/recipes-devtools/boost-url/boost-url_git.bb
@@ -166,13 +165,14 @@ packages = {
             "-DBOOST_URL_STANDALONE=ON",
         ],
     },
-    # version from meta-openembedded/meta-oe/recipes-devtools/valijson/valijson_git.bb
+    # version from ./meta-openembedded/meta-oe/dynamic-layers/networking-layer/recipes-devtools/valijson/valijson_0.3.bb
+    # Snapshot from 2020-12-02 - fix for curlpp dependency
     "tristanpenman/valijson": {
-        "rev": "c2f22fddf599d04dc33fcd7ed257c698a05345d9",
+        "rev": "8cc83c8be9c1c927f5da952b2333b30e5f0353be",
         "build_type": "cmake",
         "config_flags": [
-            "-DBUILD_TESTS=0",
-            "-DINSTALL_HEADERS=1",
+            "-Dvalijson_BUILD_TESTS=0",
+            "-Dvalijson_INSTALL_HEADERS=1",
         ],
     },
     # version from meta-openembedded/meta-oe/recipes-devtools/nlohmann-fifo/nlohmann-fifo_git.bb
@@ -628,7 +628,8 @@ RUN apt-get update && apt-get dist-upgrade -yy && apt-get install -yy \
     libpciaccess-dev \
     libmimetic-dev \
     libxml2-utils \
-    libxml-simple-perl
+    libxml-simple-perl \
+    rsync
 
 RUN update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-10 1000 \
   --slave /usr/bin/g++ g++ /usr/bin/g++-10 \
