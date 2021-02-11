@@ -20,8 +20,6 @@
 #   BRANCH:          Optional, branch to build from each of the
 #                    openbmc repositories. default is master, which will be
 #                    used if input branch not provided or not found
-#   DOCKER_IMG_NAME: Optional, default is openbmc/ubuntu-unit-test-master with a
-#                    -$BRANCH replacing -master if $BRANCH provided
 #   dbus_sys_config_file: Optional, with the default being
 #                         `/usr/share/dbus-1/system.conf`
 #   NO_FORMAT_CODE:  Optional, do not run format-code.sh
@@ -32,7 +30,6 @@ set -uo pipefail
 
 # Default variables
 BRANCH=${BRANCH:-"master"}
-DOCKER_IMG_NAME=${DOCKER_IMG_NAME:-"openbmc/ubuntu-unit-test-${BRANCH}"}
 DISTRO=${DISTRO:-ubuntu:focal}
 OBMC_BUILD_SCRIPTS="openbmc-build-scripts"
 UNIT_TEST_PY_DIR="scripts"
@@ -87,10 +84,9 @@ chmod a+x "${WORKSPACE}"/${FORMAT_CODE_SH}
 cd "${WORKSPACE}"/${OBMC_BUILD_SCRIPTS}
 echo "Building docker image with build-unit-test-docker"
 # Export input env variables
-export DOCKER_IMG_NAME
 export DISTRO
 export BRANCH
-./scripts/build-unit-test-docker
+export DOCKER_IMG_NAME=$(./scripts/build-unit-test-docker)
 
 # Allow the user to pass options through to unit-test.py:
 #   EXTRA_UNIT_TEST_ARGS="-r 100" ...

@@ -448,10 +448,7 @@ def docker_img_tagname(pkgname, dockerfile):
 
 
 def docker_img_build(pkg, tag, dockerfile):
-    if not force_build and pkg != "final":
-        # TODO: the 'final' is here because we do not tag the final image yet
-        # so we always need to rebuild it.  This will be changed in a future
-        # commit so that we tag even the final image.
+    if not force_build:
         if docker.image.ls(tag, "--format", '"{{.Repository}}:{{.Tag}}"'):
             print(f"Image {tag} already exists.  Skipping.", file=sys.stderr)
             return
@@ -692,4 +689,7 @@ RUN /bin/bash
 """
 
 # Do the final docker build
-docker_img_build("final", docker_image_name, dockerfile)
+docker_final_img_name = docker_img_tagname(docker_image_name, dockerfile)
+docker_img_build("final", docker_final_img_name, dockerfile)
+# Print the tag of the final image.
+print(docker_final_img_name)
