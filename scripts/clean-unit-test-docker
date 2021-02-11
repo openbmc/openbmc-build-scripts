@@ -1,0 +1,14 @@
+#!/bin/bash -e
+
+# Removes docker images created by 'build-unit-test-docker' which are older
+# than the current week.
+#   - Images start with 'openbmc/ubuntu-unit-test'.
+#   - Image tags contain YYYY-Www where:
+#       * YYYY is the 4 digit year. (date format %Y)
+#       * W is the literal 'W'
+#       * ww is the two digit ISO week. (date format %V)
+
+docker image ls \
+        "openbmc/ubuntu-unit-test*" \
+        --format "{{.Repository}}:{{.Tag}}" |
+    grep -v "$(date '+%Y-W%V')" | xargs -r docker image rm

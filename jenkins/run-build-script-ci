@@ -13,4 +13,5 @@ cd "${WORKSPACE}"/openbmc-build-scripts
 
 # Now run some of our most used CI scripts
 ./scripts/build-unit-test-docker
+./scripts/clean-unit-test-docker
 ./scripts/build-qemu-robot-docker.sh
