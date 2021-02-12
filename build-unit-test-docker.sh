@@ -20,7 +20,7 @@
 set -xeuo pipefail
 
 DOCKER_IMG_NAME=${DOCKER_IMG_NAME:-"openbmc/ubuntu-unit-test"}
-DISTRO=${DISTRO:-"ubuntu:focal"}
+DISTRO=${DISTRO:-"ubuntu:groovy"}
 BRANCH=${BRANCH:-"master"}
 UBUNTU_MIRROR=${UBUNTU_MIRROR:-""}
 http_proxy=${http_proxy:-}
