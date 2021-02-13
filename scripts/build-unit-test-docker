@@ -26,203 +26,209 @@ import sys
 import threading
 from datetime import date
 from hashlib import sha256
-from sh import docker, git, nproc, uname
+from sh import docker, git, nproc, uname  # type: ignore
+from typing import Any, Callable, Dict, Iterable, Optional
+from typing_extensions import TypedDict
 
-# Read a bunch of environment variables.
-docker_image_name = os.environ.get("DOCKER_IMAGE_NAME", "openbmc/ubuntu-unit-test")
-force_build = os.environ.get("FORCE_DOCKER_BUILD")
-is_automated_ci_build = os.environ.get("BUILD_URL", False)
-distro = os.environ.get("DISTRO", "ubuntu:focal")
-branch = os.environ.get("BRANCH", "master")
-ubuntu_mirror = os.environ.get("UBUNTU_MIRROR")
-http_proxy = os.environ.get("http_proxy")
+
+# Declare some variables used in package definitions.
 prefix = "/usr/local"
-
-# Set up some common variables.
 proc_count = nproc().strip()
-username = os.environ.get("USER")
-homedir = os.environ.get("HOME")
-gid = os.getgid()
-uid = os.getuid()
 
-# Determine the architecture for Docker.
-arch = uname("-m").strip()
-if arch == "ppc64le":
-    docker_base = "ppc64le/"
-elif arch == "x86_64":
-    docker_base = ""
-else:
-    print(
-        f"Unsupported system architecture({arch}) found for docker image",
-        file=sys.stderr,
-    )
-    sys.exit(1)
+
+class PackageDef(TypedDict, total=False):
+    """ Package Definition for packages dictionary. """
+
+    # rev [optional]: Revision of package to use.
+    rev: str
+    # url [optional]: lambda function to create URL: (package, rev) -> url.
+    url: Callable[[str, str], str]
+    # depends [optional]: List of package dependencies.
+    depends: Iterable[str]
+    # build_type [required]: Build type used for package.
+    #   Currently supported: autoconf, cmake, custom, make, meson
+    build_type: str
+    # build_steps [optional]: Steps to run for 'custom' build_type.
+    build_steps: Iterable[str]
+    # config_flags [optional]: List of options to pass configuration tool.
+    config_flags: Iterable[str]
+    # config_env [optional]: List of environment variables to set for config.
+    config_env: Iterable[str]
+    # custom_post_dl [optional]: List of steps to run after download, but
+    #   before config / build / install.
+    custom_post_dl: Iterable[str]
+
+    # __tag [private]: Generated Docker tag name for package stage.
+    __tag: str
+    # __package [private]: Package object associated with this package.
+    __package: Any  # Type is Package, but not defined yet.
+
 
 # Packages to include in image.
 packages = {
-    "boost": {
-        "rev": "1.75.0",
-        "url": (
+    "boost": PackageDef(
+        rev="1.75.0",
+        url=(
             lambda pkg, rev: f"https://dl.bintray.com/boostorg/release/{rev}/source/{pkg}_{rev.replace('.', '_')}.tar.bz2"
         ),
-        "build_type": "custom",
-        "build_steps": [
+        build_type="custom",
+        build_steps=[
             f"./bootstrap.sh --prefix={prefix} --with-libraries=context,coroutine",
             "./b2",
             f"./b2 install --prefix={prefix}",
         ],
-    },
-    "USCiLab/cereal": {
-        "rev": "v1.3.0",
-        "build_type": "custom",
-        "build_steps": [f"cp -a include/cereal/ {prefix}/include/"],
-    },
-    "catchorg/Catch2": {
-        "rev": "v2.12.2",
-        "build_type": "cmake",
-        "config_flags": ["-DBUILD_TESTING=OFF", "-DCATCH_INSTALL_DOCS=OFF"],
-    },
-    "CLIUtils/CLI11": {
-        "rev": "v1.9.1",
-        "build_type": "cmake",
-        "config_flags": [
+    ),
+    "USCiLab/cereal": PackageDef(
+        rev="v1.3.0",
+        build_type="custom",
+        build_steps=[f"cp -a include/cereal/ {prefix}/include/"],
+    ),
+    "catchorg/Catch2": PackageDef(
+        rev="v2.12.2",
+        build_type="cmake",
+        config_flags=["-DBUILD_TESTING=OFF", "-DCATCH_INSTALL_DOCS=OFF"],
+    ),
+    "CLIUtils/CLI11": PackageDef(
+        rev="v1.9.1",
+        build_type="cmake",
+        config_flags=[
             "-DBUILD_TESTING=OFF",
             "-DCLI11_BUILD_DOCS=OFF",
             "-DCLI11_BUILD_EXAMPLES=OFF",
         ],
-    },
-    "fmtlib/fmt": {
-        "rev": "7.1.3",
-        "build_type": "cmake",
-        "config_flags": [
+    ),
+    "fmtlib/fmt": PackageDef(
+        rev="7.1.3",
+        build_type="cmake",
+        config_flags=[
             "-DFMT_DOC=OFF",
             "-DFMT_TEST=OFF",
         ],
-    },
+    ),
     # Snapshot from 2020-01-03
-    "Naios/function2": {
-        "rev": "3a0746bf5f601dfed05330aefcb6854354fce07d",
-        "build_type": "custom",
-        "build_steps": [
+    "Naios/function2": PackageDef(
+        rev="3a0746bf5f601dfed05330aefcb6854354fce07d",
+        build_type="custom",
+        build_steps=[
             f"mkdir {prefix}/include/function2",
             f"cp include/function2/function2.hpp {prefix}/include/function2/",
         ],
-    },
-    "google/googletest": {
-        "rev": "release-1.10.0",
-        "build_type": "cmake",
-        "config_env": ["CXXFLAGS=-std=c++17"],
-        "config_flags": ["-DTHREADS_PREFER_PTHREAD_FLAG=ON"],
-    },
+    ),
+    "google/googletest": PackageDef(
+        rev="release-1.10.0",
+        build_type="cmake",
+        config_env=["CXXFLAGS=-std=c++17"],
+        config_flags=["-DTHREADS_PREFER_PTHREAD_FLAG=ON"],
+    ),
     # Release 2020-08-06
-    "nlohmann/json": {
-        "rev": "v3.9.1",
-        "build_type": "custom",
-        "build_steps": [
+    "nlohmann/json": PackageDef(
+        rev="v3.9.1",
+        build_type="custom",
+        build_steps=[
             f"mkdir {prefix}/include/nlohmann",
             f"cp single_include/nlohmann/json.hpp {prefix}/include/nlohmann",
             f"ln -s {prefix}/include/nlohmann/json.hpp {prefix}/include/json.hpp",
         ],
-    },
+    ),
     # Snapshot from 2019-05-24
-    "linux-test-project/lcov": {
-        "rev": "v1.15",
-        "build_type": "make",
-    },
+    "linux-test-project/lcov": PackageDef(
+        rev="v1.15",
+        build_type="make",
+    ),
     # dev-5.8 2021-01-11
-    "openbmc/linux": {
-        "rev": "3cc95ae40716e56f81b69615781f54c78079042d",
-        "build_type": "custom",
-        "build_steps": [
+    "openbmc/linux": PackageDef(
+        rev="3cc95ae40716e56f81b69615781f54c78079042d",
+        build_type="custom",
+        build_steps=[
             f"make -j{proc_count} defconfig",
             f"make INSTALL_HDR_PATH={prefix} headers_install",
         ],
-    },
+    ),
     # Snapshot from 2020-06-13
-    "LibVNC/libvncserver": {
-        "rev": "LibVNCServer-0.9.13",
-        "build_type": "cmake",
-    },
-    "martinmoene/span-lite": {
-        "rev": "v0.8.1",
-        "build_type": "cmake",
-        "config_flags": [
+    "LibVNC/libvncserver": PackageDef(
+        rev="LibVNCServer-0.9.13",
+        build_type="cmake",
+    ),
+    "martinmoene/span-lite": PackageDef(
+        rev="v0.8.1",
+        build_type="cmake",
+        config_flags=[
             "-DSPAN_LITE_OPT_BUILD_TESTS=OFF",
         ],
-    },
+    ),
     # version from meta-openembedded/meta-oe/recipes-support/libtinyxml2/libtinyxml2_8.0.0.bb
-    "leethomason/tinyxml2": {
-        "rev": "8.0.0",
-        "build_type": "cmake",
-    },
+    "leethomason/tinyxml2": PackageDef(
+        rev="8.0.0",
+        build_type="cmake",
+    ),
     # version from /meta-openembedded/meta-oe/recipes-devtools/boost-url/boost-url_git.bb
-    "CPPAlliance/url": {
-        "rev": "a56ae0df6d3078319755fbaa67822b4fa7fd352b",
-        "build_type": "cmake",
-        "config_flags": [
+    "CPPAlliance/url": PackageDef(
+        rev="a56ae0df6d3078319755fbaa67822b4fa7fd352b",
+        build_type="cmake",
+        config_flags=[
             "-DBOOST_URL_BUILD_EXAMPLES=OFF",
             "-DBOOST_URL_BUILD_TESTS=OFF",
             "-DBOOST_URL_STANDALONE=ON",
         ],
-    },
+    ),
     # version from ./meta-openembedded/meta-oe/dynamic-layers/networking-layer/recipes-devtools/valijson/valijson_0.3.bb
     # Snapshot from 2020-12-02 - fix for curlpp dependency
-    "tristanpenman/valijson": {
-        "rev": "8cc83c8be9c1c927f5da952b2333b30e5f0353be",
-        "build_type": "cmake",
-        "config_flags": [
+    "tristanpenman/valijson": PackageDef(
+        rev="8cc83c8be9c1c927f5da952b2333b30e5f0353be",
+        build_type="cmake",
+        config_flags=[
             "-Dvalijson_BUILD_TESTS=0",
             "-Dvalijson_INSTALL_HEADERS=1",
         ],
-    },
+    ),
     # version from meta-openembedded/meta-oe/recipes-devtools/nlohmann-fifo/nlohmann-fifo_git.bb
-    "nlohmann/fifo_map": {
-        "rev": "0dfbf5dacbb15a32c43f912a7e66a54aae39d0f9",
-        "build_type": "custom",
-        "build_steps": [f"cp src/fifo_map.hpp {prefix}/include/"],
-    },
-    "open-power/pdbg": {"build_type": "autoconf"},
-    "openbmc/gpioplus": {
-        "depends": ["openbmc/stdplus"],
-        "build_type": "meson",
-        "config_flags": [
+    "nlohmann/fifo_map": PackageDef(
+        rev="0dfbf5dacbb15a32c43f912a7e66a54aae39d0f9",
+        build_type="custom",
+        build_steps=[f"cp src/fifo_map.hpp {prefix}/include/"],
+    ),
+    "open-power/pdbg": PackageDef(build_type="autoconf"),
+    "openbmc/gpioplus": PackageDef(
+        depends=["openbmc/stdplus"],
+        build_type="meson",
+        config_flags=[
             "-Dexamples=false",
             "-Dtests=disabled",
         ],
-    },
-    "openbmc/phosphor-dbus-interfaces": {
-        "depends": ["openbmc/sdbusplus"],
-        "build_type": "meson",
-        "config_flags": [
+    ),
+    "openbmc/phosphor-dbus-interfaces": PackageDef(
+        depends=["openbmc/sdbusplus"],
+        build_type="meson",
+        config_flags=[
             "-Ddata_com_ibm=true",
             "-Ddata_org_open_power=true",
         ],
-    },
-    "openbmc/phosphor-logging": {
-        "depends": [
+    ),
+    "openbmc/phosphor-logging": PackageDef(
+        depends=[
             "USCiLab/cereal",
             "nlohmann/fifo_map",
             "openbmc/phosphor-dbus-interfaces",
             "openbmc/sdbusplus",
             "openbmc/sdeventplus",
         ],
-        "build_type": "autoconf",
-        "config_flags": [
+        build_type="autoconf",
+        config_flags=[
             "--enable-metadata-processing",
             f"YAML_DIR={prefix}/share/phosphor-dbus-yaml/yaml",
         ],
-    },
-    "openbmc/phosphor-objmgr": {
-        "depends": [
+    ),
+    "openbmc/phosphor-objmgr": PackageDef(
+        depends=[
             "boost",
             "leethomason/tinyxml2",
             "openbmc/phosphor-logging",
             "openbmc/sdbusplus",
         ],
-        "build_type": "autoconf",
-    },
-    "openbmc/pldm": {
-        "depends": [
+        build_type="autoconf",
+    ),
+    "openbmc/pldm": PackageDef(
+        depends=[
             "CLIUtils/CLI11",
             "boost",
             "nlohmann/json",
@@ -231,263 +237,42 @@ packages = {
             "openbmc/sdbusplus",
             "openbmc/sdeventplus",
         ],
-        "build_type": "meson",
-        "config_flags": [
+        build_type="meson",
+        config_flags=[
             "-Dlibpldm-only=enabled",
             "-Doem-ibm=enabled",
             "-Dtests=disabled",
         ],
-    },
-    "openbmc/sdbusplus": {
-        "build_type": "meson",
-        "custom_post_dl": [
+    ),
+    "openbmc/sdbusplus": PackageDef(
+        build_type="meson",
+        custom_post_dl=[
             "cd tools",
             f"./setup.py install --root=/ --prefix={prefix}",
             "cd ..",
         ],
-        "config_flags": [
+        config_flags=[
             "-Dexamples=disabled",
             "-Dtests=disabled",
         ],
-    },
-    "openbmc/sdeventplus": {
-        "depends": ["Naios/function2", "openbmc/stdplus"],
-        "build_type": "meson",
-        "config_flags": [
+    ),
+    "openbmc/sdeventplus": PackageDef(
+        depends=["Naios/function2", "openbmc/stdplus"],
+        build_type="meson",
+        config_flags=[
             "-Dexamples=false",
             "-Dtests=disabled",
         ],
-    },
-    "openbmc/stdplus": {
-        "depends": ["fmtlib/fmt", "martinmoene/span-lite"],
-        "build_type": "meson",
-        "config_flags": [
+    ),
+    "openbmc/stdplus": PackageDef(
+        depends=["fmtlib/fmt", "martinmoene/span-lite"],
+        build_type="meson",
+        config_flags=[
             "-Dexamples=false",
             "-Dtests=disabled",
         ],
-    },
-}
-
-
-def pkg_rev(pkg):
-    return packages[pkg]["rev"]
-
-
-def pkg_stagename(pkg):
-    return pkg.replace("/", "-").lower()
-
-
-def pkg_url(pkg):
-    if "url" in packages[pkg]:
-        return packages[pkg]["url"](pkg, pkg_rev(pkg))
-    return f"https://github.com/{pkg}/archive/{pkg_rev(pkg)}.tar.gz"
-
-
-def pkg_download(pkg):
-    url = pkg_url(pkg)
-    if ".tar." not in url:
-        raise NotImplementedError(f"Unhandled download type for {pkg}: {url}")
-    cmd = f"curl -L {url} | tar -x"
-    if url.endswith(".bz2"):
-        cmd += "j"
-    if url.endswith(".gz"):
-        cmd += "z"
-    return cmd
-
-
-def pkg_copycmds(pkg=None):
-    pkgs = []
-    if pkg:
-        if "depends" not in packages[pkg]:
-            return ""
-        pkgs = sorted(packages[pkg]["depends"])
-    else:
-        pkgs = sorted(packages.keys())
-
-    copy_cmds = ""
-    for p in pkgs:
-        copy_cmds += f"COPY --from={packages[p]['__tag']} {prefix} {prefix}\n"
-        # Workaround for upstream docker bug and multiple COPY cmds
-        # https://github.com/moby/moby/issues/37965
-        copy_cmds += "RUN true\n"
-    return copy_cmds
-
-
-def pkg_cd_srcdir(pkg):
-    return f"cd {pkg.split('/')[-1]}* && "
-
-
-def pkg_build(pkg):
-    result = f"RUN {pkg_download(pkg)} && "
-    result += pkg_cd_srcdir(pkg)
-
-    if "custom_post_dl" in packages[pkg]:
-        result += " && ".join(packages[pkg]["custom_post_dl"]) + " && "
-
-    build_type = packages[pkg]["build_type"]
-    if build_type == "autoconf":
-        result += pkg_build_autoconf(pkg)
-    elif build_type == "cmake":
-        result += pkg_build_cmake(pkg)
-    elif build_type == "custom":
-        result += pkg_build_custom(pkg)
-    elif build_type == "make":
-        result += pkg_build_make(pkg)
-    elif build_type == "meson":
-        result += pkg_build_meson(pkg)
-    else:
-        raise NotImplementedError(
-            f"Unhandled build type for {pkg}: {packages[pkg]['build_type']}"
-        )
-
-    return result
-
-
-def pkg_build_autoconf(pkg):
-    options = " ".join(packages[pkg].get("config_flags", []))
-    env = " ".join(packages[pkg].get("config_env", []))
-    result = "./bootstrap.sh && "
-    result += f"{env} ./configure {configure_flags} {options} && "
-    result += f"make -j{proc_count} && "
-    result += "make install "
-    return result
-
-
-def pkg_build_cmake(pkg):
-    options = " ".join(packages[pkg].get("config_flags", []))
-    env = " ".join(packages[pkg].get("config_env", []))
-    result = "mkdir builddir && cd builddir && "
-    result += f"{env} cmake {cmake_flags} {options} .. && "
-    result += "cmake --build . --target all && "
-    result += "cmake --build . --target install && "
-    result += "cd .. "
-    return result
-
-
-def pkg_build_custom(pkg):
-    return " && ".join(packages[pkg].get("build_steps", []))
-
-
-def pkg_build_make(pkg):
-    result = f"make -j{proc_count} && "
-    result += "make install "
-    return result
-
-
-def pkg_build_meson(pkg):
-    options = " ".join(packages[pkg].get("config_flags", []))
-    env = " ".join(packages[pkg].get("config_env", []))
-    result = f"{env} meson builddir {meson_flags} {options} && "
-    result += "ninja -C builddir && ninja -C builddir install "
-    return result
-
-
-pkg_lock = threading.Lock()
-
-
-def pkg_generate(pkg):
-    class pkg_thread(threading.Thread):
-        def run(self):
-            pkg_lock.acquire()
-            deps = [
-                packages[deppkg]["__thread"]
-                for deppkg in sorted(packages[pkg].get("depends", []))
-            ]
-            pkg_lock.release()
-            for deppkg in deps:
-                deppkg.join()
-
-            dockerfile = f"""
-FROM {docker_base_img_name}
-{pkg_copycmds(pkg)}
-{pkg_build(pkg)}
-"""
-
-            pkg_lock.acquire()
-            tag = docker_img_tagname(pkg_stagename(pkg), dockerfile)
-            packages[pkg]["__tag"] = tag
-            pkg_lock.release()
-
-            try:
-                self.exception = None
-                docker_img_build(pkg, tag, dockerfile)
-            except Exception as e:
-                self.package = pkg
-                self.exception = e
-
-    packages[pkg]["__thread"] = pkg_thread()
-
-
-def pkg_generate_packages():
-    for pkg in packages.keys():
-        pkg_generate(pkg)
-
-    pkg_lock.acquire()
-    pkg_threads = [packages[p]["__thread"] for p in packages.keys()]
-    for t in pkg_threads:
-        t.start()
-    pkg_lock.release()
-
-    for t in pkg_threads:
-        t.join()
-        if t.exception:
-            print(f"Package {t.package} failed!", file=sys.stderr)
-            raise t.exception
-
-def timestamp():
-    today = date.today().isocalendar()
-    return f"{today[0]}-W{today[1]:02}"
-
-def docker_img_tagname(pkgname, dockerfile):
-    result = docker_image_name
-    if pkgname:
-        result += "-" + pkgname
-    result += ":" + timestamp()
-    result += "-" + sha256(dockerfile.encode()).hexdigest()[0:16]
-    return result
-
-
-def docker_img_build(pkg, tag, dockerfile):
-    if not force_build:
-        if docker.image.ls(tag, "--format", '"{{.Repository}}:{{.Tag}}"'):
-            print(f"Image {tag} already exists.  Skipping.", file=sys.stderr)
-            return
-
-    docker.build(
-        proxy_args,
-        "--network=host",
-        "--force-rm",
-        "--no-cache=true" if force_build else "--no-cache=false",
-        "-t",
-        tag,
-        "-",
-        _in=dockerfile,
-        _out=(
-            lambda line: print(pkg + ":", line, end="", file=sys.stderr, flush=True)
-        ),
-    )
-
-
-# Look up the HEAD for missing a static rev.
-pkg_lookups = {}
-for pkg in packages.keys():
-    if "rev" in packages[pkg]:
-        continue
-    pkg_lookups[pkg] = git(
-        "ls-remote", "--heads", f"https://github.com/{pkg}", _bg=True
-    )
-for pkg, result in pkg_lookups.items():
-    for line in result.stdout.decode().split("\n"):
-        if f"refs/heads/{branch}" in line:
-            packages[pkg]["rev"] = line.strip().split()[0]
-        elif "refs/heads/master" in line and p not in packages:
-            packages[pkg]["rev"] = line.strip().split()[0]
-
-# Create the contents of the '/tmp/depcache'.
-# This needs to be sorted for consistency.
-depcache = ""
-for pkg in sorted(packages.keys()):
-    depcache += "%s:%s," % (pkg, pkg_rev(pkg))
+    ),
+}  # type: Dict[str, PackageDef]
 
 # Define common flags used for builds
 configure_flags = " ".join(
@@ -510,6 +295,349 @@ meson_flags = " ".join(
         f"-Dprefix={prefix}",
     ]
 )
+
+
+class Package(threading.Thread):
+    """Class used to build the Docker stages for each package.
+
+    Generally, this class should not be instantiated directly but through
+    Package.generate_all().
+    """
+
+    # Copy the packages dictionary.
+    packages = packages.copy()
+
+    # Lock used for thread-safety.
+    lock = threading.Lock()
+
+    def __init__(self, pkg: str):
+        """ pkg - The name of this package (ex. foo/bar ) """
+        super(Package, self).__init__()
+
+        self.package = pkg
+        self.exception = None  # type: Optional[Exception]
+
+        # Reference to this package's
+        self.pkg_def = Package.packages[pkg]
+        self.pkg_def["__package"] = self
+
+    def run(self) -> None:
+        """ Thread 'run' function.  Builds the Docker stage. """
+
+        # In case this package has no rev, fetch it from Github.
+        self._update_rev()
+
+        # Find all the Package objects that this package depends on.
+        #   This section is locked because we are looking into another
+        #   package's PackageDef dict, which could be being modified.
+        Package.lock.acquire()
+        deps: Iterable[Package] = [
+            Package.packages[deppkg]["__package"]
+            for deppkg in self.pkg_def.get("depends", [])
+        ]
+        Package.lock.release()
+
+        # Wait until all the depends finish building.  We need them complete
+        # for the "COPY" commands.
+        for deppkg in deps:
+            deppkg.join()
+
+        # Generate this package's Dockerfile.
+        dockerfile = f"""
+FROM {docker_base_img_name}
+{self._df_copycmds()}
+{self._df_build()}
+"""
+
+        # Generate the resulting tag name and save it to the PackageDef.
+        #   This section is locked because we are modifying the PackageDef,
+        #   which can be accessed by other threads.
+        Package.lock.acquire()
+        tag = Docker.tagname(self._stagename(), dockerfile)
+        self.pkg_def["__tag"] = tag
+        Package.lock.release()
+
+        # Do the build / save any exceptions.
+        try:
+            Docker.build(self.package, tag, dockerfile)
+        except Exception as e:
+            self.exception = e
+
+    @classmethod
+    def generate_all(cls) -> None:
+        """Ensure a Docker stage is created for all defined packages.
+
+        These are done in parallel but with appropriate blocking per
+        package 'depends' specifications.
+        """
+
+        # Create a Package for each defined package.
+        pkg_threads = [Package(p) for p in cls.packages.keys()]
+
+        # Start building them all.
+        for t in pkg_threads:
+            t.start()
+
+        # Wait for completion.
+        for t in pkg_threads:
+            t.join()
+            # Check if the thread saved off its own exception.
+            if t.exception:
+                print(f"Package {t.package} failed!", file=sys.stderr)
+                raise t.exception
+
+    @staticmethod
+    def df_all_copycmds() -> str:
+        """Formulate the Dockerfile snippet necessary to copy all packages
+        into the final image.
+        """
+        return Package.df_copycmds_set(Package.packages.keys())
+
+    @classmethod
+    def depcache(cls) -> str:
+        """Create the contents of the '/tmp/depcache'.
+        This file is a comma-separated list of "<pkg>:<rev>".
+        """
+
+        # This needs to be sorted for consistency.
+        depcache = ""
+        for pkg in sorted(cls.packages.keys()):
+            depcache += "%s:%s," % (pkg, cls.packages[pkg]["rev"])
+        return depcache
+
+    def _update_rev(self) -> None:
+        """ Look up the HEAD for missing a static rev. """
+
+        if "rev" in self.pkg_def:
+            return
+
+        # Ask Github for all the branches.
+        lookup = git("ls-remote", "--heads", f"https://github.com/{self.package}")
+
+        # Find the branch matching {branch} (or fallback to master).
+        #   This section is locked because we are modifying the PackageDef.
+        Package.lock.acquire()
+        for line in lookup.split("\n"):
+            if f"refs/heads/{branch}" in line:
+                self.pkg_def["rev"] = line.split()[0]
+            elif f"refs/heads/master" in line and "rev" not in self.pkg_def:
+                self.pkg_def["rev"] = line.split()[0]
+        Package.lock.release()
+
+    def _stagename(self) -> str:
+        """ Create a name for the Docker stage associated with this pkg. """
+        return self.package.replace("/", "-").lower()
+
+    def _url(self) -> str:
+        """ Get the URL for this package. """
+        rev = self.pkg_def["rev"]
+
+        # If the lambda exists, call it.
+        if "url" in self.pkg_def:
+            return self.pkg_def["url"](self.package, rev)
+
+        # Default to the github archive URL.
+        return f"https://github.com/{self.package}/archive/{rev}.tar.gz"
+
+    def _cmd_download(self) -> str:
+        """Formulate the command necessary to download and unpack to source."""
+
+        url = self._url()
+        if ".tar." not in url:
+            raise NotImplementedError(
+                f"Unhandled download type for {self.package}: {url}"
+            )
+
+        cmd = f"curl -L {url} | tar -x"
+
+        if url.endswith(".bz2"):
+            cmd += "j"
+        elif url.endswith(".gz"):
+            cmd += "z"
+        else:
+            raise NotImplementedError(
+                f"Unknown tar flags needed for {self.package}: {url}"
+            )
+
+        return cmd
+
+    def _cmd_cd_srcdir(self) -> str:
+        """ Formulate the command necessary to 'cd' into the source dir. """
+        return f"cd {self.package.split('/')[-1]}*"
+
+    def _df_copycmds(self) -> str:
+        """ Formulate the dockerfile snippet necessary to COPY all depends. """
+
+        if "depends" not in self.pkg_def:
+            return ""
+        return Package.df_copycmds_set(self.pkg_def["depends"])
+
+    @staticmethod
+    def df_copycmds_set(pkgs: Iterable[str]) -> str:
+        """Formulate the Dockerfile snippet necessary to COPY a set of
+        packages into a Docker stage.
+        """
+
+        copy_cmds = ""
+
+        # Sort the packages for consistency.
+        for p in sorted(pkgs):
+            tag = Package.packages[p]["__tag"]
+            copy_cmds += f"COPY --from={tag} {prefix} {prefix}\n"
+            # Workaround for upstream docker bug and multiple COPY cmds
+            # https://github.com/moby/moby/issues/37965
+            copy_cmds += "RUN true\n"
+
+        return copy_cmds
+
+    def _df_build(self) -> str:
+        """Formulate the Dockerfile snippet necessary to download, build, and
+        install a package into a Docker stage.
+        """
+
+        # Download and extract source.
+        result = f"RUN {self._cmd_download()} && {self._cmd_cd_srcdir()} && "
+
+        # Handle 'custom_post_dl' commands.
+        custom_post_dl = self.pkg_def.get("custom_post_dl")
+        if custom_post_dl:
+            result += " && ".join(custom_post_dl) + " && "
+
+        # Build and install package based on 'build_type'.
+        build_type = self.pkg_def["build_type"]
+        if build_type == "autoconf":
+            result += self._cmd_build_autoconf()
+        elif build_type == "cmake":
+            result += self._cmd_build_cmake()
+        elif build_type == "custom":
+            result += self._cmd_build_custom()
+        elif build_type == "make":
+            result += self._cmd_build_make()
+        elif build_type == "meson":
+            result += self._cmd_build_meson()
+        else:
+            raise NotImplementedError(
+                f"Unhandled build type for {self.package}: {build_type}"
+            )
+
+        return result
+
+    def _cmd_build_autoconf(self) -> str:
+        options = " ".join(self.pkg_def.get("config_flags", []))
+        env = " ".join(self.pkg_def.get("config_env", []))
+        result = "./bootstrap.sh && "
+        result += f"{env} ./configure {configure_flags} {options} && "
+        result += f"make -j{proc_count} && make install"
+        return result
+
+    def _cmd_build_cmake(self) -> str:
+        options = " ".join(self.pkg_def.get("config_flags", []))
+        env = " ".join(self.pkg_def.get("config_env", []))
+        result = "mkdir builddir && cd builddir && "
+        result += f"{env} cmake {cmake_flags} {options} .. && "
+        result += "cmake --build . --target all && "
+        result += "cmake --build . --target install && "
+        result += "cd .."
+        return result
+
+    def _cmd_build_custom(self) -> str:
+        return " && ".join(self.pkg_def.get("build_steps", []))
+
+    def _cmd_build_make(self) -> str:
+        return f"make -j{proc_count} && make install"
+
+    def _cmd_build_meson(self) -> str:
+        options = " ".join(self.pkg_def.get("config_flags", []))
+        env = " ".join(self.pkg_def.get("config_env", []))
+        result = f"{env} meson builddir {meson_flags} {options} && "
+        result += "ninja -C builddir && ninja -C builddir install"
+        return result
+
+
+class Docker:
+    """Class to assist with Docker interactions.  All methods are static."""
+
+    @staticmethod
+    def timestamp() -> str:
+        """ Generate a timestamp for today using the ISO week. """
+        today = date.today().isocalendar()
+        return f"{today[0]}-W{today[1]:02}"
+
+    @staticmethod
+    def tagname(pkgname: str, dockerfile: str) -> str:
+        """ Generate a tag name for a package using a hash of the Dockerfile. """
+        result = docker_image_name
+        if pkgname:
+            result += "-" + pkgname
+
+        result += ":" + Docker.timestamp()
+        result += "-" + sha256(dockerfile.encode()).hexdigest()[0:16]
+
+        return result
+
+    @staticmethod
+    def build(pkg: str, tag: str, dockerfile: str) -> None:
+        """Build a docker image using the Dockerfile and tagging it with 'tag'."""
+
+        # If we're not forcing builds, check if it already exists and skip.
+        if not force_build:
+            if docker.image.ls(tag, "--format", '"{{.Repository}}:{{.Tag}}"'):
+                print(f"Image {tag} already exists.  Skipping.", file=sys.stderr)
+                return
+
+        # Build it.
+        #   Capture the output of the 'docker build' command and send it to
+        #   stderr (prefixed with the package name).  This allows us to see
+        #   progress but not polute stdout.  Later on we output the final
+        #   docker tag to stdout and we want to keep that pristine.
+        #
+        #   Other unusual flags:
+        #       --no-cache: Bypass the Docker cache if 'force_build'.
+        #       --force-rm: Clean up Docker processes if they fail.
+        docker.build(
+            proxy_args,
+            "--network=host",
+            "--force-rm",
+            "--no-cache=true" if force_build else "--no-cache=false",
+            "-t",
+            tag,
+            "-",
+            _in=dockerfile,
+            _out=(
+                lambda line: print(
+                    pkg + ":", line, end="", file=sys.stderr, flush=True
+                )
+            ),
+        )
+
+
+# Read a bunch of environment variables.
+docker_image_name = os.environ.get("DOCKER_IMAGE_NAME", "openbmc/ubuntu-unit-test")
+force_build = os.environ.get("FORCE_DOCKER_BUILD")
+is_automated_ci_build = os.environ.get("BUILD_URL", False)
+distro = os.environ.get("DISTRO", "ubuntu:focal")
+branch = os.environ.get("BRANCH", "master")
+ubuntu_mirror = os.environ.get("UBUNTU_MIRROR")
+http_proxy = os.environ.get("http_proxy")
+
+# Set up some common variables.
+username = os.environ.get("USER", "root")
+homedir = os.environ.get("HOME", "/root")
+gid = os.getgid()
+uid = os.getuid()
+
+# Determine the architecture for Docker.
+arch = uname("-m").strip()
+if arch == "ppc64le":
+    docker_base = "ppc64le/"
+elif arch == "x86_64":
+    docker_base = ""
+else:
+    print(
+        f"Unsupported system architecture({arch}) found for docker image",
+        file=sys.stderr,
+    )
+    sys.exit(1)
 
 # Special flags if setting up a deb mirror.
 mirror = ""
@@ -539,7 +667,7 @@ RUN echo "[http]" >> {homedir}/.gitconfig && \
         ]
     )
 
-# Create docker image that can run package unit tests
+# Create base Dockerfile.
 dockerfile_base = f"""
 FROM {docker_base}{distro}
 
@@ -649,7 +777,7 @@ if is_automated_ci_build:
     dockerfile_base += f"""
 # Run an arbitrary command to polute the docker cache regularly force us
 # to re-run `apt-get update` daily.
-RUN echo {timestamp()}
+RUN echo {Docker.timestamp()}
 RUN apt-get update && apt-get dist-upgrade -yy
 
 """
@@ -662,20 +790,21 @@ RUN pip3 install meson==0.54.3
 RUN pip3 install protobuf
 """
 
-# Build the stage docker images.
-docker_base_img_name = docker_img_tagname("base", dockerfile_base)
-docker_img_build("base", docker_base_img_name, dockerfile_base)
-pkg_generate_packages()
+# Build the base and stage docker images.
+docker_base_img_name = Docker.tagname("base", dockerfile_base)
+Docker.build("base", docker_base_img_name, dockerfile_base)
+Package.generate_all()
 
+# Create the final Dockerfile.
 dockerfile = f"""
 # Build the final output image
 FROM {docker_base_img_name}
-{pkg_copycmds()}
+{Package.df_all_copycmds()}
 
 # Some of our infrastructure still relies on the presence of this file
 # even though it is no longer needed to rebuild the docker environment
 # NOTE: The file is sorted to ensure the ordering is stable.
-RUN echo '{depcache}' > /tmp/depcache
+RUN echo '{Package.depcache()}' > /tmp/depcache
 
 # Final configuration for the workspace
 RUN grep -q {gid} /etc/group || groupadd -g {gid} {username}
@@ -690,7 +819,8 @@ RUN /bin/bash
 """
 
 # Do the final docker build
-docker_final_img_name = docker_img_tagname(docker_image_name, dockerfile)
-docker_img_build("final", docker_final_img_name, dockerfile)
+docker_final_img_name = Docker.tagname(docker_image_name, dockerfile)
+Docker.build("final", docker_final_img_name, dockerfile)
+
 # Print the tag of the final image.
 print(docker_final_img_name)
