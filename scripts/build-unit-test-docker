@@ -410,6 +410,13 @@ FROM {docker_base_img_name}
         if "rev" in self.pkg_def:
             return
 
+        # Check if Jenkins/Gerrit gave us a revision and use it.
+        if gerrit_project == self.package and gerrit_rev:
+            print(f"Found Gerrit revision for {self.package}: {gerrit_rev}",
+                    file=sys.stderr)
+            self.pkg_def["rev"] = gerrit_rev
+            return
+
         # Ask Github for all the branches.
         lookup = git("ls-remote", "--heads", f"https://github.com/{self.package}")
 
@@ -623,6 +630,9 @@ distro = os.environ.get("DISTRO", "ubuntu:focal")
 branch = os.environ.get("BRANCH", "master")
 ubuntu_mirror = os.environ.get("UBUNTU_MIRROR")
 http_proxy = os.environ.get("http_proxy")
+
+gerrit_project = os.environ.get("GERRIT_PROJECT")
+gerrit_rev = os.environ.get("GERRIT_PATCHSET_REVISION")
 
 # Set up some common variables.
 username = os.environ.get("USER", "root")
