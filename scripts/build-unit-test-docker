@@ -55,6 +55,8 @@ class PackageDef(TypedDict, total=False):
     # custom_post_dl [optional]: List of steps to run after download, but
     #   before config / build / install.
     custom_post_dl: Iterable[str]
+    # custom_post_install [optional]: List of steps to run after install.
+    custom_post_install: Iterable[str]
 
     # __tag [private]: Generated Docker tag name for package stage.
     __tag: str
@@ -121,10 +123,9 @@ packages = {
     # Release 2020-08-06
     "nlohmann/json": PackageDef(
         rev="v3.9.1",
-        build_type="custom",
-        build_steps=[
-            f"mkdir {prefix}/include/nlohmann",
-            f"cp single_include/nlohmann/json.hpp {prefix}/include/nlohmann",
+        build_type="cmake",
+        config_flags=["-DJSON_BuildTests=OFF"],
+        custom_post_install=[
             f"ln -s {prefix}/include/nlohmann/json.hpp {prefix}/include/json.hpp",
         ],
     ),
@@ -517,6 +518,11 @@ FROM {docker_base_img_name}
             raise NotImplementedError(
                 f"Unhandled build type for {self.package}: {build_type}"
             )
+
+        # Handle 'custom_post_install' commands.
+        custom_post_install = self.pkg_def.get("custom_post_install")
+        if custom_post_install:
+            result += " && " + " && ".join(custom_post_install)
 
         return result
 
