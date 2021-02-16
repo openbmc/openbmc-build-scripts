@@ -18,5 +18,5 @@ cd "${WORKSPACE}/openbmc-build-scripts"
 
 # Run a simple CI against 'sdbusplus' to ensure the run-unit-test script works.
 cd "${WORKSPACE}"
-git clone https://github.com/openbmc/sdbusplus
-UNIT_TEST_PKG=sdbusplus "${WORKSPACE}/openbmc-build-scripts/run-unit-test-docker.sh"
+git clone https://github.com/openbmc/phosphor-ipmi-flash
+UNIT_TEST_PKG=phosphor-ipmi-flash "${WORKSPACE}/openbmc-build-scripts/run-unit-test-docker.sh"
