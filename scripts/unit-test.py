@@ -327,11 +327,16 @@ def build_dep_tree(name, pkgdir, dep_added, head, branch, dep_tree=None):
     # Read out pkg dependencies
     pkg = Package(name, pkgdir)
 
-    for dep in set(pkg.build_system().dependencies()):
+    build = pkg.build_system()
+    if build == None:
+        raise Exception(f"Unable to find build system for {name}.")
+
+    for dep in set(build.dependencies()):
         if dep in cache:
             continue
         # Dependency package not already known
         if dep_added.get(dep) is None:
+            print(f"Adding {dep} dependency to {name}.")
             # Dependency package not added
             new_child = dep_tree.AddChild(dep)
             dep_added[dep] = False
