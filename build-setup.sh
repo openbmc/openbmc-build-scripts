@@ -38,10 +38,8 @@
 #                     ubuntu: latest|16.04|14.04|trusty|xenial
 #                     fedora: 23|24|25
 #                     Default: "latest"
-#  target             The target we aim to build:
-#                     evb-ast2500|palmetto|qemu|qemux86-64
-#                     romulus|s2600wf|witherspoon|zaius|tiogapass|gsj|mihawk
-#                     witherspoon-tacoma|rainier
+#  target             The target we aim to build.  Any system supported by
+#                     the openbmc/openbmc `setup` script is an option.
 #                     Default: "qemuarm"
 #  no_tar             Set to true if you do not want the debug tar built
 #                     Default: "false"
@@ -144,79 +142,25 @@ if [ ! -d "${xtrct_path}" ]; then
 fi
 chown "${UID}:${GROUPS[0]}" "${xtrct_path}"
 
-# Work out what build target we should be running and set BitBake command
-MACHINE=""
+# Perform overrides for specific machines as required.
 case ${target} in
-  palmetto)
-    LAYER_DIR="meta-ibm/meta-palmetto"
-    MACHINE="palmetto"
-    DISTRO="openbmc-openpower"
-    ;;
-  swift)
-    LAYER_DIR="meta-ibm"
-    MACHINE="swift"
-    DISTRO="openbmc-witherspoon"
-    ;;
-  mihawk)
-    LAYER_DIR="meta-ibm"
-    MACHINE="mihawk"
-    DISTRO="openbmc-witherspoon"
-    ;;
-  witherspoon)
-    LAYER_DIR="meta-ibm"
-    MACHINE="witherspoon"
-    DISTRO="openbmc-witherspoon"
-    ;;
-  witherspoon-128)
-    LAYER_DIR="meta-ibm"
-    MACHINE="witherspoon-128"
-    DISTRO="openbmc-witherspoon"
-    ;;
   witherspoon-tacoma)
-    LAYER_DIR="meta-ibm"
-    MACHINE="witherspoon-tacoma"
     DISTRO="openbmc-openpower"
     ;;
   rainier)
-    LAYER_DIR="meta-ibm"
-    MACHINE="rainier"
     DISTRO="openbmc-openpower"
-    ;;
-  evb-ast2500)
-    LAYER_DIR="meta-evb/meta-evb-aspeed/meta-evb-ast2500"
-    MACHINE="evb-ast2500"
-    DISTRO="openbmc-phosphor"
-    ;;
-  s2600wf)
-    LAYER_DIR="meta-intel/meta-s2600wf"
-    MACHINE="s2600wf"
-    DISTRO="openbmc-phosphor"
     ;;
   zaius)
-    LAYER_DIR="meta-ingrasys/meta-zaius"
-    MACHINE="zaius"
+    # This should probably be openbmc-zaius, which is default.
     DISTRO="openbmc-openpower"
-    ;;
-  romulus)
-    LAYER_DIR="meta-ibm/meta-romulus"
-    MACHINE="romulus"
-    DISTRO="openbmc-openpower"
-    ;;
-  tiogapass)
-    LAYER_DIR="meta-facebook/meta-tiogapass"
-    MACHINE="tiogapass"
-    DISTRO="openbmc-phosphor"
-    ;;
-  gsj)
-    LAYER_DIR="meta-quanta/meta-gsj"
-    MACHINE="gsj"
-    # Use default DISTRO from layer
     ;;
   *)
-    exit 1
+    echo "Unspecified machine ${target}; default to local.sample.conf values."
     ;;
 esac
 
+# Set build target and BitBake command
+MACHINE="${target}"
 BITBAKE_CMD="source ./setup ${MACHINE} ${build_dir}"
 
 # Configure Docker build
