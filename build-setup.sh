@@ -42,7 +42,7 @@
 #                     evb-ast2500|palmetto|qemu|qemux86-64
 #                     romulus|s2600wf|witherspoon|zaius|tiogapass|gsj|mihawk
 #                     witherspoon-tacoma|rainier
-#                     Default: "qemu"
+#                     Default: "qemuarm"
 #  no_tar             Set to true if you do not want the debug tar built
 #                     Default: "false"
 #  nice_priority      Set nice priotity for bitbake command.
@@ -90,7 +90,7 @@ ENV_LOCAL_CONF=${ENV_LOCAL_CONF:-""}
 build_dir=${build_dir:-${WORKSPACE}/build}
 distro=${distro:-ubuntu}
 img_tag=${img_tag:-latest}
-target=${target:-qemu}
+target=${target:-qemuarm}
 no_tar=${no_tar:-false}
 nice_priority=${nice_priority:-}
 
