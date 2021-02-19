@@ -217,7 +217,7 @@ case ${target} in
     ;;
 esac
 
-BITBAKE_CMD="TEMPLATECONF=${LAYER_DIR}/conf source oe-init-build-env"
+BITBAKE_CMD="source ./setup ${MACHINE} ${build_dir}"
 
 # Configure Docker build
 if [[ "${distro}" == fedora ]];then
