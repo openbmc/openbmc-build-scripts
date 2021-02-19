@@ -150,10 +150,6 @@ case ${target} in
   rainier)
     DISTRO="openbmc-openpower"
     ;;
-  zaius)
-    # This should probably be openbmc-zaius, which is default.
-    DISTRO="openbmc-openpower"
-    ;;
   *)
     echo "Unspecified machine ${target}; default to local.sample.conf values."
     ;;
