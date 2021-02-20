@@ -385,8 +385,14 @@ FROM {docker_base_img_name}
         pkg_threads = [Package(p) for p in cls.packages.keys()]
 
         # Start building them all.
+        #   This section is locked because threads depend on each other,
+        #   based on the packages, and they cannot 'join' on a thread
+        #   which is not yet started.  Adding a lock here allows all the
+        #   threads to start before they 'join' their dependencies.
+        Package.lock.acquire()
         for t in pkg_threads:
             t.start()
+        Package.lock.release()
 
         # Wait for completion.
         for t in pkg_threads:
