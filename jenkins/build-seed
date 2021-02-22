@@ -1,0 +1,47 @@
+#!/bin/bash -xe
+#
+# Purpose:
+#  This script is responsible for building all CI machines to get a
+#  new CI systems sstate and download caches setup.
+#
+# This script assumes openbmc-build-scripts has been cloned into
+# the WORKSPACE directory.
+#
+# Required Inputs:
+#  WORKSPACE:      Directory to run the builds out of
+
+export LANG=en_US.UTF8
+
+cd ${WORKSPACE}
+git clone https://github.com/openbmc/openbmc.git
+
+# Ensure everything is built on same filesystem
+export build_dir=${WORKSPACE}/build
+
+export target=rainier
+${WORKSPACE}/openbmc-build-scripts/build-setup.sh
+rm -rf ${WORKSPACE}/openbmc/build
+
+export target=gsj
+${WORKSPACE}/openbmc-build-scripts/build-setup.sh
+rm -rf ${WORKSPACE}/openbmc/build
+
+export target=palmetto
+${WORKSPACE}/openbmc-build-scripts/build-setup.sh
+rm -rf ${WORKSPACE}/openbmc/build
+
+export target=romulus
+${WORKSPACE}/openbmc-build-scripts/build-setup.sh
+rm -rf ${WORKSPACE}/openbmc/build
+
+export target=witherspoon
+${WORKSPACE}/openbmc-build-scripts/build-setup.sh
+rm -rf ${WORKSPACE}/openbmc/build
+
+export target=tiogapass
+${WORKSPACE}/openbmc-build-scripts/build-setup.sh
+rm -rf ${WORKSPACE}/openbmc/build
+
+export target=zaius
+${WORKSPACE}/openbmc-build-scripts/build-setup.sh
+rm -rf ${WORKSPACE}/openbmc/build
