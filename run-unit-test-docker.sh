@@ -29,8 +29,8 @@
 set -uo pipefail
 
 # Default variables
-BRANCH=${BRANCH:-"master"}
-DISTRO=${DISTRO:-ubuntu:focal}
+BRANCH=${BRANCH:-}
+DISTRO=${DISTRO:-}
 OBMC_BUILD_SCRIPTS="openbmc-build-scripts"
 UNIT_TEST_PY_DIR="scripts"
 UNIT_TEST_PY="unit-test.py"
