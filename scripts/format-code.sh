@@ -39,7 +39,7 @@ for script in ${shell_scripts}; do
 done
 
 # Allow called scripts to know which clang format we are using
-export CLANG_FORMAT="clang-format-10"
+export CLANG_FORMAT="clang-format"
 IGNORE_FILE=".clang-ignore"
 declare -a IGNORE_LIST
 

@@ -761,10 +761,10 @@ RUN apt-get update && apt-get dist-upgrade -yy && apt-get install -yy \
     git \
     dbus \
     iputils-ping \
-    clang-10 \
-    clang-format-10 \
-    clang-tidy-10 \
-    clang-tools-10 \
+    clang-11 \
+    clang-format-11 \
+    clang-tidy-11 \
+    clang-tools-11 \
     shellcheck \
     npm \
     iproute2 \
@@ -798,11 +798,12 @@ RUN update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-10 1000 \
   --slave /usr/bin/gcov-dump gcov-dump /usr/bin/gcov-dump-10 \
   --slave /usr/bin/gcov-tool gcov-tool /usr/bin/gcov-tool-10
 
-RUN update-alternatives --install /usr/bin/clang clang /usr/bin/clang-10 1000 \
-  --slave /usr/bin/clang++ clang++ /usr/bin/clang++-10 \
-  --slave /usr/bin/clang-tidy clang-tidy /usr/bin/clang-tidy-10 \
-  --slave /usr/bin/clang-format clang-format /usr/bin/clang-format-10 \
-  --slave /usr/bin/run-clang-tidy.py run-clang-tidy.py /usr/bin/run-clang-tidy-10.py
+RUN update-alternatives --install /usr/bin/clang clang /usr/bin/clang-11 1000 \
+  --slave /usr/bin/clang++ clang++ /usr/bin/clang++-11 \
+  --slave /usr/bin/clang-tidy clang-tidy /usr/bin/clang-tidy-11 \
+  --slave /usr/bin/clang-format clang-format /usr/bin/clang-format-11 \
+  --slave /usr/bin/run-clang-tidy.py run-clang-tidy.py /usr/bin/run-clang-tidy-11.py \
+  --slave /usr/bin/scan-build scan-build /usr/bin/scan-build-11
 
 """
 
