@@ -16,7 +16,6 @@
 #                    be tested
 #   WORKSPACE:       Required, location of unit test scripts and repository
 #                    code to test
-#   DISTRO:          Optional, docker base image (ubuntu or fedora)
 #   BRANCH:          Optional, branch to build from each of the
 #                    openbmc repositories. default is master, which will be
 #                    used if input branch not provided or not found
@@ -30,7 +29,6 @@ set -uo pipefail
 
 # Default variables
 BRANCH=${BRANCH:-"master"}
-DISTRO=${DISTRO:-ubuntu:focal}
 OBMC_BUILD_SCRIPTS="openbmc-build-scripts"
 UNIT_TEST_PY_DIR="scripts"
 UNIT_TEST_PY="unit-test.py"
@@ -44,11 +42,6 @@ NO_FORMAT_CODE="${NO_FORMAT_CODE:-}"
 
 # Timestamp for job
 echo "Unit test build started, $(date)"
-
-if [[ "${DISTRO}" == "fedora" ]]; then
-    echo "Distro (${DISTRO}) not supported, running as ubuntu"
-    DISTRO="ubuntu:latest"
-fi
 
 # Check workspace, build scripts, and package to be unit tested exists
 if [ ! -d "${WORKSPACE}" ]; then
@@ -84,7 +77,6 @@ chmod a+x "${WORKSPACE}"/${FORMAT_CODE_SH}
 cd "${WORKSPACE}"/${OBMC_BUILD_SCRIPTS}
 echo "Building docker image with build-unit-test-docker"
 # Export input env variables
-export DISTRO
 export BRANCH
 export DOCKER_IMG_NAME=$(./scripts/build-unit-test-docker)
 
