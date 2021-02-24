@@ -34,6 +34,24 @@
       "revId": "58fa1cef38941785860cf7ec1e81a9a30d87e002",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e1c82035_be255c40",
+        "filename": "scripts/build-qemu-robot-docker.sh",
+        "patchSetId": 2
+      },
+      "lineNbr": 102,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2021-02-24T15:50:22Z",
+      "side": 1,
+      "message": "\u003e My guess is they don\u0027t have the pre-built crypto packages for ppc64le \n\nOh, Power.  The barely supported step-child of the open source world.  :D",
+      "parentUuid": "0b4359a8_d25fec33",
+      "revId": "58fa1cef38941785860cf7ec1e81a9a30d87e002",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
     }
   ]
 }
