@@ -98,7 +98,8 @@ RUN apt-get update && apt-get install -yy \
     libxslt-dev \
     python3-pip \
     ipmitool \
-    xvfb
+    xvfb \
+    rust
 
 RUN apt-get update -qqy \
   && apt-get -qqy --no-install-recommends install firefox \
