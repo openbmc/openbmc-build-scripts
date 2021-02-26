@@ -107,7 +107,6 @@ if [[ ${LAUNCH} == "local" ]]; then
   # root in docker required to open up the https/ssh ports
   obmc_qemu_docker=$(docker run --detach \
                                 --rm \
-                                --user root \
                                 --env HOME="${OBMC_BUILD_DIR}" \
                                 --env QEMU_RUN_TIMER="${QEMU_RUN_TIMER}" \
                                 --env QEMU_ARCH="${QEMU_ARCH}" \
@@ -166,7 +165,6 @@ if [[ ${LAUNCH} == "local" ]]; then
   # Run the Docker container to execute the Robot test cases
   # The test results will be put in ${WORKSPACE}
   docker run --rm \
-             --user root \
              --env HOME="${HOME}" \
              --env IP_ADDR="${DOCKER_QEMU_IP_ADDR}" \
              --env SSH_PORT="${DOCKER_SSH_PORT}" \
