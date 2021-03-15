@@ -178,18 +178,6 @@ if [[ ${LAUNCH} == "local" ]]; then
   # Now stop the QEMU Docker image
   docker stop "$obmc_qemu_docker"
 
-elif [[ ${LAUNCH} == "k8s" ]]; then
-  # Package the Upstream into an image based off the one created by the build-qemu-robot.sh
-  # Dockerfile = $( cat << EOF
-  # shellcheck disable=SC2034
-  imgname="$DOCKER_IMG_NAME"
-  cd "$DIR"
-  source ./kubernetes/kubernetes-launch.sh QEMU-launch false false deployment
-
-  # Xcat Launch (NYI)
-
-  # source ./kubernetes/kubernetes-launch.sh XCAT-launch true true
-
 else
   echo "LAUNCH variable invalid, Exiting"
   exit 1
