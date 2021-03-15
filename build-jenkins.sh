@@ -260,8 +260,4 @@ if [[ "${launch}" == "docker" ]]; then
     --env JENKINS_OPTS=\""${jenkins_options}"\" \
     "${img_name}"
 
-elif [[ ${launch} == "k8s" ]]; then
-  # launch using the k8s template
-  # shellcheck source=kubernetes/kubernetes-launch.sh
-  source "${build_scripts_dir}/kubernetes/kubernetes-launch.sh" Build-Jenkins false false
 fi
