@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "8dad59b1_abb61586",
+        "filename": "jenkins/userid-validation",
+        "patchSetId": 1
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 1000009
+      },
+      "writtenOn": "2021-03-15T22:36:43Z",
+      "side": 1,
+      "message": "Can we wrap this up in a variable or do a gerrit_cmd() function so we\u0027re not spraying these options all over the script?",
+      "range": {
+        "startLine": 23,
+        "startChar": 12,
+        "endLine": 23,
+        "endChar": 64
+      },
+      "revId": "d38287a9c9f51ed803bc114e46d67fb6131fa044",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "a6391289_d09f66fd",
+        "filename": "jenkins/userid-validation",
+        "patchSetId": 1
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 1000009
+      },
+      "writtenOn": "2021-03-15T22:36:43Z",
+      "side": 1,
+      "message": "Unrelated to your change, but ... now I\u0027m nervous",
+      "range": {
+        "startLine": 23,
+        "startChar": 12,
+        "endLine": 23,
+        "endChar": 41
+      },
+      "revId": "d38287a9c9f51ed803bc114e46d67fb6131fa044",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "adb8f66f_04f3bfaa",
+        "filename": "jenkins/userid-validation",
+        "patchSetId": 1
+      },
+      "lineNbr": 74,
+      "author": {
+        "id": 1000009
+      },
+      "writtenOn": "2021-03-15T22:36:43Z",
+      "side": 1,
+      "message": "\u003e\u003e",
+      "range": {
+        "startLine": 74,
+        "startChar": 43,
+        "endLine": 74,
+        "endChar": 44
+      },
+      "revId": "d38287a9c9f51ed803bc114e46d67fb6131fa044",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
