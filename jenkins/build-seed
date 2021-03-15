@@ -12,36 +12,16 @@
 
 export LANG=en_US.UTF8
 
-cd ${WORKSPACE}
+cd "${WORKSPACE}"
 git clone https://github.com/openbmc/openbmc.git
 
 # Ensure everything is built on same filesystem
-export build_dir=${WORKSPACE}/build
+export build_dir="${WORKSPACE}/build"
 
-export target=rainier
-${WORKSPACE}/openbmc-build-scripts/build-setup.sh
-rm -rf ${WORKSPACE}/openbmc/build
-
-export target=gsj
-${WORKSPACE}/openbmc-build-scripts/build-setup.sh
-rm -rf ${WORKSPACE}/openbmc/build
-
-export target=palmetto
-${WORKSPACE}/openbmc-build-scripts/build-setup.sh
-rm -rf ${WORKSPACE}/openbmc/build
-
-export target=romulus
-${WORKSPACE}/openbmc-build-scripts/build-setup.sh
-rm -rf ${WORKSPACE}/openbmc/build
-
-export target=witherspoon
-${WORKSPACE}/openbmc-build-scripts/build-setup.sh
-rm -rf ${WORKSPACE}/openbmc/build
-
-export target=tiogapass
-${WORKSPACE}/openbmc-build-scripts/build-setup.sh
-rm -rf ${WORKSPACE}/openbmc/build
-
-export target=zaius
-${WORKSPACE}/openbmc-build-scripts/build-setup.sh
-rm -rf ${WORKSPACE}/openbmc/build
+SEED_MACHINES=( rainier gsj palmetto romulus witherspoon tiogapass zaius )
+for m in "${SEED_MACHINES[@]}"; do
+    echo "Seeding $m"
+    export target=$m
+    "${WORKSPACE}/openbmc-build-scripts/build-setup.sh"
+    rm -rf "${WORKSPACE}/openbmc/build"
+done
