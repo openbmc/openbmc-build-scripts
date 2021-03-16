@@ -29,7 +29,7 @@ ROBOT_TEST_CMD=${ROBOT_TEST_CMD:-"python3 -m robot\
 git clone https://github.com/openbmc/openbmc-test-automation.git \
         "${ROBOT_CODE_HOME}"
 
-cd "${ROBOT_CODE_HOME}"
+cd "${ROBOT_CODE_HOME}" || exit
 
 chmod ugo+rw -R "${ROBOT_CODE_HOME}"/*
 
