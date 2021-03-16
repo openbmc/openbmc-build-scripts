@@ -78,7 +78,8 @@ cd "${WORKSPACE}"/${OBMC_BUILD_SCRIPTS}
 echo "Building docker image with build-unit-test-docker"
 # Export input env variables
 export BRANCH
-export DOCKER_IMG_NAME=$(./scripts/build-unit-test-docker)
+DOCKER_IMG_NAME=$(./scripts/build-unit-test-docker)
+export DOCKER_IMG_NAME
 
 # Allow the user to pass options through to unit-test.py:
 #   EXTRA_UNIT_TEST_ARGS="-r 100" ...
