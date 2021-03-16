@@ -820,7 +820,7 @@ dockerfile_base += f"""
 RUN pip3 install inflection
 RUN pip3 install pycodestyle
 RUN pip3 install jsonschema
-RUN pip3 install meson==0.54.3
+RUN pip3 install meson==0.57.1
 RUN pip3 install protobuf
 """
 
