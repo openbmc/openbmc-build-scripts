@@ -150,6 +150,11 @@ case ${target} in
   rainier)
     DISTRO="openbmc-openpower"
     ;;
+  evb-ast2500)
+    LAYER_DIR="meta-evb/meta-evb-aspeed/meta-evb-ast2500"
+    MACHINE="evb-ast2500"
+    DISTRO="openbmc-phosphor"
+    ;;
   *)
     echo "Unspecified machine ${target}; default to local.sample.conf values."
     ;;
@@ -157,7 +162,11 @@ esac
 
 # Set build target and BitBake command
 MACHINE="${target}"
-BITBAKE_CMD="source ./setup ${MACHINE} ${build_dir}"
+if [[ -n "${LAYER_DIR}" ]]; then
+  BITBAKE_CMD="TEMPLATECONF=${LAYER_DIR}/conf source oe-init-build-env"
+else
+  BITBAKE_CMD="source ./setup ${MACHINE} ${build_dir}"
+fi
 
 # Configure Docker build
 if [[ "${distro}" == fedora ]];then
