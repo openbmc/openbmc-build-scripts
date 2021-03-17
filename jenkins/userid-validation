@@ -21,7 +21,7 @@ GERRIT_SSH_CMD=( \
 echo "Checking ${GERRIT_PROJECT}:${GERRIT_BRANCH}:${GERRIT_CHANGE_ID}:${GERRIT_PATCHSET_REVISION}"
 
 # shellcheck disable=2086 # GERRIT_COMMAND is purposefully wordsplit.
-COMMITTER_EMAIL=$(${GERRIT_COMMAND}/a/changes/${GERRIT_PROJECT/\//%2F}~${GERRIT_BRANCH}~${GERRIT_CHANGE_ID}/revisions/${GERRIT_PATCHSET_REVISION}/commit | python3 -c "import sys, json; sys.stdin.read(4); print(json.load(sys.stdin)['committer']['email'])")
+COMMITTER_EMAIL=$(${GERRIT_COMMAND}/a/changes/${GERRIT_PROJECT/\//%2F}~${GERRIT_BRANCH}~${GERRIT_CHANGE_ID}/revisions/${GERRIT_PATCHSET_REVISION}/commit | python2 -c "import sys, json; sys.stdin.read(4); print(json.load(sys.stdin)['committer']['email'])")
 if [ "x${COMMITTER_EMAIL}" == "x" ]; then
     echo "Unable to find committer."
     "${GERRIT_SSH_CMD[@]}" review \
@@ -32,7 +32,7 @@ fi
 
 #echo "Commit by '${COMMITTER_EMAIL}'"
 # shellcheck disable=2086 # GERRIT_COMMAND is purposefully wordsplit.
-COMMITTER_USERNAME=$(${GERRIT_COMMAND}/a/accounts/${COMMITTER_EMAIL} | python3 -c "import sys, json; sys.stdin.read(4); print(json.load(sys.stdin)['username'])")
+COMMITTER_USERNAME=$(${GERRIT_COMMAND}/a/accounts/${COMMITTER_EMAIL} | python2 -c "import sys, json; sys.stdin.read(4); print(json.load(sys.stdin)['username'])")
 #COMMITTER_USERNAME=`${GERRIT_COMMAND}/a/accounts/${COMMITTER_EMAIL}`
 echo "USERNAME: $COMMITTER_USERNAME"
 if [ "x${COMMITTER_USERNAME}" == "x" ]; then
