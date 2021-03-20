@@ -10,9 +10,20 @@
 # Input parmameter must be full path to git repo to scan
 
 DIR=$1
-cd "${DIR}"
 
 set -e
+
+echo "Running spelling check on Commit Message"
+
+# Run the codespell with openbmc spcific spellings on the patchset
+echo "openbmc-dictionary - misspelling count >> "
+codespell -D openbmc-spelling.txt -d --count "${DIR}"/.git/COMMIT_EDITMSG
+
+# Run the codespell with generic dictionary on the patchset
+echo "generic-dictionary - misspelling count >> "
+codespell --builtin clear,rare,en-GB_to_en-US -d --count "${DIR}"/.git/COMMIT_EDITMSG
+
+cd "${DIR}"
 
 echo "Formatting code under $DIR/"
 
