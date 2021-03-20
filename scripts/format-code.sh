@@ -10,9 +10,22 @@
 # Input parmameter must be full path to git repo to scan
 
 DIR=$1
-cd "${DIR}"
-
 set -e
+
+if  command -v codespell &> /dev/null
+then
+    echo "Running spelling check on Commit Message"
+
+    # Run the codespell with openbmc spcific spellings on the patchset
+    echo "openbmc-dictionary - misspelling count >> "
+    codespell -D openbmc-spelling.txt -d --count "${DIR}"/.git/COMMIT_EDITMSG
+
+    # Run the codespell with generic dictionary on the patchset
+    echo "generic-dictionary - misspelling count >> "
+    codespell -d --count "${DIR}"/.git/COMMIT_EDITMSG
+fi
+
+cd "${DIR}"
 
 echo "Formatting code under $DIR/"
 
@@ -31,12 +44,15 @@ else
   shellcheck_allowfail="true"
 fi
 
-# Run shellcheck on any shell-script.
-shell_scripts="$(git ls-files | xargs -n1 file -0 | \
-                 grep -a "shell script" | cut -d '' -f 1)"
-for script in ${shell_scripts}; do
-  shellcheck -x "${script}" || ${shellcheck_allowfail}
-done
+if  command -v shellcheck &> /dev/null
+then
+    # Run shellcheck on any shell-script.
+    shell_scripts="$(git ls-files | xargs -n1 file -0 | \
+                     grep -a "shell script" | cut -d '' -f 1)"
+    for script in ${shell_scripts}; do
+      shellcheck -x "${script}" || ${shellcheck_allowfail}
+    done
+fi
 
 # Allow called scripts to know which clang format we are using
 export CLANG_FORMAT="clang-format"
