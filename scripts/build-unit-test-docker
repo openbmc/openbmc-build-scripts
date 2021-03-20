@@ -790,7 +790,7 @@ RUN apt-get update && apt-get dist-upgrade -yy && apt-get install -yy \
     libmimetic-dev \
     libxml2-utils \
     libxml-simple-perl \
-    rsync
+    rsync 
 
 RUN update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-10 1000 \
   --slave /usr/bin/g++ g++ /usr/bin/g++-10 \
@@ -822,6 +822,7 @@ RUN pip3 install pycodestyle
 RUN pip3 install jsonschema
 RUN pip3 install meson==0.57.1
 RUN pip3 install protobuf
+RUN pip3 install codespell
 """
 
 # Build the base and stage docker images.
