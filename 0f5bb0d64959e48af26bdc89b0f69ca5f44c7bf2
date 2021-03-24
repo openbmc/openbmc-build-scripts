@@ -16,6 +16,24 @@
       "revId": "0f5bb0d64959e48af26bdc89b0f69ca5f44c7bf2",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "58438e39_dc1360db",
+        "filename": "scripts/format-code.sh",
+        "patchSetId": 5
+      },
+      "lineNbr": 47,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-03-24T03:40:37Z",
+      "side": 1,
+      "message": "It worked in the beginning , but hit with his error in my latest patches.\n\n+ cd /home/jenkins-op/workspace/CI-MISC/ci-openbmc-build-scripts/openbmc-build-scripts\n+ ./scripts/format-code.sh .\nFormatting code under ./\n./scripts/format-code.sh: line 51: shellcheck: command not found",
+      "parentUuid": "e6653ff8_14c4ec3a",
+      "revId": "0f5bb0d64959e48af26bdc89b0f69ca5f44c7bf2",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
     }
   ]
 }
