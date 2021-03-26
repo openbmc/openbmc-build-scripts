@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "bfc6acb0_aae004d7",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 5
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-03-26T05:16:07Z",
+      "side": 1,
+      "message": "Updated the commit message.\n\n\u003e For example SAS is probably not in any dictionary, but is perfectly valid in OpenBMC and the industry.  Would this commit reject it, and require a second commit to go update the dictionary?  Or does it only adjust for common spelling mistakes?\n\nNo, CI does not reject in this case. The CI scores -1 only in case where it sees a word that is wrongly spelled from what is present in the dictionary. It does not do anything when it sees a word that is not present in the dictionary.",
+      "parentUuid": "ae1c3549_7665d4e6",
+      "revId": "0f5bb0d64959e48af26bdc89b0f69ca5f44c7bf2",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "e6653ff8_14c4ec3a",
         "filename": "scripts/format-code.sh",
         "patchSetId": 5
