@@ -107,6 +107,7 @@ if [[ ${LAUNCH} == "local" ]]; then
   # root in docker required to open up the https/ssh ports
   obmc_qemu_docker=$(docker run --detach \
                                 --rm \
+                                --user root \
                                 --env HOME="${OBMC_BUILD_DIR}" \
                                 --env QEMU_RUN_TIMER="${QEMU_RUN_TIMER}" \
                                 --env QEMU_ARCH="${QEMU_ARCH}" \
