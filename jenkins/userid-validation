@@ -55,6 +55,7 @@ GERRIT_CI_GROUPS=( \
     ampere/ci-authorized \
     bytedance/ci-authorized \
     facebook/ci-authorized \
+    fii/ci-authorized \
     gager-in/ci-authorized \
     google/ci-authorized \
     hcl/ci-authorized \
