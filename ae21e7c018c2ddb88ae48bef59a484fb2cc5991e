@@ -81,6 +81,24 @@
       "revId": "ae21e7c018c2ddb88ae48bef59a484fb2cc5991e",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "15801dab_1d97ef81",
+        "filename": "scripts/format-code.sh",
+        "patchSetId": 6
+      },
+      "lineNbr": 47,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2021-03-30T16:38:59Z",
+      "side": 1,
+      "message": "Fixed here so that the tools run under the Docker instance in all cases, including against this repository.\n\nhttps://gerrit.openbmc-project.xyz/c/openbmc/openbmc-build-scripts/+/41719",
+      "parentUuid": "d6300155_8ddab55c",
+      "revId": "ae21e7c018c2ddb88ae48bef59a484fb2cc5991e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
     }
   ]
 }
