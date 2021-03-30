@@ -11,8 +11,9 @@ export LANG=en_US.UTF8
 
 cd "${WORKSPACE}/openbmc-build-scripts"
 
-# Check code formatting.
-./scripts/format-code.sh .
+# Check code formatting (by running the UT script against this repo).
+UNIT_TEST_PKG=openbmc-build-scripts \
+    "${WORKSPACE}/openbmc-build-scripts/run-unit-test-docker.sh"
 
 # Now run some of our most used CI scripts
 ./scripts/build-unit-test-docker
