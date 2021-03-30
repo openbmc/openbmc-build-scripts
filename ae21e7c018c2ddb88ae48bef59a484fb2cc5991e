@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "5016e309_fdb0626f",
+        "filename": "scripts/format-code.sh",
+        "patchSetId": 6
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-03-30T15:37:56Z",
+      "side": 1,
+      "message": "\u003e Does anything here actually fail?  Just printing a message isn\u0027t going to be useful because nobody will look at the Jenkins logs.\n\nYes, it does fail and that is caused by the \"set -e\" command that is placed in the top of this script.\n\n\u003e How do we deal with the two dictionaries?  A word might be missing from one but in another?\n\nYes, as time goes I am expecting people in the openbmc community to add the mistakes that they observe in the reviews to the openbmc-spelling.txt file.And the other one is the dictionary which is provided by the code spell package, so its quite possible that we can have a word in one dictionary that might be missing in other.\n\n\u003e Are we choosing UK or US spellings on words?  Maybe that is decided by the locale?\n\nI am not sure of this, the dictionary that comes by the codespell library via pip package manager, i think locale is a good guess, let me search more.\n\nIn-case you missed, i have sent this proposal to the mailing list \nhttps://lore.kernel.org/openbmc/CAFe7vzSvFt7bpAGz9u+vH42RQd9vPEQ_1pvi-1UNDJXMdOAPrQ@mail.gmail.com/",
+      "parentUuid": "b2d54c18_d9118dde",
+      "range": {
+        "startLine": 19,
+        "startChar": 0,
+        "endLine": 25,
+        "endChar": 53
+      },
+      "revId": "ae21e7c018c2ddb88ae48bef59a484fb2cc5991e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "4b56c496_45178bae",
         "filename": "scripts/format-code.sh",
         "patchSetId": 6
@@ -36,6 +60,24 @@
       "writtenOn": "2021-03-30T14:22:59Z",
       "side": 1,
       "message": "Unfortunately this silently skips if shellcheck is not found.  Can we split this part into a separate commit and print a message for it?  (same with the spell check above)",
+      "revId": "ae21e7c018c2ddb88ae48bef59a484fb2cc5991e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d6300155_8ddab55c",
+        "filename": "scripts/format-code.sh",
+        "patchSetId": 6
+      },
+      "lineNbr": 47,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-03-30T15:37:56Z",
+      "side": 1,
+      "message": "This was only done because this script is run even before the base container was build, so these packages will not be present. This is just a work around for now, but i can change it based on your suggestion.",
+      "parentUuid": "4b56c496_45178bae",
       "revId": "ae21e7c018c2ddb88ae48bef59a484fb2cc5991e",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
