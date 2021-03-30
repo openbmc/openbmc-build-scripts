@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "b2d54c18_d9118dde",
+        "filename": "scripts/format-code.sh",
+        "patchSetId": 6
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2021-03-30T14:22:59Z",
+      "side": 1,
+      "message": "Does anything here actually fail?  Just printing a message isn\u0027t going to be useful because nobody will look at the Jenkins logs.\n\nHow do we deal with the two dictionaries?  A word might be missing from one but in another?\n\nAre we choosing UK or US spellings on words?  Maybe that is decided by the locale?",
+      "range": {
+        "startLine": 19,
+        "startChar": 0,
+        "endLine": 25,
+        "endChar": 53
+      },
+      "revId": "ae21e7c018c2ddb88ae48bef59a484fb2cc5991e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "4b56c496_45178bae",
+        "filename": "scripts/format-code.sh",
+        "patchSetId": 6
+      },
+      "lineNbr": 47,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2021-03-30T14:22:59Z",
+      "side": 1,
+      "message": "Unfortunately this silently skips if shellcheck is not found.  Can we split this part into a separate commit and print a message for it?  (same with the spell check above)",
+      "revId": "ae21e7c018c2ddb88ae48bef59a484fb2cc5991e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
