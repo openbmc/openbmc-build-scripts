@@ -99,6 +99,24 @@
       "revId": "ae21e7c018c2ddb88ae48bef59a484fb2cc5991e",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b3e62aad_280d5ca8",
+        "filename": "scripts/format-code.sh",
+        "patchSetId": 6
+      },
+      "lineNbr": 47,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-03-31T06:41:42Z",
+      "side": 1,
+      "message": "Sure, i rebased my commit on top of yours.",
+      "parentUuid": "15801dab_1d97ef81",
+      "revId": "ae21e7c018c2ddb88ae48bef59a484fb2cc5991e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
     }
   ]
 }
