@@ -65,6 +65,7 @@ GERRIT_CI_GROUPS=( \
     inspur/ci-authorized \
     intel/ci-authorized \
     inventec/ci-authorized \
+    lenovo/ci-authorized \
     nuvoton/ci-authorized \
     nvidia/ci-authorized \
     openbmc/ci-authorized \
