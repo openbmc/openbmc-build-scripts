@@ -144,10 +144,10 @@ chown "${UID}:${GROUPS[0]}" "${xtrct_path}"
 
 # Perform overrides for specific machines as required.
 case ${target} in
-  witherspoon-tacoma)
-    DISTRO="openbmc-openpower"
+  mihawk | swift | witherspoon)
+    DISTRO="openbmc-witherspoon"
     ;;
-  rainier)
+  rainier | witherspoon-tacoma)
     DISTRO="openbmc-openpower"
     ;;
   *)
