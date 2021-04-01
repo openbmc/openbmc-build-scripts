@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "5bfaaf8d_c289cb24",
+        "filename": "build-setup.sh",
+        "patchSetId": 1
+      },
+      "lineNbr": 150,
+      "author": {
+        "id": 1000524
+      },
+      "writtenOn": "2021-04-01T19:11:30Z",
+      "side": 1,
+      "message": "Does this need to change to p10bmc?",
+      "range": {
+        "startLine": 150,
+        "startChar": 5,
+        "endLine": 150,
+        "endChar": 6
+      },
+      "revId": "bc294cfec9d2986d98c812a809b273048ca6a617",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
