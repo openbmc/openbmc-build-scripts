@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "f54b0786_e2f64979",
+        "filename": "scripts/format-code.sh",
+        "patchSetId": 7
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2021-04-01T02:43:28Z",
+      "side": 1,
+      "message": "It appears that we could make a single call to `codespell` by using both the --dictionary (-D) option and --builtin.  I asked before about en_GB spellings and it does look like there is a `en-GB_to-en-US` builtin we could enable.  The default builtin dictionary uses US spellings, but doesn\u0027t try to correct non-US spellings (ex. colour is valid).  I\u0027m not sure how people feel about that one way or the other.",
+      "revId": "3c33efd826af3079bc95f73d97bfb28dbeae0191",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
