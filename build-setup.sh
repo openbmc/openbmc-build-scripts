@@ -143,13 +143,8 @@ fi
 chown "${UID}:${GROUPS[0]}" "${xtrct_path}"
 
 # Perform overrides for specific machines as required.
+DISTRO=${DISTRO:-}
 case ${target} in
-  witherspoon-tacoma)
-    DISTRO="openbmc-openpower"
-    ;;
-  rainier)
-    DISTRO="openbmc-openpower"
-    ;;
   *)
     echo "Unspecified machine ${target}; default to local.sample.conf values."
     ;;
