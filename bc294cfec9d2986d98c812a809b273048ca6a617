@@ -22,6 +22,30 @@
       "revId": "bc294cfec9d2986d98c812a809b273048ca6a617",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c3d9743e_a19a353a",
+        "filename": "build-setup.sh",
+        "patchSetId": 1
+      },
+      "lineNbr": 150,
+      "author": {
+        "id": 1000003
+      },
+      "writtenOn": "2021-04-01T19:40:13Z",
+      "side": 1,
+      "message": "Yeah, i was waiting for the p10bmc build target to be merged: https://gerrit.openbmc-project.xyz/c/openbmc/openbmc/+/41799\n\nIt\u0027s probably ok to add it anyways, since CI is not building p10bmc yet, in that way we can transition CI to it and later remove the rainier machine.",
+      "parentUuid": "5bfaaf8d_c289cb24",
+      "range": {
+        "startLine": 150,
+        "startChar": 5,
+        "endLine": 150,
+        "endChar": 6
+      },
+      "revId": "bc294cfec9d2986d98c812a809b273048ca6a617",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
     }
   ]
 }
