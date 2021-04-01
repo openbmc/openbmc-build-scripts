@@ -144,12 +144,6 @@ chown "${UID}:${GROUPS[0]}" "${xtrct_path}"
 
 # Perform overrides for specific machines as required.
 case ${target} in
-  witherspoon-tacoma)
-    DISTRO="openbmc-openpower"
-    ;;
-  rainier)
-    DISTRO="openbmc-openpower"
-    ;;
   *)
     echo "Unspecified machine ${target}; default to local.sample.conf values."
     ;;
@@ -335,12 +329,6 @@ if [[ -z "${MACHINE}" ]]; then
 fi
 
 export MACHINE="${MACHINE}"
-if [[ -z "${DISTRO}" ]]; then
-  echo "DISTRO is not configured for ${target} so will use default"
-  unset DISTRO
-else
-  export DISTRO="${DISTRO}"
-fi
 
 # bitbake requires SDKMACHINE be x86
 export SDKMACHINE=x86_64
