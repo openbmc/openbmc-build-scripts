@@ -16,6 +16,24 @@
       "revId": "3c33efd826af3079bc95f73d97bfb28dbeae0191",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "1d79e7bd_2dd64a6b",
+        "filename": "scripts/format-code.sh",
+        "patchSetId": 7
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-04-01T05:04:29Z",
+      "side": 1,
+      "message": "Thanks for the inputs. No -D \u003cdictionary\u003e \u0026 --builtin are mutually exclusive. we can\u0027t search in both the dictionaries in a single call.\n \n» codespell --builtin clear,rare,en-GB_to_en-US -d --count .git/COMMIT_EDITMSG                                                                                 \n.git/COMMIT_EDITMSG:3: sertificate \u003d\u003d\u003e certificate\n.git/COMMIT_EDITMSG:4: acknowledgement \u003d\u003d\u003e acknowledgment\n.git/COMMIT_EDITMSG:5: colour \u003d\u003d\u003e color\n3\n\n» codespell -D ../openbmc-build-scripts/dictionary/openbmc-spelling.txt --builtin clear,rare,en-GB_to_en-US -d --count .git/COMMIT_EDITMSG        \n.git/COMMIT_EDITMSG:4: acknowledgement \u003d\u003d\u003e acknowledgment\n1\n\nIt looks like when -D option is mentioned, it does not check the builtin dictionary from code spell, but it uses the openbmc-spelling.txt , but when i removed the -D option ,and used the --builtin option with en-GB_to-en_US , that seems to indicate the non-US spellings.\n\n\u003e I\u0027m not sure how people feel about that one way or the other.\n\nu mean, we picking US over UK spellings ? can we just pick US and move forward ?",
+      "parentUuid": "f54b0786_e2f64979",
+      "revId": "3c33efd826af3079bc95f73d97bfb28dbeae0191",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
     }
   ]
 }
