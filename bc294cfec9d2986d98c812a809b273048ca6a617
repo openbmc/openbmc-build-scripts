@@ -46,6 +46,30 @@
       "revId": "bc294cfec9d2986d98c812a809b273048ca6a617",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "61625a61_5d028bd9",
+        "filename": "build-setup.sh",
+        "patchSetId": 1
+      },
+      "lineNbr": 150,
+      "author": {
+        "id": 1000003
+      },
+      "writtenOn": "2021-04-01T19:41:22Z",
+      "side": 1,
+      "message": "Done. The rainier target is a symlink to p10bmc, therefore it\u0027ll still build.",
+      "parentUuid": "c3d9743e_a19a353a",
+      "range": {
+        "startLine": 150,
+        "startChar": 5,
+        "endLine": 150,
+        "endChar": 6
+      },
+      "revId": "bc294cfec9d2986d98c812a809b273048ca6a617",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
     }
   ]
 }
