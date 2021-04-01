@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "aa732bce_fb09d6ab",
+        "filename": "run-qemu-robot-test.sh",
+        "patchSetId": 1
+      },
+      "lineNbr": 117,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2021-04-01T02:33:43Z",
+      "side": 1,
+      "message": "If we\u0027re going to run as `--user root` can we add \":ro\" here to ensure we don\u0027t mount the workspace in a way which could be written by root and leave residuals?  That was what caused us trouble before.  (You might have fixed it right now so that we don\u0027t leave any residuals but it could come back in the future.)",
+      "revId": "b54550eff88669fcb6a25974a52369fdcd40a702",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
