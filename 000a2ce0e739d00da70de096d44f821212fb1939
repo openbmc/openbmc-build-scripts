@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "11c8a1f9_603fddd4",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2021-04-02T03:16:01Z",
+      "side": 1,
+      "message": "I don\u0027t really understand why we\u0027d want to do this.  Before I worked on this script recently there was a huge mess of dual maintenance that was out of date for a bunch of machines.  It turned out that I could just put them to the default and it did what was actually intended for almost all the machines, except these few IBM machines I left in here.\n\nWhy can\u0027t we just make the default on these IBM machines do the intended thing?  I don\u0027t understand why we would have one default in openbmc/openbmc and a *different* default here.",
+      "range": {
+        "startLine": 9,
+        "startChar": 0,
+        "endLine": 12,
+        "endChar": 17
+      },
+      "revId": "000a2ce0e739d00da70de096d44f821212fb1939",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
