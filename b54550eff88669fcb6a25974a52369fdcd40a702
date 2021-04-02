@@ -52,6 +52,24 @@
       "revId": "b54550eff88669fcb6a25974a52369fdcd40a702",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "ae0d363d_f0edd812",
+        "filename": "run-qemu-robot-test.sh",
+        "patchSetId": 1
+      },
+      "lineNbr": 117,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2021-04-02T16:03:45Z",
+      "side": 1,
+      "message": "We launch two docker containers here. This one is for just running QEMU. The container below is what runs the robot tests and generates all of the logs. That one is still not running as root (which was what really caused our issues before).",
+      "parentUuid": "a3dfee85_978fbdc3",
+      "revId": "b54550eff88669fcb6a25974a52369fdcd40a702",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
     }
   ]
 }
