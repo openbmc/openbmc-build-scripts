@@ -847,6 +847,10 @@ RUN grep -q {uid} /etc/passwd || useradd -d {homedir} -m -u {uid} -g {gid} {user
 RUN sed -i '1iDefaults umask=000' /etc/sudoers
 RUN echo "{username} ALL=(ALL) NOPASSWD: ALL" >>/etc/sudoers
 
+# Ensure user has ability to write to /usr/local for different tool
+# and data installs
+RUN chown -R {username}:{username} /usr/local
+
 {proxy_cmd}
 
 RUN /bin/bash
