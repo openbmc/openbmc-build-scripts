@@ -22,6 +22,30 @@
       "revId": "000a2ce0e739d00da70de096d44f821212fb1939",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "8b76dfae_6833f1d9",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1000003
+      },
+      "writtenOn": "2021-04-12T15:23:18Z",
+      "side": 1,
+      "message": "Done. Changed the meta-ibm layer to have a single default DISTRO: https://gerrit.openbmc-project.xyz/c/openbmc/openbmc/+/41801",
+      "parentUuid": "11c8a1f9_603fddd4",
+      "range": {
+        "startLine": 9,
+        "startChar": 0,
+        "endLine": 12,
+        "endChar": 17
+      },
+      "revId": "000a2ce0e739d00da70de096d44f821212fb1939",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
     }
   ]
 }
