@@ -80,7 +80,7 @@ packages = {
     "boost": PackageDef(
         rev="1.75.0",
         url=(
-            lambda pkg, rev: f"https://dl.bintray.com/boostorg/release/{rev}/source/{pkg}_{rev.replace('.', '_')}.tar.bz2"
+            lambda pkg, rev: f"https://downloads.yoctoproject.org/mirror/sources/{pkg}_{rev.replace('.', '_')}.tar.bz2"
         ),
         build_type="custom",
         build_steps=[
