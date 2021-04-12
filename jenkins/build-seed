@@ -18,7 +18,7 @@ git clone https://github.com/openbmc/openbmc.git
 # Ensure everything is built on same filesystem
 export build_dir="${WORKSPACE}/build"
 
-SEED_MACHINES=( rainier gsj palmetto romulus witherspoon tiogapass zaius )
+SEED_MACHINES=( p10bmc gsj palmetto romulus witherspoon tiogapass zaius )
 for m in "${SEED_MACHINES[@]}"; do
     echo "Seeding $m"
     export target=$m
