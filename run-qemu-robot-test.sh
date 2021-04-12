@@ -114,7 +114,7 @@ if [[ ${LAUNCH} == "local" ]]; then
                                 --env QEMU_BIN="${QEMU_BIN}" \
                                 --env MACHINE="${MACHINE}" \
                                 --workdir "${OBMC_BUILD_DIR}"           \
-                                --volume "${UPSTREAM_WORKSPACE}":"${OBMC_BUILD_DIR}:ro" \
+                                --volume "${UPSTREAM_WORKSPACE}:${OBMC_BUILD_DIR}:ro" \
                                 --tty \
                                 "${DOCKER_IMG_NAME}" "${OBMC_BUILD_DIR}"/boot-qemu-test.exp)
 
