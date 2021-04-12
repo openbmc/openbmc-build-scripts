@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "519305a9_e4cf00bb",
+        "filename": "build-setup.sh",
+        "patchSetId": 5
+      },
+      "lineNbr": 151,
+      "author": {
+        "id": 1000029
+      },
+      "writtenOn": "2021-04-12T21:12:50Z",
+      "side": 1,
+      "message": "This case statement doesnt appear to be doing anything functional now, any reason to keep it?",
+      "range": {
+        "startLine": 147,
+        "startChar": 0,
+        "endLine": 151,
+        "endChar": 4
+      },
+      "revId": "c946076f0a51b8375565211a3ea57d4f970a4bce",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
