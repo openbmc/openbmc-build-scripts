@@ -22,6 +22,7 @@ SEED_MACHINES=( rainier gsj palmetto romulus witherspoon tiogapass zaius )
 for m in "${SEED_MACHINES[@]}"; do
     echo "Seeding $m"
     export target=$m
-    "${WORKSPACE}/openbmc-build-scripts/build-setup.sh"
+    "${WORKSPACE}/openbmc-build-scripts/build-setup.sh" || \
+        echo "Build failed for $m; continuing."
     rm -rf "${WORKSPACE}/openbmc/build"
 done
