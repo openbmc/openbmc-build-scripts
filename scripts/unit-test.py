@@ -9,6 +9,7 @@ prior to executing its unit tests.
 
 from git import Repo
 from mesonbuild import coredata, optinterpreter
+from mesonbuild.mesonlib import OptionKey
 from urllib.parse import urljoin
 from subprocess import check_call, call, CalledProcessError
 import os
@@ -873,12 +874,12 @@ class Meson(BuildSystem):
             meson_flags.append('--buildtype=debug')
         else:
             meson_flags.append('--buildtype=debugoptimized')
-        if 'tests' in meson_options:
-            meson_flags.append(self._configure_option(meson_options, 'tests', build_for_testing))
-        if 'examples' in meson_options:
-            meson_flags.append(self._configure_option(meson_options, 'examples', build_for_testing))
-        if 'itests' in meson_options:
-            meson_flags.append(self._configure_option(meson_options, 'itests', INTEGRATION_TEST))
+        if OptionKey('tests') in meson_options:
+            meson_flags.append(self._configure_option(meson_options, OptionKey('tests'), build_for_testing))
+        if OptionKey('examples') in meson_options:
+            meson_flags.append(self._configure_option(meson_options, OptionKey('examples'), build_for_testing))
+        if OptionKey('itests') in meson_options:
+            meson_flags.append(self._configure_option(meson_options, OptionKey('itests'), INTEGRATION_TEST))
         if MESON_FLAGS.get(self.package) is not None:
             meson_flags.extend(MESON_FLAGS.get(self.package))
         try:
