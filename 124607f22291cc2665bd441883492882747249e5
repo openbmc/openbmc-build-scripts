@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "26513e79_1afcf927",
+        "filename": "jenkins/build-seed",
+        "patchSetId": 1
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2021-04-13T17:56:34Z",
+      "side": 1,
+      "message": "I think this line was trying to do what you did below. Doesn\u0027t hurt anything so I\u0027m fine either way.",
+      "revId": "124607f22291cc2665bd441883492882747249e5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
