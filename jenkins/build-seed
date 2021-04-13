@@ -13,7 +13,12 @@
 export LANG=en_US.UTF8
 
 cd "${WORKSPACE}"
-git clone https://github.com/openbmc/openbmc.git
+if [ -d openbmc ]; then
+    git -C openbmc fetch
+    git -C openbmc rebase
+else
+    git clone https://github.com/openbmc/openbmc.git
+fi
 
 # Ensure everything is built on same filesystem
 export build_dir="${WORKSPACE}/build"
