@@ -40,4 +40,5 @@ for m in "${SEED_MACHINES[@]}"; do
     "${WORKSPACE}/openbmc-build-scripts/build-setup.sh" || \
         echo "Build failed for $m; continuing."
     rm -rf "${WORKSPACE}/openbmc/build"
+    rm -rf "${build_dir}"
 done
