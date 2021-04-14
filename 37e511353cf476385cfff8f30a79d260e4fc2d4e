@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "dfc799a4_05c3a7f9",
+        "filename": "scripts/unit-test.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 1030,
+      "author": {
+        "id": 1000029
+      },
+      "writtenOn": "2021-04-14T20:59:07Z",
+      "side": 1,
+      "message": "`meson_version` appears to be optionally defined in a meson.build file, so a project that doesnt have it defined, but is using \u003e\u003d0.57 while running this would fail with the exception, correct?",
+      "range": {
+        "startLine": 1029,
+        "startChar": 12,
+        "endLine": 1030,
+        "endChar": 71
+      },
+      "revId": "37e511353cf476385cfff8f30a79d260e4fc2d4e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
