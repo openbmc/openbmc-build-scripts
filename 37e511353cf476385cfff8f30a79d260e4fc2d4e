@@ -118,6 +118,30 @@
       "revId": "37e511353cf476385cfff8f30a79d260e4fc2d4e",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "1739d1d5_954afce1",
+        "filename": "scripts/unit-test.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 1030,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2021-04-14T21:34:05Z",
+      "side": 1,
+      "message": "If a repository does not set meson_version in the project, then the meson_version here is None.  \u0027if not meson_version\u0027 will run the if condition, which raises the exception and it fails.  Thus, any project that specifies C++20 and either abstains from specifying a meson_version OR specifies an old meson_version will fail CI (and block merge until the specification is added).",
+      "parentUuid": "d61b778f_6a9989fc",
+      "range": {
+        "startLine": 1029,
+        "startChar": 12,
+        "endLine": 1030,
+        "endChar": 71
+      },
+      "revId": "37e511353cf476385cfff8f30a79d260e4fc2d4e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
     }
   ]
 }
