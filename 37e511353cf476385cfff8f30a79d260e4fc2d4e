@@ -22,6 +22,30 @@
       "revId": "37e511353cf476385cfff8f30a79d260e4fc2d4e",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "fb0fed93_aa817983",
+        "filename": "scripts/unit-test.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 1030,
+      "author": {
+        "id": 1000029
+      },
+      "writtenOn": "2021-04-14T21:01:15Z",
+      "side": 1,
+      "message": "Looks like the `meson-info/meson-info.json` file that generated after doing \"meson build\" contains the meson version, but in this format for example:\n\n\"meson_version\": {\"full\": \"0.55.1\", \"major\": 0, \"minor\": 55, \"patch\": 1}",
+      "parentUuid": "dfc799a4_05c3a7f9",
+      "range": {
+        "startLine": 1029,
+        "startChar": 12,
+        "endLine": 1030,
+        "endChar": 71
+      },
+      "revId": "37e511353cf476385cfff8f30a79d260e4fc2d4e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
     }
   ]
 }
