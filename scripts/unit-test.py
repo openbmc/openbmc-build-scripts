@@ -10,6 +10,7 @@ prior to executing its unit tests.
 from git import Repo
 from mesonbuild import coredata, optinterpreter
 from mesonbuild.mesonlib import OptionKey
+from mesonbuild.mesonlib import version_compare as meson_version_compare
 from urllib.parse import urljoin
 from subprocess import check_call, call, CalledProcessError
 import os
@@ -896,6 +897,14 @@ class Meson(BuildSystem):
         check_call_cmd('sudo', '-n', '--', 'ninja', '-C', 'build', 'install')
 
     def test(self):
+        # It is useful to check various settings of the meson.build file
+        # for compatibility, such as meson_version checks.  We shouldn't
+        # do this in the configure path though because it affects subprojects
+        # and dependencies as well, but we only want this applied to the
+        # project-under-test (otherwise an upstream dependency could fail
+        # this check without our control).
+        self._extra_meson_checks()
+
         try:
             test_args = ('--repeat', str(args.repeat), '-C', 'build')
             check_call_cmd('meson', 'test', *test_args)
@@ -1000,6 +1009,29 @@ class Meson(BuildSystem):
         check_call_cmd('meson', 'configure', 'build',
                        '-Db_coverage=false')
         run_cppcheck()
+
+    def _extra_meson_checks(self):
+        with open(os.path.join(self.path, 'meson.build'), 'rt') as f:
+            build_contents = f.read()
+
+        # Find project's specified meson_version.
+        meson_version = None
+        pattern = r"meson_version:[^']*'([^']*)'"
+        for match in re.finditer(pattern, build_contents):
+            group = match.group(1)
+            meson_version = group
+
+        # C++20 requires at least Meson 0.57 but Meson itself doesn't
+        # identify this.  Add to our unit-test checks so that we don't
+        # get a meson.build missing this.
+        pattern = r"'cpp_std=c\+\+20'"
+        for match in re.finditer(pattern, build_contents):
+            if not meson_version or \
+                    not meson_version_compare(meson_version, ">=0.57"):
+                raise Exception(
+                    "C++20 support requires specifying in meson.build: "
+                    + "meson_version: '>=0.57'"
+                )
 
 
 class Package(object):
