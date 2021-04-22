@@ -28,7 +28,7 @@ cd "${DIR}"
 echo "Formatting code under $DIR/"
 
 if [[ -f "setup.cfg" ]]; then
-  pycodestyle --show-source .
+  pycodestyle --show-source --exclude=subprojects .
   rc=$?
   if [[ ${rc} -ne 0 ]]; then
     exit ${rc}
