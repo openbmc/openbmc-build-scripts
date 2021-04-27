@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "00e31c23_3b051143",
+        "filename": "scripts/unit-test.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 948,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2021-04-27T14:57:24Z",
+      "side": 1,
+      "message": "If meson itself recommends 100, why not at least 10?  This is fine but it seems like we\u0027re just going to keep bumping it up as we encounter problems.  If the test cases didn\u0027t hang under normal (non-valgrind) tests with \u0027-t 1\u0027, they\u0027re probably not going to hang under valgrind either so we do not need to be especially cautious.",
+      "range": {
+        "startLine": 948,
+        "startChar": 52,
+        "endLine": 948,
+        "endChar": 55
+      },
+      "revId": "d3bf5e6f83917229ab9952681109c79e868f2654",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
