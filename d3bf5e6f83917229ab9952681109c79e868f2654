@@ -22,6 +22,30 @@
       "revId": "d3bf5e6f83917229ab9952681109c79e868f2654",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "66e11c0f_299e4080",
+        "filename": "scripts/unit-test.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 948,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-04-27T15:06:27Z",
+      "side": 1,
+      "message": "Sure, makes sense. Changed it to 10",
+      "parentUuid": "00e31c23_3b051143",
+      "range": {
+        "startLine": 948,
+        "startChar": 52,
+        "endLine": 948,
+        "endChar": 55
+      },
+      "revId": "d3bf5e6f83917229ab9952681109c79e868f2654",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
     }
   ]
 }
