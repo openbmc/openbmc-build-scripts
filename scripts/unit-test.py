@@ -945,10 +945,10 @@ class Meson(BuildSystem):
             return
         try:
             if self._setup_exists('valgrind'):
-                check_call_cmd('meson', 'test', '-C', 'build',
+                check_call_cmd('meson', 'test','-t','2','-C', 'build',
                                '--setup', 'valgrind')
             else:
-                check_call_cmd('meson', 'test', '-C', 'build',
+                check_call_cmd('meson', 'test','-t','2', '-C', 'build',
                                '--wrapper', 'valgrind')
         except CalledProcessError:
             for root, _, files in os.walk(os.getcwd()):
