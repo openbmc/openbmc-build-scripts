@@ -90,7 +90,7 @@ packages = {
         ],
     ),
     "USCiLab/cereal": PackageDef(
-        rev="v1.3.0",
+        rev="3e4d1b84cab4891368d2179a61a7ba06a5693e7f",
         build_type="custom",
         build_steps=[f"cp -a include/cereal/ {prefix}/include/"],
     ),
