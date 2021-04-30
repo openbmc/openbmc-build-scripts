@@ -6,7 +6,7 @@
 #   DOCKER_IMG_NAME:  <optional, the name of the docker image to generate>
 #                     default is openbmc/ubuntu-unit-test
 #   DISTRO:           <optional, the distro to build a docker image against>
-#                     default is ubuntu:groovy
+#                     default is ubuntu:hirsute
 #   FORCE_DOCKER_BUILD: <optional, a non-zero value with force all Docker
 #                     images to be rebuilt rather than reusing caches.>
 #   BUILD_URL:        <optional, used to detect running under CI context
@@ -645,7 +645,7 @@ class Docker:
 docker_image_name = os.environ.get("DOCKER_IMAGE_NAME", "openbmc/ubuntu-unit-test")
 force_build = os.environ.get("FORCE_DOCKER_BUILD")
 is_automated_ci_build = os.environ.get("BUILD_URL", False)
-distro = os.environ.get("DISTRO", "ubuntu:groovy")
+distro = os.environ.get("DISTRO", "ubuntu:hirsute")
 branch = os.environ.get("BRANCH", "master")
 ubuntu_mirror = os.environ.get("UBUNTU_MIRROR")
 http_proxy = os.environ.get("http_proxy")
