@@ -222,10 +222,9 @@ packages = {
             "openbmc/sdbusplus",
             "openbmc/sdeventplus",
         ],
-        build_type="autoconf",
+        build_type="meson",
         config_flags=[
-            "--enable-metadata-processing",
-            f"YAML_DIR={prefix}/share/phosphor-dbus-yaml/yaml",
+            f"-Dyaml_dir={prefix}/share/phosphor-dbus-yaml/yaml",
         ],
     ),
     "openbmc/phosphor-objmgr": PackageDef(
@@ -721,7 +720,7 @@ RUN echo "ubuntu keyserver rev as of 2021-04-21"
 # New releases have a package, older ones fall back to manual fetching
 # https://wiki.ubuntu.com/Debug%20Symbol%20Packages
 RUN apt-get update && apt-get dist-upgrade -yy && \
-    ( apt-get install ubuntu-dbgsym-keyring || \
+    ( apt-get install gpgv ubuntu-dbgsym-keyring || \
         ( apt-get install -yy dirmngr && \
           apt-key adv --keyserver keyserver.ubuntu.com \
                       --recv-keys F2EDC64DC5AEE1F6B9C621F0C8CAB6595FDFF622 ) )
