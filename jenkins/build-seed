@@ -32,6 +32,7 @@ SEED_MACHINES=(
     witherspoon
     yosemitev2
     zaius
+    gbs
 )
 
 for m in "${SEED_MACHINES[@]}"; do
