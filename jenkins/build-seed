@@ -24,6 +24,7 @@ fi
 export build_dir="${WORKSPACE}/build"
 
 SEED_MACHINES=(
+    gbs
     gsj
     p10bmc
     palmetto
