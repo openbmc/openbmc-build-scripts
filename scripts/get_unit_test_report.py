@@ -86,7 +86,7 @@ working_dir = os.path.join(pwd, args.target_dir)
 try:
     os.mkdir(working_dir)
 except OSError as e:
-    answer = raw_input("Target directory " + working_dir + " already exists. "
+    answer = input("Target directory " + working_dir + " already exists. "
                        + "Do you want to delete [Y/N]: ")
     if answer == "Y":
         try:
@@ -272,6 +272,7 @@ for url in url_list:
                            for report in report_names)
         try:
             result = subprocess.check_output(find_cmd, shell=True)
+            result = result.decode("utf-8")
         except subprocess.CalledProcessError as e:
             logger.debug(e.output)
             logger.debug(e.cmd)
