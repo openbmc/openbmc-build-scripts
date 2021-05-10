@@ -855,7 +855,7 @@ RUN echo "{username} ALL=(ALL) NOPASSWD: ALL" >>/etc/sudoers
 
 # Ensure user has ability to write to /usr/local for different tool
 # and data installs
-RUN chown -R {username}:{username} /usr/local
+RUN chown -R {username}:{username} /usr/local/share
 
 {proxy_cmd}
 
