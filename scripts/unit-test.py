@@ -678,11 +678,10 @@ class Autotools(BuildSystem):
             self._configure_feature('tests', build_for_testing),
             self._configure_feature('itests', INTEGRATION_TEST),
         ]
-        if not TEST_ONLY:
-            conf_flags.extend([
-                self._configure_feature('code-coverage', build_for_testing),
-                self._configure_feature('valgrind', build_for_testing),
-            ])
+        conf_flags.extend([
+            self._configure_feature('code-coverage', build_for_testing),
+            self._configure_feature('valgrind', build_for_testing),
+        ])
         # Add any necessary configure flags for package
         if CONFIGURE_FLAGS.get(self.package) is not None:
             conf_flags.extend(CONFIGURE_FLAGS.get(self.package))
@@ -703,6 +702,9 @@ class Autotools(BuildSystem):
             cmd = make_parallel + ['check']
             for i in range(0, args.repeat):
                 check_call_cmd(*cmd)
+
+            maybe_make_valgrind()
+            maybe_make_coverage()
         except CalledProcessError:
             for root, _, files in os.walk(os.getcwd()):
                 if 'test-suite.log' not in files:
@@ -711,8 +713,6 @@ class Autotools(BuildSystem):
             raise Exception('Unit tests failed')
 
     def analyze(self):
-        maybe_make_valgrind()
-        maybe_make_coverage()
         run_cppcheck()
 
 
@@ -746,9 +746,6 @@ class CMake(BuildSystem):
             check_call_cmd('ctest', '.')
 
     def analyze(self):
-        if TEST_ONLY:
-            return
-
         if os.path.isfile('.clang-tidy'):
             try:
                 os.mkdir("tidy-build")
@@ -966,9 +963,6 @@ class Meson(BuildSystem):
             raise Exception('Valgrind tests failed')
 
     def analyze(self):
-        if TEST_ONLY:
-            return
-
         self._maybe_valgrind()
 
         # Run clang-tidy only if the project has a configuration
@@ -1076,7 +1070,8 @@ class Package(object):
         system.build()
         system.install()
         system.test()
-        system.analyze()
+        if not TEST_ONLY:
+            system.analyze()
 
     def test(self):
         for system in self.build_systems():
