@@ -766,10 +766,10 @@ RUN apt-get update && apt-get dist-upgrade -yy && apt-get install -yy \
     git \
     dbus \
     iputils-ping \
-    clang-11 \
-    clang-format-11 \
-    clang-tidy-11 \
-    clang-tools-11 \
+    clang-12 \
+    clang-format-12 \
+    clang-tidy-12 \
+    clang-tools-12 \
     shellcheck \
     npm \
     iproute2 \
@@ -797,18 +797,18 @@ RUN apt-get update && apt-get dist-upgrade -yy && apt-get install -yy \
     libxml-simple-perl \
     rsync
 
-RUN update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-11 1100 \
+RUN update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-11 11 \
   --slave /usr/bin/g++ g++ /usr/bin/g++-11 \
   --slave /usr/bin/gcov gcov /usr/bin/gcov-11 \
   --slave /usr/bin/gcov-dump gcov-dump /usr/bin/gcov-dump-11 \
   --slave /usr/bin/gcov-tool gcov-tool /usr/bin/gcov-tool-11
 
-RUN update-alternatives --install /usr/bin/clang clang /usr/bin/clang-11 1000 \
-  --slave /usr/bin/clang++ clang++ /usr/bin/clang++-11 \
-  --slave /usr/bin/clang-tidy clang-tidy /usr/bin/clang-tidy-11 \
-  --slave /usr/bin/clang-format clang-format /usr/bin/clang-format-11 \
-  --slave /usr/bin/run-clang-tidy.py run-clang-tidy.py /usr/bin/run-clang-tidy-11.py \
-  --slave /usr/bin/scan-build scan-build /usr/bin/scan-build-11
+RUN update-alternatives --install /usr/bin/clang clang /usr/bin/clang-12 12 \
+  --slave /usr/bin/clang++ clang++ /usr/bin/clang++-12 \
+  --slave /usr/bin/clang-tidy clang-tidy /usr/bin/clang-tidy-12 \
+  --slave /usr/bin/clang-format clang-format /usr/bin/clang-format-12 \
+  --slave /usr/bin/run-clang-tidy.py run-clang-tidy.py /usr/bin/run-clang-tidy-12.py \
+  --slave /usr/bin/scan-build scan-build /usr/bin/scan-build-12
 
 """
 
