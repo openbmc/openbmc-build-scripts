@@ -8,6 +8,9 @@ prior to executing its unit tests.
 """
 
 from git import Repo
+# interpreter is not used directly but this resolves dependency ordering
+# that would be broken if we didn't include it.
+from mesonbuild import interpreter
 from mesonbuild import coredata, optinterpreter
 from mesonbuild.mesonlib import OptionKey
 from mesonbuild.mesonlib import version_compare as meson_version_compare
