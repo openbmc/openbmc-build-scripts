@@ -34,6 +34,24 @@
       "revId": "d080969b2fde1cfcc41938b01db7c5f8c14331f0",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c6e15f9b_6f6761b0",
+        "filename": "scripts/unit-test.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 681,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2021-05-18T19:22:06Z",
+      "side": 1,
+      "message": "I think this commit gets us consistent. If a new \"quick\" or \"full\" feature is desired, lets make that a separate commit? I\u0027d definitely be up for exploring it.",
+      "parentUuid": "43cb38eb_03b1fda1",
+      "revId": "d080969b2fde1cfcc41938b01db7c5f8c14331f0",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
     }
   ]
 }
