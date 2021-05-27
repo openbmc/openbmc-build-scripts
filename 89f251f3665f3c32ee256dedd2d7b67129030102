@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "80e237d0_f760d26d",
+        "filename": "scripts/build-unit-test-docker",
+        "patchSetId": 1
+      },
+      "lineNbr": 285,
+      "author": {
+        "id": 1000188
+      },
+      "writtenOn": "2021-05-27T19:29:40Z",
+      "side": 1,
+      "message": "Use the 0.4.5 tag directly here.",
+      "revId": "89f251f3665f3c32ee256dedd2d7b67129030102",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
