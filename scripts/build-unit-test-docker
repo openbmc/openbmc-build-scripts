@@ -280,6 +280,16 @@ packages = {
             "-Dtests=disabled",
         ],
     ),
+    # 0.4.5 2021-03-22
+    "nanopb/nanopb": PackageDef(
+        rev="f7e4140a27d9e63517b5d596bc117bd6d5248888",
+        build_type="cmake",
+        config_flags=[
+            "-DBUILD_SHARED_LIBS=ON",
+            "-DBUILD_STATIC_LIBS=OFF",
+            "-DCMAKE_INSTALL_PREFIX:PATH=/usr",
+        ],
+    ),
 }  # type: Dict[str, PackageDef]
 
 # Define common flags used for builds
@@ -794,7 +804,9 @@ RUN apt-get update && apt-get dist-upgrade -yy && apt-get install -yy \
     libmimetic-dev \
     libxml2-utils \
     libxml-simple-perl \
-    rsync
+    rsync \
+    protobuf-compiler \
+    python3-protobuf
 
 RUN update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-11 11 \
   --slave /usr/bin/g++ g++ /usr/bin/g++-11 \
