@@ -16,6 +16,24 @@
       "revId": "afb54e738f01ba67d045b6f2dd6f76440689d477",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "a1339995_c3116605",
+        "filename": "scripts/build-unit-test-docker",
+        "patchSetId": 2
+      },
+      "lineNbr": 287,
+      "author": {
+        "id": 1000583
+      },
+      "writtenOn": "2021-05-27T20:27:49Z",
+      "side": 1,
+      "message": "Updated. Removed the shared and static lib option as `cmake_flags` already covers them.\n\nI\u0027m a little unsure about the install_prefix, which is set to /usr/local. However I don\u0027t see the LD_LIBRARY_PATH set to include the path.\n\nIn my docker testing, meson couldn\u0027t find the nanopb lib when it\u0027s installed in /usr/local.\n`meson.get_compiler(\u0027c\u0027).find_library(\u0027libprotobuf-nanopb\u0027)`\n\nAdmittedly there\u0027s a `dir` argument in find_library() but I\u0027m not sure if that\u0027s the best solution.",
+      "parentUuid": "bb00b671_11ab092f",
+      "revId": "afb54e738f01ba67d045b6f2dd6f76440689d477",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
     }
   ]
 }
