@@ -280,6 +280,14 @@ packages = {
             "-Dtests=disabled",
         ],
     ),
+    # 0.4.5 2021-03-22
+    "nanopb/nanopb": PackageDef(
+        rev="0.4.5",
+        build_type="cmake",
+        custom_post_install=[
+            f"cp -r {prefix}/lib/python3/dist-packages/proto {prefix}/lib/python3.9/dist-packages",
+        ],
+    ),
 }  # type: Dict[str, PackageDef]
 
 # Define common flags used for builds
@@ -794,7 +802,9 @@ RUN apt-get update && apt-get dist-upgrade -yy && apt-get install -yy \
     libmimetic-dev \
     libxml2-utils \
     libxml-simple-perl \
-    rsync
+    rsync \
+    protobuf-compiler \
+    python3-protobuf
 
 RUN update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-11 11 \
   --slave /usr/bin/g++ g++ /usr/bin/g++-11 \
