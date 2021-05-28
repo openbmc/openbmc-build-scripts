@@ -78,7 +78,7 @@ class PackageDef(TypedDict, total=False):
 # Packages to include in image.
 packages = {
     "boost": PackageDef(
-        rev="1.75.0",
+        rev="1.76.0",
         url=(
             lambda pkg, rev: f"https://downloads.yoctoproject.org/mirror/sources/{pkg}_{rev.replace('.', '_')}.tar.bz2"
         ),
