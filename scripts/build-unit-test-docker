@@ -124,10 +124,11 @@ packages = {
             f"cp include/function2/function2.hpp {prefix}/include/function2/",
         ],
     ),
+    # Snapshot from 2021-05-13
     "google/googletest": PackageDef(
-        rev="release-1.10.0",
+        rev="662fe38e44900c007eccb65a5d2ea19df7bd520e",
         build_type="cmake",
-        config_env=["CXXFLAGS=-std=c++17"],
+        config_env=["CXXFLAGS=-std=c++20"],
         config_flags=["-DTHREADS_PREFER_PTHREAD_FLAG=ON"],
     ),
     # Release 2020-08-06
