@@ -34,6 +34,24 @@
       "revId": "afb54e738f01ba67d045b6f2dd6f76440689d477",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "86074588_1558794a",
+        "filename": "scripts/build-unit-test-docker",
+        "patchSetId": 2
+      },
+      "lineNbr": 287,
+      "author": {
+        "id": 1000188
+      },
+      "writtenOn": "2021-05-28T00:08:38Z",
+      "side": 1,
+      "message": "/usr/local should be fine, your build should be looking at the \u0027nanopb-config\u0027 dependency for the correct linking and include paths.",
+      "parentUuid": "a1339995_c3116605",
+      "revId": "afb54e738f01ba67d045b6f2dd6f76440689d477",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
     }
   ]
 }
