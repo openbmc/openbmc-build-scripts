@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "d240ae98_80c3f335",
+        "filename": "scripts/build-unit-test-docker",
+        "patchSetId": 4
+      },
+      "lineNbr": 717,
+      "author": {
+        "id": 1000583
+      },
+      "writtenOn": "2021-05-28T07:04:18Z",
+      "side": 1,
+      "message": "The directory doesn\u0027t exist in the image, not sure if it\u0027s doing anything useful.",
+      "range": {
+        "startLine": 717,
+        "startChar": 0,
+        "endLine": 717,
+        "endChar": 56
+      },
+      "revId": "ff5a9be94d00327cc5e4ae3a9f71bc964d841266",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    }
+  ]
+}
