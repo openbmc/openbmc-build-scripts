@@ -70,6 +70,24 @@
       "revId": "afb54e738f01ba67d045b6f2dd6f76440689d477",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "015bf460_f6fe74aa",
+        "filename": "scripts/build-unit-test-docker",
+        "patchSetId": 2
+      },
+      "lineNbr": 287,
+      "author": {
+        "id": 1000583
+      },
+      "writtenOn": "2021-05-28T08:03:38Z",
+      "side": 1,
+      "message": "On a second thought, using a symlink is sufficient.",
+      "parentUuid": "2489f69b_b71ccd38",
+      "revId": "afb54e738f01ba67d045b6f2dd6f76440689d477",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
     }
   ]
 }
