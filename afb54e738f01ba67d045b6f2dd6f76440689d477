@@ -52,6 +52,24 @@
       "revId": "afb54e738f01ba67d045b6f2dd6f76440689d477",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "2489f69b_b71ccd38",
+        "filename": "scripts/build-unit-test-docker",
+        "patchSetId": 2
+      },
+      "lineNbr": 287,
+      "author": {
+        "id": 1000583
+      },
+      "writtenOn": "2021-05-28T07:02:19Z",
+      "side": 1,
+      "message": "It seems it has to be /usr/local; otherwise the lib won\u0027t be copied into the final image from package specific one.\n\nIn addition, nanopb installs the python modules into /usr/local/lib/python3/dist-packages (https://github.com/nanopb/nanopb/blob/master/CMakeLists.txt#L42), which needs to be copied into /usr/local/lib/python3.9/dist-packages in order to run the generator properly.\n\nCode depends on nanopb needs to specify `dirs` in meson build in order to find the nanopb library.",
+      "parentUuid": "86074588_1558794a",
+      "revId": "afb54e738f01ba67d045b6f2dd6f76440689d477",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
     }
   ]
 }
