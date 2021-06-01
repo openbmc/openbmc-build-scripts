@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "9a89008d_e0b8e0fa",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 5
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2021-06-01T15:03:15Z",
+      "side": 1,
+      "message": "Please include a brief \"why\" this is needed in the commit msg.",
+      "revId": "092d800ddb37cb41c121282e63216a75f9cebc49",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
