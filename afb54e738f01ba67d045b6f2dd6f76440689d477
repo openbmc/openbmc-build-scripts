@@ -106,6 +106,24 @@
       "revId": "afb54e738f01ba67d045b6f2dd6f76440689d477",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "1c1dd9bd_4f3762b5",
+        "filename": "scripts/build-unit-test-docker",
+        "patchSetId": 2
+      },
+      "lineNbr": 287,
+      "author": {
+        "id": 1000583
+      },
+      "writtenOn": "2021-06-02T02:43:36Z",
+      "side": 1,
+      "message": "There\u0027s logic here that copies from /usr/local of each package docker into final docker image. https://github.com/openbmc/openbmc-build-scripts/blob/master/scripts/build-unit-test-docker#L509\n\nOne solution is to make `prefix` a Package property so that we can make it specific for nanopb. What do you think?",
+      "parentUuid": "15c71739_34718c9a",
+      "revId": "afb54e738f01ba67d045b6f2dd6f76440689d477",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
     }
   ]
 }
