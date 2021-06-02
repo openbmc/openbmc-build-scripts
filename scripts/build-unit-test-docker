@@ -683,12 +683,15 @@ RUN echo "deb {ubuntu_mirror} $(. /etc/os-release && echo $VERSION_CODENAME) mai
 
 # Special flags for proxying.
 proxy_cmd = ""
+proxy_keyserver = ""
 proxy_args = []
 if http_proxy:
     proxy_cmd = f"""
 RUN echo "[http]" >> {homedir}/.gitconfig && \
     echo "proxy = {http_proxy}" >> {homedir}/.gitconfig
 """
+    proxy_keyserver = f"--keyserver-options http-proxy={http_proxy}"
+
     proxy_args.extend(
         [
             "--build-arg",
@@ -722,6 +725,7 @@ RUN apt-get update && apt-get dist-upgrade -yy && \
     ( apt-get install gpgv ubuntu-dbgsym-keyring || \
         ( apt-get install -yy dirmngr && \
           apt-key adv --keyserver keyserver.ubuntu.com \
+                      {proxy_keyserver} \
                       --recv-keys F2EDC64DC5AEE1F6B9C621F0C8CAB6595FDFF622 ) )
 
 # Parse the current repo list into a debug repo list
