@@ -52,6 +52,7 @@ fi
 GERRIT_CI_GROUPS=( \
     alibaba/ci-authorized \
     amd/ci-authorized \
+    ami/ci-authorized \
     ampere/ci-authorized \
     aspeed/ci-authorized \
     bytedance/ci-authorized \
