@@ -71,6 +71,7 @@ GERRIT_CI_GROUPS=( \
     nuvoton/ci-authorized \
     nvidia/ci-authorized \
     openbmc/ci-authorized \
+    pcpartner/ci-authorized \
     quanta/ci-authorized \
     rcs/ci-authorized \
     supermicro/ci-authorized \
