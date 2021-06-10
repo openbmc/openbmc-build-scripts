@@ -153,11 +153,18 @@ except subprocess.CalledProcessError as e:
     quit()
 
 repo_data = []
+revision_data = {}
 if input_urls:
     api_url = "https://api.github.com/repos/openbmc/"
-    for url in input_urls:
+    for url_rev in input_urls:
+        url = url_rev.split(" ")[0]
+        rev = url_rev.split(" ")[-1]
+
         try:
             repo_name = url.strip().split('/')[-1].split(";")[0].split(".")[0]
+
+            if rev != url:
+                revision_data[repo_name] = rev
         except IndexError as e:
             logger.error("ERROR: Unable to get sandbox name for url " + url)
             logger.error("Reason: " + str(e))
@@ -173,7 +180,6 @@ if input_urls:
             logger.error("ERROR: Failed to get response for " + repo_name)
             logger.error(resp)
             continue
-
 else:
     # Get number of pages.
     resp = requests.head('https://api.github.com/users/openbmc/repos')
@@ -240,7 +246,14 @@ for url in url_list:
             skip = True
             ut_status = "SKIPPED"
         else:
-            checkout_cmd = "rm -rf " + sandbox_name + ";git clone " + url
+            if sandbox_name in revision_data:
+                rev = revision_data[sandbox_name]
+
+                checkout_cmd = "rm -rf " + sandbox_name + ";git clone " + url + \
+                    ";(cd " + sandbox_name + " && git checkout " + rev + ")"
+            else:
+                checkout_cmd = "rm -rf " + sandbox_name + ";git clone " + url
+
             try:
                 subprocess.check_output(checkout_cmd, shell=True, cwd=working_dir,
                                         stderr=subprocess.STDOUT)
