@@ -70,13 +70,13 @@ if args.url_file:
         # Get URLs from the file.
         with open(args.url_file) as reader:
             file_content = reader.read().splitlines()
-            input_urls = list(filter(lambda x:x, file_content))
+            input_urls = list(filter(lambda x: x, file_content))
         if not(input_urls):
             print("Input file {} is empty. Quitting...".format(args.url_file))
             quit()
     except IOError as e:
         print("Issue in reading file '{}'. Reason: {}".format(args.url_file,
-                                                                  str(e)))
+                                                              str(e)))
         quit()
 
 
@@ -87,7 +87,7 @@ try:
     os.mkdir(working_dir)
 except OSError as e:
     answer = input("Target directory " + working_dir + " already exists. "
-                       + "Do you want to delete [Y/N]: ")
+                   + "Do you want to delete [Y/N]: ")
     if answer == "Y":
         try:
             shutil.rmtree(working_dir)
@@ -227,14 +227,15 @@ for url in url_list:
         try:
             # Eg: url = "https://github.com/openbmc/u-boot.git"
             #     sandbox_name = "u-boot"
-            sandbox_name = url.strip().split('/')[-1].split(";")[0].split(".")[0]
+            sandbox_name = url.strip().split(
+                '/')[-1].split(";")[0].split(".")[0]
         except IndexError as e:
             logger.error("ERROR: Unable to get sandbox name for url " + url)
             logger.error("Reason: " + str(e))
             continue
 
         if (sandbox_name in skip_list or
-            re.match(r'meta-', sandbox_name)):
+                re.match(r'meta-', sandbox_name)):
             logger.debug("SKIPPING: " + sandbox_name)
             skip = True
             ut_status = "SKIPPED"
@@ -242,7 +243,7 @@ for url in url_list:
             checkout_cmd = "rm -rf " + sandbox_name + ";git clone " + url
             try:
                 subprocess.check_output(checkout_cmd, shell=True, cwd=working_dir,
-                                                 stderr=subprocess.STDOUT)
+                                        stderr=subprocess.STDOUT)
             except subprocess.CalledProcessError as e:
                 logger.debug(e.output)
                 logger.debug(e.cmd)
@@ -291,14 +292,15 @@ for url in url_list:
                     file_names = result.splitlines()
                     for file in file_names:
                         pattern_count_cmd = "sed -n '/Start testing/,/End testing/p;' " + \
-                              file + "|wc -l"
+                            file + "|wc -l"
                         try:
                             num_of_lines = subprocess.check_output(pattern_count_cmd,
                                                                    shell=True)
                         except subprocess.CalledProcessError as e:
                             logger.debug(e.output)
                             logger.debug(e.cmd)
-                            logger.debug("CONTENT CHECK FAILED FOR: " + sandbox_name)
+                            logger.debug(
+                                "CONTENT CHECK FAILED FOR: " + sandbox_name)
                             ut_status = "ERROR"
 
                         if int(num_of_lines.strip()) > 5:
