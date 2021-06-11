@@ -250,7 +250,7 @@ for url in url_list:
                 rev = revision_data[sandbox_name]
 
                 checkout_cmd = "rm -rf " + sandbox_name + ";git clone " + url + \
-                    ";(cd " + sandbox_name + " && git checkout " + rev + ")"
+                    ";(cd " + sandbox_name + "&& git checkout " + rev + ")"
             else:
                 checkout_cmd = "rm -rf " + sandbox_name + ";git clone " + url
 
