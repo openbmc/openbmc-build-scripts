@@ -31,7 +31,6 @@ import os
 import re
 import requests
 import shutil
-import sys
 import subprocess
 
 # Repo list not expected to contain UT. Will be moved to a file in future.
@@ -153,11 +152,18 @@ except subprocess.CalledProcessError as e:
     quit()
 
 repo_data = []
+revision_data = {}
 if input_urls:
     api_url = "https://api.github.com/repos/openbmc/"
-    for url in input_urls:
+    for url_rev in input_urls:
+        url = url_rev.split(" ")[0]
+        rev = url_rev.split(" ")[-1]
+
         try:
             repo_name = url.strip().split('/')[-1].split(";")[0].split(".")[0]
+
+            if rev != url:
+                revision_data[repo_name] = rev
         except IndexError as e:
             logger.error("ERROR: Unable to get sandbox name for url " + url)
             logger.error("Reason: " + str(e))
@@ -239,7 +245,14 @@ for url in url_list:
             skip = True
             ut_status = "SKIPPED"
         else:
-            checkout_cmd = "rm -rf " + sandbox_name + ";git clone " + url
+            if sandbox_name in revision_data:
+                rev = revision_data[sandbox_name]
+
+                checkout_cmd = "rm -rf " + sandbox_name + ";git clone " + url + \
+                    ";(cd " + sandbox_name + "&& git checkout " + rev + ")"
+            else:
+                checkout_cmd = "rm -rf " + sandbox_name + ";git clone " + url
+
             try:
                 subprocess.check_output(checkout_cmd, shell=True, cwd=working_dir,
                                                  stderr=subprocess.STDOUT)
@@ -250,8 +263,9 @@ for url in url_list:
                 ut_status = "ERROR"
                 skip = True
     if not(skip):
-        docker_cmd = "WORKSPACE=$(pwd) UNIT_TEST_PKG=" + sandbox_name + " " + \
-                     "./openbmc-build-scripts/run-unit-test-docker.sh"
+        docker_cmd = "WORKSPACE=$(pwd) UNIT_TEST_PKG=" + sandbox_name + \
+                     " ./openbmc-build-scripts/run-unit-test-docker.sh"
+
         try:
             result = subprocess.check_output(docker_cmd, cwd=working_dir, shell=True,
                                              stderr=subprocess.STDOUT)
