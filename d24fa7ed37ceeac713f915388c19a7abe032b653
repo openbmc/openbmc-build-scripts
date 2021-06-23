@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "4284c0c7_c343167a",
+        "filename": "scripts/code_coverage.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 1000654
+      },
+      "writtenOn": "2021-06-23T15:43:32Z",
+      "side": 1,
+      "message": "nit:space",
+      "range": {
+        "startLine": 5,
+        "startChar": 31,
+        "endLine": 5,
+        "endChar": 32
+      },
+      "revId": "d24fa7ed37ceeac713f915388c19a7abe032b653",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "a436632b_271508c7",
+        "filename": "scripts/code_coverage.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 60,
+      "author": {
+        "id": 1000654
+      },
+      "writtenOn": "2021-06-23T15:43:32Z",
+      "side": 1,
+      "message": "nit:end the sentence with \".\".",
+      "range": {
+        "startLine": 60,
+        "startChar": 0,
+        "endLine": 60,
+        "endChar": 26
+      },
+      "revId": "d24fa7ed37ceeac713f915388c19a7abe032b653",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
