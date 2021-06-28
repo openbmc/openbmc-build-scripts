@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "4204b900_e0d5a355",
+        "filename": "scripts/srcurl-rev-generator.sh",
+        "patchSetId": 5
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 1000593
+      },
+      "writtenOn": "2021-06-28T18:54:14Z",
+      "side": 1,
+      "message": "can we add some extra checks before that rm -rf, it looks risky to me. \nFor example the following input would delete all files on your drive. \n \nsrcurl-rev-generator.sh /mybuild/uildHistory  / mybuild/outputFile",
+      "range": {
+        "startLine": 20,
+        "startChar": 2,
+        "endLine": 20,
+        "endChar": 27
+      },
+      "revId": "4d08a2b495a0b9aa741eb389a9c8b09f7065a74b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
