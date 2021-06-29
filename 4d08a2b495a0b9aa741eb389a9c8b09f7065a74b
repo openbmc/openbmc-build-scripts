@@ -2,6 +2,52 @@
   "comments": [
     {
       "key": {
+        "uuid": "0491de75_0bf4623f",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 5
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1000153
+      },
+      "writtenOn": "2021-06-29T17:21:56Z",
+      "side": 1,
+      "message": "Please format your commit messages 50/72  This line is longer than 50.",
+      "range": {
+        "startLine": 7,
+        "startChar": 0,
+        "endLine": 7,
+        "endChar": 62
+      },
+      "revId": "4d08a2b495a0b9aa741eb389a9c8b09f7065a74b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "9c8bb697_d840b579",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 5
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1000153
+      },
+      "writtenOn": "2021-06-29T17:21:56Z",
+      "side": 1,
+      "message": "more detail needed here.  Why is this script useful?  How is it supposed to be used?  What data does it generate?  Why are the existing yocto scripting not acceptable.",
+      "range": {
+        "startLine": 8,
+        "startChar": 0,
+        "endLine": 10,
+        "endChar": 37
+      },
+      "revId": "4d08a2b495a0b9aa741eb389a9c8b09f7065a74b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "4204b900_e0d5a355",
         "filename": "scripts/srcurl-rev-generator.sh",
         "patchSetId": 5
