@@ -17,7 +17,6 @@
 #                   By using this argument, the user can generate a report
 #                   for a specific image's repositories and source revision.
 #
-#
 # Examples:
 #     get_unit_test_report.py target_dir
 #     get_unit_test_report.py target_dir repositories.txt
@@ -37,10 +36,8 @@ import os
 import re
 import requests
 import shutil
-import sys
 import subprocess
 
-# Repo list not expected to contain UT. Will be moved to a file in future.
 # Repo list not expected to contain UT. Will be moved to a file in future.
 skip_list = ["openbmc-tools", "inarp", "openbmc", "openbmc.github.io",
              "phosphor-ecc", "phosphor-pcie-presence", "phosphor-u-boot-env-mgr",
@@ -302,7 +299,8 @@ for url in url_list:
                 skip = True
     if not(skip):
         docker_cmd = "WORKSPACE=$(pwd) UNIT_TEST_PKG=" + sandbox_name + " " + \
-                     "./openbmc-build-scripts/run-unit-test-docker.sh"
+            "./openbmc-build-scripts/run-unit-test-docker.sh"
+
         try:
             result = subprocess.check_output(docker_cmd, cwd=working_dir, shell=True,
                                              stderr=subprocess.STDOUT)
@@ -386,6 +384,17 @@ for url in url_list:
     counter += 1
     logger.info(str(counter) + " in " + str(repo_count) + " completed")
 
+# Create final html aggregated data
+try:
+    aggregate_cmd = "python3 openbmc-build-scripts/scripts/code_coverage.py " + args.target_dir
+    subprocess.check_output(aggregate_cmd, shell=True,
+                            stderr=subprocess.STDOUT)
+except subprocess.CalledProcessError as e:
+    print("Issue in reading from '{}'. Reason: {}".format(args.target_dir,
+                                                          str(e)))
+    quit()
+
+# Output final data
 logger.info("*" * 30 + "UNIT TEST COVERAGE REPORT" + "*" * 30)
 for res in coverage_report:
     logger.info(res)
@@ -403,4 +412,6 @@ logger.info("UNIT TEST REPORT       : " + str(unit_test_count))
 logger.info("NO REPORT              : " + str(no_report_count))
 logger.info("SKIPPED                : " + str(skip_count))
 logger.info("ARCHIVED               : " + str(archive_count))
+logger.info("DETAILS FOUND AT       : " +
+            str(os.path.join(args.target_dir, "reports")))
 logger.info("*" * 85)
