@@ -7,10 +7,16 @@
 #
 # Positional arguments:
 # target_dir  Target directory in pwd to place all cloned repos and logs.
-# url_file    Text file containing url of repositories. Optional.
-#             By using this argument, the user can get a report only for
-#             specific repositories given in the file.
-#             Refer ./scripts/repositories.txt
+#
+# Optional arguments:
+# url_file          Text file containing url of repositories. Optional.
+#                   By using this argument, the user can get a report only for
+#                   specific repositories given in the file.
+#                   Refer ./scripts/repositories.txt
+# build_history     Path containing image's buildhistory.
+#                   By using this argument, the user can generate a report
+#                   for a specific image's repositories and source revision.
+#
 #
 # Examples:
 #     get_unit_test_report.py target_dir
@@ -46,29 +52,59 @@ skip_list = ["openbmc-tools", "inarp", "openbmc", "openbmc.github.io",
 
 
 # Create parser.
-text = '''%(prog)s target_dir [url_file]
+text = '''%(prog)s target_dir [-url_file] [-build_history]
 
 Example usages:
 get_unit_test_report.py target_dir
-get_unit_test_report.py target_dir repositories.txt'''
+get_unit_test_report.py target_dir -url_file repositories.txt
+get_unit_test_report.py target_dir -build_history buildhistory'''
 
 parser = argparse.ArgumentParser(usage=text,
                                  description="Script generates the unit test coverage report")
 parser.add_argument("target_dir", type=str,
                     help='''Name of a non-existing directory in pwd to store all
                             cloned repos, logs and UT reports''')
-parser.add_argument("url_file", type=str, nargs='?',
+parser.add_argument("-url_file", type=str, nargs='?',
                     help='''Text file containing url of repositories.
                             By using this argument, the user can get a report only for
                             specific repositories given in the file.
                             Refer ./scripts/repositories.txt''')
+parser.add_argument("-build_history", type=str, nargs='?',
+                    help='''Path to the buildhistory of a given image.
+                            Should direct to <buildhistory>/packages/<machine>''')
 args = parser.parse_args()
 
+# Get the listed input url's from the specified file
 input_urls = []
 if args.url_file:
     try:
         # Get URLs from the file.
         with open(args.url_file) as reader:
+            file_content = reader.read().splitlines()
+            input_urls = list(filter(lambda x: x, file_content))
+        if not(input_urls):
+            print("Input file {} is empty. Quitting...".format(args.url_file))
+            quit()
+    except IOError as e:
+        print("Issue in reading file '{}'. Reason: {}".format(args.url_file,
+                                                              str(e)))
+        quit()
+# If a build history was passed instead, generate the url_file
+elif args.build_history:
+    try:
+        # Generate url file
+        path = "./openbmc-build-scripts/scripts/srcurl-rev-generator.sh "
+        script_cmd = path + args.build_history + " $(pwd)"
+        subprocess.check_output(script_cmd, shell=True,
+                                stderr=subprocess.STDOUT)
+    except subprocess.CalledProcessError as e:
+        print("Issue in reading from '{}'. Reason: {}".format(args.build_history,
+                                                              str(e)))
+        quit()
+
+    try:
+        # Get URLs from the file.
+        with open("repositories.txt") as reader:
             file_content = reader.read().splitlines()
             input_urls = list(filter(lambda x: x, file_content))
         if not(input_urls):
