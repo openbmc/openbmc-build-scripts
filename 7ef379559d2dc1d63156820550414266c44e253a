@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "65c3f18e_385d39bf",
+        "filename": "scripts/get_unit_test_report.py",
+        "patchSetId": 6
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2021-07-08T12:41:26Z",
+      "side": 1,
+      "message": "It looks like you reformatted this using \u0027pycodestyle\u0027 or \u0027black\u0027.  Can you commit the reformats as a separate commit?",
+      "revId": "7ef379559d2dc1d63156820550414266c44e253a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
