@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "a860c84f_8bb9842f",
+        "filename": "scripts/get_unit_test_report.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 102,
+      "author": {
+        "id": 1001120
+      },
+      "writtenOn": "2021-07-09T15:40:12Z",
+      "side": 1,
+      "message": "While I also would prefer that for a similar reason, the format of strings in the rest of the file are through format strings or concat. I can make a CR separately changing the format in some of these files, but for now I think it would be best keeping the format the same.",
+      "parentUuid": "dc883b30_8d252462",
+      "revId": "b07e4e7b18c6c77590bbce9eccc3648262eafd65",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "10d4123c_29628ab3",
         "filename": "scripts/get_unit_test_report.py",
         "patchSetId": 2
@@ -30,6 +48,24 @@
       "writtenOn": "2021-07-08T12:47:22Z",
       "side": 1,
       "message": "A few \u0027quit\u0027 vs \u0027exit\u0027 clean ups in this script also.",
+      "revId": "b07e4e7b18c6c77590bbce9eccc3648262eafd65",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "400b3aeb_1bef46c1",
+        "filename": "scripts/get_unit_test_report.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 104,
+      "author": {
+        "id": 1001120
+      },
+      "writtenOn": "2021-07-09T15:40:12Z",
+      "side": 1,
+      "message": "Similar explanation as strings. Would prefer to keep same formatting in this CR and creating a separate one to do formatting across the entire file/ multiple file(s).\n\nSince in the original passing in a url_file param and being unable to open it would generate an error and quit, wanted to keep the same line of thinking with calling it here.",
+      "parentUuid": "10d4123c_29628ab3",
       "revId": "b07e4e7b18c6c77590bbce9eccc3648262eafd65",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
