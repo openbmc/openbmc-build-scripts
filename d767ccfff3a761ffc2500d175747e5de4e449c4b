@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "ac6eb82a_809a7a7c",
+        "filename": "scripts/srcurl-rev-generator.sh",
+        "patchSetId": 11
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 1001120
+      },
+      "writtenOn": "2021-07-09T19:50:56Z",
+      "side": 1,
+      "message": "Done.",
+      "parentUuid": "b4f9932d_c19e20e2",
+      "range": {
+        "startLine": 1,
+        "startChar": 0,
+        "endLine": 1,
+        "endChar": 11
+      },
+      "revId": "d767ccfff3a761ffc2500d175747e5de4e449c4b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "50ba198a_40ef9c04",
         "filename": "scripts/srcurl-rev-generator.sh",
         "patchSetId": 11
@@ -42,6 +66,24 @@
     },
     {
       "key": {
+        "uuid": "6184e70d_c1eebc73",
+        "filename": "scripts/srcurl-rev-generator.sh",
+        "patchSetId": 11
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 1001120
+      },
+      "writtenOn": "2021-07-09T19:50:56Z",
+      "side": 1,
+      "message": "Ran and fixed formatting issues.",
+      "parentUuid": "50ba198a_40ef9c04",
+      "revId": "d767ccfff3a761ffc2500d175747e5de4e449c4b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "b2a7a6c2_7c189341",
         "filename": "scripts/srcurl-rev-generator.sh",
         "patchSetId": 11
@@ -53,6 +95,54 @@
       "writtenOn": "2021-07-08T12:39:57Z",
       "side": 1,
       "message": "Minor extra formatting.",
+      "range": {
+        "startLine": 3,
+        "startChar": 71,
+        "endLine": 3,
+        "endChar": 72
+      },
+      "revId": "d767ccfff3a761ffc2500d175747e5de4e449c4b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "4e8b45fb_ae722442",
+        "filename": "scripts/srcurl-rev-generator.sh",
+        "patchSetId": 11
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 1001120
+      },
+      "writtenOn": "2021-07-09T19:50:56Z",
+      "side": 1,
+      "message": "Ty. Fixed.",
+      "parentUuid": "b2a7a6c2_7c189341",
+      "range": {
+        "startLine": 3,
+        "startChar": 71,
+        "endLine": 3,
+        "endChar": 72
+      },
+      "revId": "d767ccfff3a761ffc2500d175747e5de4e449c4b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "5484ea72_b17bd142",
+        "filename": "scripts/srcurl-rev-generator.sh",
+        "patchSetId": 11
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 1001120
+      },
+      "writtenOn": "2021-07-09T19:50:56Z",
+      "side": 1,
+      "message": "Fixed.",
+      "parentUuid": "b2a7a6c2_7c189341",
       "range": {
         "startLine": 3,
         "startChar": 71,
@@ -88,6 +178,54 @@
     },
     {
       "key": {
+        "uuid": "d7a495fd_37905827",
+        "filename": "scripts/srcurl-rev-generator.sh",
+        "patchSetId": 11
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 1001120
+      },
+      "writtenOn": "2021-07-09T19:50:56Z",
+      "side": 1,
+      "message": "Done. Replaced with globs.",
+      "parentUuid": "82ee375b_a5bd7ffc",
+      "range": {
+        "startLine": 23,
+        "startChar": 16,
+        "endLine": 23,
+        "endChar": 41
+      },
+      "revId": "d767ccfff3a761ffc2500d175747e5de4e449c4b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e7642b76_d48e0701",
+        "filename": "scripts/srcurl-rev-generator.sh",
+        "patchSetId": 11
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 1001120
+      },
+      "writtenOn": "2021-07-09T19:50:56Z",
+      "side": 1,
+      "message": "Done. Changed to globs.",
+      "parentUuid": "82ee375b_a5bd7ffc",
+      "range": {
+        "startLine": 23,
+        "startChar": 16,
+        "endLine": 23,
+        "endChar": 41
+      },
+      "revId": "d767ccfff3a761ffc2500d175747e5de4e449c4b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "3652eea5_e9c0f3c0",
         "filename": "scripts/srcurl-rev-generator.sh",
         "patchSetId": 11
@@ -99,6 +237,30 @@
       "writtenOn": "2021-07-08T12:39:57Z",
       "side": 1,
       "message": "Probably should use a trailing slash here to ensure you get \u0027openbmc\u0027 and not \u0027openbmcfoo\u0027?",
+      "range": {
+        "startLine": 38,
+        "startChar": 35,
+        "endLine": 38,
+        "endChar": 59
+      },
+      "revId": "d767ccfff3a761ffc2500d175747e5de4e449c4b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "239fbf40_fc792232",
+        "filename": "scripts/srcurl-rev-generator.sh",
+        "patchSetId": 11
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 1001120
+      },
+      "writtenOn": "2021-07-09T19:50:56Z",
+      "side": 1,
+      "message": "Fixed",
+      "parentUuid": "3652eea5_e9c0f3c0",
       "range": {
         "startLine": 38,
         "startChar": 35,
