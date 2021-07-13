@@ -8,14 +8,11 @@
 # Positional arguments:
 # target_dir  Target directory in pwd to place all cloned repos and logs.
 #
-# Optional arguments:
+#
 # url_file    Text file containing url of repositories. Optional.
 #             By using this argument, the user can get a report only for
 #             specific repositories given in the file.
 #             Refer ./scripts/repositories.txt
-# build_history    Path containing image's buildhistory Optional.
-#                   By using this argument, the user can generate a report
-#                   for a specific image's repositories and source revision.
 #
 # Examples:
 #     get_unit_test_report.py target_dir
@@ -34,6 +31,7 @@ import argparse
 import logging
 import os
 import re
+import sys
 import requests
 import shutil
 import subprocess
@@ -50,12 +48,12 @@ skip_list = ["openbmc-tools", "inarp", "openbmc", "openbmc.github.io",
 
 
 # Create parser.
-text = '''%(prog)s target_dir [-url_file] [-build_history]
+text = '''%(prog)s target_dir [-url_file]
 
 Example usages:
 get_unit_test_report.py target_dir
 get_unit_test_report.py target_dir -url_file repositories.txt
-get_unit_test_report.py target_dir -build_history buildhistory'''
+get_unit_test_report.py target_dir'''
 
 parser = argparse.ArgumentParser(usage=text,
                                  description="Script generates the unit test coverage report")
@@ -67,9 +65,6 @@ parser.add_argument("-url_file", type=str, nargs='?',
                             By using this argument, the user can get a report only for
                             specific repositories given in the file.
                             Refer ./scripts/repositories.txt''')
-parser.add_argument("-build_history", type=str, nargs='?',
-                    help='''Path to the buildhistory of a given image.
-                            Should direct to <buildhistory>/packages/<machine>''')
 args = parser.parse_args()
 
 # Get the listed input url's from the specified file
@@ -81,38 +76,11 @@ if args.url_file:
             file_content = reader.read().splitlines()
             input_urls = list(filter(lambda x: x, file_content))
         if not(input_urls):
-            print("Input file {} is empty. Quitting...".format(args.url_file))
-            quit()
+            print(f"Input file {args.url_file} is empty. Quitting...")
+            sys.exit(1)
     except IOError as e:
-        print("Issue in reading file '{}'. Reason: {}".format(args.url_file,
-                                                              str(e)))
-        quit()
-# If a build history was passed instead, generate the url_file
-elif args.build_history:
-    try:
-        # Generate url file
-        script_cmd = "./openbmc-build-scripts/scripts/srcurl-rev-generator.sh " + args.build_history + " " + \
-            "$(pwd)"
-        subprocess.check_output(script_cmd, shell=True,
-                                stderr=subprocess.STDOUT)
-    except subprocess.CalledProcessError as e:
-        print("Issue in reading from '{}'. Reason: {}".format(args.build_history,
-                                                              str(e)))
-        quit()
-
-    try:
-        # Get URLs from the file.
-        with open("repositories.txt") as reader:
-            file_content = reader.read().splitlines()
-            input_urls = list(filter(lambda x: x, file_content))
-        if not(input_urls):
-            print("Input file {} is empty. Quitting...".format(args.url_file))
-            quit()
-    except IOError as e:
-        print("Issue in reading file '{}'. Reason: {}".format(args.url_file,
-                                                              str(e)))
-        quit()
-
+        print(f"Issue in reading file '{args.url_file}'. Reason: {str(e)}")
+        sys.exit(1)
 
 # Create target working directory.
 pwd = os.getcwd()
@@ -120,27 +88,27 @@ working_dir = os.path.join(pwd, args.target_dir)
 try:
     os.mkdir(working_dir)
 except OSError as e:
-    answer = input("Target directory " + working_dir + " already exists. "
-                   + "Do you want to delete [Y/N]: ")
+    answer = input(
+        f"Target directory {working_dir} already exists. Do you want to delete [Y/N]: ")
     if answer == "Y":
         try:
             shutil.rmtree(working_dir)
             os.mkdir(working_dir)
         except OSError as e:
             print(str(e))
-            quit()
+            sys.exit(1)
     else:
         print("Exiting....")
-        quit()
+        sys.exit(1)
 
 # Create log directory.
 log_dir = os.path.join(working_dir, "logs")
 try:
     os.mkdir(log_dir)
 except OSError as e:
-    print("Unable to create log directory: " + log_dir)
+    print(f"Unable to create log directory: {log_dir}")
     print(str(e))
-    quit()
+    sys.exit(1)
 
 
 # Log files
@@ -171,9 +139,9 @@ report_dir = os.path.join(working_dir, "reports")
 try:
     os.mkdir(report_dir)
 except OSError as e:
-    logger.error("Unable to create report directory: " + report_dir)
+    logger.error(f"Unable to create report directory: {report_dir}")
     logger.error(str(e))
-    quit()
+    sys.exit(1)
 
 # Clone OpenBmc build scripts.
 try:
@@ -184,7 +152,7 @@ except subprocess.CalledProcessError as e:
     logger.error(e.output)
     logger.error(e.cmd)
     logger.error("Unable to clone openbmc-build-scripts")
-    quit()
+    sys.exit(1)
 
 repo_data = []
 revision_data = {}
@@ -200,18 +168,18 @@ if input_urls:
             if rev != url:
                 revision_data[repo_name] = rev
         except IndexError as e:
-            logger.error("ERROR: Unable to get sandbox name for url " + url)
-            logger.error("Reason: " + str(e))
+            logger.error(f"ERROR: Unable to get sandbox name for url {url}")
+            logger.error(f"Reason: {e}")
             continue
 
         try:
             resp = requests.get(api_url + repo_name)
             if resp.status_code != 200:
-                logger.info(api_url + repo_name + " ==> " + resp.reason)
+                logger.info(f"{api_url}{repo_name} ==> {resp.reason}")
                 continue
             repo_data.extend([resp.json()])
         except ValueError as e:
-            logger.error("ERROR: Failed to get response for " + repo_name)
+            logger.error(f"ERROR: Failed to get response for {repo_name}")
             logger.error(resp)
             continue
 else:
@@ -221,14 +189,14 @@ else:
         logger.error("Error! Unable to get repositories")
         logger.error(resp.status_code)
         logger.error(resp.reason)
-        quit()
+        sys.exit(1)
     num_of_pages = int(resp.links['last']['url'].split('page=')[-1])
-    logger.debug("No. of pages: " + str(num_of_pages))
+    logger.debug(f"No. of pages: {num_of_pages}")
 
     # Fetch data from all pages.
     for page in range(1, num_of_pages+1):
-        resp = requests.get('https://api.github.com/users/openbmc/repos?page='
-                            + str(page))
+        resp = requests.get(
+            f'https://api.github.com/users/openbmc/repos?page={page}')
         data = resp.json()
         repo_data.extend(data)
 
@@ -239,12 +207,12 @@ for repo in repo_data:
     try:
         url_info[repo["clone_url"]] = repo["archived"]
     except KeyError as e:
-        logger.error("Failed to get archived status of {}".format(repo))
+        logger.error(f"Failed to get archived status of {repo}")
         url_info[repo["clone_url"]] = False
         continue
 logger.debug(url_info)
 repo_count = len(url_info)
-logger.info("Number of repositories (Including archived): " + str(repo_count))
+logger.info(f"Number of repositories (Including archived): {repo_count}")
 
 # Clone repository and run unit test.
 coverage_report = []
@@ -270,23 +238,24 @@ for url in url_list:
             sandbox_name = url.strip().split(
                 '/')[-1].split(";")[0].split(".")[0]
         except IndexError as e:
-            logger.error("ERROR: Unable to get sandbox name for url " + url)
-            logger.error("Reason: " + str(e))
+            logger.error(f"ERROR: Unable to get sandbox name for url {url}")
+            logger.error(f"Reason: {e}")
             continue
 
         if (sandbox_name in skip_list or
                 re.match(r'meta-', sandbox_name)):
-            logger.debug("SKIPPING: " + sandbox_name)
+            logger.debug(f"SKIPPING: {sandbox_name}")
             skip = True
             ut_status = "SKIPPED"
         else:
             if sandbox_name in revision_data:
                 rev = revision_data[sandbox_name]
 
-                checkout_cmd = "rm -rf " + sandbox_name + ";git clone " + url + \
-                    ";(cd " + sandbox_name + "&& git checkout " + rev + ")"
+                checkout_cmd = f"rm -rf {sandbox_name};git clone {url};" + \
+                    f"(cd {sandbox_name} && git checkout {rev})"
             else:
-                checkout_cmd = "rm -rf " + sandbox_name + ";git clone " + url
+                # checkout_cmd = "rm -rf " + sandbox_name + ";git clone " + url
+                checkout_cmd = f"rm -rf {sandbox_name};git clone {url}"
 
             try:
                 subprocess.check_output(checkout_cmd, shell=True, cwd=working_dir,
@@ -294,30 +263,34 @@ for url in url_list:
             except subprocess.CalledProcessError as e:
                 logger.debug(e.output)
                 logger.debug(e.cmd)
-                logger.debug("Failed to clone " + sandbox_name)
+                logger.debug(f"Failed to clone {sandbox_name}")
                 ut_status = "ERROR"
                 skip = True
     if not(skip):
-        docker_cmd = "WORKSPACE=$(pwd) UNIT_TEST_PKG=" + sandbox_name + " " + \
-            "./openbmc-build-scripts/run-unit-test-docker.sh"
+        # docker_cmd = "WORKSPACE=$(pwd) UNIT_TEST_PKG=" + sandbox_name + " " + \
+        #     "./openbmc-build-scripts/run-unit-test-docker.sh"
+        docker_cmd = f"WORKSPACE=$(pwd) UNIT_TEST_PKG={sandbox_name}" + \
+            " ./openbmc-build-scripts/run-unit-test-docker.sh"
 
         try:
             result = subprocess.check_output(docker_cmd, cwd=working_dir, shell=True,
                                              stderr=subprocess.STDOUT)
             logger.debug(result)
-            logger.debug("UT BUILD COMPLETED FOR: " + sandbox_name)
+            logger.debug(f"UT BUILD COMPLETED FOR: {sandbox_name}")
 
         except subprocess.CalledProcessError as e:
             logger.debug(e.output)
             logger.debug(e.cmd)
-            logger.debug("UT BUILD EXITED FOR: " + sandbox_name)
+            logger.debug(f"UT BUILD EXITED FOR: {sandbox_name}")
             ut_status = "ERROR"
 
         folder_name = os.path.join(working_dir, sandbox_name)
         repo_report_dir = os.path.join(report_dir, sandbox_name)
 
         report_names = ("coveragereport", "test-suite.log", "LastTest.log")
-        find_cmd = "".join("find " + folder_name + " -name " + report + ";"
+        # find_cmd = "".join("find " + folder_name + " -name " + report + ";"
+        #                    for report in report_names)
+        find_cmd = "".join(f"find {folder_name} -name {report};"
                            for report in report_names)
         try:
             result = subprocess.check_output(find_cmd, shell=True)
@@ -325,7 +298,7 @@ for url in url_list:
         except subprocess.CalledProcessError as e:
             logger.debug(e.output)
             logger.debug(e.cmd)
-            logger.debug("CMD TO FIND REPORT FAILED FOR: " + sandbox_name)
+            logger.debug(f"CMD TO FIND REPORT FAILED FOR: {sandbox_name}")
             ut_status = "ERROR"
 
         if ut_status != "ERROR":
@@ -339,8 +312,9 @@ for url in url_list:
                 elif "LastTest.log" in result:
                     file_names = result.splitlines()
                     for file in file_names:
-                        pattern_count_cmd = "sed -n '/Start testing/,/End testing/p;' " + \
-                            file + "|wc -l"
+                        pattern_count_cmd = f"sed -n '/Start testing/,/End testing/p;' {file}|wc -l"
+                        # pattern_count_cmd = "sed -n '/Start testing/,/End testing/p;' " + \
+                        #     file + "|wc -l"
                         try:
                             num_of_lines = subprocess.check_output(pattern_count_cmd,
                                                                    shell=True)
@@ -348,7 +322,7 @@ for url in url_list:
                             logger.debug(e.output)
                             logger.debug(e.cmd)
                             logger.debug(
-                                "CONTENT CHECK FAILED FOR: " + sandbox_name)
+                                f"CONTENT CHECK FAILED FOR: {sandbox_name}")
                             ut_status = "ERROR"
 
                         if int(num_of_lines.strip()) > 5:
@@ -362,14 +336,15 @@ for url in url_list:
                 destination = os.path.dirname(os.path.join(report_dir,
                                                            os.path.relpath(file_path,
                                                                            working_dir)))
-                copy_cmd = "mkdir -p " + destination + ";cp -rf " + \
-                           file_path.strip() + " " + destination
+                # copy_cmd = "mkdir -p " + destination + ";cp -rf " + \
+                #            file_path.strip() + " " + destination
+                copy_cmd = f"mkdir -p {destination};cp -rf {file_path.strip()} {destination}"
                 try:
                     subprocess.check_output(copy_cmd, shell=True)
                 except subprocess.CalledProcessError as e:
                     logger.debug(e.output)
                     logger.debug(e.cmd)
-                    logger.info("FAILED TO COPY REPORTS FOR: " + sandbox_name)
+                    logger.info(f"FAILED TO COPY REPORTS FOR: {sandbox_name}")
 
     if ut_status == "ERROR":
         error_count += 1
@@ -382,19 +357,11 @@ for url in url_list:
 
     coverage_report.append("{:<65}{:<10}".format(url.strip(), ut_status))
     counter += 1
-    logger.info(str(counter) + " in " + str(repo_count) + " completed")
-
-# Create final html aggregated data
-try:
-    aggregate_cmd = "python3 openbmc-build-scripts/scripts/code_coverage.py " + args.target_dir
-    subprocess.check_output(aggregate_cmd, shell=True,
-                            stderr=subprocess.STDOUT)
-except subprocess.CalledProcessError as e:
-    print("Issue in reading from '{}'. Reason: {}".format(args.target_dir,
-                                                          str(e)))
-    quit()
+    logger.info(f"{counter} in {repo_count} completed")
 
 # Output final data
+reportDir = os.path.join(args.target_dir, "reports")
+
 logger.info("*" * 30 + "UNIT TEST COVERAGE REPORT" + "*" * 30)
 for res in coverage_report:
     logger.info(res)
@@ -404,14 +371,13 @@ logger.info("REPORTS: " + report_dir)
 logger.info("LOGS: " + log_dir)
 logger.info("*" * 85)
 logger.info("SUMMARY: ")
-logger.info("TOTAL REPOSITORIES     : " + str(repo_count))
-logger.info("TESTED REPOSITORIES    : " + str(tested_report_count))
-logger.info("ERROR                  : " + str(error_count))
-logger.info("COVERAGE REPORT        : " + str(coverage_count))
-logger.info("UNIT TEST REPORT       : " + str(unit_test_count))
-logger.info("NO REPORT              : " + str(no_report_count))
-logger.info("SKIPPED                : " + str(skip_count))
-logger.info("ARCHIVED               : " + str(archive_count))
-logger.info("DETAILS FOUND AT       : " +
-            str(os.path.join(args.target_dir, "reports")))
+logger.info(f"TOTAL REPOSITORIES     : {str(repo_count)}")
+logger.info(f"TESTED REPOSITORIES    : {str(tested_report_count)}")
+logger.info(f"ERROR                  : {str(error_count)}")
+logger.info(f"COVERAGE REPORT        : {str(coverage_count)}")
+logger.info(f"UNIT TEST REPORT       : {str(unit_test_count)}")
+logger.info(f"NO REPORT              : {str(no_report_count)}")
+logger.info(f"SKIPPED                : {str(skip_count)}")
+logger.info(f"ARCHIVED               : {str(archive_count)}")
+logger.info(f"DETAILS FOUND AT       : {reportDir}")
 logger.info("*" * 85)
