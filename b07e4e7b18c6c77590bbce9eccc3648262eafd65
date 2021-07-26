@@ -2,6 +2,86 @@
   "comments": [
     {
       "key": {
+        "uuid": "6a77ce76_e664a956",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2021-07-26T18:28:00Z",
+      "side": 1,
+      "message": "I need a bit more info here, maybe an example of what this new option give us? It\u0027s not clear to me what this new option does reading this commit msg.",
+      "revId": "b07e4e7b18c6c77590bbce9eccc3648262eafd65",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b718e0b8_8c5a1412",
+        "filename": "scripts/get_unit_test_report.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2021-07-26T18:28:00Z",
+      "side": 1,
+      "message": "nit: indent the above text to match this",
+      "range": {
+        "startLine": 16,
+        "startChar": 15,
+        "endLine": 16,
+        "endChar": 19
+      },
+      "revId": "b07e4e7b18c6c77590bbce9eccc3648262eafd65",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "ae2919eb_e64e82a5",
+        "filename": "scripts/get_unit_test_report.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2021-07-26T18:28:00Z",
+      "side": 1,
+      "message": "nit\" no extra space on these lines, just line up with first line",
+      "range": {
+        "startLine": 17,
+        "startChar": 19,
+        "endLine": 17,
+        "endChar": 20
+      },
+      "revId": "b07e4e7b18c6c77590bbce9eccc3648262eafd65",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "24fbab48_2d16901c",
+        "filename": "scripts/get_unit_test_report.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 97,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2021-07-26T18:28:00Z",
+      "side": 1,
+      "message": "nit: please wrap to 80 char",
+      "revId": "b07e4e7b18c6c77590bbce9eccc3648262eafd65",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "dc883b30_8d252462",
         "filename": "scripts/get_unit_test_report.py",
         "patchSetId": 2
