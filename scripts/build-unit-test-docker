@@ -234,7 +234,10 @@ packages = {
             "openbmc/phosphor-logging",
             "openbmc/sdbusplus",
         ],
-        build_type="autoconf",
+        build_type="meson",
+        config_flags=[
+            "-Dtests=disabled",
+        ],
     ),
     "openbmc/pldm": PackageDef(
         depends=[
