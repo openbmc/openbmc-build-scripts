@@ -181,10 +181,10 @@ packages = {
             "-DBOOST_URL_STANDALONE=ON",
         ],
     ),
-    # version from ./meta-openembedded/meta-oe/dynamic-layers/networking-layer/recipes-devtools/valijson/valijson_0.3.bb
-    # Snapshot from 2020-12-02 - fix for curlpp dependency
+    # valijson v0.4, which contains the nlohmann/json.hpp include fix:
+    # 66262bafb82c ("Include nlohmann/json.hpp instead of json.hpp")
     "tristanpenman/valijson": PackageDef(
-        rev="8cc83c8be9c1c927f5da952b2333b30e5f0353be",
+        rev="v0.4",
         build_type="cmake",
         config_flags=[
             "-Dvalijson_BUILD_TESTS=0",
