@@ -137,6 +137,7 @@ RUN pip3 install \
     scp \
     selenium==3.141.0 \
     urllib3 \
+    click \
     xvfbwrapper
 
 RUN wget https://github.com/mozilla/geckodriver/releases/download/v0.29.0/geckodriver-v0.29.0-linux64.tar.gz \
