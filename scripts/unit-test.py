@@ -1097,6 +1097,12 @@ def find_file(filename, basedir):
 
     filepaths = []
     for root, dirs, files in os.walk(basedir):
+        if os.path.split(root)[-1] == 'subprojects':
+            for f in files:
+                subproject = f.split('.')[0]
+                if f.endswith('.wrap') and subproject in dirs:
+                    # don't find files in meson subprojects with wraps
+                    dirs.remove(subproject)
         for f in filename:
             if f in files:
                 filepaths.append(os.path.join(root, f))
