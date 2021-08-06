@@ -1097,6 +1097,9 @@ def find_file(filename, basedir):
 
     filepaths = []
     for root, dirs, files in os.walk(basedir):
+        if 'subprojects' in dirs:
+            # don't find files in meson subprojects
+            dirs.remove('subprojects')
         for f in filename:
             if f in files:
                 filepaths.append(os.path.join(root, f))
