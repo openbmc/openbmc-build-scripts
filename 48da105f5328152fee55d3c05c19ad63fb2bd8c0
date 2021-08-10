@@ -1,0 +1,89 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "f997a14d_6b41ab0c",
+        "filename": "code-coverage.sh",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2021-08-10T18:50:38Z",
+      "side": 1,
+      "message": "Why is this file showing as deleted in this commit? Where was it added? Need a rebase to just remove this from the review?",
+      "revId": "48da105f5328152fee55d3c05c19ad63fb2bd8c0",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "81370896_cb2dbbae",
+        "filename": "scripts/get_unit_test_report.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2021-08-10T18:50:38Z",
+      "side": 1,
+      "message": "Add example with new build_history option?",
+      "revId": "48da105f5328152fee55d3c05c19ad63fb2bd8c0",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "3e9bd76c_0e86c3ed",
+        "filename": "scripts/get_unit_test_report.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 67,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2021-08-10T18:50:38Z",
+      "side": 1,
+      "message": "This is an interface change which is usually frowned upon, but if Lakshmi is ok with it, I\u0027m ok.",
+      "revId": "48da105f5328152fee55d3c05c19ad63fb2bd8c0",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e96cfc67_7e259507",
+        "filename": "scripts/get_unit_test_report.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 72,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2021-08-10T18:50:38Z",
+      "side": 1,
+      "message": "I still don\u0027t understand what this is. Need more description in commit message or an example. What is buildhistory?",
+      "revId": "48da105f5328152fee55d3c05c19ad63fb2bd8c0",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d403f243_a149d670",
+        "filename": "scripts/get_unit_test_report.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 96,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2021-08-10T18:50:38Z",
+      "side": 1,
+      "message": "Where is this script created?",
+      "revId": "48da105f5328152fee55d3c05c19ad63fb2bd8c0",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
