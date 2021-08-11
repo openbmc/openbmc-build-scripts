@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "3eeb537b_8dd248b0",
+        "filename": "scripts/get_unit_test_report.py",
+        "patchSetId": 10
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2021-08-11T17:28:07Z",
+      "side": 1,
+      "message": "You seem to have gone backwards here. Indents are off again, duplicate comment on 43/44.",
+      "revId": "3933e19afd446ce2ed415ba4e54dc8d89cabab28",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
