@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "e23779f5_e4274b5e",
+        "filename": "code-coverage.sh",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1001120
+      },
+      "writtenOn": "2021-08-11T16:35:42Z",
+      "side": 1,
+      "message": "File was not needed/moved somewhere else. Rebased so it won\u0027t show.",
+      "parentUuid": "f997a14d_6b41ab0c",
+      "revId": "48da105f5328152fee55d3c05c19ad63fb2bd8c0",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "81370896_cb2dbbae",
         "filename": "scripts/get_unit_test_report.py",
         "patchSetId": 4
@@ -33,6 +51,24 @@
       "revId": "48da105f5328152fee55d3c05c19ad63fb2bd8c0",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "8dc97f63_fd647c83",
+        "filename": "scripts/get_unit_test_report.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 1001120
+      },
+      "writtenOn": "2021-08-11T16:35:42Z",
+      "side": 1,
+      "message": "Ack. Added example.",
+      "parentUuid": "81370896_cb2dbbae",
+      "revId": "48da105f5328152fee55d3c05c19ad63fb2bd8c0",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
     },
     {
       "key": {
@@ -53,6 +89,24 @@
     },
     {
       "key": {
+        "uuid": "9f9a7411_e86b4b50",
+        "filename": "scripts/get_unit_test_report.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 67,
+      "author": {
+        "id": 1001120
+      },
+      "writtenOn": "2021-08-11T16:35:42Z",
+      "side": 1,
+      "message": "Will get a check by Lakshmi on it, but it does follow the optional arguments format for the current version of argparser, and with the previous way it ran into issues where a secondary variable was fed in as a url_file variable.",
+      "parentUuid": "3e9bd76c_0e86c3ed",
+      "revId": "48da105f5328152fee55d3c05c19ad63fb2bd8c0",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "e96cfc67_7e259507",
         "filename": "scripts/get_unit_test_report.py",
         "patchSetId": 4
@@ -70,6 +124,24 @@
     },
     {
       "key": {
+        "uuid": "bfed73bf_87f81539",
+        "filename": "scripts/get_unit_test_report.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 72,
+      "author": {
+        "id": 1001120
+      },
+      "writtenOn": "2021-08-11T16:35:42Z",
+      "side": 1,
+      "message": "Fixed, added more to commit message regarding it.",
+      "parentUuid": "e96cfc67_7e259507",
+      "revId": "48da105f5328152fee55d3c05c19ad63fb2bd8c0",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "d403f243_a149d670",
         "filename": "scripts/get_unit_test_report.py",
         "patchSetId": 4
@@ -84,6 +156,24 @@
       "revId": "48da105f5328152fee55d3c05c19ad63fb2bd8c0",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "5cc11f42_c04e06b7",
+        "filename": "scripts/get_unit_test_report.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 96,
+      "author": {
+        "id": 1001120
+      },
+      "writtenOn": "2021-08-11T16:35:42Z",
+      "side": 1,
+      "message": "Fixed by showing it under a rebase. File is https://gerrit.openbmc-project.xyz/c/openbmc/openbmc-build-scripts/+/44235.",
+      "parentUuid": "d403f243_a149d670",
+      "revId": "48da105f5328152fee55d3c05c19ad63fb2bd8c0",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
     }
   ]
 }
