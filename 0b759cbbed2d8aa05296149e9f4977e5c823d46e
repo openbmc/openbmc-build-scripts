@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "b2b16277_b226893f",
+        "filename": "code-coverage.sh",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000654
+      },
+      "writtenOn": "2021-08-11T16:25:10Z",
+      "side": 0,
+      "message": "We probably can remove this file as in https://gerrit.openbmc-project.xyz/c/openbmc/openbmc-build-scripts/+/44611/4/code-coverage.sh.",
+      "revId": "0b759cbbed2d8aa05296149e9f4977e5c823d46e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
