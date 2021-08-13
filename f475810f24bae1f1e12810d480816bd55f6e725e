@@ -1,0 +1,89 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "bdcc386b_cfcd8f36",
+        "filename": "scripts/get_unit_test_report.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 257,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2021-08-13T18:47:56Z",
+      "side": 1,
+      "message": "Lets not have any dead code, please just delete the old stuff.",
+      "revId": "f475810f24bae1f1e12810d480816bd55f6e725e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "62a627b7_491e4a3a",
+        "filename": "scripts/get_unit_test_report.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 270,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2021-08-13T18:47:56Z",
+      "side": 1,
+      "message": "Lets not have any dead code, please just delete the old stuff.",
+      "revId": "f475810f24bae1f1e12810d480816bd55f6e725e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "91ca7264_1d0feb56",
+        "filename": "scripts/get_unit_test_report.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 291,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2021-08-13T18:47:56Z",
+      "side": 1,
+      "message": "Lets not have any dead code, please just delete the old stuff.",
+      "revId": "f475810f24bae1f1e12810d480816bd55f6e725e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "fc6adb65_9bbc326a",
+        "filename": "scripts/get_unit_test_report.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 316,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2021-08-13T18:47:56Z",
+      "side": 1,
+      "message": "Lets not have any dead code, please just delete the old stuff.",
+      "revId": "f475810f24bae1f1e12810d480816bd55f6e725e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "1d071dfe_dea67820",
+        "filename": "scripts/get_unit_test_report.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 339,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2021-08-13T18:47:56Z",
+      "side": 1,
+      "message": "Lets not have any dead code, please just delete the old stuff.",
+      "revId": "f475810f24bae1f1e12810d480816bd55f6e725e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
