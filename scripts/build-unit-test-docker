@@ -801,7 +801,8 @@ RUN apt-get update && apt-get dist-upgrade -yy && apt-get install -yy \
     libmimetic-dev \
     libxml2-utils \
     libxml-simple-perl \
-    rsync
+    rsync \
+    jsonlint
 
 RUN update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-11 11 \
   --slave /usr/bin/g++ g++ /usr/bin/g++-11 \
