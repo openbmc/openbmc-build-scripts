@@ -27,6 +27,19 @@ cd "${DIR}"
 
 echo "Formatting code under $DIR/"
 
+# Run json linter on the repository
+if [[ -f ".eslintrc.json" ]] || [[ -f ".eslintignore" ]]; then
+    echo "Running the json validator on the repo using it's config > "
+    if [[ ! -f ".eslintrc.json" ]]; then
+        eslint . --no-eslintrc -c ../eslint-global-config --ext .json --ignore-path .eslintignore --resolve-plugins-relative-to /usr/local/lib/node_modules
+    else
+	eslint . --ext .json --resolve-plugins-relative-to /usr/local/lib/node_modules
+    fi
+else
+    echo "Running the json validator on the repo using the global config > "
+    eslint . --no-eslintrc -c ../eslint-global-config --ext .json  --resolve-plugins-relative-to /usr/local/lib/node_modules
+fi
+
 if [[ -f "setup.cfg" ]]; then
   pycodestyle --show-source --exclude=subprojects .
   rc=$?
