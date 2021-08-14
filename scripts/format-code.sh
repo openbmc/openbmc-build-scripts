@@ -25,6 +25,19 @@ codespell --builtin clear,rare,en-GB_to_en-US -d --count "${DIR}"/.git/COMMIT_ED
 
 cd "${DIR}"
 
+# Run jsonlint if the commit includes any json files
+echo "Running the json validator on the commit >> "
+json_files_in_commit=$(git show --pretty="" --name-only -n 1 HEAD~1..HEAD | grep ".json" || true)
+if [ -z "$json_files_in_commit" ]
+then
+        echo "No json files in the commit"
+else
+    for json_file in ${json_files_in_commit}; do
+    echo "checking : " $json_file
+    jsonlint-php "${json_file}"
+done
+fi
+
 echo "Formatting code under $DIR/"
 
 if [[ -f "setup.cfg" ]]; then
