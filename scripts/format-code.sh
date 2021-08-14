@@ -10,6 +10,7 @@
 # Input parmameter must be full path to git repo to scan
 
 DIR=$1
+WORKSPACE=$PWD
 
 set -e
 
@@ -26,6 +27,29 @@ codespell --builtin clear,rare,en-GB_to_en-US -d --count "${DIR}"/.git/COMMIT_ED
 cd "${DIR}"
 
 echo "Formatting code under $DIR/"
+
+ESLINT_CONFIG="eslint ${DIR} --no-eslintrc -c ${WORKSPACE}/eslint-global-config.json \
+               --ext .json --resolve-plugins-relative-to /usr/local/lib/node_modules\
+               --no-error-on-unmatched-pattern"
+ESLINT_IGNORE=" --ignore-path ${DIR}/.eslintignore"
+
+# Get the eslint configuration from the repository
+if [[ -f ".eslintrc.json" ]] || [[ -f ".eslintignore" ]]; then
+    echo "Running the json validator on the repo using it's config > "
+    if [[ ! -f ".eslintrc.json" ]]; then
+        eslint_command="${ESLINT_CONFIG} ${ESLINT_IGNORE}"
+    else
+        eslint_command="$ESLINT_CONFIG"
+    fi
+else
+    echo "Running the json validator on the repo using the global config > "
+        eslint_command="$ESLINT_CONFIG"
+fi
+
+# Print eslint command
+echo "$eslint_command"
+# Run eslint
+$eslint_command
 
 if [[ -f "setup.cfg" ]]; then
   pycodestyle --show-source --exclude=subprojects .
