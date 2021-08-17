@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "c0248cb5_f132ae0e",
+        "filename": "scripts/unit-test.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 1099,
+      "author": {
+        "id": 1000002
+      },
+      "writtenOn": "2021-08-17T20:13:40Z",
+      "side": 1,
+      "message": "I don\u0027t understand.  topdown\u003dTrue is the default.",
+      "parentUuid": "ef834935_f6ae9a04",
+      "revId": "9a67f6cb62c6d09f0d5fee245235cf520055492b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "ea86e8ff_bedf02bf",
         "filename": "scripts/unit-test.py",
         "patchSetId": 2
@@ -33,6 +51,24 @@
       "revId": "9a67f6cb62c6d09f0d5fee245235cf520055492b",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "3cb29320_f7838e19",
+        "filename": "scripts/unit-test.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 1103,
+      "author": {
+        "id": 1000002
+      },
+      "writtenOn": "2021-08-17T20:13:40Z",
+      "side": 1,
+      "message": "\u003e You should check `f[len(subproject):] \u003d\u003d \u0027.wrap\u0027`\n\nusing your example where f is phosphor.logging.wrap:\n\n \"phosphor.logging.wrap\"[len(\"phosphor\"):] \u003d\u003d \".wrap\"\n\nI must be missing something...\n\nwhat about something like this:\n\n subproject \u003d \u0027.\u0027.join(f.split(\u0027.\u0027)[0:-1])\n if f.endswith(\u0027.wrap\u0027) and subproject in dirs:",
+      "parentUuid": "ea86e8ff_bedf02bf",
+      "revId": "9a67f6cb62c6d09f0d5fee245235cf520055492b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
     }
   ]
 }
