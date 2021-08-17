@@ -37,6 +37,24 @@
     },
     {
       "key": {
+        "uuid": "a4f33546_ec726d0e",
+        "filename": "scripts/unit-test.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 1099,
+      "author": {
+        "id": 1000188
+      },
+      "writtenOn": "2021-08-17T21:34:14Z",
+      "side": 1,
+      "message": "Oh, I misread the defaults values. You were already doing what I suggested then of pruning the os.walk search tree.",
+      "parentUuid": "c0248cb5_f132ae0e",
+      "revId": "9a67f6cb62c6d09f0d5fee245235cf520055492b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "ea86e8ff_bedf02bf",
         "filename": "scripts/unit-test.py",
         "patchSetId": 2
@@ -69,6 +87,24 @@
       "revId": "9a67f6cb62c6d09f0d5fee245235cf520055492b",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "60e8a2d6_c21c545d",
+        "filename": "scripts/unit-test.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 1103,
+      "author": {
+        "id": 1000188
+      },
+      "writtenOn": "2021-08-17T21:34:14Z",
+      "side": 1,
+      "message": "Yeah, that was an oversight on my part. Your suggestion looks correct.",
+      "parentUuid": "3cb29320_f7838e19",
+      "revId": "9a67f6cb62c6d09f0d5fee245235cf520055492b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
     }
   ]
 }
