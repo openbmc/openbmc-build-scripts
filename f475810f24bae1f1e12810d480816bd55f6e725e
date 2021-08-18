@@ -2,6 +2,29 @@
   "comments": [
     {
       "key": {
+        "uuid": "9588ec33_b51307f7",
+        "filename": "scripts/get_unit_test_report.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 63,
+      "author": {
+        "id": 1000358
+      },
+      "writtenOn": "2021-08-18T13:16:49Z",
+      "side": 1,
+      "message": "Why is it required to change the way it is called?",
+      "range": {
+        "startLine": 63,
+        "startChar": 21,
+        "endLine": 63,
+        "endChar": 30
+      },
+      "revId": "f475810f24bae1f1e12810d480816bd55f6e725e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "fff8113e_1e79fbd2",
         "filename": "scripts/get_unit_test_report.py",
         "patchSetId": 1
@@ -13,6 +36,29 @@
       "writtenOn": "2021-08-17T18:28:26Z",
       "side": 1,
       "message": "nit: end the sentence with \".\" like other comments.",
+      "revId": "f475810f24bae1f1e12810d480816bd55f6e725e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "a276940a_a31e63dd",
+        "filename": "scripts/get_unit_test_report.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 169,
+      "author": {
+        "id": 1000358
+      },
+      "writtenOn": "2021-08-18T13:16:49Z",
+      "side": 1,
+      "message": "Can you add a comment as to what this is doing?",
+      "range": {
+        "startLine": 158,
+        "startChar": 0,
+        "endLine": 169,
+        "endChar": 46
+      },
       "revId": "f475810f24bae1f1e12810d480816bd55f6e725e",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
