@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "50cffc48_34bc25a4",
+        "filename": "scripts/format-code.sh",
+        "patchSetId": 4
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-08-18T03:15:49Z",
+      "side": 1,
+      "message": "i am not sure i get your intent behind wanting to skip this. can you elaborate on why we would need that ? what do you mean by \"aren\u0027t ready for it yet \"?\n\nwe would not want anyone to merge any invalid json even when they are not functionally ready correct ?",
+      "parentUuid": "b66f27e5_6e3c303c",
+      "revId": "5ad9d1d3bbb8063d3b38be8c2c812400ac96fc98",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "f1f2ffc6_3db09d7c",
         "filename": "scripts/format-code.sh",
         "patchSetId": 4
@@ -30,6 +48,24 @@
       "writtenOn": "2021-08-16T13:47:12Z",
       "side": 1,
       "message": "Why only pick the files in the commit and not all of them?  For all the other linters we do everything, so I\u0027d prefer to not do something special for json.",
+      "revId": "5ad9d1d3bbb8063d3b38be8c2c812400ac96fc98",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "767572aa_4bf28009",
+        "filename": "scripts/format-code.sh",
+        "patchSetId": 4
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-08-18T03:15:49Z",
+      "side": 1,
+      "message": "yeah i could do that as well, i did not check what others are doing, thinking more on it .. why would we want to run it on all the files every time on every commit ? is it not an overhead ?\n\nis it not just sufficient to run on the commit alone ?",
+      "parentUuid": "f1f2ffc6_3db09d7c",
       "revId": "5ad9d1d3bbb8063d3b38be8c2c812400ac96fc98",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
@@ -59,6 +95,30 @@
     },
     {
       "key": {
+        "uuid": "09d8d3d5_d85cff7e",
+        "filename": "scripts/format-code.sh",
+        "patchSetId": 4
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-08-18T03:15:49Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "164598a2_5fa3bbaf",
+      "range": {
+        "startLine": 36,
+        "startChar": 21,
+        "endLine": 36,
+        "endChar": 24
+      },
+      "revId": "5ad9d1d3bbb8063d3b38be8c2c812400ac96fc98",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "f7135113_0f8f291d",
         "filename": "scripts/format-code.sh",
         "patchSetId": 4
@@ -70,6 +130,24 @@
       "writtenOn": "2021-08-16T13:47:12Z",
       "side": 1,
       "message": "A PHP program?\n\nIt doesn\u0027t appear like this does anything to do with schema validation.  Are there any better linters we could pick up that do that?  I quick search shows maybe `npm jsonlint`?",
+      "revId": "5ad9d1d3bbb8063d3b38be8c2c812400ac96fc98",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "86da2f8e_fc399350",
+        "filename": "scripts/format-code.sh",
+        "patchSetId": 4
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-08-18T03:15:49Z",
+      "side": 1,
+      "message": "well i quickly checked the package for ubuntu, and its named as jsonlint, but the binary was name as jsonlint-php which was a bit weird\n\nI can change it to npm jsonlint",
+      "parentUuid": "f7135113_0f8f291d",
       "revId": "5ad9d1d3bbb8063d3b38be8c2c812400ac96fc98",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
@@ -90,6 +168,24 @@
       "revId": "5ad9d1d3bbb8063d3b38be8c2c812400ac96fc98",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "72986e54_e408ef40",
+        "filename": "scripts/format-code.sh",
+        "patchSetId": 4
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-08-18T03:15:49Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "7796ff31_6eb68de4",
+      "revId": "5ad9d1d3bbb8063d3b38be8c2c812400ac96fc98",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
     }
   ]
 }
