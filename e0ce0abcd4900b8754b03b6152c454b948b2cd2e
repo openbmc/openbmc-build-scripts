@@ -46,6 +46,30 @@
       "revId": "e0ce0abcd4900b8754b03b6152c454b948b2cd2e",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "7a8364e6_a348a5fd",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2021-08-19T21:31:52Z",
+      "side": 1,
+      "message": "I don\u0027t care enough either way.  I\u0027ll let Andrew decide since he deals with Jenkins.\n\n\u003e At some point, I expect we\u0027ll start scanning bitbake recipes for bad SRCURI pointers, and other stuff that might be more expensive than just an ls-files and some comparisons.\n\nTo me, this should be handled with a \"sanity\" bbclass in bitbake, but I guess that only gives you coverage for recipes that you\u0027re actually using in a Jenkins build so it doesn\u0027t help for people who put in recipes only used on machines we don\u0027t have an automated build for.",
+      "parentUuid": "2d7adb59_1c417e45",
+      "range": {
+        "startLine": 17,
+        "startChar": 54,
+        "endLine": 18,
+        "endChar": 21
+      },
+      "revId": "e0ce0abcd4900b8754b03b6152c454b948b2cd2e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
     }
   ]
 }
