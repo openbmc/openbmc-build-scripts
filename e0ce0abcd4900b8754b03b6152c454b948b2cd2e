@@ -22,6 +22,30 @@
       "revId": "e0ce0abcd4900b8754b03b6152c454b948b2cd2e",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "2d7adb59_1c417e45",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 1000153
+      },
+      "writtenOn": "2021-08-19T21:21:36Z",
+      "side": 1,
+      "message": "I guess I had assumed that as we get more tests, running N tests times M platforms, where both M and N are expected to grow, wasn\u0027t a great idea.\n\nAt some point, I expect we\u0027ll start scanning bitbake recipes for bad SRCURI pointers, and other stuff that might be more expensive than just an ls-files and some comparisons.\n\nAnother bonus of this is it\u0027s a lot clearer from the Jenkins job why your build failed, otherwise everytime you check in a patch file, all machine builds would start failing, which doesn\u0027t seem like the best.\n\nWith all that said, if we think it should be run per-machine and we don\u0027t care if it runs multiple times, I\u0027m happy to do that instead.",
+      "parentUuid": "9c71e3ca_e09e9c6e",
+      "range": {
+        "startLine": 17,
+        "startChar": 54,
+        "endLine": 18,
+        "endChar": 21
+      },
+      "revId": "e0ce0abcd4900b8754b03b6152c454b948b2cd2e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
     }
   ]
 }
