@@ -1,0 +1,90 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "897dd8b7_f62e60ef",
+        "filename": "run-repotest.sh",
+        "patchSetId": 2
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2021-08-19T21:15:55Z",
+      "side": 1,
+      "message": "Why doesn\u0027t meta-security need the ** but the others do?",
+      "range": {
+        "startLine": 14,
+        "startChar": 0,
+        "endLine": 14,
+        "endChar": 22
+      },
+      "revId": "04d221728a1c8f0bd71021a62ad8529b37fbfbca",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "732c8757_d00ba5fc",
+        "filename": "run-repotest.sh",
+        "patchSetId": 2
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2021-08-19T21:15:55Z",
+      "side": 1,
+      "message": "Are we ok with doing this and not putting them in a tmpdir?",
+      "range": {
+        "startLine": 19,
+        "startChar": 11,
+        "endLine": 19,
+        "endChar": 22
+      },
+      "revId": "04d221728a1c8f0bd71021a62ad8529b37fbfbca",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "5cc33117_78859353",
+        "filename": "run-repotest.sh",
+        "patchSetId": 2
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2021-08-19T21:15:55Z",
+      "side": 1,
+      "message": "It\u0027s kind of silly that we have this one when we\u0027re patching our own repository.  Seems like a simple issue for Joel to be able to fix.",
+      "revId": "04d221728a1c8f0bd71021a62ad8529b37fbfbca",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c2f8519d_c90f38f9",
+        "filename": "run-repotest.sh",
+        "patchSetId": 2
+      },
+      "lineNbr": 50,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2021-08-19T21:15:55Z",
+      "side": 1,
+      "message": "Are we expecting that patches like this we would put into meta-phosphor then?  These seem reasonable for a time iff we\u0027ve submitted them upstream.",
+      "range": {
+        "startLine": 49,
+        "startChar": 0,
+        "endLine": 50,
+        "endChar": 84
+      },
+      "revId": "04d221728a1c8f0bd71021a62ad8529b37fbfbca",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
