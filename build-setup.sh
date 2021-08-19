@@ -127,6 +127,7 @@ case ${ARCH} in
     exit 1
 esac
 
+
 # Timestamp for job
 echo "Build started, $(date)"
 
@@ -134,6 +135,11 @@ echo "Build started, $(date)"
 if [ ! -d "${obmc_dir}" ]; then
   echo "Clone in openbmc master to ${obmc_dir}"
   git clone https://github.com/openbmc/openbmc "${obmc_dir}"
+fi
+
+if [[ "$target" = repotest ]]; then
+  . run-repotest.sh
+  exit
 fi
 
 # Make and chown the xtrct_path directory to avoid permission errors
