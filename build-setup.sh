@@ -40,6 +40,7 @@
 #                     Default: "latest"
 #  target             The target we aim to build.  Any system supported by
 #                     the openbmc/openbmc `setup` script is an option.
+#                     repotest is a target to specifically run the CI checks
 #                     Default: "qemuarm"
 #  no_tar             Set to true if you do not want the debug tar built
 #                     Default: "false"
@@ -134,6 +135,11 @@ echo "Build started, $(date)"
 if [ ! -d "${obmc_dir}" ]; then
   echo "Clone in openbmc master to ${obmc_dir}"
   git clone https://github.com/openbmc/openbmc "${obmc_dir}"
+fi
+
+if [[ "$target" = repotest ]]; then
+  . "${obmc_dir}/meta-phosphor-scripts/run-repotest.sh"
+  exit
 fi
 
 # Make and chown the xtrct_path directory to avoid permission errors
