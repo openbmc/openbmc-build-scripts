@@ -171,6 +171,24 @@
       "revId": "e0ce0abcd4900b8754b03b6152c454b948b2cd2e",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "4dd3676f_5e4e8db2",
+        "filename": "run-repotest.sh",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2021-08-20T18:26:00Z",
+      "side": 1,
+      "message": "We\u0027ve tended to keep existing scripts as-is as to not impact people used to their names. New one\u0027s though we\u0027ve tried and move in the direction Patrick noted.",
+      "parentUuid": "4cf2530b_b1cbe944",
+      "revId": "e0ce0abcd4900b8754b03b6152c454b948b2cd2e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
     }
   ]
 }
