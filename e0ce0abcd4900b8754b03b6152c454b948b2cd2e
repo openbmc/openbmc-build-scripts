@@ -129,6 +129,24 @@
       "revId": "e0ce0abcd4900b8754b03b6152c454b948b2cd2e",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "4cf2530b_b1cbe944",
+        "filename": "run-repotest.sh",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000153
+      },
+      "writtenOn": "2021-08-20T16:33:27Z",
+      "side": 1,
+      "message": "Moving to scripts: ACK\n\nNot naming it .sh, I can do, but everything else in the repo follows .sh.  I don\u0027t have a strong opinion either way, but I originally went with consistency over what\u0027s \"right\"?",
+      "parentUuid": "04ae6567_6f98416a",
+      "revId": "e0ce0abcd4900b8754b03b6152c454b948b2cd2e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
     }
   ]
 }
