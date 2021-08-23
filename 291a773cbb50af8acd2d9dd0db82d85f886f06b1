@@ -16,6 +16,29 @@
       "revId": "291a773cbb50af8acd2d9dd0db82d85f886f06b1",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d9c1c8e0_2212a44a",
+        "filename": "scripts/format-code.sh",
+        "patchSetId": 5
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 1000029
+      },
+      "writtenOn": "2021-08-23T22:05:43Z",
+      "side": 1,
+      "message": "FWIW...The use of nlohmann JSON allows `//` and `/* */` commenting styles(where it treats it as whitespace), but I\u0027m guessing jsonlint will flag those as invalid JSON?",
+      "range": {
+        "startLine": 37,
+        "startChar": 12,
+        "endLine": 37,
+        "endChar": 38
+      },
+      "revId": "291a773cbb50af8acd2d9dd0db82d85f886f06b1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
     }
   ]
 }
