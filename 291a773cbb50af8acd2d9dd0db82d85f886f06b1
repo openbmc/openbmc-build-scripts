@@ -39,6 +39,30 @@
       "revId": "291a773cbb50af8acd2d9dd0db82d85f886f06b1",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "16a9cf69_1a11c8ea",
+        "filename": "scripts/format-code.sh",
+        "patchSetId": 5
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2021-08-23T22:15:47Z",
+      "side": 1,
+      "message": "Good point Matt.  I wonder if we should rethink this and maybe use \u0027eslint\u0027 for JSON and JS.  eslint allows comments and we could get a consistent coding style.\n\nIt appears that webui-vue is already using eslint.",
+      "parentUuid": "d9c1c8e0_2212a44a",
+      "range": {
+        "startLine": 37,
+        "startChar": 12,
+        "endLine": 37,
+        "endChar": 38
+      },
+      "revId": "291a773cbb50af8acd2d9dd0db82d85f886f06b1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
     }
   ]
 }
