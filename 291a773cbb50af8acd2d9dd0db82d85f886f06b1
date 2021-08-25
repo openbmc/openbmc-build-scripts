@@ -37,6 +37,24 @@
     },
     {
       "key": {
+        "uuid": "b5ff3718_1f8cbada",
+        "filename": "scripts/format-code.sh",
+        "patchSetId": 5
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2021-08-25T11:49:34Z",
+      "side": 1,
+      "message": "\u003e I would prefer to just have an opt in like shellcheck\n\nThe only reason shellcheck is opt-in is because I still have a few repositories that are failing. 😊\n\nhttps://gerrit.openbmc-project.xyz/c/openbmc/phosphor-psu-code-mgmt/+/42193\nhttps://gerrit.openbmc-project.xyz/c/openbmc/phosphor-debug-collector/+/42233\n\n\u003e probably we could use this .jsonvalidate file as a configuration file that tells what json schemas to be used to validate what json files against in future.\n\nIf we end up using eslint, I think it has its own config file to determine these things, right?  Though, I don\u0027t think the opt-in is as simple as looking for the eslint file because in most cases a repository will simply want to default to a sane project-wide version (I hope).",
+      "parentUuid": "17afbf7e_48cd7c2c",
+      "revId": "291a773cbb50af8acd2d9dd0db82d85f886f06b1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "d9c1c8e0_2212a44a",
         "filename": "scripts/format-code.sh",
         "patchSetId": 5
