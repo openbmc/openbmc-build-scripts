@@ -121,6 +121,30 @@
     },
     {
       "key": {
+        "uuid": "2e75012e_45f3e0fa",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2021-08-25T21:09:22Z",
+      "side": 1,
+      "message": "Sanity tests can be easily disabled though, either in a local.conf or in the whole meta layer. Yocto has a lot of “QA” checks as an indication “you really shouldn’t develop this way” and I see it as the same.  Having said that, I’m not expecting you to write a sanity test and like I said it doesn’t solve the same problem you are. \n\nDo we want this script in this repository?  Or should we put the tests into OpenBMC itself?  It seems like we want them closer to the code so that the forkers can easily run it as well. Maybe they’d still have to know / look for it, but it seems slightly better than in this repo.",
+      "parentUuid": "c440b2e5_6f871bae",
+      "range": {
+        "startLine": 17,
+        "startChar": 54,
+        "endLine": 18,
+        "endChar": 21
+      },
+      "revId": "e0ce0abcd4900b8754b03b6152c454b948b2cd2e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "da3f516a_d5b89c35",
         "filename": "run-repotest.sh",
         "patchSetId": 1
@@ -207,6 +231,24 @@
       "revId": "e0ce0abcd4900b8754b03b6152c454b948b2cd2e",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "d2d77003_b5a2d72e",
+        "filename": "run-repotest.sh",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2021-08-25T21:09:22Z",
+      "side": 1,
+      "message": "Ok. I’d like to rename all the files when I get a chance then. My biggest problem is not having visibility into the random places in Jenkins that calls these. You can choose to go either way.",
+      "parentUuid": "4cf2530b_b1cbe944",
+      "revId": "e0ce0abcd4900b8754b03b6152c454b948b2cd2e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
     }
   ]
 }
