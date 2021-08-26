@@ -169,6 +169,30 @@
     },
     {
       "key": {
+        "uuid": "0ada556e_b38ae520",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2021-08-26T18:55:36Z",
+      "side": 1,
+      "message": "\u003e Andrew, if this tracks for you, I\u0027m ok with it and can split this patchset up.\n\nSo the script would sit in openbmc/openbmc under the meta-phosphor/ dir? I could def see that as useful for a dev to be able to just run it directly assuming they wont need anything more then git/diff type tools. The CI infrastructure advantage is it\u0027s container aspect and ability to install anything else needed. So, fine with me either way.",
+      "parentUuid": "42a31b1b_42df30fe",
+      "range": {
+        "startLine": 17,
+        "startChar": 54,
+        "endLine": 18,
+        "endChar": 21
+      },
+      "revId": "e0ce0abcd4900b8754b03b6152c454b948b2cd2e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "da3f516a_d5b89c35",
         "filename": "run-repotest.sh",
         "patchSetId": 1
@@ -288,6 +312,24 @@
       "side": 1,
       "message": "If we\u0027re going the route of directly executable scripts then I can change this one.  FWIW, I think there\u0027s only two Jenkins jobs (maybe 3?) where we\u0027d have to change it.",
       "parentUuid": "d2d77003_b5a2d72e",
+      "revId": "e0ce0abcd4900b8754b03b6152c454b948b2cd2e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e50e0a6b_95a9caed",
+        "filename": "run-repotest.sh",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2021-08-26T18:55:36Z",
+      "side": 1,
+      "message": "The scripts run by the jenkins jobs are under https://github.com/openbmc/openbmc-build-scripts/tree/master/jenkins",
+      "parentUuid": "f6e59f67_52d57992",
       "revId": "e0ce0abcd4900b8754b03b6152c454b948b2cd2e",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
