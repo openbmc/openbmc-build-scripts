@@ -145,6 +145,30 @@
     },
     {
       "key": {
+        "uuid": "42a31b1b_42df30fe",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 1000153
+      },
+      "writtenOn": "2021-08-26T18:31:17Z",
+      "side": 1,
+      "message": "\u003e Sanity tests can be easily disabled\n\nYeah, I realized this the day after I made my original comment.\n\n\u003e though, either in a local.conf or in the whole meta layer. Yocto has a lot of “QA” checks as an indication “you really shouldn’t develop this way” and I see it as the same.\n\nSince writing my last response, I had a slight change of mindset, and am starting to come around to the idea of a sanity check.  A sanity check makes the CI more easily runnable by developers, which I think helps.  I\u0027d also like to see us to more things in sanity checks in the future, so this would be a good precident to set.\n\n\u003e  Having said that, I’m not expecting you to write a sanity test and like I said it doesn’t solve the same problem you are. \n\nFWIW, I\u0027m going to try, and am going to sit on this patchset until I convince at least myself that a sanity check isn\u0027t the way to go here.\n\n\u003e \n\u003e Do we want this script in this repository?  Or should we put the tests into OpenBMC itself?\n\nFair question;  I\u0027m not sure I have a strong opinion one way or another.\n\n\u003e  It seems like we want them closer to the code so that the forkers can easily run it as well. Maybe they’d still have to know / look for it, but it seems slightly better than in this repo.\n\nAndrew, if this tracks for you, I\u0027m ok with it and can split this patchset up.",
+      "parentUuid": "2e75012e_45f3e0fa",
+      "range": {
+        "startLine": 17,
+        "startChar": 54,
+        "endLine": 18,
+        "endChar": 21
+      },
+      "revId": "e0ce0abcd4900b8754b03b6152c454b948b2cd2e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "da3f516a_d5b89c35",
         "filename": "run-repotest.sh",
         "patchSetId": 1
@@ -246,6 +270,24 @@
       "side": 1,
       "message": "Ok. I’d like to rename all the files when I get a chance then. My biggest problem is not having visibility into the random places in Jenkins that calls these. You can choose to go either way.",
       "parentUuid": "4cf2530b_b1cbe944",
+      "revId": "e0ce0abcd4900b8754b03b6152c454b948b2cd2e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f6e59f67_52d57992",
+        "filename": "run-repotest.sh",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000153
+      },
+      "writtenOn": "2021-08-26T18:31:17Z",
+      "side": 1,
+      "message": "If we\u0027re going the route of directly executable scripts then I can change this one.  FWIW, I think there\u0027s only two Jenkins jobs (maybe 3?) where we\u0027d have to change it.",
+      "parentUuid": "d2d77003_b5a2d72e",
       "revId": "e0ce0abcd4900b8754b03b6152c454b948b2cd2e",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
