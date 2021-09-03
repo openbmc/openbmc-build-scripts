@@ -227,6 +227,7 @@ elif [[ "${distro}" == ubuntu ]]; then
       git \
       iputils-ping \
       libdata-dumper-simple-perl \
+      liblz4-tool \
       libsdl1.2-dev \
       libthread-queue-any-perl \
       locales \
@@ -235,7 +236,8 @@ elif [[ "${distro}" == ubuntu ]]; then
       socat \
       subversion \
       texinfo \
-      wget
+      wget \
+      zstd
 
   # Set the locale
   RUN locale-gen en_US.UTF-8
