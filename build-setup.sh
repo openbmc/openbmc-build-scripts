@@ -220,10 +220,12 @@ elif [[ "${distro}" == ubuntu ]]; then
   RUN apt-get update && apt-get install -yy \
       build-essential \
       chrpath \
+      cpio \
       debianutils \
       diffstat \
       gawk \
       git \
+      iputils-ping \
       libdata-dumper-simple-perl \
       libsdl1.2-dev \
       libthread-queue-any-perl \
@@ -233,9 +235,7 @@ elif [[ "${distro}" == ubuntu ]]; then
       socat \
       subversion \
       texinfo \
-      cpio \
-      wget \
-      iputils-ping
+      wget
 
   # Set the locale
   RUN locale-gen en_US.UTF-8
