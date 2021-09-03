@@ -146,6 +146,10 @@ try:
     output = subprocess.check_output("git clone https://github.com/openbmc/openbmc-build-scripts.git",
                                      shell=True, cwd=working_dir, stderr=subprocess.STDOUT)
     logger.debug(output)
+
+    output = subprocess.check_output("cd ./openbmc-build-scripts && git fetch https://gerrit.openbmc-project.xyz/openbmc/openbmc-build-scripts refs/changes/05/47405/3 && git cherry-pick FETCH_HEAD", shell=True, cwd=working_dir, stderr=subprocess.STDOUT)
+    logger.debug(output)
+
 except subprocess.CalledProcessError as e:
     logger.error(e.output)
     logger.error(e.cmd)
