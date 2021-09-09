@@ -84,6 +84,30 @@
     },
     {
       "key": {
+        "uuid": "a9e9f7cf_8e09baad",
+        "filename": "run-repotest.sh",
+        "patchSetId": 2
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 1000153
+      },
+      "writtenOn": "2021-09-09T18:56:17Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "617384a1_fde5391d",
+      "range": {
+        "startLine": 14,
+        "startChar": 0,
+        "endLine": 14,
+        "endChar": 22
+      },
+      "revId": "04d221728a1c8f0bd71021a62ad8529b37fbfbca",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "732c8757_d00ba5fc",
         "filename": "run-repotest.sh",
         "patchSetId": 2
@@ -128,6 +152,30 @@
       "revId": "04d221728a1c8f0bd71021a62ad8529b37fbfbca",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "4657774c_84a9705b",
+        "filename": "run-repotest.sh",
+        "patchSetId": 2
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 1000153
+      },
+      "writtenOn": "2021-09-09T18:56:17Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5d8e7c0f_86d0036c",
+      "range": {
+        "startLine": 19,
+        "startChar": 11,
+        "endLine": 19,
+        "endChar": 22
+      },
+      "revId": "04d221728a1c8f0bd71021a62ad8529b37fbfbca",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
     },
     {
       "key": {
