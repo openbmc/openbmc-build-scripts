@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "565e678d_dad2792d",
+        "filename": "config/eslint-global-config.json",
+        "patchSetId": 9
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2021-09-09T17:56:33Z",
+      "side": 1,
+      "message": "I think we should also put this into docs under style/json (or style/js?) so we have a common eslint to spread around like we do for .clang-format.",
+      "revId": "1c970c6cfb340d10ccdca37f4ef8190fb1207f0c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
