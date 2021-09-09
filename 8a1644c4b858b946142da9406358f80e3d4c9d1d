@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "73f1de1c_db12f57d",
+        "filename": "build-setup.sh",
+        "patchSetId": 5
+      },
+      "lineNbr": 141,
+      "author": {
+        "id": 1000153
+      },
+      "writtenOn": "2021-09-09T19:37:57Z",
+      "side": 1,
+      "message": "FYI, I grabbed this from here:\nhttps://github.com/koalaman/shellcheck/wiki/SC1090\n\nShellcheck really wants to check this script for issues, but can\u0027t because it\u0027s not in the same repo, so this simply makes it bypass the error.  If there\u0027s a better way to do this, please let me know.",
+      "range": {
+        "startLine": 141,
+        "startChar": 0,
+        "endLine": 141,
+        "endChar": 31
+      },
+      "revId": "8a1644c4b858b946142da9406358f80e3d4c9d1d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
