@@ -16,6 +16,24 @@
       "revId": "1c970c6cfb340d10ccdca37f4ef8190fb1207f0c",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "0be551f9_923315ad",
+        "filename": "config/eslint-global-config.json",
+        "patchSetId": 9
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-09-11T04:52:12Z",
+      "side": 1,
+      "message": "Patrick,\n\neslint-plugin-json is shipped with two modes, one that supports comments which is invoked with (extends\": [\"plugin:json/recommended-with-comments\"]), and the one that does not support comments(extends\": [\"plugin:json/recommended\"]).\n\nIn this commit, i had put more stricter(extends\": [\"plugin:json/recommended\"]) which does not support the comments in the global config, and this would be picked if the repo does not have an override .eslintrc.json file.\n\nwhen a repo, has comments in their json files, they need to add an override .eslintrc.json file that uses (extends\": [\"plugin:json/recommended-with-comments\"]) like in (https://gerrit.openbmc-project.xyz/c/openbmc/pldm/+/46335)\n\nDo you prefer the default config to support comments or not support comments ?",
+      "parentUuid": "565e678d_dad2792d",
+      "revId": "1c970c6cfb340d10ccdca37f4ef8190fb1207f0c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
     }
   ]
 }
