@@ -34,6 +34,24 @@
       "revId": "1c970c6cfb340d10ccdca37f4ef8190fb1207f0c",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "42683451_08cc702a",
+        "filename": "config/eslint-global-config.json",
+        "patchSetId": 9
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2021-09-11T10:27:07Z",
+      "side": 1,
+      "message": "I prefer adding support for comments. I think that can be our general approach in the project. It makes for much better JSON.",
+      "parentUuid": "0be551f9_923315ad",
+      "revId": "1c970c6cfb340d10ccdca37f4ef8190fb1207f0c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
     }
   ]
 }
