@@ -52,6 +52,24 @@
       "revId": "1c970c6cfb340d10ccdca37f4ef8190fb1207f0c",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "53bfbd64_7a135848",
+        "filename": "config/eslint-global-config.json",
+        "patchSetId": 9
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-09-12T08:12:54Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "42683451_08cc702a",
+      "revId": "1c970c6cfb340d10ccdca37f4ef8190fb1207f0c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
     }
   ]
 }
