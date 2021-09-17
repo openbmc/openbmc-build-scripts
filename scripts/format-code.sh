@@ -113,3 +113,5 @@ if [[ -f "format-code.sh" ]]; then
   ./format-code.sh
   git --no-pager diff --exit-code
 fi
+
+git show HEAD --check
