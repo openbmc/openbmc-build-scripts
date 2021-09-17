@@ -46,6 +46,30 @@
       "revId": "8a1644c4b858b946142da9406358f80e3d4c9d1d",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "fd96f46e_a8c967c4",
+        "filename": "build-setup.sh",
+        "patchSetId": 5
+      },
+      "lineNbr": 141,
+      "author": {
+        "id": 1000153
+      },
+      "writtenOn": "2021-09-17T18:17:14Z",
+      "side": 1,
+      "message": "\u003e Well, first off, why are we sourcing a script rather than running it?\n\u003e \n\nBecause......... \u003cinsert bad engineering reason here.\u003e  I think the real reason was I was braindead at the time.\n\nWill fix.\n\n\u003e My personal preference would be:\n\u003e   # shellcheck disable\u003dSC1090\n\u003e \n\u003e over a bogus /dev/null.\n\nThis was what the shellcheck docs I found said to do, but you\u0027re right, the answer is simpler.",
+      "parentUuid": "52e642de_78ead14d",
+      "range": {
+        "startLine": 141,
+        "startChar": 0,
+        "endLine": 141,
+        "endChar": 31
+      },
+      "revId": "8a1644c4b858b946142da9406358f80e3d4c9d1d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
     }
   ]
 }
