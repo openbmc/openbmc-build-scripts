@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "582cbdb6_8f102399",
+        "filename": "build-setup.sh",
+        "patchSetId": 7
+      },
+      "lineNbr": 141,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2021-09-20T14:55:02Z",
+      "side": 1,
+      "message": "It probably would have been clenaer to just quote the whole command?",
+      "revId": "5696985ef9325addfafba4fdd2b44e1b58b6768d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
