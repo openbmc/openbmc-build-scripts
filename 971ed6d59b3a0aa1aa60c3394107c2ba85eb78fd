@@ -1,0 +1,113 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "f3481959_97d5cbaa",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 10
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 1000153
+      },
+      "writtenOn": "2021-09-20T16:49:05Z",
+      "side": 1,
+      "message": "Can we get more details here on exactly what we\u0027re enforcing here, and get the relevant docs set up in the docs repo?\n\nFor example, by default are we enforcing:\nPretty printing?  Whitespace?  Key naming?  Line at the end of the file?  Comments?\n\nwhen we did this similar thing for c++/C, we had pretty well documented rules we were just enforcing;  With json, I don\u0027t think we have that, so when CI rejects a json patch, what are we supposed to do?",
+      "revId": "971ed6d59b3a0aa1aa60c3394107c2ba85eb78fd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "28dfd093_bb09e978",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 10
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 1000153
+      },
+      "writtenOn": "2021-09-20T16:49:05Z",
+      "side": 1,
+      "message": "Um..... how is a spell check an effective test of this?  Did this get pulled from a different commit message?",
+      "range": {
+        "startLine": 27,
+        "startChar": 0,
+        "endLine": 27,
+        "endChar": 40
+      },
+      "revId": "971ed6d59b3a0aa1aa60c3394107c2ba85eb78fd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "851166ea_f40b84eb",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 10
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 1000153
+      },
+      "writtenOn": "2021-09-20T16:49:05Z",
+      "side": 1,
+      "message": "Considering that PLDM isn\u0027t the only thing that\u0027s getting effected by this change, can we get some verification that we have some confidence that this isn\u0027t going to break repos that use json for configuration data?",
+      "range": {
+        "startLine": 32,
+        "startChar": 0,
+        "endLine": 32,
+        "endChar": 55
+      },
+      "revId": "971ed6d59b3a0aa1aa60c3394107c2ba85eb78fd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "44162565_8c4f3a31",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 10
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 1000153
+      },
+      "writtenOn": "2021-09-20T16:49:05Z",
+      "side": 1,
+      "message": "This would imply that it\u0027s enforcing some kind of schema because it\u0027s failing a specific property name?",
+      "range": {
+        "startLine": 36,
+        "startChar": 0,
+        "endLine": 36,
+        "endChar": 39
+      },
+      "revId": "971ed6d59b3a0aa1aa60c3394107c2ba85eb78fd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f42aa9ad_ae6b0400",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 10
+      },
+      "lineNbr": 51,
+      "author": {
+        "id": 1000153
+      },
+      "writtenOn": "2021-09-20T16:49:05Z",
+      "side": 1,
+      "message": "duplicate sign off.",
+      "range": {
+        "startLine": 51,
+        "startChar": 0,
+        "endLine": 51,
+        "endChar": 56
+      },
+      "revId": "971ed6d59b3a0aa1aa60c3394107c2ba85eb78fd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
