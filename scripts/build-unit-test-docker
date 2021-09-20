@@ -173,13 +173,9 @@ packages = {
     ),
     # version from /meta-openembedded/meta-oe/recipes-devtools/boost-url/boost-url_git.bb
     "CPPAlliance/url": PackageDef(
-        rev="a56ae0df6d3078319755fbaa67822b4fa7fd352b",
-        build_type="cmake",
-        config_flags=[
-            "-DBOOST_URL_BUILD_EXAMPLES=OFF",
-            "-DBOOST_URL_BUILD_TESTS=OFF",
-            "-DBOOST_URL_STANDALONE=ON",
-        ],
+        rev="4f712ed69a04a344957d22efa5dc111b415b3aff",
+        build_type="custom",
+        build_steps=[f"cp -a include/** {prefix}/include/"],
     ),
     # valijson v0.4, which contains the nlohmann/json.hpp include fix:
     # 66262bafb82c ("Include nlohmann/json.hpp instead of json.hpp")
