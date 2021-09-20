@@ -108,6 +108,29 @@
       "revId": "971ed6d59b3a0aa1aa60c3394107c2ba85eb78fd",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "241c4d5d_a32cbbe6",
+        "filename": "scripts/format-code.sh",
+        "patchSetId": 10
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 1000153
+      },
+      "writtenOn": "2021-09-20T16:51:43Z",
+      "side": 1,
+      "message": "This block would be a lot more clear if you loaded the \"config to use\" and the \"ignore to use\" into variables, then called eslint in one spot.  As-written this duplicates a lot of things between the branches that are hard to track.",
+      "range": {
+        "startLine": 30,
+        "startChar": 0,
+        "endLine": 48,
+        "endChar": 0
+      },
+      "revId": "971ed6d59b3a0aa1aa60c3394107c2ba85eb78fd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
     }
   ]
 }
