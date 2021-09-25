@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "213d9b37_fa598f97",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 10
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-09-25T08:23:26Z",
+      "side": 1,
+      "message": "As stated in the commit message this commit only does json validation. I have added more details in the commit message.",
+      "parentUuid": "f3481959_97d5cbaa",
+      "revId": "971ed6d59b3a0aa1aa60c3394107c2ba85eb78fd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "28dfd093_bb09e978",
         "filename": "/COMMIT_MSG",
         "patchSetId": 10
@@ -66,6 +84,30 @@
     },
     {
       "key": {
+        "uuid": "d8d8539a_8360a604",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 10
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-09-25T08:23:26Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "a2bc8a62_683eacef",
+      "range": {
+        "startLine": 27,
+        "startChar": 0,
+        "endLine": 27,
+        "endChar": 40
+      },
+      "revId": "971ed6d59b3a0aa1aa60c3394107c2ba85eb78fd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "851166ea_f40b84eb",
         "filename": "/COMMIT_MSG",
         "patchSetId": 10
@@ -77,6 +119,30 @@
       "writtenOn": "2021-09-20T16:49:05Z",
       "side": 1,
       "message": "Considering that PLDM isn\u0027t the only thing that\u0027s getting effected by this change, can we get some verification that we have some confidence that this isn\u0027t going to break repos that use json for configuration data?",
+      "range": {
+        "startLine": 32,
+        "startChar": 0,
+        "endLine": 32,
+        "endChar": 55
+      },
+      "revId": "971ed6d59b3a0aa1aa60c3394107c2ba85eb78fd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "2a9ff4fb_c3185d8c",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 10
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-09-25T08:23:26Z",
+      "side": 1,
+      "message": "\u003e Considering that PLDM isn\u0027t the only thing that\u0027s getting effected by this change, can we get some verification that we have some confidence that this isn\u0027t going to break repos that use json for configuration data?\n\nI had tested this change with all the repos under openbmc \u0026 that has been already documented in this commit in the comments, but since you asked i had added that to the commit message as well.",
+      "parentUuid": "851166ea_f40b84eb",
       "range": {
         "startLine": 32,
         "startChar": 0,
@@ -112,6 +178,30 @@
     },
     {
       "key": {
+        "uuid": "c9ce14e9_74d96eb5",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 10
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-09-25T08:23:26Z",
+      "side": 1,
+      "message": "Well i don\u0027t exactly remember what json corruption i had to get this error. And this plugin does not do schema validation. This is just plain and simple json validation. we can add more plugins in future for schema validation \u0026 json formatting and that should be simple too. As eslint has that infrastructure to add more plugins and control their behavior using a single configuration file (and this has been discussed in comments in this commit).",
+      "parentUuid": "44162565_8c4f3a31",
+      "range": {
+        "startLine": 36,
+        "startChar": 0,
+        "endLine": 36,
+        "endChar": 39
+      },
+      "revId": "971ed6d59b3a0aa1aa60c3394107c2ba85eb78fd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "f42aa9ad_ae6b0400",
         "filename": "/COMMIT_MSG",
         "patchSetId": 10
@@ -135,6 +225,30 @@
     },
     {
       "key": {
+        "uuid": "e26f3a9a_b47cf101",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 10
+      },
+      "lineNbr": 51,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-09-25T08:23:26Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "f42aa9ad_ae6b0400",
+      "range": {
+        "startLine": 51,
+        "startChar": 0,
+        "endLine": 51,
+        "endChar": 56
+      },
+      "revId": "971ed6d59b3a0aa1aa60c3394107c2ba85eb78fd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "241c4d5d_a32cbbe6",
         "filename": "scripts/format-code.sh",
         "patchSetId": 10
@@ -155,6 +269,30 @@
       "revId": "971ed6d59b3a0aa1aa60c3394107c2ba85eb78fd",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "3c964daf_03bcc3ed",
+        "filename": "scripts/format-code.sh",
+        "patchSetId": 10
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-09-25T08:23:26Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "241c4d5d_a32cbbe6",
+      "range": {
+        "startLine": 30,
+        "startChar": 0,
+        "endLine": 48,
+        "endChar": 0
+      },
+      "revId": "971ed6d59b3a0aa1aa60c3394107c2ba85eb78fd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
     }
   ]
 }
