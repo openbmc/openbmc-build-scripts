@@ -1111,6 +1111,7 @@ progamming->programming
 progams->programs
 progess->progress
 programable->programmable
+programatic->programmatic
 programers->programmers
 programm->program
 programms->programs
