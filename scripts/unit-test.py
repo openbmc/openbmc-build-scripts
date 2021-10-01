@@ -766,7 +766,7 @@ class CMake(BuildSystem):
             # the .clang-tidy to be up a dir
             os.chdir("tidy-build")
             try:
-                check_call_cmd('run-clang-tidy.py', "-header-filter=.*", '-p',
+                check_call_cmd('run-clang-tidy', "-header-filter=.*", '-p',
                                '.')
             finally:
                 os.chdir("..")
@@ -972,7 +972,7 @@ class Meson(BuildSystem):
         if os.path.isfile('.clang-tidy'):
             os.environ["CXX"] = "clang++"
             check_call_cmd('meson', 'setup', 'build-clang')
-            check_call_cmd('run-clang-tidy.py', '-p',
+            check_call_cmd('run-clang-tidy', '-p',
                            'build-clang')
         # Run the basic clang static analyzer otherwise
         else:
