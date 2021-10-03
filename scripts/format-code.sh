@@ -14,17 +14,18 @@ WORKSPACE=$PWD
 
 set -e
 
-echo "Running spelling check on Commit Message"
+cd "${DIR}"
 
+# Generate the commit message file
+git log -1 --pretty=%B >> "${DIR}"/commit_message
 # Run the codespell with openbmc spcific spellings on the patchset
+
 echo "openbmc-dictionary - misspelling count >> "
-codespell -D openbmc-spelling.txt -d --count "${DIR}"/.git/COMMIT_EDITMSG
+codespell -D "${WORKSPACE}"/openbmc-spelling.txt -C 3 -d --count "${DIR}"/commit_message
 
 # Run the codespell with generic dictionary on the patchset
 echo "generic-dictionary - misspelling count >> "
-codespell --builtin clear,rare,en-GB_to_en-US -d --count "${DIR}"/.git/COMMIT_EDITMSG
-
-cd "${DIR}"
+codespell --builtin clear,rare,en-GB_to_en-US -C 3 -d --count "${DIR}"/commit_message
 
 echo "Formatting code under $DIR/"
 
