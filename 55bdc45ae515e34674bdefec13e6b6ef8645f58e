@@ -73,6 +73,30 @@
     },
     {
       "key": {
+        "uuid": "63c909d0_3fca0b93",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2021-10-05T16:05:32Z",
+      "side": 1,
+      "message": "\"their\" is a valid word though? Also, you may need to tweak https://github.com/openbmc/openbmc-build-scripts/blob/master/jenkins/run-build-script-ci since we run a \"special\" CI script for the build scripts repo.",
+      "parentUuid": "39df7871_82f8952e",
+      "range": {
+        "startLine": 21,
+        "startChar": 0,
+        "endLine": 21,
+        "endChar": 5
+      },
+      "revId": "55bdc45ae515e34674bdefec13e6b6ef8645f58e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "339497c4_41a5f259",
         "filename": "scripts/format-code.sh",
         "patchSetId": 4
