@@ -177,10 +177,9 @@ packages = {
         build_type="custom",
         build_steps=[f"cp -a include/** {prefix}/include/"],
     ),
-    # valijson v0.4, which contains the nlohmann/json.hpp include fix:
-    # 66262bafb82c ("Include nlohmann/json.hpp instead of json.hpp")
+    # version from meta-openembedded/meta-oe/dynamic-layers/networking-layer/recipes-devools/valijson/valijson_0.6.bb
     "tristanpenman/valijson": PackageDef(
-        rev="v0.4",
+        rev="v0.6",
         build_type="cmake",
         config_flags=[
             "-Dvalijson_BUILD_TESTS=0",
