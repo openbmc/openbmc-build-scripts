@@ -1151,6 +1151,7 @@ if __name__ == '__main__':
             'ipmiblob': 'ipmi-blob-tool',
             'hei': 'openpower-libhei',
             'phosphor-ipmi-blobs': 'phosphor-ipmi-blobs',
+            'libcr51sign': 'google-misc',
         },
     }
 
