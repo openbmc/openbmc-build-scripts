@@ -895,6 +895,7 @@ class Meson(BuildSystem):
                            *meson_flags)
         except:
             shutil.rmtree('build')
+            # changing the build directory name might break eslint validation
             check_call_cmd('meson', 'setup', 'build', *meson_flags)
 
     def build(self):

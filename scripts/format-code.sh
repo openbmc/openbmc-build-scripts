@@ -30,7 +30,7 @@ echo "Formatting code under $DIR/"
 
 ESLINT_CONFIG="eslint ${DIR} --no-eslintrc -c ${WORKSPACE}/eslint-global-config.json \
                --ext .json --resolve-plugins-relative-to /usr/local/lib/node_modules\
-               --no-error-on-unmatched-pattern"
+               --no-error-on-unmatched-pattern --ignore-pattern build"
 ESLINT_IGNORE=" --ignore-path ${DIR}/.eslintignore"
 
 # Get the eslint configuration from the repository
