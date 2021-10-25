@@ -138,7 +138,7 @@ if [ ! -d "${obmc_dir}" ]; then
 fi
 
 if [[ "$target" = repotest ]]; then
-  "${obmc_dir}"/meta-phosphor/scripts/run-repotest.sh
+  "${obmc_dir}"/meta-phosphor/scripts/run-repotest
   exit
 fi
 
