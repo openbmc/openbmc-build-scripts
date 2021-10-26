@@ -138,7 +138,14 @@ if [ ! -d "${obmc_dir}" ]; then
 fi
 
 if [[ "$target" = repotest ]]; then
-  "${obmc_dir}"/meta-phosphor/scripts/run-repotest
+  DOCKER_IMAGE_NAME=$(./scripts/build-unit-test-docker)
+  docker run --cap-add=sys_admin --rm=true \
+      --network host \
+      --privileged=true \
+      -u "$USER" \
+      -w "${obmc_dir}" -v "${obmc_dir}:${obmc_dir}" \
+      -t "${DOCKER_IMAGE_NAME}" \
+      "${obmc_dir}"/meta-phosphor/scripts/run-repotest
   exit
 fi
 
