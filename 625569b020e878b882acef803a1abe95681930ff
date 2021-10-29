@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "d9ff2c59_7aca12b9",
+        "filename": "scripts/build-unit-test-docker",
+        "patchSetId": 1
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1000009
+      },
+      "writtenOn": "2021-10-29T00:11:17Z",
+      "side": 1,
+      "message": "Perhaps we should just remove this?",
+      "revId": "625569b020e878b882acef803a1abe95681930ff",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
