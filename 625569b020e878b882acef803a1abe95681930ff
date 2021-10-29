@@ -16,6 +16,24 @@
       "revId": "625569b020e878b882acef803a1abe95681930ff",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "8f1d58ad_9bc754dc",
+        "filename": "scripts/build-unit-test-docker",
+        "patchSetId": 1
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2021-10-29T19:23:57Z",
+      "side": 1,
+      "message": "Sure.  I\u0027ll follow up with another commit later to clean this out.  It seems to have been a convention we had in these scripts but it is just noise of dual-maint.",
+      "parentUuid": "d9ff2c59_7aca12b9",
+      "revId": "625569b020e878b882acef803a1abe95681930ff",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
     }
   ]
 }
