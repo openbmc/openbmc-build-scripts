@@ -6,7 +6,6 @@
 #   DOCKER_IMG_NAME:  <optional, the name of the docker image to generate>
 #                     default is openbmc/ubuntu-rootfs-size
 #   DISTRO:           <optional, the distro to build a docker image against>
-#                     default is ubuntu:bionic
 
 set -uo pipefail
 
