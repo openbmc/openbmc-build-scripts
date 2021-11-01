@@ -46,6 +46,30 @@
       "revId": "aecdf6e5004b84f4ca1435e01f92f1f68a4edcac",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "83256532_7fb37bb2",
+        "filename": "scripts/format-code.sh",
+        "patchSetId": 1
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 1000153
+      },
+      "writtenOn": "2021-11-01T20:10:47Z",
+      "side": 1,
+      "message": "Can we just do what we do on line 70, and generate an explicit list with git ls-files | grep \"\\.json$\" and send that to eslint directly?\n\nWe do a similar thing on line 126 with clang-format.",
+      "parentUuid": "9c465842_bcb6349d",
+      "range": {
+        "startLine": 33,
+        "startChar": 47,
+        "endLine": 33,
+        "endChar": 70
+      },
+      "revId": "aecdf6e5004b84f4ca1435e01f92f1f68a4edcac",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
     }
   ]
 }
