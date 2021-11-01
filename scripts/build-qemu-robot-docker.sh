@@ -13,7 +13,6 @@
 #   parm1:  <optional, the name of the docker image to generate>
 #            default is openbmc/ubuntu-robot-qemu
 #   param2: <optional, the distro to build a docker image against>
-#            default is ubuntu:focal
 
 set -uo pipefail
 
