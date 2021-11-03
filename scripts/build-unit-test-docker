@@ -133,7 +133,7 @@ packages = {
     ),
     # Release 2020-08-06
     "nlohmann/json": PackageDef(
-        rev="v3.9.1",
+        rev="v3.10.4",
         build_type="cmake",
         config_flags=["-DJSON_BuildTests=OFF"],
         custom_post_install=[
