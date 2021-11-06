@@ -70,6 +70,30 @@
       "revId": "aecdf6e5004b84f4ca1435e01f92f1f68a4edcac",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e5d72198_d5ca84b5",
+        "filename": "scripts/format-code.sh",
+        "patchSetId": 1
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-11-06T12:45:58Z",
+      "side": 1,
+      "message": "\u003e Can we just do what we do on line 70, and generate an explicit list with git ls-files | grep \"\\.json$\" and send that to eslint directly?\n\u003e \n\u003e We do a similar thing on line 126 with clang-format.\n\neslint also has a pattern checker, if we just give .json as input it will automatically find the files with .json under a certain source directory and apply linting logic on them\n\nBut even with that , we need some extra logic to find and ignore the meson generated files, and i also feel having such kind of logic is hard and error prone.\n\n\u003e Does this handle any \u0027buildfoo\u0027 subdirectories, like \u0027builddir\u0027?  That is often a documented pattern in meson and our default .gitignore for meson ignores any build* subdirectory.\n\nI have modified the logic to check of **/meson-*/*.json -\u003e this should find the json files under any directory and ignore them.\n\nAnd also rather than passing the glob pattern via command line , i moved that to the eslint-global config file.",
+      "parentUuid": "83256532_7fb37bb2",
+      "range": {
+        "startLine": 33,
+        "startChar": 47,
+        "endLine": 33,
+        "endChar": 70
+      },
+      "revId": "aecdf6e5004b84f4ca1435e01f92f1f68a4edcac",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
     }
   ]
 }
