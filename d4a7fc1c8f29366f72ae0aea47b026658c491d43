@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "bae4b7fa_dc4a0a72",
+        "filename": "config/eslint-global-config.json",
+        "patchSetId": 5
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1000153
+      },
+      "writtenOn": "2021-11-12T18:36:01Z",
+      "side": 1,
+      "message": "Why are we hardcoding these?  Shouldn\u0027t we be relying on the git ignore files?",
+      "range": {
+        "startLine": 10,
+        "startChar": 4,
+        "endLine": 10,
+        "endChar": 67
+      },
+      "revId": "d4a7fc1c8f29366f72ae0aea47b026658c491d43",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
