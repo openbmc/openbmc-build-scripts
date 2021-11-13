@@ -32,11 +32,9 @@ BRANCH=${BRANCH:-"master"}
 OBMC_BUILD_SCRIPTS="openbmc-build-scripts"
 UNIT_TEST_PY_DIR="scripts"
 DICTIONARY_DIR="dictionary"
-CONFIG_DIR="config"
 UNIT_TEST_PY="unit-test.py"
 FORMAT_CODE_SH="format-code.sh"
 SPELLINGS_TXT="openbmc-spelling.txt"
-ESLINT_CONFIG="eslint-global-config.json"
 DBUS_UNIT_TEST_PY="dbus-unit-test.py"
 TEST_ONLY="${TEST_ONLY:-}"
 DBUS_SYS_CONFIG_FILE=${dbus_sys_config_file:-"/usr/share/dbus-1/system.conf"}
@@ -81,10 +79,6 @@ chmod a+x "${WORKSPACE}"/${FORMAT_CODE_SH}
 cp "${WORKSPACE}"/${OBMC_BUILD_SCRIPTS}/${DICTIONARY_DIR}/${SPELLINGS_TXT} \
 "${WORKSPACE}"/${SPELLINGS_TXT}
 
-# Copy the eslintconfig file into workspce
-cp "${WORKSPACE}"/${OBMC_BUILD_SCRIPTS}/${CONFIG_DIR}/${ESLINT_CONFIG} \
-"${WORKSPACE}"/${ESLINT_CONFIG}
-
 # Configure docker build
 cd "${WORKSPACE}"/${OBMC_BUILD_SCRIPTS}
 echo "Building docker image with build-unit-test-docker"
@@ -121,5 +115,4 @@ echo "Unit test build completed, $(date)"
 rm "${WORKSPACE}"/${UNIT_TEST_PY}
 rm "${WORKSPACE}"/${DBUS_UNIT_TEST_PY}
 rm "${WORKSPACE}"/${FORMAT_CODE_SH}
-rm "${WORKSPACE}"/${ESLINT_CONFIG}
 
