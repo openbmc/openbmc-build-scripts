@@ -46,6 +46,30 @@
       "revId": "d4a7fc1c8f29366f72ae0aea47b026658c491d43",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "48be8506_cd8487d0",
+        "filename": "config/eslint-global-config.json",
+        "patchSetId": 5
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1000153
+      },
+      "writtenOn": "2021-11-14T19:48:04Z",
+      "side": 1,
+      "message": "\u003e This is not \"hardcoding\", this is a config file that tell\u0027s eslint to ignore a glob pattern much like writing a glob pattern in the .gitignore file.\n\nI say hardcoding, because if say, I changed the name of the subprojects folder to say, \"external\", the CI would now break again.  We should not be relying on naming conventions in CI.\n\n\u003e \n\u003e \n\u003e I have already told this to wak in the discord, but let me tell this again we cannot rely on gitignore . There are json files in various repos in BMC that are purposefully written to be malformed for the unit testing purpose.Those files are present in the .eslintignore file.These files should not be linted but they should not be present in ignore list of git,\n\nI\u0027m not sure why one precludes the other?  Using git ls-files doesn\u0027t prevent someone from ignoring certain files additionally with .eslintignore?\n\n\u003e \n\u003e So, the ideal solution would be to append both of them into a single file and then consume that. But as discussed in the discord, just for the sake of google-misc(which has code in subprojects folder) i will not be doing that.\n\nSo, given that current builds are broken for some repos, and you\u0027re not wanting to make changes, what are you proposing to unbreak the build?  I\u0027m not quite following how you\u0027d like to see this go forward, but I\u0027m happy to take your direction here.",
+      "parentUuid": "c83dffae_2b3b1097",
+      "range": {
+        "startLine": 10,
+        "startChar": 4,
+        "endLine": 10,
+        "endChar": 67
+      },
+      "revId": "d4a7fc1c8f29366f72ae0aea47b026658c491d43",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
     }
   ]
 }
