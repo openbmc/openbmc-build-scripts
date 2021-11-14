@@ -1,0 +1,90 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "7f23b19d_dcc8451d",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-11-14T02:24:58Z",
+      "side": 1,
+      "message": "\"all over the place\" is a big word.\n\ncan you give the gerrit links for which the CI is failing with the eslint json validation.\n\nAs far as i know its just the google-misc that failed AND Nothing else. which i already tried to fix https://gerrit.openbmc-project.xyz/c/openbmc/openbmc-build-scripts/+/48177\n\nIf there are other commits please let me know",
+      "range": {
+        "startLine": 11,
+        "startChar": 42,
+        "endLine": 12,
+        "endChar": 27
+      },
+      "revId": "965e64e5f6ebe592e6ad4481093013f659ff7509",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "66aba3ec_3cdd28df",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-11-14T02:24:58Z",
+      "side": 1,
+      "message": "CI does not re-use the build directories. It deletes the build directory for every build. So nothing is broken in CI (except the google-misc repo). Ignoring the subprojects \u0026 build directory and two things that would only help people to re-use the build folder in local CI.\n\nI also think subprojects support and CI are two opposite things. why are even trigerring subprojects and downloading boost for every bmcweb build in CI ? that\u0027s a huge waste in terms of CI resources.",
+      "range": {
+        "startLine": 13,
+        "startChar": 0,
+        "endLine": 13,
+        "endChar": 17
+      },
+      "revId": "965e64e5f6ebe592e6ad4481093013f659ff7509",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "fbfa8a19_69ba7e03",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-11-14T02:24:58Z",
+      "side": 1,
+      "message": "This support was merged on Oct 20 , and its already have been close to 24 days since that support is merged. I don\u0027t think this was a disaster that it messed up everything and had to be reverted at anycost.\n\nHonestly, I feel demoralized looking at this commit this morning. It would have been great if people would had spend time helping me test all the repo\u0027s \u0026 fix issues as this is community work \u0026 It benefits every repository in openbmc, rather than people spending their time to revert the code.\n\nThis is just my opinion, and i will not be scoring a -1 here , so that i cannot stop maintainers from merging this revert. But if maintainers of this repo agrees with Ed\u0027s reasoning please feel free to revert it.",
+      "revId": "965e64e5f6ebe592e6ad4481093013f659ff7509",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "21751249_88097759",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-11-14T02:24:58Z",
+      "side": 1,
+      "message": "I disagree.",
+      "range": {
+        "startLine": 14,
+        "startChar": 53,
+        "endLine": 15,
+        "endChar": 68
+      },
+      "revId": "965e64e5f6ebe592e6ad4481093013f659ff7509",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
