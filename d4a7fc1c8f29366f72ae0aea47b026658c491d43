@@ -22,6 +22,30 @@
       "revId": "d4a7fc1c8f29366f72ae0aea47b026658c491d43",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c83dffae_2b3b1097",
+        "filename": "config/eslint-global-config.json",
+        "patchSetId": 5
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-11-14T01:49:49Z",
+      "side": 1,
+      "message": "This is not \"hardcoding\", this is a config file that tell\u0027s eslint to ignore a glob pattern much like writing a glob pattern in the .gitignore file.\n\n\nI have already told this to wak in the discord, but let me tell this again we cannot rely on gitignore . There are json files in various repos in BMC that are purposefully written to be malformed for the unit testing purpose.Those files are present in the .eslintignore file.These files should not be linted but they should not be present in ignore list of git,\n\nSo, the ideal solution would be to append both of them into a single file and then consume that. But as discussed in the discord, just for the sake of google-misc(which has code in subprojects folder) i will not be doing that.",
+      "parentUuid": "bae4b7fa_dc4a0a72",
+      "range": {
+        "startLine": 10,
+        "startChar": 4,
+        "endLine": 10,
+        "endChar": 67
+      },
+      "revId": "d4a7fc1c8f29366f72ae0aea47b026658c491d43",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
     }
   ]
 }
