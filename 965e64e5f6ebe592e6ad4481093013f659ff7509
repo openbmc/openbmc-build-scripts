@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "8ed56021_c47de0b7",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2021-11-14T12:46:41Z",
+      "side": 1,
+      "message": "Agree.  Reverting this commit is a little harsh for just google-misc.  \n\nThe previous issues reported with build directories only affected local users attempting to run the script and not CI.\n\nBoth are attempting to be fixed with 48177.  Even if it isn\u0027t the ideal solution (ie. git ls-files) it is at least a step in the right direction.",
+      "parentUuid": "7f23b19d_dcc8451d",
+      "range": {
+        "startLine": 11,
+        "startChar": 42,
+        "endLine": 12,
+        "endChar": 27
+      },
+      "revId": "965e64e5f6ebe592e6ad4481093013f659ff7509",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "66aba3ec_3cdd28df",
         "filename": "/COMMIT_MSG",
         "patchSetId": 1
