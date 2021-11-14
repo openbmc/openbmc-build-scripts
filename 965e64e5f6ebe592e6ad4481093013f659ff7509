@@ -49,6 +49,30 @@
     },
     {
       "key": {
+        "uuid": "6deceea6_f9c6d5bd",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1000153
+      },
+      "writtenOn": "2021-11-14T20:02:30Z",
+      "side": 1,
+      "message": "\u003e\u003e \"all over the place\" is a big word.\n\n\u003e Agree.  Reverting this commit is a little harsh for just google-misc.  \n\nAlso effected bmcweb.  Maybe those are the only two repos effected?\nhttps://gerrit.openbmc-project.xyz/c/openbmc/bmcweb/+/48802\n\nIf there are patches out to fix the CI regression, then this patchset is unnecessary and I\u0027m happy to abandon it, but I didn\u0027t see them getting pushed to the relevant repos by anyone.  Maybe they\u0027re being pushed somewhere else?  The last I saw one the other review, a solution was proposed with \"i will not be doing that.\".  Is someone else volunteering to fix things?  I\u0027d love to see this fixed, but I have too many things on my plate to go learn eslint this moment.\n\n\u003e \n\u003e The previous issues reported with build directories only affected local users attempting to run the script and not CI.\n\nRunning CI locally isn\u0027t a valid use case anymore?  That seems like something that needed accounted for in the initial patch, but if we want to fix it later, I\u0027m happy to not need this revert.\n\n\u003e \n\u003e Both are attempting to be fixed with 48177.  Even if it isn\u0027t the ideal solution (ie. git ls-files) it is at least a step in the right direction.\n\nIf it really does fix all the issues, then it\u0027s up to Andrew if he wants to maintain that list.  It seems like an issue if we\u0027re just hardcoding specific folder names in CI, but maybe if you\u0027re planning on looking into fixing that permanently, and this is just a temporary thing, maybe it\u0027s less of an issue.",
+      "parentUuid": "8ed56021_c47de0b7",
+      "range": {
+        "startLine": 11,
+        "startChar": 42,
+        "endLine": 12,
+        "endChar": 27
+      },
+      "revId": "965e64e5f6ebe592e6ad4481093013f659ff7509",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "66aba3ec_3cdd28df",
         "filename": "/COMMIT_MSG",
         "patchSetId": 1
@@ -60,6 +84,30 @@
       "writtenOn": "2021-11-14T02:24:58Z",
       "side": 1,
       "message": "CI does not re-use the build directories. It deletes the build directory for every build. So nothing is broken in CI (except the google-misc repo). Ignoring the subprojects \u0026 build directory and two things that would only help people to re-use the build folder in local CI.\n\nI also think subprojects support and CI are two opposite things. why are even trigerring subprojects and downloading boost for every bmcweb build in CI ? that\u0027s a huge waste in terms of CI resources.",
+      "range": {
+        "startLine": 13,
+        "startChar": 0,
+        "endLine": 13,
+        "endChar": 17
+      },
+      "revId": "965e64e5f6ebe592e6ad4481093013f659ff7509",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "9f03df42_334fb1eb",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 1000153
+      },
+      "writtenOn": "2021-11-14T20:02:30Z",
+      "side": 1,
+      "message": "\u003e CI does not re-use the build directories. It deletes the build directory for every build. So nothing is broken in CI (except the google-misc repo).\n\nJenkins isn\u0027t the only user of these build scripts.  Rerunning a build on a non-clean directory seems like something valid that people do when running these?  Clearly there are people that expect it to work, because I\u0027m getting patchsets to try to fix the behavior (thank you for commenting on that btw).\n\n\u003e Ignoring the subprojects \u0026 build directory and two things that would only help people to re-use the build folder in local CI.\n\u003e \n\u003e I also think subprojects support and CI are two opposite things. why are even trigerring subprojects and downloading boost for every bmcweb build in CI ? that\u0027s a huge waste in terms of CI resources.\n\nAgreed, that\u0027s another issue I was unaware of and seems like has an easy fix.",
+      "parentUuid": "66aba3ec_3cdd28df",
       "range": {
         "startLine": 13,
         "startChar": 0,
@@ -106,6 +154,48 @@
         "endLine": 15,
         "endChar": 68
       },
+      "revId": "965e64e5f6ebe592e6ad4481093013f659ff7509",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "4ccebe4e_9da83d9b",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 1000153
+      },
+      "writtenOn": "2021-11-14T20:02:30Z",
+      "side": 1,
+      "message": "With which part?  I would hope that you think this is valuable, I\u0027m assuming you\u0027re disagreeing with the \"once those issues are fixed\" part.  I\u0027m happy to abandon this patch if we have solutions that the CI maintainers will accept.",
+      "parentUuid": "21751249_88097759",
+      "range": {
+        "startLine": 14,
+        "startChar": 53,
+        "endLine": 15,
+        "endChar": 68
+      },
+      "revId": "965e64e5f6ebe592e6ad4481093013f659ff7509",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "06375d5b_2cd84e31",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 1000153
+      },
+      "writtenOn": "2021-11-14T20:02:30Z",
+      "side": 1,
+      "message": "\u003e This support was merged on Oct 20 , and its already have been close to 24 days since that support is merged. I don\u0027t think this was a disaster that it messed up everything and had to be reverted at anycost.\n\nI never used any of those words.  I definitely don\u0027t think this is a \"disaster\" or \"had to be reverted at anycost\".  I\u0027m proposing one possible way to fix the regression, which took 5 minutes to write the patch for.  If there\u0027s a better way, I\u0027m happy to see other patches.\n\n\u003e \n\u003e Honestly, I feel demoralized looking at this commit this morning. It would have been great if people would had spend time helping me test all the repo\u0027s \u0026 fix issues as this is community work \u0026 It benefits every repository in openbmc, rather than people spending their time to revert the code.\n\nI\u0027m sorry you feel that way;  To be clear, I definitely don\u0027t want this revert to merge, but it took about a minute execute the git revert command and does fix the issues, so in terms of effort, it was significantly less than trying to triage the build issues.\n\nIt does help quite a bit that you\u0027ve weighed in on https://gerrit.openbmc-project.xyz/c/openbmc/bmcweb/+/48802 in the meantime since this was originally pushed, so it\u0027s very possible that this revert isn\u0027t needed anymore if you have a solution.\n\nI don\u0027t personally have free time this week to be debugging this directly, and I did give my own suggestions on how it could be fixed.  To be clear, I think you misunderstood my statement above, I think this change is valuable, and would be good to have on master, so long as it doesn\u0027t regress anything that worked previously (ie local non jenkins builds).\n\n\u003e \n\u003e This is just my opinion, and i will not be scoring a -1 here , so that i cannot stop maintainers from merging this revert. But if maintainers of this repo agrees with Ed\u0027s reasoning please feel free to revert it.\n\nYep, this is entirely up to Andrew and I will defer to whatever his thinks is the right thing to do.  If he thinks triaging the issues directly is easier, I\u0027m happy to defer.",
+      "parentUuid": "fbfa8a19_69ba7e03",
       "revId": "965e64e5f6ebe592e6ad4481093013f659ff7509",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
