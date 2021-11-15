@@ -97,6 +97,30 @@
     },
     {
       "key": {
+        "uuid": "641f7527_dd8b19af",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1000153
+      },
+      "writtenOn": "2021-11-15T21:53:45Z",
+      "side": 1,
+      "message": "\u003e \u003e Also effected bmcweb.  Maybe those are the only two repos effected? https://gerrit.openbmc-project.xyz/c/openbmc/bmcweb/+/48802\n\u003e \n\u003e This commit from LeiYu on bmcweb doesn\u0027t fix CI and CI isn\u0027t broken.  He is attempting to \"fix\" local execution of the script on an existing build directory.  His commit message says (emphasis mine):\n\u003e \n\u003e \u003e The ___local-ci___ gets \u0027RangeError: Maximum call stack size exceeded\u0027 error\n\u003e on bmcweb repo, this occurs when eslint is checking the boost repo in\n\u003e subprojects.\n\u003e \n\u003e Manoj has been aware of this issue and has been trying to get a fix in since Oct 25th at https://gerrit.openbmc-project.xyz/c/openbmc/openbmc-build-scripts/+/48177, which is why he gave a -1.  \n\u003e \n\u003e Running local CI was a use-case Manoj didn\u0027t test well and he knows it was missed.  He has been working on a fix.  We really shouldn\u0027t be checking in local .eslintignore issues to workaround an issue in the CI scripts; if LeiYu (or anyone else) wants to help fix the issue that is a far better approach.  Otherwise we\u0027ll end up with these .eslintignore issues everywhere.\n\u003e \n\u003e \u003e Running CI locally isn\u0027t a valid use case anymore?  That seems like something that needed accounted for in the initial patch, but if we want to fix it later, I\u0027m happy to not need this revert.\n\u003e \n\u003e Hopefully from my preceding words, we\u0027re on the same page that it is entirely a valid use case.  It was an oversight and being worked on.  But, it is an annoyance and not something preventing code from being merged, which is what \"it seems to be causing build failures all over the place\" implied to me.\n\u003e \n\u003e \u003e If it really does fix all the issues, then it\u0027s up to Andrew if he wants to maintain that list.\n\u003e \n\u003e I agree with you and William that using `git ls-files` is a far better solution.  If Manoj doesn\u0027t work on that in the near future I\u0027ll volunteer to refactor it to get it working.  48177 is not an idea solution but it works for now.\n\nGreat.  With that statement, I think this revert is now unnecessary if you\u0027re signing up to do it.\n\n\u003e \n\u003e \u003e The last I saw one the other review, a solution was proposed with \"i will not be doing that.\".\n\u003e \n\u003e I don\u0027t think Manoj ever said he wasn\u0027t going to be fixing the problem.  He was given a suggestion twice on how others thought the work should be done and he didn\u0027t want to take that approach.  There is nothing wrong with that, especially when he has something that fixes the problems.\n\nMust\u0027ve just been a misunderstanding then.  I didn\u0027t see a proposal for another solution, I read that as Manoj not planning on fixing it at all.\n\n\u003e  Until the maintainers say \"we do not accept the way Manoj did it\" and then Manoj says \"then I give up on fixing this\", then we can decide if we want to either revert the feature or have someone else volunteer to fix it.\n\u003e \n\u003e Frankly, I understand his frustration as well on this.  I\u0027ve seen multiple times where we\u0027ve gotten a response of \"this doesn\u0027t work on google-misc\", usually without a suggestion of how to make it work *for* google-misc.  Having to do special things for one repository that does things in an entirely different way from everyone else is as much of a burden on the community as it is that the community sometimes breaks google-misc because it does things differently.\n\nSure, and that\u0027s a fair commentary, but I don\u0027t think it\u0027s isolated to google-misc.  We aren\u0027t very consistent as a whole, which I think we can improve on.",
+      "parentUuid": "534c0fc1_dd587c5b",
+      "range": {
+        "startLine": 11,
+        "startChar": 42,
+        "endLine": 12,
+        "endChar": 27
+      },
+      "revId": "965e64e5f6ebe592e6ad4481093013f659ff7509",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "66aba3ec_3cdd28df",
         "filename": "/COMMIT_MSG",
         "patchSetId": 1
