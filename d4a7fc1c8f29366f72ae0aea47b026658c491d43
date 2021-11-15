@@ -70,6 +70,30 @@
       "revId": "d4a7fc1c8f29366f72ae0aea47b026658c491d43",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "ae66b5eb_0f9b95bf",
+        "filename": "config/eslint-global-config.json",
+        "patchSetId": 5
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-11-15T04:51:48Z",
+      "side": 1,
+      "message": "\u003e \u003e This is not \"hardcoding\", this is a config file that tell\u0027s eslint to ignore a glob pattern much like writing a glob pattern in the .gitignore file.\n\u003e \n\u003e I say hardcoding, because if say, I changed the name of the subprojects folder to say, \"external\", the CI would now break again.  We should not be relying on naming conventions in CI.\n\nThere are two things here :\n1. subprojects folder name \u0026 placement of that folder(should be always in the root) can never be changed, if it changes the whole meson subprojects infrastructure and the tooling that consume that would eventually fail, in that case we have bigger problems than json validation.\n2. There should be someone telling even the git to ignore the subprojects folder, in this case .gitignore file has the hardcoding. if the subproject folder name changes i dont think git ls-files e.t.c would help in that situation.\n\n\u003e \n\u003e \u003e \n\u003e \u003e \n\u003e \u003e I have already told this to wak in the discord, but let me tell this again we cannot rely on gitignore . There are json files in various repos in BMC that are purposefully written to be malformed for the unit testing purpose.Those files are present in the .eslintignore file.These files should not be linted but they should not be present in ignore list of git,\n\u003e \n\u003e I\u0027m not sure why one precludes the other?  Using git ls-files doesn\u0027t prevent someone from ignoring certain files additionally with .eslintignore?\n\u003e \n\u003e \u003e \n\u003e \u003e So, the ideal solution would be to append both of them into a single file and then consume that. But as discussed in the discord, just for the sake of google-misc(which has code in subprojects folder) i will not be doing that.\n\u003e \n\u003e So, given that current builds are broken for some repos, and you\u0027re not wanting to make changes, what are you proposing to unbreak the build?  I\u0027m not quite following how you\u0027d like to see this go forward, but I\u0027m happy to take your direction here.\nApologies, i did not mean that i dont want to make changes, In the current state, this commit already fixes the issues that are caused due to the build folder and the subprojects folder.\n\nBased on the comments from Patrick and you, rather than using the eslint native pattern checker for json files, i tried testing my changes using the $(git ls-files | grep \u0027\\.json$\u0027) and trigerring the eslint for each file from the pattern, but i see that it is slower than the eslint pattern checker that checks the directory in one shot. And also i would need a better logic to come up with a way to run it on all the files rather than breaking at a single failure(which eslint is doing it for free), so that we can see errors from all the json files in just one run.\n\nCan we get this commit merged first(to avoid people fixing things in their repos), and then investigate on coming up with a better logic later.",
+      "parentUuid": "48be8506_cd8487d0",
+      "range": {
+        "startLine": 10,
+        "startChar": 4,
+        "endLine": 10,
+        "endChar": 67
+      },
+      "revId": "d4a7fc1c8f29366f72ae0aea47b026658c491d43",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
     }
   ]
 }
