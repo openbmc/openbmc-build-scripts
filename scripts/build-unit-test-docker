@@ -798,7 +798,8 @@ RUN apt-get update && apt-get dist-upgrade -yy && apt-get install -yy \
     libmimetic-dev \
     libxml2-utils \
     libxml-simple-perl \
-    rsync
+    rsync \
+    libcryptsetup-dev
 
 RUN npm install -g eslint@latest eslint-plugin-json@latest
 
