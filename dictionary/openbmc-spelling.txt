@@ -751,6 +751,7 @@ informations->information
 informtion->information
 infromation->information
 ingore->ignore
+inheritence->inheritance
 inital->initial
 initalized->initialized
 initalised->initialized
