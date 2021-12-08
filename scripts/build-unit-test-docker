@@ -191,6 +191,17 @@ packages = {
         build_type="custom",
         build_steps=[f"cp src/fifo_map.hpp {prefix}/include/"],
     ),
+    # version from meta-openembedded/meta-oe/recipes-devtools/unifex/unifex_git.bb
+    "facebookexperimental/libunifex": PackageDef(
+        rev="9df21c58d34ce8a1cd3b15c3a7347495e29417a0",
+        build_type="cmake",
+        config_flags=[
+            "-DBUILD_SHARED_LIBS=ON",
+            "-DBUILD_TESTING=OFF",
+            "-DCMAKE_CXX_STANDARD=20",
+            "-DUNIFEX_BUILD_EXAMPLES=OFF",
+        ],
+    ),
     "open-power/pdbg": PackageDef(build_type="autoconf"),
     "openbmc/gpioplus": PackageDef(
         depends=["openbmc/stdplus"],
@@ -251,6 +262,9 @@ packages = {
         ],
     ),
     "openbmc/sdbusplus": PackageDef(
+        depends=[
+            "facebookexperimental/libunifex",
+        ],
         build_type="meson",
         custom_post_dl=[
             "cd tools",
