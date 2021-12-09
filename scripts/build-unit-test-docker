@@ -10,10 +10,6 @@
 #                     images to be rebuilt rather than reusing caches.>
 #   BUILD_URL:        <optional, used to detect running under CI context
 #                     (ex. Jenkins)>
-#   BRANCH:           <optional, branch to build from each of the openbmc/
-#                     repositories>
-#                     default is master, which will be used if input branch not
-#                     provided or not found
 #   UBUNTU_MIRROR:    <optional, the URL of a mirror of Ubuntu to override the
 #                     default ones in /etc/apt/sources.list>
 #                     default is empty, and no mirror is used.
@@ -49,6 +45,9 @@ class PackageDef(TypedDict, total=False):
 
     # rev [optional]: Revision of package to use.
     rev: str
+    # branch [optional]: Branch of package to use.
+    #    Currently supported by default: master.
+    branch: str
     # url [optional]: lambda function to create URL: (package, rev) -> url.
     url: Callable[[str, str], str]
     # depends [optional]: List of package dependencies.
@@ -423,6 +422,11 @@ FROM {docker_base_img_name}
         if "rev" in self.pkg_def:
             return
 
+        if "branch" in self.pkg_def:
+            branch = self.pkg_def["branch"]
+        else:
+            branch = "master"
+
         # Check if Jenkins/Gerrit gave us a revision and use it.
         if gerrit_project == self.package and gerrit_rev:
             print(
@@ -642,7 +646,6 @@ docker_image_name = os.environ.get("DOCKER_IMAGE_NAME", "openbmc/ubuntu-unit-tes
 force_build = os.environ.get("FORCE_DOCKER_BUILD")
 is_automated_ci_build = os.environ.get("BUILD_URL", False)
 distro = os.environ.get("DISTRO", "ubuntu:impish")
-branch = os.environ.get("BRANCH", "master")
 ubuntu_mirror = os.environ.get("UBUNTU_MIRROR")
 http_proxy = os.environ.get("http_proxy")
 
