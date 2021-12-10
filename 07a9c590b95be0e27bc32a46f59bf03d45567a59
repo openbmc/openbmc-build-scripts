@@ -34,6 +34,24 @@
       "revId": "07a9c590b95be0e27bc32a46f59bf03d45567a59",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "dbb6e8e8_7b69fb1e",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2021-12-10T12:35:19Z",
+      "side": 1,
+      "message": "Your example doesn\u0027t help me understand the need for this.  The current {branch} is only used when we don\u0027t have a revision.\n\nSee:\n- https://github.com/openbmc/openbmc-build-scripts/blob/master/scripts/build-unit-test-docker#L423\n- https://github.com/openbmc/openbmc-build-scripts/blob/master/scripts/build-unit-test-docker#L438\n\nFor non-openbmc repositories we already specify a revision.  This can be a tag or a commit number.  In neither case does it matter what branch this commit is on; github just gives us the revision we ask for (it is quite common for projects to make tags that are not even on a branch!).  So your example of nlohmann, if we want a revision on the develop branch, we just add that revision to rev.  There is no need for adding a branch also.\n\nBoth the existing {branch} and your proposed change are only useful when we are consulting openbmc repositories where we are picking up HEAD.  For those, my understanding is that we want a consistent branch used for all of those repositories.  I can\u0027t currently conceive of a case where we\u0027d want to add an explicit branch to an openbmc repository... so again, I\u0027m not understanding the utility of your proposal.",
+      "parentUuid": "08c3e0ba_576d40ea",
+      "revId": "07a9c590b95be0e27bc32a46f59bf03d45567a59",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
     }
   ]
 }
