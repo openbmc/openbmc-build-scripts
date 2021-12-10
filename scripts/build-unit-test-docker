@@ -675,6 +675,8 @@ if arch == "ppc64le":
     docker_base = "ppc64le/"
 elif arch == "x86_64":
     docker_base = ""
+elif arch == "aarch64":
+    docker_base = ""
 else:
     print(
         f"Unsupported system architecture({arch}) found for docker image",

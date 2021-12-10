@@ -35,6 +35,9 @@ case ${ARCH} in
     "x86_64")
         DOCKER_BASE=""
         ;;
+    "aarch64")
+        DOCKER_BASE=""
+        ;;
     *)
         echo "Unsupported system architecture(${ARCH}) found for docker image"
         exit 1

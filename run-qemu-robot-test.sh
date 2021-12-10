@@ -81,6 +81,9 @@ case ${ARCH} in
   "x86_64")
     QEMU_ARCH="x86_64-linux"
     ;;
+  "aarch64")
+    QEMU_ARCH="arm64-linux"
+    ;;
   *)
     echo "Unsupported system architecture(${ARCH}) found for docker image"
     exit 1
