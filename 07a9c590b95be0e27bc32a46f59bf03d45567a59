@@ -16,6 +16,24 @@
       "revId": "07a9c590b95be0e27bc32a46f59bf03d45567a59",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "08c3e0ba_576d40ea",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 1000397
+      },
+      "writtenOn": "2021-12-10T00:59:14Z",
+      "side": 1,
+      "message": "We have a requirement, we cannot guarantee that all downloaded packages have the same branch name (except `master`).\n\nFor example: if we want to use the `devlop` branch of nlohmann/json instead of the `master` branch, but other packages all use the `master` branch, the global branch cannot be implemented.\n\nAlso, after adding this patch, it will not affect the previous logic. If we don\u0027t use it, we don\u0027t need to set it, otherwise, we can set it like this:\n\n```\n# Release 2020-08-06\n\"nlohmann/json\": PackageDef(\n\trev\u003d\"v3.10.4\",\n\tbuild_type\u003d\"cmake\",\n\tbranch\u003d\"devlop\"\n\tconfig_flags\u003d[\"-DJSON_BuildTests\u003dOFF\"],\n\tcustom_post_install\u003d[\n\t\tf\"ln -s {prefix}/include/nlohmann/json.hpp {prefix}/include/json.hpp\",\n\t],\n)\n```",
+      "parentUuid": "b2e60c03_fa225cee",
+      "revId": "07a9c590b95be0e27bc32a46f59bf03d45567a59",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
     }
   ]
 }
