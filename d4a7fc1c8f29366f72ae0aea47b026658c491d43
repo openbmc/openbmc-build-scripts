@@ -94,6 +94,30 @@
       "revId": "d4a7fc1c8f29366f72ae0aea47b026658c491d43",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "1f7eb343_c2503ee5",
+        "filename": "config/eslint-global-config.json",
+        "patchSetId": 5
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1000153
+      },
+      "writtenOn": "2021-12-14T21:54:33Z",
+      "side": 1,
+      "message": "\u003e i see that it is slower than the eslint pattern checker that checks the directory in one shot.\n\nwho cares if it\u0027s slightly slower?   I can\u0027t imagine it\u0027s a big change in overall timing, and compared to things like the build, is negligible.\n\n\u003e i would need a better logic to come up with a way to run it on all the files rather than breaking at a single failure(which eslint is doing it for free), so that we can see errors from all the json files in just one run.\n\nWhy does this matter?  At the end of the day we\u0027re running a check that users should\u0027ve ideally already run, given that we already require testing.  I think this is a nice to have, not a requirement.\n\n\u003e investigate on coming up with a better logic later.\n\nHow much later?  Is this work that you plan on doing?  This commit has been sitting for several weeks and I don\u0027t see any new logic in code review, maybe I missed it?",
+      "parentUuid": "ae66b5eb_0f9b95bf",
+      "range": {
+        "startLine": 10,
+        "startChar": 4,
+        "endLine": 10,
+        "endChar": 67
+      },
+      "revId": "d4a7fc1c8f29366f72ae0aea47b026658c491d43",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
     }
   ]
 }
