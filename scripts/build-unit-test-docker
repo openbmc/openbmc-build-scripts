@@ -76,6 +76,20 @@ class PackageDef(TypedDict, total=False):
 
 # Packages to include in image.
 packages = {
+    # Install OpenSSL 3.x.
+    # Generally we want to rely on the version of OpenSSL from the OS, but v3.x
+    # was a major API change.  It is included in Yocto but not Ubuntu until
+    # 22.04.  Install it manually so that our CI can target the OpenSSL 3.x
+    # APIs.
+    "openssl/openssl": PackageDef(
+        rev="openssl-3.0.1",
+        build_type="custom",
+        build_steps=[
+            f"./Configure --prefix={prefix} --libdir=lib",
+            f"make -j{proc_count}",
+            f"make -j{proc_count} install"
+        ],
+    ),
     "boost": PackageDef(
         rev="1.77.0",
         url=(
