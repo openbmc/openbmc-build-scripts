@@ -118,6 +118,30 @@
       "revId": "d4a7fc1c8f29366f72ae0aea47b026658c491d43",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "53fe37d9_42d9f25c",
+        "filename": "config/eslint-global-config.json",
+        "patchSetId": 5
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2021-12-15T04:16:27Z",
+      "side": 1,
+      "message": "Honestly, I am not totally convinced that git ls-files would be worth doing given the fact that we need to write extra logic(which eslint is doing for free) \u0026 as the current patch already solves the issues. Will leave it to Andrew to take decide, given that he already gave a +1, i think he is okay with this.\n\n\u003e How much later?  Is this work that you plan on doing? \nI cannot really commit a time, I will get to it when ever i get time, but yes I am always willing to do the work if it helps the community.",
+      "parentUuid": "1f7eb343_c2503ee5",
+      "range": {
+        "startLine": 10,
+        "startChar": 4,
+        "endLine": 10,
+        "endChar": 67
+      },
+      "revId": "d4a7fc1c8f29366f72ae0aea47b026658c491d43",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
     }
   ]
 }
