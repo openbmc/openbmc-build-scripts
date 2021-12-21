@@ -20,7 +20,7 @@
 #   * reviewers: A list of individuals who have requested review notification
 #     on the repository.
 #
-#   * matches: A list of specific file/path matches for granular 'owners' and
+#   * matchers: A list of specific file/path matches for granular 'owners' and
 #     'reviewers'.  See 'owners' plugin documentation.
 #
 #   * openbmc: A list of openbmc-specific meta-data about owners and reviewers.
@@ -39,7 +39,7 @@ reviewers:
 - andrew@aj.id.au
 - msbarth@linux.ibm.com
 
-matches:
+matchers:
 
 openbmc:
 - name: Andrew Geissler
