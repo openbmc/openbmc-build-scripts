@@ -31,7 +31,6 @@ set -uo pipefail
 BRANCH=${BRANCH:-"master"}
 OBMC_BUILD_SCRIPTS="openbmc-build-scripts"
 UNIT_TEST_PY_DIR="scripts"
-DICTIONARY_DIR="dictionary"
 CONFIG_DIR="config"
 UNIT_TEST_PY="unit-test.py"
 FORMAT_CODE_SH="format-code.sh"
@@ -78,7 +77,7 @@ cp "${WORKSPACE}"/${OBMC_BUILD_SCRIPTS}/${UNIT_TEST_PY_DIR}/${FORMAT_CODE_SH} \
 chmod a+x "${WORKSPACE}"/${FORMAT_CODE_SH}
 
 # Copy spellings.txt file into workspace
-cp "${WORKSPACE}"/${OBMC_BUILD_SCRIPTS}/${DICTIONARY_DIR}/${SPELLINGS_TXT} \
+cp "${WORKSPACE}"/${OBMC_BUILD_SCRIPTS}/${CONFIG_DIR}/${SPELLINGS_TXT} \
 "${WORKSPACE}"/${SPELLINGS_TXT}
 
 # Copy the eslintconfig file into workspce
