@@ -114,7 +114,7 @@ case ${ARCH} in
     tini_arch="amd64"
     ;;
   "aarch64")
-    docker_base=""
+    docker_base="arm64v8/"
     tini_arch="arm64"
     ;;
   *)
