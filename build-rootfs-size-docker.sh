@@ -22,7 +22,7 @@ case ${ARCH} in
         DOCKER_BASE=""
         ;;
     "aarch64")
-        DOCKER_BASE=""
+        DOCKER_BASE="arm64v8/"
         ;;
     *)
         echo "Unsupported system architecture(${ARCH}) found for docker image"
