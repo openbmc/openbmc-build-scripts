@@ -16,6 +16,23 @@
       "message": "Can we please merge this as I am still unable to checkin my patches.",
       "revId": "7b3aacd738d5794ccefb06e2b425758a5a5a6112",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "70d95a48_4402ae67",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2021-12-30T14:29:11Z",
+      "side": 1,
+      "message": "Jeremy\u0027s concern has been addressed so merging this one.",
+      "revId": "7b3aacd738d5794ccefb06e2b425758a5a5a6112",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
