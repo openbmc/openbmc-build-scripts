@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1743c7c2_3c7fa7ab",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2022-01-04T16:54:12Z",
+      "side": 1,
+      "message": "I confirmed that no one is using this in IBM",
+      "revId": "434fd726dd6c671bf592d8dd3e59dc1abf9fae73",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
