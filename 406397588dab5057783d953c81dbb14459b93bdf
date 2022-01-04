@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "42e7b706_e2492cb3",
+        "filename": "jenkins/userid-validation",
+        "patchSetId": 1
+      },
+      "lineNbr": 110,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2022-01-04T19:05:02Z",
+      "side": 1,
+      "message": "Hmm, I\u0027d vote for at least \"OWNER\" here. I tend to look for these emails to see if I need to update a gerrit group or point someone in the CLA direction.",
+      "range": {
+        "startLine": 110,
+        "startChar": 53,
+        "endLine": 110,
+        "endChar": 57
+      },
+      "revId": "406397588dab5057783d953c81dbb14459b93bdf",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
