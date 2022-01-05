@@ -1225,6 +1225,9 @@ if __name__ == '__main__':
         for f in format_scripts:
             check_call_cmd(f, CODE_SCAN_DIR)
 
+        # Check to see if any files changed
+        check_call_cmd("git", "-C", CODE_SCAN_DIR, "--no-pager", "diff", "--exit-code")
+
     # Check if this repo has a supported make infrastructure
     pkg = Package(UNIT_TEST_PKG, CODE_SCAN_DIR)
     if not pkg.build_system():
