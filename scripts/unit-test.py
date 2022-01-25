@@ -972,8 +972,16 @@ class Meson(BuildSystem):
         if os.path.isfile('.clang-tidy'):
             os.environ["CXX"] = "clang++"
             check_call_cmd('meson', 'setup', 'build-clang')
-            check_call_cmd('run-clang-tidy', '-p',
-                           'build-clang')
+            os.chdir("build-clang")
+            try:
+                check_call_cmd('run-clang-tidy', '-fix', '-format', '-p', '.')
+            except subprocess.CalledProcessError:
+                check_call_cmd("git", "-C", CODE_SCAN_DIR,
+                       "--no-pager", "diff")
+                raise
+            finally:
+                os.chdir("..")
+
         # Run the basic clang static analyzer otherwise
         else:
             check_call_cmd('ninja', '-C', 'build',
