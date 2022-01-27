@@ -22,6 +22,30 @@
       },
       "revId": "88db4c207487a3af57e2ca165029f605fe02078a",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "501a4aee_db897aa6",
+        "filename": "scripts/unit-test.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 981,
+      "author": {
+        "id": 1000153
+      },
+      "writtenOn": "2022-01-27T19:26:12Z",
+      "side": 1,
+      "message": "We could, but given that we\u0027re migrating away from cmake to meson, I\u0027d rather not continue adding features to something we want to go away eventually.  With that said, happy to do it if we think it would be useful, but I don\u0027t know of any repos that enable clang-tidy and are still using cmake.",
+      "parentUuid": "846c28b6_03792070",
+      "range": {
+        "startLine": 978,
+        "startChar": 0,
+        "endLine": 981,
+        "endChar": 21
+      },
+      "revId": "88db4c207487a3af57e2ca165029f605fe02078a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
