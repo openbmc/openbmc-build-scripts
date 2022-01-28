@@ -62,8 +62,7 @@ cd "${BASE_DIR}"
 # Find the correct drive file, and save its name.  OpenBMC has 3 different
 # image formats.  The UBI based one, the standard static.mtd one, and the
 # default QEMU basic image (rootfs.ext4).
-
-DEFAULT_IMAGE_LOC="./tmp/deploy/images/"
+DEFAULT_IMAGE_LOC=${DEFAULT_IMAGE_LOC:-./tmp/deploy/images/}
 if [ -f ${DEFAULT_IMAGE_LOC}/"${MACHINE}"/obmc-phosphor-image-"${MACHINE}".ubi.mtd ]; then
     DRIVE="obmc-phosphor-image-${MACHINE}.ubi.mtd"
 elif [ -f ${DEFAULT_IMAGE_LOC}/"${MACHINE}"/obmc-phosphor-image-"${MACHINE}".static.mtd ]; then
