@@ -48,6 +48,10 @@
 #  MACHINE            = Machine to run test against. The options are "witherspoon",
 #                       "palmetto", "romulus", or undefined (default).  Default
 #                       will use the versatilepb model.
+#
+#  DEFAULT_IMAGE_LOC  = The image location of the target MACHINE. Default to
+#                       "./tmp/deploy/images/"
+#
 ###############################################################################
 
 set -uo pipefail
@@ -61,6 +65,7 @@ UPSTREAM_WORKSPACE=${UPSTREAM_WORKSPACE:-${1}}
 LAUNCH=${LAUNCH:-local}
 DEFAULT_MACHINE=versatilepb
 MACHINE=${MACHINE:-${DEFAULT_MACHINE}}
+DEFAULT_IMAGE_LOC=${DEFAULT_IMAGE_LOC:-./tmp/deploy/images/}
 
 # The automated test suite needs a real machine type so
 # if we're using versatilepb for our qemu start parameter
@@ -117,6 +122,7 @@ if [[ ${LAUNCH} == "local" ]]; then
                                 --env QEMU_ARCH="${QEMU_ARCH}" \
                                 --env QEMU_BIN="${QEMU_BIN}" \
                                 --env MACHINE="${MACHINE}" \
+                                --env DEFAULT_IMAGE_LOC="${DEFAULT_IMAGE_LOC}" \
                                 --workdir "${OBMC_BUILD_DIR}"           \
                                 --volume "${UPSTREAM_WORKSPACE}:${OBMC_BUILD_DIR}:ro" \
                                 --tty \
