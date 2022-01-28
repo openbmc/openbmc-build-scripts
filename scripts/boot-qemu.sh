@@ -62,15 +62,14 @@ cd "${BASE_DIR}"
 # Find the correct drive file, and save its name.  OpenBMC has 3 different
 # image formats.  The UBI based one, the standard static.mtd one, and the
 # default QEMU basic image (rootfs.ext4).
-
-DEFAULT_IMAGE_LOC="./tmp/deploy/images/"
-if [ -f ${DEFAULT_IMAGE_LOC}/"${MACHINE}"/obmc-phosphor-image-"${MACHINE}".ubi.mtd ]; then
+DEFAULT_IMAGE_LOC="${DEFAULT_IMAGE_LOC:-./tmp/deploy/images/}"
+if [ -f "${DEFAULT_IMAGE_LOC}/${MACHINE}/obmc-phosphor-image-${MACHINE}".ubi.mtd ]; then
     DRIVE="obmc-phosphor-image-${MACHINE}.ubi.mtd"
-elif [ -f ${DEFAULT_IMAGE_LOC}/"${MACHINE}"/obmc-phosphor-image-"${MACHINE}".static.mtd ]; then
+elif [ -f "${DEFAULT_IMAGE_LOC}/${MACHINE}/obmc-phosphor-image-${MACHINE}".static.mtd ]; then
     DRIVE="obmc-phosphor-image-${MACHINE}.static.mtd"
 else
     # shellcheck disable=SC2010
-    DRIVE=$(ls ${DEFAULT_IMAGE_LOC}/qemuarm | grep rootfs.ext4)
+    DRIVE=$(ls "${DEFAULT_IMAGE_LOC}"/qemuarm | grep rootfs.ext4)
 fi
 
 # Copy the drive file off to /tmp so that QEMU does not write anything back
@@ -81,9 +80,9 @@ TMP_DRIVE_PATH=$(mktemp "/tmp/${DRIVE}-XXXXX")
 # The drive file is stored in different locations depending on if we are
 # using the default or real platforms.
 if [ "${MACHINE}" = "${DEFAULT_MACHINE}" ]; then
-    cp ${DEFAULT_IMAGE_LOC}/qemuarm/"${DRIVE}" "${TMP_DRIVE_PATH}"
+    cp "${DEFAULT_IMAGE_LOC}/qemuarm/${DRIVE}" "${TMP_DRIVE_PATH}"
 else
-    cp ${DEFAULT_IMAGE_LOC}/"${MACHINE}"/"${DRIVE}" "${TMP_DRIVE_PATH}"
+    cp "${DEFAULT_IMAGE_LOC}/${MACHINE}/${DRIVE}" "${TMP_DRIVE_PATH}"
 fi
 
 # Obtain IP from /etc/hosts if IP is not valid set to localhost
@@ -124,9 +123,9 @@ if [ "${MACHINE}" = "${DEFAULT_MACHINE}" ]; then
         -serial mon:vc \
         -serial mon:stdio \
         -serial null \
-        -kernel ${DEFAULT_IMAGE_LOC}/qemuarm/zImage \
+        -kernel "${DEFAULT_IMAGE_LOC}"/qemuarm/zImage \
         -append 'root=/dev/vda rw highres=off  console=ttyS0 mem=256M ip=dhcp console=ttyAMA0,115200 console=tty'\
-        -dtb ${DEFAULT_IMAGE_LOC}/qemuarm/zImage-versatile-pb.dtb
+        -dtb "${DEFAULT_IMAGE_LOC}"/qemuarm/zImage-versatile-pb.dtb
 else
     # shellcheck disable=SC2086 # NIC is intentionally word-split.
     ${QEMU_BIN} \
