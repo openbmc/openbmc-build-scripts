@@ -186,7 +186,7 @@ packages = {
     ),
     # version from /meta-openembedded/meta-oe/recipes-devtools/boost-url/boost-url_git.bb
     "CPPAlliance/url": PackageDef(
-        rev="4f712ed69a04a344957d22efa5dc111b415b3aff",
+        rev="d740a92d38e3a8f4d5b2153f53b82f1c98e312ab",
         build_type="custom",
         build_steps=[f"cp -a include/** {prefix}/include/"],
     ),
