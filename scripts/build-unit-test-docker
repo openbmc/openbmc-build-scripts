@@ -91,7 +91,7 @@ packages = {
         ],
     ),
     "boost": PackageDef(
-        rev="1.77.0",
+        rev="1.78.0",
         url=(
             lambda pkg, rev: f"https://downloads.yoctoproject.org/mirror/sources/{pkg}_{rev.replace('.', '_')}.tar.bz2"
         ),
