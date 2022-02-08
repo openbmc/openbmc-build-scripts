@@ -864,6 +864,7 @@ RUN pip3 install jsonschema
 RUN pip3 install meson==0.58.1
 RUN pip3 install protobuf
 RUN pip3 install codespell
+RUN pip3 install requests
 """
 
 # Build the base and stage docker images.
