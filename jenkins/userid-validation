@@ -54,6 +54,7 @@ GERRIT_CI_GROUPS=( \
     amd/ci-authorized \
     ami/ci-authorized \
     ampere/ci-authorized \
+    arm/ci-authorized \
     aspeed/ci-authorized \
     bytedance/ci-authorized \
     code-construct/ci-authorized \
