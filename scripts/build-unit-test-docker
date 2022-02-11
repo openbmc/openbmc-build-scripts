@@ -201,6 +201,7 @@ packages = {
     "openbmc/phosphor-dbus-interfaces": PackageDef(
         depends=["openbmc/sdbusplus"],
         build_type="meson",
+        config_flags=["-Dgenerate_md=false"],
     ),
     "openbmc/phosphor-logging": PackageDef(
         depends=[
