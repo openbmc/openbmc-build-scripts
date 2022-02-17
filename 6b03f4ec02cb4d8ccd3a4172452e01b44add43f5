@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a9d13e95_6a99df90",
+        "filename": "jenkins/userid-validation",
+        "patchSetId": 2
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2022-02-17T18:25:30Z",
+      "side": 1,
+      "message": "These are fine but -z is probably more appropriate than a comparison against empty.  I\u0027m a little surprised the shellcheck hints don\u0027t suggest that.",
+      "revId": "6b03f4ec02cb4d8ccd3a4172452e01b44add43f5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
