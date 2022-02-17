@@ -70,7 +70,7 @@ fi
 shell_scripts="$(git ls-files | xargs -n1 file -0 | \
                  grep -a "shell script" | cut -d '' -f 1)"
 for script in ${shell_scripts}; do
-  shellcheck -x "${script}" || ${shellcheck_allowfail}
+  shellcheck --colors=never -x "${script}" || ${shellcheck_allowfail}
 done
 
 # Allow called scripts to know which clang format we are using
