@@ -972,6 +972,10 @@ class Meson(BuildSystem):
         if os.path.isfile('.clang-tidy'):
             os.environ["CXX"] = "clang++"
             check_call_cmd('meson', 'setup', 'build-clang')
+
+            # build the clang build
+            check_call_cmd('ninja', '-C', 'build-clang')
+
             os.chdir("build-clang")
             try:
                 check_call_cmd('run-clang-tidy', '-fix', '-format', '-p', '.')
