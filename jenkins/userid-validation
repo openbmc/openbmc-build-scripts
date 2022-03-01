@@ -58,6 +58,7 @@ GERRIT_CI_GROUPS=( \
     aspeed/ci-authorized \
     bytedance/ci-authorized \
     code-construct/ci-authorized \
+    depo/ci-authorized \
     erg/ci-authorized \
     facebook/ci-authorized \
     fii/ci-authorized \
