@@ -51,6 +51,23 @@
       "parentUuid": "33fe227c_3e98e29a",
       "revId": "0ab00f2cf4030a239ac83991a067a9cbbbae82bb",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1eefade2_b14c30ce",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000188
+      },
+      "writtenOn": "2022-03-04T22:56:22Z",
+      "side": 1,
+      "message": "This makes me think we should just have all of the namespaces enabled by default for phosphor-dbus-interfaces so that subproject builds work correctly. Then in bitbake we should disable all of the unused ones.",
+      "revId": "0ab00f2cf4030a239ac83991a067a9cbbbae82bb",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
