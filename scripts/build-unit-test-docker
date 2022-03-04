@@ -230,6 +230,7 @@ packages = {
         build_type="meson",
         config_flags=[
             "-Ddata_com_ibm=true",
+            "-Ddata_com_google=true",
             "-Ddata_org_open_power=true",
         ],
     ),
