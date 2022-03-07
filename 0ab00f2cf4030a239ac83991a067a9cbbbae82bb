@@ -68,6 +68,41 @@
       "message": "This makes me think we should just have all of the namespaces enabled by default for phosphor-dbus-interfaces so that subproject builds work correctly. Then in bitbake we should disable all of the unused ones.",
       "revId": "0ab00f2cf4030a239ac83991a067a9cbbbae82bb",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9e0ffb92_373d4ee8",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000593
+      },
+      "writtenOn": "2022-03-07T23:16:29Z",
+      "side": 1,
+      "message": "I don\u0027t have a strong preference.\nThe concern with having all enabled by default, would be adding a namespace, and then forgetting to remove it in the recipe. The current way (disabled by default) you get an explicit error when running unit test.\n\nI created a change, that enables all namespaces in pdi.\nhttps://gerrit.openbmc-project.xyz/c/openbmc/phosphor-dbus-interfaces/+/51778",
+      "parentUuid": "1eefade2_b14c30ce",
+      "revId": "0ab00f2cf4030a239ac83991a067a9cbbbae82bb",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9c233a54_89631a0e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000593
+      },
+      "writtenOn": "2022-03-07T23:16:29Z",
+      "side": 1,
+      "message": "Thanks for looking this over",
+      "revId": "0ab00f2cf4030a239ac83991a067a9cbbbae82bb",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
