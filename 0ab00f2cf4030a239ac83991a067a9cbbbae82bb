@@ -103,6 +103,24 @@
       "message": "Thanks for looking this over",
       "revId": "0ab00f2cf4030a239ac83991a067a9cbbbae82bb",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d2f646d6_f62b6e94",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000188
+      },
+      "writtenOn": "2022-03-07T23:40:03Z",
+      "side": 1,
+      "message": "Well, our recipe should just have a way to disable everything by default. Only via allowlist would things get turned on. Then you don\u0027t have the problem of forgetting.",
+      "parentUuid": "9e0ffb92_373d4ee8",
+      "revId": "0ab00f2cf4030a239ac83991a067a9cbbbae82bb",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
