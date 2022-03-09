@@ -34,6 +34,7 @@
 owners:
 - geissonator@yahoo.com
 - joel@jms.id.au
+- patrick@stwcx.xyz
 
 reviewers:
 - andrew@aj.id.au
@@ -54,3 +55,6 @@ openbmc:
 - name: Matthew Barth
   email: msbarth@linux.ibm.com
   discord: msbarth
+- name: Patrick Williams
+  email: patrick@stwcx.xyz
+  discord: stwcx
