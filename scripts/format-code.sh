@@ -28,28 +28,30 @@ cd "${DIR}"
 
 echo "Formatting code under $DIR/"
 
-ESLINT_CONFIG="eslint ${DIR} --no-eslintrc -c ${WORKSPACE}/eslint-global-config.json \
-               --ext .json --resolve-plugins-relative-to /usr/local/lib/node_modules\
-               --no-error-on-unmatched-pattern"
-ESLINT_IGNORE=" --ignore-path ${DIR}/.eslintignore"
-
-# Get the eslint configuration from the repository
-if [[ -f ".eslintrc.json" ]] || [[ -f ".eslintignore" ]]; then
-    echo "Running the json validator on the repo using it's config > "
-    if [[ ! -f ".eslintrc.json" ]]; then
-        eslint_command="${ESLINT_CONFIG} ${ESLINT_IGNORE}"
-    else
-        eslint_command="$ESLINT_CONFIG"
-    fi
-else
-    echo "Running the json validator on the repo using the global config > "
-        eslint_command="$ESLINT_CONFIG"
+if [[ -f ".eslintignore" ]]; then
+  ESLINT_IGNORE="--ignore-path .eslintignore"
+elif [[ -f ".gitignore" ]]; then
+  ESLINT_IGNORE="--ignore-path .gitignore"
 fi
 
+# Get the eslint configuration from the repository
+if [[ -f ".eslintrc.json" ]]; then
+    echo "Running the json validator on the repo using it's config > "
+    ESLINT_RC="-c .eslintrc.json"
+else
+    echo "Running the json validator on the repo using the global config"
+    ESLINT_RC="--no-eslintrc -c ${WORKSPACE}/eslint-global-config.json"
+fi
+
+ESLINT_COMMAND="eslint . ${ESLINT_IGNORE} ${ESLINT_RC} \
+               --ext .json --format=json \
+               --resolve-plugins-relative-to /usr/local/lib/node_modules \
+               --no-error-on-unmatched-pattern"
+
 # Print eslint command
-echo "$eslint_command"
+echo "$ESLINT_COMMAND"
 # Run eslint
-$eslint_command
+$ESLINT_COMMAND
 
 if [[ -f "setup.cfg" ]]; then
   pycodestyle --show-source --exclude=subprojects .
