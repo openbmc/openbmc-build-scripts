@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4b81d5c6_3bb1fb84",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2022-03-11T18:37:02Z",
+      "side": 1,
+      "message": "Welcome to openbmc-build-scripts",
+      "revId": "2d7ff356acae490de1672fa8a96b3fbc1af71829",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
