@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ac1bda1e_20cbd30b",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2022-03-14T07:00:16Z",
+      "side": 1,
+      "message": "Thanks for the patchset ed, I think you know this already, but just wanted to call it out in this commit about why esintignore is needed and why can\u0027t it be replaced by gitignore.\n\n.eslintignore - file tells eslint to not validate a JSON (use case is to tell eslint that we are intentionally not running validator on files/patterns present in this file - as we already know that they are bad jsons in the first place).\n\n.gitignore - A gitignore file specifies intentionally untracked files that Git should ignore. - having this file would help eslint to recognize what we already ignore (like subprojects folder e.t.c) and not need a different config file to tell eslint.\n\nSo an intentionally written bad JSON file(for unit testing purposes) will not have its entry in the .gitignore file \u0026 needs its entry in the .eslintignore file.\n\nIt would have been really good if eslint lint supports a list for ignore-path argument. But as written , I am happy with this patch set.\n\nThanks again.",
+      "range": {
+        "startLine": 12,
+        "startChar": 31,
+        "endLine": 13,
+        "endChar": 46
+      },
+      "revId": "826de33e25a8ad076e6e3f4679f2bc65836a079b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a2482958_b3f1473f",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2022-03-14T07:00:16Z",
+      "side": 1,
+      "message": "typo",
+      "range": {
+        "startLine": 14,
+        "startChar": 36,
+        "endLine": 14,
+        "endChar": 46
+      },
+      "revId": "826de33e25a8ad076e6e3f4679f2bc65836a079b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
