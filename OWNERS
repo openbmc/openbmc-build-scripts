@@ -38,7 +38,6 @@ owners:
 
 reviewers:
 - andrew@aj.id.au
-- msbarth@linux.ibm.com
 
 matchers:
 
@@ -52,9 +51,6 @@ openbmc:
 - name: Joel Stanley
   email: joel@jms.id.au
   discord: joel
-- name: Matthew Barth
-  email: msbarth@linux.ibm.com
-  discord: msbarth
 - name: Patrick Williams
   email: patrick@stwcx.xyz
   discord: stwcx
