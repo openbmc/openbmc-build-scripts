@@ -679,6 +679,12 @@ homedir = os.environ.get("HOME", "/root")
 gid = os.getgid()
 uid = os.getuid()
 
+# Use well-known constants if user is root
+if username == "root":
+    homedir = "/root"
+    gid = 0
+    uid = 0
+
 # Determine the architecture for Docker.
 arch = uname("-m").strip()
 if arch == "ppc64le":
@@ -880,7 +886,7 @@ FROM {docker_base_img_name}
 RUN echo '{Package.depcache()}' > /tmp/depcache
 
 # Final configuration for the workspace
-RUN grep -q {gid} /etc/group || groupadd -g {gid} {username}
+RUN grep -q {gid} /etc/group || groupadd -f -g {gid} {username}
 RUN mkdir -p "{os.path.dirname(homedir)}"
 RUN grep -q {uid} /etc/passwd || useradd -d {homedir} -m -u {uid} -g {gid} {username}
 RUN sed -i '1iDefaults umask=000' /etc/sudoers
