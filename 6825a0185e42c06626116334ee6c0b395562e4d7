@@ -16,6 +16,41 @@
       "message": "This worked for me. Anybody else ran into this problem before?\n",
       "revId": "6825a0185e42c06626116334ee6c0b395562e4d7",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a94db800_c97a5811",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2022-03-21T17:40:50Z",
+      "side": 1,
+      "message": "I think the code itself is probably fine, but I suspect there is some environment error that is causing you down this codepath.",
+      "revId": "6825a0185e42c06626116334ee6c0b395562e4d7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5734942e_6fbcac8e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2022-03-21T17:40:50Z",
+      "side": 1,
+      "message": "Do you know in what contexts you end up with attempts to run this as root?  That seems like something else isn\u0027t right.  The only thing obvious to me is this:\n\nscripts/build-unit-test-docker:username \u003d os.environ.get(\"USER\", \"root\")\n\nI wonder if we should have this as USERNAME instead of USER.  Or add USERNAME as a fallback?  I have both set:\n\n  $ env | grep USER\n  USERNAME\u003dapwillia\n  USER\u003dapwillia",
+      "parentUuid": "6fdfe0b7_3e1f12c7",
+      "revId": "6825a0185e42c06626116334ee6c0b395562e4d7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
