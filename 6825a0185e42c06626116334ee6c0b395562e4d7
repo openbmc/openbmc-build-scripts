@@ -51,6 +51,41 @@
       "parentUuid": "6fdfe0b7_3e1f12c7",
       "revId": "6825a0185e42c06626116334ee6c0b395562e4d7",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0f767049_7f4bcbdc",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2022-03-21T18:29:05Z",
+      "side": 1,
+      "message": "Ditto with what Patrick said. This seems pretty harmless but I\u0027m not sure how your system is getting in this situation. I\u0027ve never seen it.",
+      "revId": "6825a0185e42c06626116334ee6c0b395562e4d7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e8c91696_b8a6ce34",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2022-03-21T18:29:05Z",
+      "side": 1,
+      "message": "Just USER for me on Ubuntu 20:\n$ env | grep USER\nUSER\u003dandrewg",
+      "parentUuid": "5734942e_6fbcac8e",
+      "revId": "6825a0185e42c06626116334ee6c0b395562e4d7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
