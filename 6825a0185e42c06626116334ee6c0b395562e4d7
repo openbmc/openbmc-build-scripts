@@ -86,6 +86,24 @@
       "parentUuid": "5734942e_6fbcac8e",
       "revId": "6825a0185e42c06626116334ee6c0b395562e4d7",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b99bac75_08fa3bc7",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000520
+      },
+      "writtenOn": "2022-03-21T22:03:42Z",
+      "side": 1,
+      "message": "The classic UNIX variable has always been USER, I think. I have not heard of USERNAME.\nI wanted to build an image that runs as root, without actually having to run the build script as root.",
+      "parentUuid": "e8c91696_b8a6ce34",
+      "revId": "6825a0185e42c06626116334ee6c0b395562e4d7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
