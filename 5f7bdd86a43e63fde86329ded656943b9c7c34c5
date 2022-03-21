@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7de23ad2_52d580bf",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2022-03-21T18:35:23Z",
+      "side": 1,
+      "message": "Thanks for the doc improvement",
+      "revId": "5f7bdd86a43e63fde86329ded656943b9c7c34c5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6b845832_e0b1f3d7",
+        "filename": "jenkins/README.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2022-03-21T18:35:23Z",
+      "side": 1,
+      "message": "This job does a few other things besides calling sstate-cache-management.sh. Removes bitbake_downloads file older then 90 days. Runs a \"docker image prune -f\".\n\nProbably a good candidate for a wrapper script. But just an FYI for this review.",
+      "revId": "5f7bdd86a43e63fde86329ded656943b9c7c34c5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
