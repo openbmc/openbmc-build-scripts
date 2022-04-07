@@ -34,6 +34,24 @@
       "parentUuid": "529764b3_dcaa9e97",
       "revId": "20fbda4d270ede9cd51a8d2b42d5d1823b2f55ba",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "99087009_da521de0",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000885
+      },
+      "writtenOn": "2022-04-07T19:24:16Z",
+      "side": 1,
+      "message": "ok, I will submit a patch to openembedded and we can sync up in the next tree update.\n\nsynced it to https://github.com/google/googletest/commit/9e712372214d75bb30ec2847a44bf124d48096f3 and sent a patch to openembedded.",
+      "parentUuid": "529764b3_dcaa9e97",
+      "revId": "20fbda4d270ede9cd51a8d2b42d5d1823b2f55ba",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
