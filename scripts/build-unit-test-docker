@@ -139,7 +139,7 @@ packages = {
     ),
     # Release 2021-06-12
     "google/googletest": PackageDef(
-        rev="release-1.11.0",
+        rev="9e712372214d75bb30ec2847a44bf124d48096f3",
         build_type="cmake",
         config_env=["CXXFLAGS=-std=c++20"],
         config_flags=["-DTHREADS_PREFER_PTHREAD_FLAG=ON"],
