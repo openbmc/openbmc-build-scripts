@@ -1231,7 +1231,7 @@ if __name__ == '__main__':
             format_scripts.append(os.path.join(WORKSPACE, "format-code.sh"))
 
         for f in format_scripts:
-            check_call_cmd(f, CODE_SCAN_DIR)
+            check_call_cmd('sudo', 'fakeroot', f, CODE_SCAN_DIR)
 
         # Check to see if any files changed
         check_call_cmd("git", "-C", CODE_SCAN_DIR,
