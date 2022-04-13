@@ -1219,6 +1219,19 @@ if __name__ == '__main__':
             pass
 
     CODE_SCAN_DIR = os.path.join(WORKSPACE, UNIT_TEST_PKG)
+    check_call_cmd("git", "config", "--global", "--add",
+                   "safe.directory", CODE_SCAN_DIR)
+    for root, dirs, files in os.walk(CODE_SCAN_DIR):
+        if os.path.split(root)[-1] != 'subprojects':
+            continue
+        for f in files:
+            subproject = '.'.join(f.split('.')[0:-1])
+            if f.endswith('.wrap') and subproject in dirs:
+                # don't find files in meson subprojects with wraps
+                dirs.remove(subproject)
+        for subproject in dirs:
+            check_call_cmd("git", "config", "--global", "--add",
+                           "safe.directory", os.path.join(root, subproject))
 
     # First validate code formatting if repo has style formatting files.
     # The format-code.sh checks for these files.
