@@ -899,6 +899,8 @@ RUN chown -R {username}:{username} /usr/local/share
 {proxy_cmd}
 
 RUN /bin/bash
+
+RUN git config --global --add safe.directory /
 """
 
 # Do the final docker build
