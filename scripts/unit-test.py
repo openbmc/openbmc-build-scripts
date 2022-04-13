@@ -1230,6 +1230,8 @@ if __name__ == '__main__':
         if not format_scripts:
             format_scripts.append(os.path.join(WORKSPACE, "format-code.sh"))
 
+        check_call_cmd("git", "config", "--global", "--add",
+                       "safe.directory", CODE_SCAN_DIR)
         for f in format_scripts:
             check_call_cmd(f, CODE_SCAN_DIR)
 
