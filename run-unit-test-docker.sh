@@ -101,6 +101,8 @@ UNIT_TEST="${DOCKER_WORKDIR}/${UNIT_TEST_PY},-w,${DOCKER_WORKDIR},\
 -p,${UNIT_TEST_PKG},-b,$BRANCH,-v${TEST_ONLY:+,-t}${NO_FORMAT_CODE:+,-n}\
 ${EXTRA_UNIT_TEST_ARGS}"
 
+git config --global --add safe.directory "${WORKSPACE}/${UNIT_TEST_PKG}"
+
 # Run the docker unit test container with the unit test execution script
 echo "Executing docker image"
 docker run --cap-add=sys_admin --rm=true \
