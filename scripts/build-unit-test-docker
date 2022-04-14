@@ -239,7 +239,7 @@ packages = {
         ],
         build_type="meson",
         config_flags=[
-            f"-Dyaml_dir={prefix}/share/phosphor-dbus-yaml/yaml",
+            f"-Dyamldir={prefix}/share/phosphor-dbus-yaml/yaml",
         ],
     ),
     "openbmc/phosphor-objmgr": PackageDef(
