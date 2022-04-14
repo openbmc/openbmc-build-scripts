@@ -833,6 +833,10 @@ RUN apt-get update && apt-get dist-upgrade -yy && apt-get install -yy \
     rsync \
     libcryptsetup-dev
 
+# Apply autoconf-archive-v2022.02.11 file ax_cxx_compile_stdcxx for C++20.
+RUN curl "http://git.savannah.gnu.org/gitweb/?p=autoconf-archive.git;a=blob_plain;f=m4/ax_cxx_compile_stdcxx.m4;hb=3311b6bdeff883c6a13952594a9dcb60bce6ba80" \
+  > /usr/share/aclocal/ax_cxx_compile_stdcxx.m4
+
 RUN npm install -g eslint@latest eslint-plugin-json@latest
 
 RUN update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-11 11 \
