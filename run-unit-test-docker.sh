@@ -23,6 +23,8 @@
 #                         `/usr/share/dbus-1/system.conf`
 #   NO_FORMAT_CODE:  Optional, do not run format-code.sh
 #   EXTRA_UNIT_TEST_ARGS:  Optional, pass arguments to unit-test.py
+#   NO_BUILD_DOCKER: Optional, do not build docker images; using cache instead
+#   DOCKER_IMG_NAME: Optional, used together with NO_BUILD_DOCKER. It specifies the cached image
 
 # Trace bash processing. Set -e so when a step fails, we fail the build
 set -uo pipefail
@@ -42,6 +44,8 @@ DBUS_SYS_CONFIG_FILE=${dbus_sys_config_file:-"/usr/share/dbus-1/system.conf"}
 MAKEFLAGS="${MAKEFLAGS:-""}"
 DOCKER_WORKDIR="${DOCKER_WORKDIR:-$WORKSPACE}"
 NO_FORMAT_CODE="${NO_FORMAT_CODE:-}"
+NO_BUILD_DOCKER="${NO_BUILD_DOCKER:-}"
+DOCKER_IMG_NAME="${DOCKER_IMG_NAME:-}"
 
 # Timestamp for job
 echo "Unit test build started, $(date)"
@@ -84,13 +88,15 @@ cp "${WORKSPACE}"/${OBMC_BUILD_SCRIPTS}/${CONFIG_DIR}/${SPELLINGS_TXT} \
 cp "${WORKSPACE}"/${OBMC_BUILD_SCRIPTS}/${CONFIG_DIR}/${ESLINT_CONFIG} \
 "${WORKSPACE}"/${ESLINT_CONFIG}
 
-# Configure docker build
-cd "${WORKSPACE}"/${OBMC_BUILD_SCRIPTS}
-echo "Building docker image with build-unit-test-docker"
-# Export input env variables
-export BRANCH
-DOCKER_IMG_NAME=$(./scripts/build-unit-test-docker)
-export DOCKER_IMG_NAME
+if [ -z "${NO_BUILD_DOCKER}" ]; then
+    # Configure docker build
+    cd "${WORKSPACE}"/${OBMC_BUILD_SCRIPTS}
+    echo "Building docker image with build-unit-test-docker"
+    # Export input env variables
+    export BRANCH
+    DOCKER_IMG_NAME=$(./scripts/build-unit-test-docker)
+    export DOCKER_IMG_NAME
+fi
 
 # Allow the user to pass options through to unit-test.py:
 #   EXTRA_UNIT_TEST_ARGS="-r 100" ...
