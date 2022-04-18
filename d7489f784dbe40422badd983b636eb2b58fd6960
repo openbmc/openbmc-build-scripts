@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4bd9672f_30fd1704",
+        "filename": "run-unit-test-docker.sh",
+        "patchSetId": 4
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 1000233
+      },
+      "writtenOn": "2022-04-18T18:15:52Z",
+      "side": 1,
+      "message": "Maybe we could combine these options together into USE_CACHED_DOCKER_IMG or something similar, then skip building the image if that variable is set\n\nOtherwise it seems kind of redundant to have both variables",
+      "revId": "d7489f784dbe40422badd983b636eb2b58fd6960",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
