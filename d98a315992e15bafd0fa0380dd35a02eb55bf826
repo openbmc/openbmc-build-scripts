@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "17b57c8f_fc52288b",
+        "filename": "run-unit-test-docker.sh",
+        "patchSetId": 2
+      },
+      "lineNbr": 95,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2022-04-18T12:52:04Z",
+      "side": 1,
+      "message": "Seems like we still need to set DOCKER_IMG_NAME to something? Or is that somehow passed into the script?",
+      "revId": "d98a315992e15bafd0fa0380dd35a02eb55bf826",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
