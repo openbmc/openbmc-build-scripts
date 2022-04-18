@@ -93,6 +93,30 @@
       },
       "revId": "87fdfd00a656878cf4f288e76ee5757b7e2b5684",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "68ba7c8e_66dfce2e",
+        "filename": "scripts/unit-test.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 1234,
+      "author": {
+        "id": 1000885
+      },
+      "writtenOn": "2022-04-18T23:38:06Z",
+      "side": 1,
+      "message": "oh, nevermind. This create some other issues where the it doesn\u0027t think it is git?\n\n```\n/tmpfs/src/ci_workspace \u003e git -C /tmpfs/src/ci_workspace/${REPO} --no-pager diff --exit-code \n\nwarning: Not a git repository. Use --no-index to compare two paths outside a working tree\n\nusage: git diff --no-index [\u003coptions\u003e] \u003cpath\u003e \u003cpath\u003e\n```",
+      "parentUuid": "6add42e6_9beb5ed2",
+      "range": {
+        "startLine": 1234,
+        "startChar": 12,
+        "endLine": 1234,
+        "endChar": 26
+      },
+      "revId": "87fdfd00a656878cf4f288e76ee5757b7e2b5684",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
