@@ -16,6 +16,24 @@
       "message": "Based on discussion in Discord, I highly suspect in the current state this image is actually not useful.  Part of the \"build\" is to create a user inside the Docker container that matches the username of whoever ran the build script.  If you\u0027re creating a common Docker registry for your whole team, nobody is going to exist inside the container and you\u0027re going to get an error like:\n\n```\ndocker: Error response from daemon: linux spec user: unable to find user kbuilder: no matching entries in passwd file.\n```\n\nHave you confirmed that putting the image into a registry is actually useful and works?",
       "revId": "d3cf7ee4a0d1415ba8a671774d2f24ddcd4bf14b",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "63b89e8b_a33fde7a",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 7
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 1000682
+      },
+      "writtenOn": "2022-04-20T03:46:30Z",
+      "side": 1,
+      "message": "Hello Patrick, Google has been used this method for almost 2 years now. This change is just to upstream that 2 year-old Google internal patch :)  \n\nTo workaround that error, we are doing `sudo -E \"${BUILD_SCRIPTS_PATH_PREFIX}\"/run-unit-test-docker.sh`",
+      "parentUuid": "9216a955_8a75c72b",
+      "revId": "d3cf7ee4a0d1415ba8a671774d2f24ddcd4bf14b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
