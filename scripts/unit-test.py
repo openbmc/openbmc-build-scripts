@@ -507,6 +507,23 @@ def maybe_make_coverage():
         raise Exception('Code coverage failed')
 
 
+def get_clang_tidy_list():
+    clang_tidy_list = []
+    # Filter files/dirs in .clang-tidy-ignore it it exists
+    if os.path.isfile('.clang-tidy-ignore'):
+        with open('.clang-tidy-ignore', 'r') as f:
+            filter_list = f.read().splitlines()
+        clang_tidy_list = subprocess.check_output(
+            ['git', 'ls-files']).decode("utf-8").splitlines()
+        clang_tidy_list = [i for i in clang_tidy_list if i.endswith(
+            '.cpp') or i.endswith('.c') or i.endswith('.cc')]
+        for filter_item in filter_list:
+            clang_tidy_list = [
+                i for i in clang_tidy_list if filter_item not in i]
+
+    return clang_tidy_list
+
+
 class BuildSystem(object):
     """
     Build systems generally provide the means to configure, build, install and
@@ -746,6 +763,9 @@ class CMake(BuildSystem):
 
     def analyze(self):
         if os.path.isfile('.clang-tidy'):
+
+            clang_tidy_list = get_clang_tidy_list()
+
             try:
                 os.mkdir("tidy-build")
             except FileExistsError as e:
@@ -763,7 +783,7 @@ class CMake(BuildSystem):
             os.chdir("tidy-build")
             try:
                 check_call_cmd('run-clang-tidy', "-header-filter=.*", '-p',
-                               '.')
+                               '.', *clang_tidy_list)
             finally:
                 os.chdir("..")
 
@@ -960,11 +980,16 @@ class Meson(BuildSystem):
 
         # Run clang-tidy only if the project has a configuration
         if os.path.isfile('.clang-tidy'):
+
+            clang_tidy_list = get_clang_tidy_list()
+
             os.environ["CXX"] = "clang++"
             check_call_cmd('meson', 'setup', 'build-clang')
             os.chdir("build-clang")
+
             try:
-                check_call_cmd('run-clang-tidy', '-fix', '-format', '-p', '.')
+                check_call_cmd('run-clang-tidy', '-fix',
+                               '-format', '-p', '.', *clang_tidy_list)
             except subprocess.CalledProcessError:
                 check_call_cmd("git", "-C", CODE_SCAN_DIR,
                                "--no-pager", "diff")
