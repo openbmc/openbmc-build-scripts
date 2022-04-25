@@ -74,6 +74,23 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "3bb589bc_83e423c8",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2022-04-25T18:53:19Z",
+      "side": 1,
+      "message": "Is this a standard file name or one we made up?  I don\u0027t really want to keep adding these undocumented OpenBMC-specific files.\n\n\u0027trunk.io\u0027 has matured enough where it can be used by us, so I plan to write up a design for how to incorporate that in the near future.  That will allow us to use many more off-the-shelf linters with very little effort on our part.  It would be nice if we could align with how clang-tidy and/or trunk.io handle this process so we can easily transition away from our custom code to something else.",
+      "revId": "b4bccfe4e42fe3ed8fd9c8614dbe745c9fcd3338",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "bc7f094d_00c6d76a",
         "filename": "scripts/unit-test.py",
         "patchSetId": 1
