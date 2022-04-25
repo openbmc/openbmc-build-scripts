@@ -520,6 +520,7 @@ class BuildSystem(object):
     be implemented, separating out the phases to control whether a package
     should merely be installed or also tested and analyzed.
     """
+
     def __init__(self, package, path):
         """Initialise the driver with properties independent of the build system
 
@@ -883,11 +884,14 @@ class Meson(BuildSystem):
         else:
             meson_flags.append('--buildtype=debugoptimized')
         if OptionKey('tests') in meson_options:
-            meson_flags.append(self._configure_option(meson_options, OptionKey('tests'), build_for_testing))
+            meson_flags.append(self._configure_option(
+                meson_options, OptionKey('tests'), build_for_testing))
         if OptionKey('examples') in meson_options:
-            meson_flags.append(self._configure_option(meson_options, OptionKey('examples'), build_for_testing))
+            meson_flags.append(self._configure_option(
+                meson_options, OptionKey('examples'), build_for_testing))
         if OptionKey('itests') in meson_options:
-            meson_flags.append(self._configure_option(meson_options, OptionKey('itests'), INTEGRATION_TEST))
+            meson_flags.append(self._configure_option(
+                meson_options, OptionKey('itests'), INTEGRATION_TEST))
         if MESON_FLAGS.get(self.package) is not None:
             meson_flags.extend(MESON_FLAGS.get(self.package))
         try:
@@ -933,9 +937,9 @@ class Meson(BuildSystem):
         try:
             with open(os.devnull, 'w') as devnull:
                 output = subprocess.check_output(
-                        ['meson', 'test', '-C', 'build',
-                         '--setup', setup, '-t', '0'],
-                        stderr=subprocess.STDOUT)
+                    ['meson', 'test', '-C', 'build',
+                     '--setup', setup, '-t', '0'],
+                    stderr=subprocess.STDOUT)
         except CalledProcessError as e:
             output = e.output
         output = output.decode('utf-8')
@@ -952,10 +956,10 @@ class Meson(BuildSystem):
             return
         try:
             if self._setup_exists('valgrind'):
-                check_call_cmd('meson', 'test','-t','10','-C', 'build',
+                check_call_cmd('meson', 'test', '-t', '10', '-C', 'build',
                                '--setup', 'valgrind')
             else:
-                check_call_cmd('meson', 'test','-t','10', '-C', 'build',
+                check_call_cmd('meson', 'test', '-t', '10', '-C', 'build',
                                '--wrapper', 'valgrind')
         except CalledProcessError:
             for root, _, files in os.walk(os.getcwd()):
@@ -977,7 +981,7 @@ class Meson(BuildSystem):
                 check_call_cmd('run-clang-tidy', '-fix', '-format', '-p', '.')
             except subprocess.CalledProcessError:
                 check_call_cmd("git", "-C", CODE_SCAN_DIR,
-                       "--no-pager", "diff")
+                               "--no-pager", "diff")
                 raise
             finally:
                 os.chdir("..")
@@ -1101,7 +1105,7 @@ def find_file(filename, basedir):
     """
 
     if not isinstance(filename, list):
-        filename = [ filename ]
+        filename = [filename]
 
     filepaths = []
     for root, dirs, files in os.walk(basedir):
@@ -1187,11 +1191,11 @@ if __name__ == '__main__':
                         help="Only run test cases, no other validation")
     arg_inttests = parser.add_mutually_exclusive_group()
     arg_inttests.add_argument("--integration-tests", dest="INTEGRATION_TEST",
-                        action="store_true", required=False, default=True,
-                        help="Enable integration tests [default].")
+                              action="store_true", required=False, default=True,
+                              help="Enable integration tests [default].")
     arg_inttests.add_argument("--no-integration-tests", dest="INTEGRATION_TEST",
-                        action="store_false", required=False,
-                        help="Disable integration tests.")
+                              action="store_false", required=False,
+                              help="Disable integration tests.")
     parser.add_argument("-v", "--verbose", action="store_true",
                         help="Print additional package status messages")
     parser.add_argument("-r", "--repeat", help="Repeat tests N times",
