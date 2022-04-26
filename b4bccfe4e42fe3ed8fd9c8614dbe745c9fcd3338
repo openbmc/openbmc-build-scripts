@@ -131,6 +131,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "d2864f80_b9da6e67",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2022-04-26T04:56:33Z",
+      "side": 1,
+      "message": "\u003e But we do want to have ability to run the repo-ci locally instead of putting it online. \n\ntrunk can be ran locally.  I plan to get it (and all the corresponding linters) added to the Docker image once/if we go that route.",
+      "parentUuid": "86daa86a_432b1f06",
+      "revId": "b4bccfe4e42fe3ed8fd9c8614dbe745c9fcd3338",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "171782c8_1a4cccb8",
