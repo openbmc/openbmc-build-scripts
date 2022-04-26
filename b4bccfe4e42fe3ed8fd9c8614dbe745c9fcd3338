@@ -131,6 +131,23 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "171782c8_1a4cccb8",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000044
+      },
+      "writtenOn": "2022-04-26T04:11:54Z",
+      "side": 1,
+      "message": "To clarify, this patch does NOT change the existing behavior if the repo does NOT have .clang-tidy-ignore.\nIt only use the new logic to find and filter files to check if .clang-tidy-ignore exists.\nSo it will not impact existing repos.",
+      "revId": "b4bccfe4e42fe3ed8fd9c8614dbe745c9fcd3338",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "bc7f094d_00c6d76a",
@@ -192,6 +209,30 @@
       "side": 1,
       "message": "\u003e \u003e This is going to break the \"ignore\" filtering that already exists in places like bmcweb, and is also going to ignore clang-tidy for generated files, neither of which seem good.\n\u003e \n\u003e How does bmcweb handle the \"ignore\" filter?\n\nTake a look inside bmcweb in the subprojects folder.\n\n\u003e \n\u003e Why do we care about generated files?\n\nBecause people still need to debug generated files, and generated files can still have memory and lifetime safety issues that tidy can check.  Having a consistent rules applied across a repo is helpful in removing entire classes of bugs.",
       "parentUuid": "2a5169d9_6ef01628",
+      "range": {
+        "startLine": 785,
+        "startChar": 37,
+        "endLine": 785,
+        "endChar": 52
+      },
+      "revId": "b4bccfe4e42fe3ed8fd9c8614dbe745c9fcd3338",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4180614c_e827e788",
+        "filename": "scripts/unit-test.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 785,
+      "author": {
+        "id": 1000044
+      },
+      "writtenOn": "2022-04-26T04:11:54Z",
+      "side": 1,
+      "message": "\u003e This is going to break the \"ignore\" filtering that already exists in places like bmcweb, and is also going to ignore clang-tidy for generated files, neither of which seem good.\n\nTo clarify, this patch does NOT change the existing behavior if the repo does NOT have .clang-tidy-ignore.\nIt only use the new logic to find and filter files to check if .clang-tidy-ignore exists.\nSo it will not impact existing repos.",
+      "parentUuid": "e949bd00_d9fafe41",
       "range": {
         "startLine": 785,
         "startChar": 37,
