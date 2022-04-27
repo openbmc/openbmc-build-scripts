@@ -199,12 +199,6 @@ packages = {
             "-Dvalijson_INSTALL_HEADERS=1",
         ],
     ),
-    # version from meta-openembedded/meta-oe/recipes-devtools/nlohmann-fifo/nlohmann-fifo_git.bb
-    "nlohmann/fifo_map": PackageDef(
-        rev="0dfbf5dacbb15a32c43f912a7e66a54aae39d0f9",
-        build_type="custom",
-        build_steps=[f"cp src/fifo_map.hpp {prefix}/include/"],
-    ),
     # version from meta-openembedded/meta-oe/recipes-devtools/unifex/unifex_git.bb
     "facebookexperimental/libunifex": PackageDef(
         rev="9df21c58d34ce8a1cd3b15c3a7347495e29417a0",
