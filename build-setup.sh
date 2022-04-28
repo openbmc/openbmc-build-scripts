@@ -369,9 +369,9 @@ EOF_CONF
 
 # Kick off a build
 if [[ -n "${nice_priority}" ]]; then
-    nice -${nice_priority} bitbake ${BITBAKE_OPTS} ${bitbake_target}
+    nice -${nice_priority} bitbake -k ${BITBAKE_OPTS} ${bitbake_target}
 else
-    bitbake ${BITBAKE_OPTS} ${bitbake_target}
+    bitbake -k ${BITBAKE_OPTS} ${bitbake_target}
 fi
 
 # Copy internal build directory into xtrct_path directory
