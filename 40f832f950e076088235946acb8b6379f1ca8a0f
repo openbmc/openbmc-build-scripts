@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c41f7a35_6147962c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2022-04-29T12:53:15Z",
+      "side": 1,
+      "message": "Seems fine to me, but we should give everyone on review an extra day or two.",
+      "revId": "40f832f950e076088235946acb8b6379f1ca8a0f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
