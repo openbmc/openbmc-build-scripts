@@ -172,13 +172,6 @@ packages = {
         rev="LibVNCServer-0.9.13",
         build_type="cmake",
     ),
-    "martinmoene/span-lite": PackageDef(
-        rev="v0.9.2",
-        build_type="cmake",
-        config_flags=[
-            "-DSPAN_LITE_OPT_BUILD_TESTS=OFF",
-        ],
-    ),
     # version from meta-openembedded/meta-oe/recipes-support/libtinyxml2/libtinyxml2_8.0.0.bb
     "leethomason/tinyxml2": PackageDef(
         rev="8.0.0",
