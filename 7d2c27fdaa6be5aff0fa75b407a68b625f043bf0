@@ -16,6 +16,24 @@
       "message": "I was trying to figure out why we still had python in the Docker image and I think it was for this?\n\njenkins/userid-validation:COMMITTER_EMAIL\u003d$(${GERRIT_COMMAND}/a/changes/${GERRIT_PROJECT/\\//%2F}~${GERRIT_BRANCH}~${GERRIT_CHANGE_ID}/revisions/${GERRIT_PATCHSET_REVISION}/commit | python2 -c \"import sys, json; sys.stdin.read(4); print(json.load(sys.stdin)[\u0027committer\u0027][\u0027email\u0027])\")\n\nBut, that should be running outside the docker image now, right?",
       "revId": "7d2c27fdaa6be5aff0fa75b407a68b625f043bf0",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2594d458_e6dae076",
+        "filename": "build-setup.sh",
+        "patchSetId": 2
+      },
+      "lineNbr": 250,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2022-05-04T23:28:22Z",
+      "side": 0,
+      "message": "Yeah, that\u0027s a good point on why the jenkins nodes need to keep python2. This is run standalone so not within a docker container.",
+      "parentUuid": "7dbfe230_9e628659",
+      "revId": "7d2c27fdaa6be5aff0fa75b407a68b625f043bf0",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
