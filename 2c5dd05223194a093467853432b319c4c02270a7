@@ -16,6 +16,24 @@
       "message": "I\u0027m not very familiar with this, nor have I run it before. But all makes sense to me. Is this run somewhere automatically or just a part of manual testing?",
       "revId": "2c5dd05223194a093467853432b319c4c02270a7",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3b83fbbb_06a91767",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000009
+      },
+      "writtenOn": "2022-05-04T20:32:12Z",
+      "side": 1,
+      "message": "Just manual testing before I push stuff to openbmc/qemu master.",
+      "parentUuid": "6663543a_3a0e6654",
+      "revId": "2c5dd05223194a093467853432b319c4c02270a7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
