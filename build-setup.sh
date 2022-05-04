@@ -182,6 +182,7 @@ if [[ "${distro}" == fedora ]];then
       chrpath \
       cpio \
       diffstat \
+      file \
       findutils \
       gcc \
       gcc-c++ \
@@ -191,7 +192,6 @@ if [[ "${distro}" == fedora ]];then
       perl-bignum \
       perl-Data-Dumper \
       perl-Thread-Queue \
-      python-devel \
       python3-devel \
       SDL-devel \
       socat \
@@ -239,6 +239,7 @@ elif [[ "${distro}" == ubuntu ]]; then
       cpio \
       debianutils \
       diffstat \
+      file \
       gawk \
       git \
       iputils-ping \
@@ -247,7 +248,6 @@ elif [[ "${distro}" == ubuntu ]]; then
       libsdl1.2-dev \
       libthread-queue-any-perl \
       locales \
-      python \
       python3 \
       socat \
       subversion \
