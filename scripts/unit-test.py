@@ -914,13 +914,9 @@ class Meson(BuildSystem):
 
         try:
             test_args = ('--repeat', str(args.repeat), '-C', 'build')
-            check_call_cmd('meson', 'test', *test_args)
+            check_call_cmd('meson', 'test', '--print-errorlogs', *test_args)
 
         except CalledProcessError:
-            for root, _, files in os.walk(os.getcwd()):
-                if 'testlog.txt' not in files:
-                    continue
-                check_call_cmd('cat', os.path.join(root, 'testlog.txt'))
             raise Exception('Unit tests failed')
 
     def _setup_exists(self, setup):
@@ -953,16 +949,11 @@ class Meson(BuildSystem):
         try:
             if self._setup_exists('valgrind'):
                 check_call_cmd('meson', 'test','-t','10','-C', 'build',
-                               '--setup', 'valgrind')
+                               '--print-errorlogs', '--setup', 'valgrind')
             else:
                 check_call_cmd('meson', 'test','-t','10', '-C', 'build',
-                               '--wrapper', 'valgrind')
+                               '--print-errorlogs', '--wrapper', 'valgrind')
         except CalledProcessError:
-            for root, _, files in os.walk(os.getcwd()):
-                if 'testlog-valgrind.txt' not in files:
-                    continue
-                cat_args = os.path.join(root, 'testlog-valgrind.txt')
-                check_call_cmd('cat', cat_args)
             raise Exception('Valgrind tests failed')
 
     def analyze(self):
@@ -996,7 +987,7 @@ class Meson(BuildSystem):
             check_call_cmd('meson', 'configure', 'build',
                            '-Db_sanitize=address,undefined',
                            '-Db_lundef=false')
-            check_call_cmd('meson', 'test', '-C', 'build',
+            check_call_cmd('meson', 'test', '-C', 'build', '--print-errorlogs',
                            '--logbase', 'testlog-ubasan')
             # TODO: Fix memory sanitizer
             # check_call_cmd('meson', 'configure', 'build',
