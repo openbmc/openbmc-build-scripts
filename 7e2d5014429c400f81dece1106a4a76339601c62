@@ -16,6 +16,23 @@
       "message": "Ideally we\u0027d be formatting with black and not autopep8 but it doesn\u0027t look like this makes anything significantly worse with either of them.",
       "revId": "7e2d5014429c400f81dece1106a4a76339601c62",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8fbc6b2f_b6bf28a2",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000009
+      },
+      "writtenOn": "2022-05-10T23:55:26Z",
+      "side": 1,
+      "message": "I misunderstood the commit message as implementing autopep8 support in unit-test.py, not formatting unit-test.py itself with autopep8. This threw me initially, but maybe I just haven\u0027t had enough coffee.",
+      "revId": "7e2d5014429c400f81dece1106a4a76339601c62",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
