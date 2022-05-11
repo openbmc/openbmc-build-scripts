@@ -209,6 +209,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "ea81ed1c_b08ae3ba",
+        "filename": "scripts/unit-test.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 766,
+      "author": {
+        "id": 1000009
+      },
+      "writtenOn": "2022-05-11T00:00:56Z",
+      "side": 1,
+      "message": "Also, please use actual sets and set operations. You\u0027re calculating the set difference of the two lists.",
+      "parentUuid": "74025a8c_3874116d",
+      "range": {
+        "startLine": 756,
+        "startChar": 0,
+        "endLine": 766,
+        "endChar": 75
+      },
+      "revId": "b4bccfe4e42fe3ed8fd9c8614dbe745c9fcd3338",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "bc7f094d_00c6d76a",
         "filename": "scripts/unit-test.py",
         "patchSetId": 1
