@@ -104,7 +104,6 @@ ${EXTRA_UNIT_TEST_ARGS}"
 # Run the docker unit test container with the unit test execution script
 echo "Executing docker image"
 docker run --cap-add=sys_admin --rm=true \
-    --network host \
     --privileged=true \
     -u "$USER" \
     -w "${DOCKER_WORKDIR}" -v "${WORKSPACE}":"${DOCKER_WORKDIR}" \
