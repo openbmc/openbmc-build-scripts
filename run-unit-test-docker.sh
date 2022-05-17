@@ -23,6 +23,7 @@
 #                         `/usr/share/dbus-1/system.conf`
 #   NO_FORMAT_CODE:  Optional, do not run format-code.sh
 #   EXTRA_UNIT_TEST_ARGS:  Optional, pass arguments to unit-test.py
+#   INTERACTIVE: Optional, run a bash shell instead of unit-test.py
 
 # Trace bash processing. Set -e so when a step fails, we fail the build
 set -uo pipefail
@@ -42,6 +43,7 @@ DBUS_SYS_CONFIG_FILE=${dbus_sys_config_file:-"/usr/share/dbus-1/system.conf"}
 MAKEFLAGS="${MAKEFLAGS:-""}"
 DOCKER_WORKDIR="${DOCKER_WORKDIR:-$WORKSPACE}"
 NO_FORMAT_CODE="${NO_FORMAT_CODE:-}"
+INTERACTIVE="${INTERACTIVE:-}"
 
 # Timestamp for job
 echo "Unit test build started, $(date)"
@@ -97,9 +99,13 @@ export DOCKER_IMG_NAME
 EXTRA_UNIT_TEST_ARGS="${EXTRA_UNIT_TEST_ARGS:+,${EXTRA_UNIT_TEST_ARGS/ /,}}"
 
 # Unit test and parameters
-UNIT_TEST="${DOCKER_WORKDIR}/${UNIT_TEST_PY},-w,${DOCKER_WORKDIR},\
+if [ "${INTERACTIVE}" ]; then
+    UNIT_TEST="/bin/bash"
+else
+    UNIT_TEST="${DOCKER_WORKDIR}/${UNIT_TEST_PY},-w,${DOCKER_WORKDIR},\
 -p,${UNIT_TEST_PKG},-b,$BRANCH,-v${TEST_ONLY:+,-t}${NO_FORMAT_CODE:+,-n}\
 ${EXTRA_UNIT_TEST_ARGS}"
+fi
 
 # Run the docker unit test container with the unit test execution script
 echo "Executing docker image"
@@ -108,7 +114,7 @@ docker run --cap-add=sys_admin --rm=true \
     -u "$USER" \
     -w "${DOCKER_WORKDIR}" -v "${WORKSPACE}":"${DOCKER_WORKDIR}" \
     -e "MAKEFLAGS=${MAKEFLAGS}" \
-    -t "${DOCKER_IMG_NAME}" \
+    -${INTERACTIVE:+i}t "${DOCKER_IMG_NAME}" \
     "${DOCKER_WORKDIR}"/${DBUS_UNIT_TEST_PY} -u "${UNIT_TEST}" \
     -f "${DBUS_SYS_CONFIG_FILE}"
 
