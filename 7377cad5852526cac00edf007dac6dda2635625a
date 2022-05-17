@@ -1,6 +1,23 @@
 {
   "comments": [
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d31e214b_659236ea",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 11
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2022-05-17T13:35:11Z",
+      "side": 1,
+      "message": "I\u0027d prefer we fix this issue in another way but I haven\u0027t gotten around to it.  Nobody should be running the container as root and we should be documenting that anywhere, including the commit message.  This is only an issue _because_ you\u0027re running as root and not as yourself.\n\nThis issue is really specific to the Google workflow where you\u0027re attempting to create an internal container cache, built by a CI user, but then running it as a different user.  The container build scripts were not written in a way to support this workflow.\n\nIn order to support that workflow, we need to take on the complexity of dynamically creating the user inside the container just like the crops/poky containers do.  I haven\u0027t gotten around to porting that, so someone else is more than welcome to take it up if they are interested.",
+      "revId": "7377cad5852526cac00edf007dac6dda2635625a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3d33a40f_b42436c5",
