@@ -1,0 +1,9 @@
+Verified+1: OpenBMC CI <openbmcbump-ci@yahoo.com>
+Code-Review+1: Andrew Jeffery <andrew@aj.id.au>
+Code-Review+1: Andrew Geissler <andrew@geissonator.com>
+Code-Review+2: Joel Stanley <joel@jms.id.au>
+Submitted-by: Joel Stanley <joel@jms.id.au>
+Submitted-at: Tue, 17 May 2022 04:16:42 +0000
+Reviewed-on: https://gerrit.openbmc-project.xyz/c/openbmc/openbmc-build-scripts/+/53713
+Project: openbmc/openbmc-build-scripts
+Branch: refs/heads/master
