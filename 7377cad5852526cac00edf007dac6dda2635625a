@@ -18,6 +18,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "427eb3cb_c3fe963a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 11
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000885
+      },
+      "writtenOn": "2022-05-17T16:01:47Z",
+      "side": 1,
+      "message": "yeah, I think this is a non-issue for pretty much everybody else. Seems like it is not urgent to fix it for general use case. I\u0027ll abandon this for now.",
+      "parentUuid": "d31e214b_659236ea",
+      "revId": "7377cad5852526cac00edf007dac6dda2635625a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3d33a40f_b42436c5",
@@ -31,6 +49,24 @@
       "writtenOn": "2022-05-17T12:54:24Z",
       "side": 1,
       "message": "It would be nice to have a brief comment before this block indicating the reasoning behind this new code. Also is there any harm in just keeping it simple and doing something like https://stackoverflow.com/questions/71855882/how-to-add-directory-recursively-on-git-safe-directory describes and doing \"git config --global --add safe.directory *\" against the subprojects dir? Not sure why we need to keep out the .wrap files?",
+      "revId": "7377cad5852526cac00edf007dac6dda2635625a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4d7f17b4_aafef079",
+        "filename": "scripts/unit-test.py",
+        "patchSetId": 11
+      },
+      "lineNbr": 1222,
+      "author": {
+        "id": 1000885
+      },
+      "writtenOn": "2022-05-17T16:01:47Z",
+      "side": 1,
+      "message": "I forgot why I did it exactly, but I believe it is just to avoid making that call to all the random folder it find. Using\n```\ngit config --global --add safe.directory *\n```\nshould be fine.",
+      "parentUuid": "3d33a40f_b42436c5",
       "revId": "7377cad5852526cac00edf007dac6dda2635625a",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
