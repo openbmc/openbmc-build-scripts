@@ -246,7 +246,7 @@ def clone_pkg(pkg, branch):
     pkg_dir = os.path.join(WORKSPACE, pkg)
     if os.path.exists(os.path.join(pkg_dir, '.git')):
         return pkg_dir
-    pkg_repo = urljoin('https://gerrit.openbmc-project.xyz/openbmc/', pkg)
+    pkg_repo = urljoin('https://gerrit.openbmc.org/openbmc/', pkg)
     os.mkdir(pkg_dir)
     printline(pkg_dir, "> git clone", pkg_repo, branch, "./")
     try:

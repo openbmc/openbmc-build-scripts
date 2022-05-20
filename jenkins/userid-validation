@@ -12,10 +12,10 @@
 # Required Inputs:
 #  SSH_KEY:  Path to private ssh key used to post messages to gerrit
 
-GERRIT_COMMAND="curl -s --anyauth -n https://gerrit.openbmc-project.xyz"
+GERRIT_COMMAND="curl -s --anyauth -n https://gerrit.openbmc.org"
 GERRIT_SSH_CMD=( \
     ssh -o 'StrictHostKeyChecking no' -i "$SSH_KEY" \
-    -p 29418 jenkins-openbmc-ci@gerrit.openbmc-project.xyz gerrit \
+    -p 29418 jenkins-openbmc-ci@gerrit.openbmc.org gerrit \
 )
 
 echo "Checking ${GERRIT_PROJECT}:${GERRIT_BRANCH}:${GERRIT_CHANGE_ID}:${GERRIT_PATCHSET_REVISION}"

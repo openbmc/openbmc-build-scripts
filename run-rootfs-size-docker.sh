@@ -44,12 +44,12 @@ fi
 
 if [ ! -d "${WORKSPACE}/${OBMC_BUILD_SCRIPTS}" ]; then
     echo "Clone (${OBMC_BUILD_SCRIPTS}) in ${WORKSPACE}..."
-    git clone https://gerrit.openbmc-project.xyz/openbmc/${OBMC_BUILD_SCRIPTS} "${WORKSPACE}"/${OBMC_BUILD_SCRIPTS}
+    git clone https://gerrit.openbmc.org/openbmc/${OBMC_BUILD_SCRIPTS} "${WORKSPACE}"/${OBMC_BUILD_SCRIPTS}
 fi
 
 if [ ! -d "${WORKSPACE}/${OBMC_TOOLS}" ]; then
     echo "Clone (${OBMC_TOOLS}) in ${WORKSPACE}..."
-    git clone https://gerrit.openbmc-project.xyz/openbmc/${OBMC_TOOLS} "${WORKSPACE}"/${OBMC_TOOLS}
+    git clone https://gerrit.openbmc.org/openbmc/${OBMC_TOOLS} "${WORKSPACE}"/${OBMC_TOOLS}
 fi
 
 # Copy rootfs_size.py script into workspace

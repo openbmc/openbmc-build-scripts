@@ -90,7 +90,7 @@ git_clone_repo() {
     git clone "${prj_package}" "${workspace}"/"${package}"
     return
   fi
-  git clone https://gerrit.openbmc-project.xyz/openbmc/"${package}" "${workspace}"/"${package}"
+  git clone https://gerrit.openbmc.org/openbmc/"${package}" "${workspace}"/"${package}"
 }
 
 jenkins_get_job_repos "${CONFIG}" | while read -r GERRIT_PROJECT
