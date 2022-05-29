@@ -1,0 +1,104 @@
+#!/bin/env python3
+import argparse
+import json
+import yaml
+
+from typing import List, TypedDict
+from yaml.loader import SafeLoader
+
+# A list of Gerrit users (email addresses).
+UsersList = List[str]
+
+# A YAML node with an extra line number.
+class NumberedNode(TypedDict):
+    line_number: int
+
+
+# The root YAML node of an OWNERS file
+class OwnersData(NumberedNode, TypedDict, total=False):
+    owners: UsersList
+    reviewers: UsersList
+
+
+# A YAML loader that adds the start line number onto each node (for
+# later linting support)
+class YamlLoader(SafeLoader):
+    def construct_mapping(
+        self, node: yaml.nodes.Node, deep: bool = False
+    ) -> NumberedNode:
+        mapping: NumberedNode = super(YamlLoader, self).construct_mapping(
+            node, deep=deep
+        )  # type: ignore
+        mapping["line_number"] = node.start_mark.line + 1
+        return mapping
+
+    # Load a file and return the OwnersData.
+    @staticmethod
+    def load(file: str) -> OwnersData:
+        data: OwnersData
+        with open(file, "r") as f:
+            data = yaml.load(f, Loader=YamlLoader)
+        return data
+
+
+# Class to match commit information with OWNERS files.
+# TODO: git commit piece not yet supported.
+class CommitMatch:
+    def __init__(self, owners: OwnersData):
+        self.data = owners
+
+    def owners(self) -> UsersList:
+        return self.data["owners"] if "owners" in self.data else []
+
+    def reviewers(self) -> UsersList:
+        return self.data["reviewers"] if "reviewers" in self.data else []
+
+
+# The subcommand to get the reviewers.
+def subcmd_reviewers(args: argparse.Namespace, data: OwnersData) -> None:
+    matcher = CommitMatch(data)
+
+    # Print in `git push refs/for/branch%<reviewers>` format.
+    if args.push_args:
+        result = []
+        for o in matcher.owners():
+            # Gerrit uses 'r' for the required reviewers (owners).
+            result.append(f"r={o}")
+        for r in matcher.reviewers():
+            # Gerrit uses 'cc' for the optional reviewers.
+            result.append(f"cc={r}")
+        print(",".join(result))
+    # Print as Gerrit Add Reviewers POST format.
+    # https://gerrit.openbmc.org/Documentation/rest-api-changes.html#add-reviewer
+    else:
+        for o in matcher.owners():
+            print(json.dumps({"reviewer": o, "state": "REVIEWER"}))
+        for r in matcher.reviewers():
+            print(json.dumps({"reviewer": r, "state": "CC"}))
+
+
+def main() -> None:
+    parser = argparse.ArgumentParser()
+    parser.add_argument(
+        "-p", "--path", default=".", help="Root path to analyse"
+    )
+    subparsers = parser.add_subparsers()
+
+    parser_reviewers = subparsers.add_parser(
+        "reviewers", help="Generate List of Reviewers"
+    )
+    parser_reviewers.add_argument(
+        "--push-args",
+        action=argparse.BooleanOptionalAction,
+        help="Format as git push options",
+    )
+    parser_reviewers.set_defaults(func=subcmd_reviewers)
+
+    args = parser.parse_args()
+
+    file = YamlLoader.load(args.path + "/OWNERS")
+    args.func(args, file)
+
+
+if __name__ == "__main__":
+    main()
