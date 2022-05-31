@@ -16,6 +16,23 @@
       "message": "@Andrew G., I\u0027m hoping that this is something can add to the `jenkins/userid-validation` to do the necessary curl calls to automatically add reviewers.  This will become a replacement for the owners-api module because it will support our custom \u0027reviewers\u0027 field instead of just the \u0027owners\u0027.  I\u0027ve already added the necessary options so it spits out the POST data in one line at a time so it can be hooked into the bash script fairly straightforwardly.",
       "revId": "a1d715fa02fd64f05c3b8a84fd73401d7726c0eb",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "100fec04_3fa2828c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2022-05-31T15:46:01Z",
+      "side": 1,
+      "message": "Nice, makes sense to me. I added Ed and Brad as well in case they had any concerns with moving off of the gerrit plugin. I assume we could push on the gerrit team a bit more to get it fixed but this new script adds additional features we\u0027re not going to get via the plugin.",
+      "revId": "a1d715fa02fd64f05c3b8a84fd73401d7726c0eb",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
