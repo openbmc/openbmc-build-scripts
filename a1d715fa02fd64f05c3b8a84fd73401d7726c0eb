@@ -67,6 +67,23 @@
       "message": "Not super happy about this path, but in terms of low effort ways to unblock adding reviewers automatically, seems reasonable to me.  In a perfect world, this eventually goes away.",
       "revId": "a1d715fa02fd64f05c3b8a84fd73401d7726c0eb",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c629a509_9f7eb78c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2022-06-14T19:37:23Z",
+      "side": 1,
+      "message": "I might as well submit this now I guess.  Still working on some improvements to it and getting it hooked into the CI infra, but at least it is something for people to throw spit wads at.",
+      "revId": "a1d715fa02fd64f05c3b8a84fd73401d7726c0eb",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
