@@ -21,6 +21,7 @@
 #                    used if input branch not provided or not found
 #   dbus_sys_config_file: Optional, with the default being
 #                         `/usr/share/dbus-1/system.conf`
+#   TEST_ONLY:       Optional, do not run analysis tools
 #   NO_FORMAT_CODE:  Optional, do not run format-code.sh
 #   EXTRA_UNIT_TEST_ARGS:  Optional, pass arguments to unit-test.py
 #   INTERACTIVE: Optional, run a bash shell instead of unit-test.py
