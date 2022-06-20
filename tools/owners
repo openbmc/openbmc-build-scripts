@@ -1,23 +1,36 @@
 #!/bin/env python3
 import argparse
 import json
+import os
+import re
 import yaml
 
-from typing import List, TypedDict
+from sh import git  # type: ignore
+from typing import List, Set, TypedDict, Union
 from yaml.loader import SafeLoader
 
 # A list of Gerrit users (email addresses).
-UsersList = List[str]
+UsersList = Union[List[str], None]
 
 # A YAML node with an extra line number.
 class NumberedNode(TypedDict):
     line_number: int
 
 
+class MatchEntry(TypedDict, total=False):
+    suffix: str
+    regex: str
+    partial_regex: str
+    exact: str
+    owners: UsersList
+    reviewers: UsersList
+
+
 # The root YAML node of an OWNERS file
 class OwnersData(NumberedNode, TypedDict, total=False):
     owners: UsersList
     reviewers: UsersList
+    matchers: List[MatchEntry]
 
 
 # A YAML loader that adds the start line number onto each node (for
@@ -42,38 +55,74 @@ class YamlLoader(SafeLoader):
 
 
 # Class to match commit information with OWNERS files.
-# TODO: git commit piece not yet supported.
 class CommitMatch:
-    def __init__(self, owners: OwnersData):
-        self.data = owners
+    def __init__(self, args: argparse.Namespace, owners: OwnersData):
+        files: Set[str] = set(
+            git.bake("-C", args.path)
+            .show(args.commit, pretty="", name_only=True, _tty_out=False)
+            .splitlines()
+        )
 
-    def owners(self) -> UsersList:
-        return self.data["owners"] if "owners" in self.data else []
+        self.owners: Set[str] = set(owners.get("owners") or [])
+        self.reviewers: Set[str] = set(owners.get("reviewers") or [])
 
-    def reviewers(self) -> UsersList:
-        return self.data["reviewers"] if "reviewers" in self.data else []
+        for e in owners.get("matchers", []):
+            if "exact" in e:
+                self.__exact(files, e)
+            elif "partial_regex" in e:
+                self.__partial_regex(files, e)
+            elif "regex" in e:
+                self.__regex(files, e)
+            elif "suffix" in e:
+                self.__suffix(files, e)
+
+        self.reviewers = self.reviewers.difference(self.owners)
+
+    def __add_entry(self, entry: MatchEntry) -> None:
+        self.owners = self.owners.union(entry.get("owners") or [])
+        self.reviewers = self.reviewers.union(entry.get("reviewers") or [])
+
+    def __exact(self, files: Set[str], entry: MatchEntry) -> None:
+        for f in files:
+            if f == entry["exact"]:
+                self.__add_entry(entry)
+
+    def __partial_regex(self, files: Set[str], entry: MatchEntry) -> None:
+        for f in files:
+            if re.search(entry["partial_regex"], f):
+                self.__add_entry(entry)
+
+    def __regex(self, files: Set[str], entry: MatchEntry) -> None:
+        for f in files:
+            if re.fullmatch(entry["regex"], f):
+                self.__add_entry(entry)
+
+    def __suffix(self, files: Set[str], entry: MatchEntry) -> None:
+        for f in files:
+            if os.path.splitext(f)[1] == entry["suffix"]:
+                self.__add_entry(entry)
 
 
 # The subcommand to get the reviewers.
 def subcmd_reviewers(args: argparse.Namespace, data: OwnersData) -> None:
-    matcher = CommitMatch(data)
+    matcher = CommitMatch(args, data)
 
     # Print in `git push refs/for/branch%<reviewers>` format.
     if args.push_args:
         result = []
-        for o in matcher.owners():
+        for o in sorted(matcher.owners):
             # Gerrit uses 'r' for the required reviewers (owners).
             result.append(f"r={o}")
-        for r in matcher.reviewers():
+        for r in sorted(matcher.reviewers):
             # Gerrit uses 'cc' for the optional reviewers.
             result.append(f"cc={r}")
         print(",".join(result))
     # Print as Gerrit Add Reviewers POST format.
     # https://gerrit.openbmc.org/Documentation/rest-api-changes.html#add-reviewer
     else:
-        for o in matcher.owners():
+        for o in sorted(matcher.owners):
             print(json.dumps({"reviewer": o, "state": "REVIEWER"}))
-        for r in matcher.reviewers():
+        for r in sorted(matcher.reviewers):
             print(json.dumps({"reviewer": r, "state": "CC"}))
 
 
@@ -91,6 +140,11 @@ def main() -> None:
         "--push-args",
         action=argparse.BooleanOptionalAction,
         help="Format as git push options",
+    )
+    parser_reviewers.add_argument(
+        "--commit",
+        default="HEAD",
+        help="Commit(s) to match against",
     )
     parser_reviewers.set_defaults(func=subcmd_reviewers)
 
