@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9963632d_4fbf4869",
+        "filename": "config/.gitlint",
+        "patchSetId": 2
+      },
+      "lineNbr": 47,
+      "author": {
+        "id": 1000388
+      },
+      "writtenOn": "2022-06-21T21:47:21Z",
+      "side": 1,
+      "message": "Maybe we should move the discussion we were having on the other file to here - I\u0027m against hard-setting the title max length to 50 and instead using 72 due to how openbmc/openbmc usually prefers at a minimum specifying the meta layer, preferring to also list the repo it\u0027s touching (OR we should change that rule). When I\u0027m reviewing code here and downstream, I tell people that 50 is the rule to follow but 72 is the real hard limit.\n\n\"meta-google: \" is 13 characters for instance, so we\u0027d have 37 chars left for the header which is often not enough.",
+      "range": {
+        "startLine": 46,
+        "startChar": 0,
+        "endLine": 47,
+        "endChar": 14
+      },
+      "revId": "e31ec3e259a46fb32024ec2f7841e81db03c5140",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
