@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "4921688d_d6e3f413",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 1000153
+      },
+      "writtenOn": "2022-06-21T18:04:56Z",
+      "side": 1,
+      "message": "in the body of the message?  Yes.  Actually, looking at it, it looks like the default is 80, not 72.  I\u0027ll need to resolve that.\n\nACK\n\nhttps://jorisroovers.com/gitlint/rules/#b1-body-max-line-length",
+      "parentUuid": "44038f5c_ead59e5e",
+      "range": {
+        "startLine": 16,
+        "startChar": 58,
+        "endLine": 16,
+        "endChar": 73
+      },
+      "revId": "38402e08578452716284770e2968996028c80161",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "0b3bcd4e_faaaf1ce",
         "filename": "scripts/format-code.sh",
         "patchSetId": 1
@@ -78,6 +102,48 @@
       "side": 1,
       "message": "👍\n\nI don\u0027t know how well gitlint handles URLs and test plans either...\n\nWe should probably discuss that as part of the default .gitlint proposal (in docs?).",
       "parentUuid": "0b3bcd4e_faaaf1ce",
+      "range": {
+        "startLine": 31,
+        "startChar": 30,
+        "endLine": 31,
+        "endChar": 44
+      },
+      "revId": "38402e08578452716284770e2968996028c80161",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "602f4618_42030fbb",
+        "filename": "scripts/format-code.sh",
+        "patchSetId": 1
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 1000153
+      },
+      "writtenOn": "2022-06-21T18:04:56Z",
+      "side": 1,
+      "message": "because this seems like the kind of thing that we shouldn\u0027t be pushing into per-repo semantics.  Our rules for this are projectwide, and unlike format/tidy where they need to be rolled out incrementally, gitlint only applies to HEAD on code reviews, so there should be no need to roll things out gradually (with the exception of opting in a couple repos to start with as a test).\n\nWith that said, yes, given that we need more than one rule here, I\u0027m going to check in a .gitlint file into this commit shortly.",
+      "parentUuid": "0fe10fa8_dcc76668",
+      "revId": "38402e08578452716284770e2968996028c80161",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "79190d0d_b00c64e3",
+        "filename": "scripts/format-code.sh",
+        "patchSetId": 1
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 1000153
+      },
+      "writtenOn": "2022-06-21T18:04:56Z",
+      "side": 1,
+      "message": "I can check in a .gitlint file here, and we can discuss.  This seems like the kind of thing that we don\u0027t need to propagate out to all the individual repos.\n\nIMO, as a standard, we shouldn\u0027t be prefixing \u003crepo name\u003e to the beginning of commits, given that, as Brandons comment asserts, you run out of characters in a hurry, and if you really want to append the repo name in something like a combined commit log, that can be done when you aggregate the commits into one, instead of making every user do it in a commit message.",
+      "parentUuid": "6214604f_0cc0bedf",
       "range": {
         "startLine": 31,
         "startChar": 30,
