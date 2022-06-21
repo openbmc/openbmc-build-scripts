@@ -200,6 +200,30 @@
       },
       "revId": "38402e08578452716284770e2968996028c80161",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "280c7f48_09153d9c",
+        "filename": "scripts/format-code.sh",
+        "patchSetId": 1
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2022-06-21T18:51:54Z",
+      "side": 1,
+      "message": "https://jorisroovers.com/gitlint/rules/#i4-ignore-by-author-name\n\nI take it this isn\u0027t going to be an acceptable addition to the .gitlint:\n```\n[ignore-by-author-name]\nregex\u003dpatrick@stwcx.xyz\n```",
+      "parentUuid": "addce6a9_5b8c38b5",
+      "range": {
+        "startLine": 31,
+        "startChar": 30,
+        "endLine": 31,
+        "endChar": 44
+      },
+      "revId": "38402e08578452716284770e2968996028c80161",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
