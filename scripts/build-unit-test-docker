@@ -844,6 +844,7 @@ RUN pip3 install meson==0.61.3
 RUN pip3 install protobuf
 RUN pip3 install codespell
 RUN pip3 install requests
+RUN pip3 install gitlint
 """
 
 # Build the base and stage docker images.

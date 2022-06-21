@@ -26,6 +26,11 @@ codespell --builtin clear,rare,en-GB_to_en-US -d --count "${DIR}"/.git/COMMIT_ED
 
 cd "${DIR}"
 
+# Check for commit message issues
+if [[ -f ".gitlint" ]]; then
+  gitlint -c title-max-length.line-length=50
+fi
+
 echo "Formatting code under $DIR/"
 
 if [[ -f ".eslintignore" ]]; then
