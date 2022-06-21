@@ -224,6 +224,30 @@
       },
       "revId": "38402e08578452716284770e2968996028c80161",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a21dd56e_bcfd3d5a",
+        "filename": "scripts/format-code.sh",
+        "patchSetId": 1
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 1000153
+      },
+      "writtenOn": "2022-06-21T19:49:53Z",
+      "side": 1,
+      "message": "LOL, probably not, but you could add:\n\ngitlint-ignore: all\n\nto your commit messages, and it would bypass the checks.  If you have good reasons for bypassing a check, it seems ok as a trapdoor.",
+      "parentUuid": "280c7f48_09153d9c",
+      "range": {
+        "startLine": 31,
+        "startChar": 30,
+        "endLine": 31,
+        "endChar": 44
+      },
+      "revId": "38402e08578452716284770e2968996028c80161",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
