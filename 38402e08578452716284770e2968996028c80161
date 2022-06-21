@@ -152,6 +152,30 @@
       },
       "revId": "38402e08578452716284770e2968996028c80161",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7638c5bc_356a477a",
+        "filename": "scripts/format-code.sh",
+        "patchSetId": 1
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2022-06-21T18:14:01Z",
+      "side": 1,
+      "message": "\u003eIMO, as a standard, we shouldn\u0027t be prefixing \u003crepo name\u003e to the beginning of commits, given that, as Brandons comment asserts, you run out of characters in a hurry, and if you really want to append the repo name in something like a combined commit log, that can be done when you aggregate the commits into one, instead of making every user do it in a commit message.\n\nI\u0027m not understanding what you\u0027re suggesting here.\n\nCommits in a code repository, like bmcweb, should not be prefixed with \"bmcweb:\" because that is redundant.\n\nWe absolutely want commits in openbmc/openbmc to be prefixed with something like \u0027meta-google\u0027 if they only affect meta-google.  This helps everyone filter out the noise but especially the maintainers.  If I had to choose between \"your commit has the meta layer affected in the commit message\" and \"you went past 50 (or even 72) characters\" I\u0027d pick the former every time.\n\nI glanced through the rules in gitlint.  I\u0027m going to be very surprised if we can get something that is both useful and makes most everyone happy...",
+      "parentUuid": "79190d0d_b00c64e3",
+      "range": {
+        "startLine": 31,
+        "startChar": 30,
+        "endLine": 31,
+        "endChar": 44
+      },
+      "revId": "38402e08578452716284770e2968996028c80161",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
