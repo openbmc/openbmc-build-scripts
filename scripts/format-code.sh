@@ -24,6 +24,12 @@ codespell -D openbmc-spelling.txt -d --count "${DIR}"/.git/COMMIT_EDITMSG
 echo "generic-dictionary - misspelling count >> "
 codespell --builtin clear,rare,en-GB_to_en-US -d --count "${DIR}"/.git/COMMIT_EDITMSG
 
+# Note, this check will be removed once the commit message rules have some usage
+if [[ -f "${DIR}/.gitlint" ]]; then
+  # Check for commit message issues
+  gitlint --target "${DIR}" --config "${WORKSPACE}/openbmc-build-scripts/config/.gitlint"
+fi
+
 cd "${DIR}"
 
 echo "Formatting code under $DIR/"
