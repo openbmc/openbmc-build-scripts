@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "44038f5c_ead59e5e",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 1000388
+      },
+      "writtenOn": "2022-06-21T16:58:07Z",
+      "side": 1,
+      "message": "speaking of 72 chars, is there a gitlint option for checking 72 chars?",
+      "range": {
+        "startLine": 16,
+        "startChar": 58,
+        "endLine": 16,
+        "endChar": 73
+      },
+      "revId": "38402e08578452716284770e2968996028c80161",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0b3bcd4e_faaaf1ce",
+        "filename": "scripts/format-code.sh",
+        "patchSetId": 1
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 1000388
+      },
+      "writtenOn": "2022-06-21T16:58:07Z",
+      "side": 1,
+      "message": "I feel I end up enforcing the commit message body 72 chars check rather than 50 char title, with the style that we have where we usually list the component we\u0027re touching as part of the commit message title for example in openbmc/openbmc:\n\nmeta-google: phosphor-host-ipmid: We now have like\n\n^ that being 50 chars (meant to say \"We now have like 2 words left\" but ran out of chars)",
+      "range": {
+        "startLine": 31,
+        "startChar": 30,
+        "endLine": 31,
+        "endChar": 44
+      },
+      "revId": "38402e08578452716284770e2968996028c80161",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
