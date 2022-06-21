@@ -26,6 +26,15 @@ codespell --builtin clear,rare,en-GB_to_en-US -d --count \
     --ignore-words=openbmc-spelling-ignore.txt \
     "${DIR}"/.git/COMMIT_EDITMSG
 
+# Note, this check will be removed once the commit message rules have some usage
+if [[ -f "${DIR}/.openbmc-enforce-gitlint" ]]; then
+  # Check for commit message issues
+  gitlint \
+    --target "${DIR}" \
+    --extra-path "${WORKSPACE}/openbmc-build-scripts/config/gitlint/" \
+    --config "${WORKSPACE}/openbmc-build-scripts/config/.gitlint"
+fi
+
 cd "${DIR}"
 
 echo "Formatting code under $DIR/"
