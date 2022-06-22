@@ -1,6 +1,23 @@
 {
   "comments": [
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1a1c1e5a_a1c2a979",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000013
+      },
+      "writtenOn": "2022-06-22T05:18:50Z",
+      "side": 1,
+      "message": "I think this is something to review for, but we want common sense to be able to override the tools.\n\nIf there\u0027s a case where eg. a URL to a bug tracker, or a stack trace, is included in a commit message, the developer and maintainer should be able to ignore the suggestion of the tool for the benefit of a clearer commit message.\n\nIf this is simply advisory, and is able to be overridden by the repo maintainer, then that is fine.",
+      "revId": "e31ec3e259a46fb32024ec2f7841e81db03c5140",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9963632d_4fbf4869",
