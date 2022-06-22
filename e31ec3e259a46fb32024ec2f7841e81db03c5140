@@ -20,6 +20,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "a899aabb_b532fc0b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000153
+      },
+      "writtenOn": "2022-06-22T14:33:37Z",
+      "side": 1,
+      "message": "\u003e I think this is something to review for, but we want common sense to be able to override the tools.\n\nWhich part?  Surely end of line whitespace in your commit message or a 200 character title are something we can just blanket disallow?  Yes, the lint length thing could use some discussion, or maybe we just don\u0027t check the title length at all, or set it to a higher-than-documented value.\n\n\u003e \n\u003e If there\u0027s a case where eg. a URL to a bug tracker, or a stack trace, is included in a commit message, the developer and maintainer should be able to ignore the suggestion of the tool for the benefit of a clearer commit message.\n\nAgreed;  I assumed the tool treated URLs as a single \"word\" so they wouldn\u0027t be split across lines, but I can test that.  I\u0027m also assuming that if stack traces are quoted, they don\u0027t count against your line limit, but I can test that as well.\n\n\u003e \n\u003e If this is simply advisory, and is able to be overridden by the repo maintainer, then that is fine.\n\nAt this point it\u0027s able to be overridden by either the maintainer or the submitter by adding \"gitlint-ignore: all\" to the commit message somewhere.  Is that enough?",
+      "parentUuid": "1a1c1e5a_a1c2a979",
+      "revId": "e31ec3e259a46fb32024ec2f7841e81db03c5140",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "9963632d_4fbf4869",
         "filename": "config/.gitlint",
         "patchSetId": 2
