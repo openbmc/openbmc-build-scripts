@@ -19,7 +19,7 @@ set -uo pipefail
 http_proxy=${http_proxy:-}
 
 DOCKER_IMG_NAME=${1:-"openbmc/ubuntu-robot-qemu"}
-DISTRO=${2:-"ubuntu:focal"}
+DISTRO=${2:-"ubuntu:impish"}
 UBUNTU_MIRROR=${UBUNTU_MIRROR:-""}
 PIP_MIRROR=${PIP_MIRROR:-""}
 
