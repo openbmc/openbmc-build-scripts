@@ -18,6 +18,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "16d1b46f_ab4d72c6",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1000682
+      },
+      "writtenOn": "2022-06-24T15:49:40Z",
+      "side": 1,
+      "message": "No technical reason. Mostly because my workstation has an old docker server, which doesn\u0027t support jammy. So I can\u0027t really test it.\n\nIf we prefer get to 22.04 directly, I can find some machine to test.",
+      "parentUuid": "c76e3f46_4d8fd8fa",
+      "revId": "2d1b3758a8d1122ac2be3740934ccae78a6d0958",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "8f320e8d_7c2cad13",
