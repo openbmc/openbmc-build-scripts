@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c76e3f46_4d8fd8fa",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2022-06-24T11:16:51Z",
+      "side": 1,
+      "message": "Any reason to not use jammy at this point?",
+      "revId": "2d1b3758a8d1122ac2be3740934ccae78a6d0958",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8f320e8d_7c2cad13",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2022-06-24T11:16:51Z",
+      "side": 1,
+      "message": "@George, is there anything you need to test when we do an upgrade like this?  I believe in the past we\u0027ve had issues with robot on certain versions of Linux.",
+      "revId": "2d1b3758a8d1122ac2be3740934ccae78a6d0958",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
