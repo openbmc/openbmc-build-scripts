@@ -158,6 +158,24 @@
       "parentUuid": "ba56e83f_d69836a0",
       "revId": "2d1b3758a8d1122ac2be3740934ccae78a6d0958",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "157f8afd_2ee57386",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2022-06-27T22:22:43Z",
+      "side": 1,
+      "message": "Yeah, I\u0027m not sure if we actually need python2... maybe we can just remove it.  Otherwise, it looks like you can be explicit about the conversion to python2 instead of just \u0027python\u0027.",
+      "parentUuid": "52b6487d_043d5a96",
+      "revId": "2d1b3758a8d1122ac2be3740934ccae78a6d0958",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
