@@ -19,7 +19,7 @@ set -uo pipefail
 http_proxy=${http_proxy:-}
 
 DOCKER_IMG_NAME=${1:-"openbmc/ubuntu-robot-qemu"}
-DISTRO=${2:-"ubuntu:focal"}
+DISTRO=${2:-"ubuntu:jammy"}
 UBUNTU_MIRROR=${UBUNTU_MIRROR:-""}
 PIP_MIRROR=${PIP_MIRROR:-""}
 
@@ -62,8 +62,8 @@ RUN apt-get update && apt-get install -yy \
     debianutils \
     gawk \
     git \
-    python \
-    python-dev \
+    python2 \
+    python2-dev \
     python-setuptools \
     python3 \
     python3-dev \
