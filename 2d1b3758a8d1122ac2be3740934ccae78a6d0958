@@ -56,6 +56,24 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "8151fa8e_ffab6116",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2022-06-27T21:46:56Z",
+      "side": 1,
+      "message": "Do you know where the py2 dependency comes from?  I see we are using pip3 to install everything.  Is the py2 need just an artifact of the legacy of this script?\n\n(I\u0027m not saying you have to solve this now, but I\u0027d like to understand the future impact since you\u0027ve already done some investigation.)",
+      "parentUuid": "8e76be24_e45389c2",
+      "revId": "2d1b3758a8d1122ac2be3740934ccae78a6d0958",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "8f320e8d_7c2cad13",
         "filename": "/PATCHSET_LEVEL",
         "patchSetId": 2
