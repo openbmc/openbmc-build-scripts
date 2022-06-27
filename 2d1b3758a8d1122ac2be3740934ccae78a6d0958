@@ -140,6 +140,24 @@
       "parentUuid": "c4b91bde_959d328e",
       "revId": "2d1b3758a8d1122ac2be3740934ccae78a6d0958",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "52b6487d_043d5a96",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000682
+      },
+      "writtenOn": "2022-06-27T22:20:13Z",
+      "side": 1,
+      "message": "```\nStep 3/11 : RUN apt-get update \u0026\u0026 apt-get install -yy     debianutils     gawk     git     python     python-dev     python-setuptools     python3     python3-dev     python3-setuptools     socat     texinfo     wget     gcc     libffi-dev     libssl-dev     xterm     mwm     ssh     vim     iputils-ping     sudo     cpio     unzip     diffstat     expect     curl     build-essential     libpixman-1-0     libglib2.0-0     sshpass     libasound2     libfdt1     libpcre3     openssl     libxml2-dev     libxslt-dev     python3-pip     ipmitool     xvfb     rustc\n ---\u003e Running in b3e37b6c690c\nGet:1 http://security.ubuntu.com/ubuntu jammy-security InRelease [110 kB]\nGet:2 http://archive.ubuntu.com/ubuntu jammy InRelease [270 kB]\nGet:3 http://security.ubuntu.com/ubuntu jammy-security/restricted amd64 Packages [212 kB]\nGet:4 http://archive.ubuntu.com/ubuntu jammy-updates InRelease [109 kB]\nGet:5 http://archive.ubuntu.com/ubuntu jammy-backports InRelease [99.8 kB]\nGet:6 http://security.ubuntu.com/ubuntu jammy-security/universe amd64 Packages [94.9 kB]\nGet:7 http://security.ubuntu.com/ubuntu jammy-security/main amd64 Packages [238 kB]\nGet:8 http://archive.ubuntu.com/ubuntu jammy/universe amd64 Packages [17.5 MB]\nGet:9 http://security.ubuntu.com/ubuntu jammy-security/multiverse amd64 Packages [4648 B]\nGet:10 http://archive.ubuntu.com/ubuntu jammy/multiverse amd64 Packages [266 kB]\nGet:11 http://archive.ubuntu.com/ubuntu jammy/restricted amd64 Packages [164 kB]\nGet:12 http://archive.ubuntu.com/ubuntu jammy/main amd64 Packages [1792 kB]\nGet:13 http://archive.ubuntu.com/ubuntu jammy-updates/multiverse amd64 Packages [4648 B]\nGet:14 http://archive.ubuntu.com/ubuntu jammy-updates/universe amd64 Packages [162 kB]\nGet:15 http://archive.ubuntu.com/ubuntu jammy-updates/main amd64 Packages [406 kB]\nGet:16 http://archive.ubuntu.com/ubuntu jammy-updates/restricted amd64 Packages [250 kB]\nGet:17 http://archive.ubuntu.com/ubuntu jammy-backports/universe amd64 Packages [5797 B]\nFetched 21.7 MB in 3s (6665 kB/s)\nReading package lists...\nReading package lists...\nBuilding dependency tree...\nReading state information...\nPackage python-dev is not available, but is referred to by another package.\nThis may mean that the package is missing, has been obsoleted, or\nis only available from another source\nHowever the following packages replace it:\n  python2-dev python2 python-dev-is-python3\n\nPackage python is not available, but is referred to by another package.\nThis may mean that the package is missing, has been obsoleted, or\nis only available from another source\nHowever the following packages replace it:\n  python2-minimal python2 dh-python 2to3 python-is-python3\n```\n\nThere should be a simple fix if we want to use jammy, let me test it out.",
+      "parentUuid": "ba56e83f_d69836a0",
+      "revId": "2d1b3758a8d1122ac2be3740934ccae78a6d0958",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
