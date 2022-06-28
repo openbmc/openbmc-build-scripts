@@ -68,6 +68,24 @@
       "parentUuid": "9d3ce6fc_32cf3457",
       "revId": "86ae13580ff49351c43b67fdba1f483435d462aa",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a361648c_d11a5c41",
+        "filename": "scripts/build-qemu-robot-docker.sh",
+        "patchSetId": 4
+      },
+      "lineNbr": 65,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2022-06-28T17:27:08Z",
+      "side": 1,
+      "message": "\u003e Wait, what\u0027s your docker version engine. I have tested this on a newer docker engine,\n\nThis isn\u0027t a Docker issue but a \"Rust support on ppc64le is broken\" issue.",
+      "parentUuid": "43c64a9d_7696d014",
+      "revId": "86ae13580ff49351c43b67fdba1f483435d462aa",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
