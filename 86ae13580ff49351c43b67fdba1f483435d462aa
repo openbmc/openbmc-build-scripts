@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3d765dc7_074185cb",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2022-06-28T12:55:01Z",
+      "side": 1,
+      "message": "I just had to revert this in our downstream code for now. We don\u0027t run POWER servers in upstream anymore so we should be ok.",
+      "revId": "86ae13580ff49351c43b67fdba1f483435d462aa",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ad5a3d62_996f7f58",
+        "filename": "scripts/build-qemu-robot-docker.sh",
+        "patchSetId": 4
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2022-06-28T12:55:01Z",
+      "side": 1,
+      "message": "I\u0027ve seen this elsewhere, latest ubuntu distros aren\u0027t working well on POWER. We get this error:\n\n ---\u003e Running in 190aafa01120\nThe command \u0027/bin/sh -c apt-get update \u0026\u0026 apt-get install -yy     debianutils     gawk     git     python2     python2-dev     python-setuptools     python3     python3-dev     python3-setuptools     socat     texinfo     wget     gcc     libffi-dev     libssl-dev     xterm     mwm     ssh     vim     iputils-ping     sudo     cpio     unzip     diffstat     expect     curl     build-essential     libpixman-1-0     libglib2.0-0     sshpass     libasound2     libfdt1     libpcre3     openssl     libxml2-dev     libxslt-dev     python3-pip     ipmitool     xvfb     rustc\u0027 returned a non-zero code: 132\n\nWhich does not help much. For now, I\u0027ll just override on our downstream servers until I can figure out what\u0027s going on.\n\n./scripts/build-qemu-robot-docker.sh  openbmc/ubuntu-robot-qemu ubuntu:focal",
+      "revId": "86ae13580ff49351c43b67fdba1f483435d462aa",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9d3ce6fc_32cf3457",
+        "filename": "scripts/build-qemu-robot-docker.sh",
+        "patchSetId": 4
+      },
+      "lineNbr": 65,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2022-06-28T12:55:01Z",
+      "side": 1,
+      "message": "hmm, this seems to have broken our downstream as well:\n\n  Stored in directory: /home/andrewg/.cache/pip/wheels/30/87/4f/6ac908945dc671cfe494bbb1b0374a5f81238e2d67936a397b\n  Building wheel for cryptography (PEP 517): started\n  Building wheel for cryptography (PEP 517): finished with status \u0027error\u0027\n  ERROR: Command errored out with exit status 1:\n   command: /usr/bin/python3 /tmp/tmpea6ya_ty build_wheel /tmp/tmpgi4g37zn                                                                                          \n       cwd: /tmp/pip-install-wp1vt072/cryptography    \n       \n    check.warn(importable)                                                                                                                                          \n                                                                                                                                                                    \n      \u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003dDEBUG ASSISTANCE\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d                                                                                    \n      If you are seeing a compilation error please try the following steps to                                                                                       \n      successfully install cryptography:                                                                                                                            \n      1) Upgrade to the latest pip and try again. This will fix errors for most                                                                                     \n         users. See: https://pip.pypa.io/en/stable/installing/#upgrading-pip                                                                                        \n      2) Read https://cryptography.io/en/latest/installation/ for specific                                                                                          \n         instructions for your platform.                                                                                                                            \n      3) Check our frequently asked questions for more information:                                                                                                 \n         https://cryptography.io/en/latest/faq/                                                                                                                     \n      4) Ensure you have a recent Rust toolchain installed:                                                                                                         \n         https://cryptography.io/en/latest/installation/#rust                                                                                                       \n                                                                                                                                                                    \n      Python: 3.8.10                                                                                                                                                \n      platform: Linux-4.15.0-171-generic-ppc64le-with-glibc2.29                                                                                                     \n      pip: n/a                                                                                                                                                      \n      setuptools: 62.6.0                                                                                                                                            \n      setuptools_rust: 1.3.0                                                                                                                                        \n      \u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003dDEBUG ASSISTANCE\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d                                                                                    \n                                                                                                                                                                    \n  error: [Errno 2] No such file or directory: \u0027cargo\u0027                                                                                                               \n  ----------------------------------------                                                                                                                          \n  ERROR: Failed building wheel for cryptography",
+      "revId": "86ae13580ff49351c43b67fdba1f483435d462aa",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
