@@ -370,36 +370,31 @@ def build_dep_tree(name, pkgdir, dep_added, head, branch, dep_tree=None):
 
 
 def run_cppcheck():
-    match_re = re.compile(r'((?!\.mako\.).)*\.[ch](?:pp)?$', re.I)
-    cppcheck_files = []
-    stdout = subprocess.check_output(['git', 'ls-files'])
-
-    for f in stdout.decode('utf-8').split():
-        if match_re.match(f):
-            cppcheck_files.append(f)
-
-    if not cppcheck_files:
-        # skip cppcheck if there arent' any c or cpp sources.
-        print("no files")
+    if not os.path.exists(os.path.join("build", "compile_commands.json")):
         return None
 
+    try:
+        os.mkdir("cppcheck-temp")
+    except FileExistsError as e:
+        pass
+
     # http://cppcheck.sourceforge.net/manual.pdf
-    params = ['cppcheck', '-j', str(multiprocessing.cpu_count()),
-              '--enable=all', '--library=googletest', '--file-list=-']
-
-    cppcheck_process = subprocess.Popen(
-        params,
-        stdout=subprocess.PIPE,
-        stderr=subprocess.PIPE,
-        stdin=subprocess.PIPE)
-    (stdout, stderr) = cppcheck_process.communicate(
-        input='\n'.join(cppcheck_files).encode('utf-8'))
-
-    if cppcheck_process.wait():
-        raise Exception('Cppcheck failed')
-    print(stdout.decode('utf-8'))
-    print(stderr.decode('utf-8'))
-
+    try:
+        check_call_cmd(
+            'cppcheck',
+            '-j', str(multiprocessing.cpu_count()),
+            '--enable=style,performance,portability,missingInclude',
+            '--suppress=useStlAlgorithm',
+            '--suppress=unusedStructMember',
+            '--suppress=postfixOperator',
+            '--suppress=unreadVariable',
+            '--suppress=knownConditionTrueFalse',
+            '--library=googletest',
+            '--project=build/compile_commands.json',
+            '--cppcheck-build-dir=cppcheck-temp',
+        )
+    except subprocess.CalledProcessError:
+      print("cppcheck found errors")
 
 def is_valgrind_safe():
     """
