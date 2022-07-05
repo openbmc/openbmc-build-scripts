@@ -20,6 +20,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "b6142cd6_4a883d2a",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 61,
+      "author": {
+        "id": 1000153
+      },
+      "writtenOn": "2022-07-05T17:20:05Z",
+      "side": 1,
+      "message": "Considering that cppcheck isn\u0027t enforcing today, do we need to do that?  Happy to see it done, but I don\u0027t think we\u0027re going to fail anything additional here until we start making this enforcing (I think?).\n\nWith that said, if it\u0027s just a matter of spinning up the job I\u0027m game to look at the results.",
+      "parentUuid": "8d5cf187_0942926c",
+      "revId": "cdd789eaa403102d4401419e1f277db5fe2719b0",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "f68fd7ec_13a0d921",
         "filename": "/COMMIT_MSG",
         "patchSetId": 3
@@ -31,6 +49,24 @@
       "writtenOn": "2022-07-05T12:44:55Z",
       "side": 1,
       "message": "This is fine with me unless you were looking to get the cppcheck package in quicker.",
+      "revId": "cdd789eaa403102d4401419e1f277db5fe2719b0",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bc0feb53_072f906d",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 69,
+      "author": {
+        "id": 1000153
+      },
+      "writtenOn": "2022-07-05T17:20:05Z",
+      "side": 1,
+      "message": "Nope;  Just double checking if you wanted it that way.",
+      "parentUuid": "f68fd7ec_13a0d921",
       "revId": "cdd789eaa403102d4401419e1f277db5fe2719b0",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -48,6 +84,24 @@
       "writtenOn": "2022-07-05T12:44:55Z",
       "side": 1,
       "message": "A quick grok (looking for configure.ac) shows a few repos of concern. libmctp, phophor-net-ipmid, phosphor-user-manager, phosphor-pid-control, phosphor-fan-presence, phosphor-dbus-monitor. But, it\u0027s not like this is a required piece of CI, so be ok with me.",
+      "revId": "cdd789eaa403102d4401419e1f277db5fe2719b0",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0918fbfe_088abe83",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 71,
+      "author": {
+        "id": 1000153
+      },
+      "writtenOn": "2022-07-05T17:20:05Z",
+      "side": 1,
+      "message": "👍",
+      "parentUuid": "2002f345_760789a6",
       "revId": "cdd789eaa403102d4401419e1f277db5fe2719b0",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
