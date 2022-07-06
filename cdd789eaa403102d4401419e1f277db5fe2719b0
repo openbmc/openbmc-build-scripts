@@ -139,6 +139,24 @@
       "message": "This is minor but why not use tempfile.TemporaryDirectory for this call?\n\n```\nwith tempfile.TemporaryDirectory() as cpp_directory:\n   ...\n   f\u0027--cppcheck-build-dir\u003d{cpp_directory.name}\u0027,\n```",
       "revId": "cdd789eaa403102d4401419e1f277db5fe2719b0",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cc4abbb2_bc2fcd94",
+        "filename": "scripts/unit-test.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 377,
+      "author": {
+        "id": 1000153
+      },
+      "writtenOn": "2022-07-06T16:37:28Z",
+      "side": 1,
+      "message": "My thinking was that we didn\u0027t use TemporaryDirectory for the existing build folders, and the temp directory is pretty analogous to the meson/cmake build directories (can be reused, detects underlying changes automatically, etc), so this would be the same?  Happy to do either.  Geissler, any strong preference?",
+      "parentUuid": "6f1c0d57_90a577af",
+      "revId": "cdd789eaa403102d4401419e1f277db5fe2719b0",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
