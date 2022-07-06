@@ -36,6 +36,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e1070f7d_b3521dce",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 61,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2022-07-06T20:13:20Z",
+      "side": 1,
+      "message": "Ahh good point, I was thinking it caused fails. Makes sense to me to just put it in.",
+      "parentUuid": "b6142cd6_4a883d2a",
+      "revId": "cdd789eaa403102d4401419e1f277db5fe2719b0",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f68fd7ec_13a0d921",
@@ -67,6 +85,23 @@
       "side": 1,
       "message": "Nope;  Just double checking if you wanted it that way.",
       "parentUuid": "f68fd7ec_13a0d921",
+      "revId": "cdd789eaa403102d4401419e1f277db5fe2719b0",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4a5b8cf2_d1e41c9d",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 69,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2022-07-06T20:13:20Z",
+      "side": 1,
+      "message": "Probably just a quick removal of these questions from the commit message and good to go.",
       "revId": "cdd789eaa403102d4401419e1f277db5fe2719b0",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
