@@ -272,7 +272,7 @@ packages = {
         ],
     ),
     "openbmc/stdplus": PackageDef(
-        depends=["fmtlib/fmt"],
+        depends=["fmtlib/fmt", "google/googletest"],
         build_type="meson",
         config_flags=[
             "-Dexamples=false",
