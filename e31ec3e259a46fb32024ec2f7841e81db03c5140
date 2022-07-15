@@ -74,6 +74,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "64b210e8_b79096ec",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000153
+      },
+      "writtenOn": "2022-07-15T18:31:56Z",
+      "side": 1,
+      "message": "I don\u0027t think so:\nhttps://jorisroovers.com/gitlint/configuration/\n\nGo to the heading: \"Commit specific config\"\n\nbut it\u0027s certainly something we could talk with them about adding.",
+      "parentUuid": "bfedaadc_8899f09c",
+      "revId": "e31ec3e259a46fb32024ec2f7841e81db03c5140",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "9963632d_4fbf4869",
         "filename": "config/.gitlint",
         "patchSetId": 2
@@ -108,6 +126,30 @@
       "writtenOn": "2022-07-15T18:03:12Z",
       "side": 1,
       "message": "why are both lines necessary and the sha?",
+      "range": {
+        "startLine": 847,
+        "startChar": 0,
+        "endLine": 848,
+        "endChar": 105
+      },
+      "revId": "e31ec3e259a46fb32024ec2f7841e81db03c5140",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d15aca89_0a0f56e5",
+        "filename": "scripts/build-unit-test-docker",
+        "patchSetId": 2
+      },
+      "lineNbr": 848,
+      "author": {
+        "id": 1000153
+      },
+      "writtenOn": "2022-07-15T18:31:56Z",
+      "side": 1,
+      "message": "because gitlint installs in 2 packages, gitlint-core and gitlint, but because of the way the pip machinery works, we needed to install gitlint-core first.\n\nWe could talk about taking out the SHA1 if this goes forward, but I did it because it seems like something we\u0027d want to pin on major versions.",
+      "parentUuid": "9e276137_b1ab7507",
       "range": {
         "startLine": 847,
         "startChar": 0,
