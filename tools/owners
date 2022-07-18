@@ -68,7 +68,7 @@ class CommitMatch:
         self.owners: Set[str] = set(owners.get("owners") or [])
         self.reviewers: Set[str] = set(owners.get("reviewers") or [])
 
-        for e in owners.get("matchers", []):
+        for e in owners.get("matchers", None) or []:
             if "exact" in e:
                 self.__exact(files, e)
             elif "partial_regex" in e:
@@ -140,7 +140,8 @@ def main() -> None:
     )
     parser_reviewers.add_argument(
         "--push-args",
-        action=argparse.BooleanOptionalAction,
+        default=False,
+        action='store_true',
         help="Format as git push options",
     )
     parser_reviewers.add_argument(
