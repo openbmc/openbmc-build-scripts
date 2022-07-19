@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d6529d43_742db2ca",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2022-07-19T16:17:36Z",
+      "side": 1,
+      "message": "I think this one works now also.  Successfully added reviewers to this commit and saw a lower number of notification emails:\n\nhttps://gerrit.openbmc.org/c/openbmc/docs/+/55489",
+      "revId": "dfcd83c97250032a7b1c45da539cccba5e488773",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
