@@ -394,7 +394,8 @@ def run_cppcheck():
             '--cppcheck-build-dir=cppcheck-temp',
         )
     except subprocess.CalledProcessError:
-      print("cppcheck found errors")
+        print("cppcheck found errors")
+
 
 def is_valgrind_safe():
     """
