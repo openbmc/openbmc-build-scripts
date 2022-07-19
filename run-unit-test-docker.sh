@@ -25,6 +25,7 @@
 #   NO_FORMAT_CODE:  Optional, do not run format-code.sh
 #   EXTRA_UNIT_TEST_ARGS:  Optional, pass arguments to unit-test.py
 #   INTERACTIVE: Optional, run a bash shell instead of unit-test.py
+#   http_proxy: Optional, run the container with proxy environment
 
 # Trace bash processing. Set -e so when a step fails, we fail the build
 set -uo pipefail
@@ -45,6 +46,7 @@ MAKEFLAGS="${MAKEFLAGS:-""}"
 DOCKER_WORKDIR="${DOCKER_WORKDIR:-$WORKSPACE}"
 NO_FORMAT_CODE="${NO_FORMAT_CODE:-}"
 INTERACTIVE="${INTERACTIVE:-}"
+http_proxy=${http_proxy:-}
 
 # Timestamp for job
 echo "Unit test build started, $(date)"
@@ -110,8 +112,23 @@ fi
 
 # Run the docker unit test container with the unit test execution script
 echo "Executing docker image"
+
+PROXY_ENV=""
+# Set up proxies
+if [ -n "${http_proxy}" ]; then
+    PROXY_ENV=" \
+        --env HTTP_PROXY=${http_proxy} \
+        --env HTTPS_PROXY=${http_proxy} \
+        --env FTP_PROXY=${http_proxy} \
+        --env http_proxy=${http_proxy} \
+        --env https_proxy=${http_proxy} \
+        --env ftp_proxy=${http_proxy}"
+fi
+
+# shellcheck disable=SC2086 # ${PROXY_ENV} is meant to be splitted
 docker run --cap-add=sys_admin --rm=true \
     --privileged=true \
+    ${PROXY_ENV} \
     -u "$USER" \
     -w "${DOCKER_WORKDIR}" -v "${WORKSPACE}":"${DOCKER_WORKDIR}" \
     -e "MAKEFLAGS=${MAKEFLAGS}" \
