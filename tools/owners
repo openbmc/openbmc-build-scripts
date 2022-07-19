@@ -122,10 +122,21 @@ def subcmd_reviewers(args: argparse.Namespace, data: OwnersData) -> None:
     # Print as Gerrit Add Reviewers POST format.
     # https://gerrit.openbmc.org/Documentation/rest-api-changes.html#add-reviewer
     else:
+
+        def review_js(reviewer: str, state: str) -> str:
+            return json.dumps(
+                {
+                    "reviewer": reviewer,
+                    "state": state,
+                    "notify": "NONE",
+                    "notify_details": {"accounts": [reviewer]},
+                }
+            )
+
         for o in sorted(matcher.owners):
-            print(json.dumps({"reviewer": o, "state": "REVIEWER"}))
+            print(review_js(o, "REVIEWER"))
         for r in sorted(matcher.reviewers):
-            print(json.dumps({"reviewer": r, "state": "CC"}))
+            print(review_js(r, "CC"))
 
 
 def main() -> None:
@@ -141,7 +152,7 @@ def main() -> None:
     parser_reviewers.add_argument(
         "--push-args",
         default=False,
-        action='store_true',
+        action="store_true",
         help="Format as git push options",
     )
     parser_reviewers.add_argument(
