@@ -6,7 +6,7 @@ import re
 import yaml
 
 from sh import git  # type: ignore
-from typing import List, Set, TypedDict, Optional
+from typing import Dict, List, Set, TypedDict, Optional
 from yaml.loader import SafeLoader
 
 # A list of Gerrit users (email addresses).
@@ -58,25 +58,54 @@ class YamlLoader(SafeLoader):
 
 # Class to match commit information with OWNERS files.
 class CommitMatch:
-    def __init__(self, args: argparse.Namespace, owners: OwnersData):
+    def __init__(
+        self, args: argparse.Namespace, owners: Dict[str, OwnersData]
+    ):
         files: Set[str] = set(
             git.bake("-C", args.path)
             .show(args.commit, pretty="", name_only=True, _tty_out=False)
             .splitlines()
         )
 
-        self.owners: Set[str] = set(owners.get("owners") or [])
-        self.reviewers: Set[str] = set(owners.get("reviewers") or [])
+        root_owners = owners[""]
 
-        for e in owners.get("matchers", None) or []:
-            if "exact" in e:
-                self.__exact(files, e)
-            elif "partial_regex" in e:
-                self.__partial_regex(files, e)
-            elif "regex" in e:
-                self.__regex(files, e)
-            elif "suffix" in e:
-                self.__suffix(files, e)
+        self.owners: Set[str] = set()
+        self.reviewers: Set[str] = set()
+
+        for f in files:
+            path = f
+
+            while True:
+                path = os.path.dirname(path)
+
+                if path not in owners:
+                    if not path:
+                        break
+                    continue
+
+                local_owners = owners[path]
+
+                self.owners = self.owners.union(
+                    local_owners.get("owners") or []
+                )
+                self.reviewers = self.reviewers.union(
+                    local_owners.get("reviewers") or []
+                )
+
+                rel_file = os.path.relpath(f, path)
+
+                for e in local_owners.get("matchers", None) or []:
+                    if "exact" in e:
+                        self.__exact(rel_file, e)
+                    elif "partial_regex" in e:
+                        self.__partial_regex(rel_file, e)
+                    elif "regex" in e:
+                        self.__regex(rel_file, e)
+                    elif "suffix" in e:
+                        self.__suffix(rel_file, e)
+
+                if not path:
+                    break
 
         self.reviewers = self.reviewers.difference(self.owners)
 
@@ -84,29 +113,27 @@ class CommitMatch:
         self.owners = self.owners.union(entry.get("owners") or [])
         self.reviewers = self.reviewers.union(entry.get("reviewers") or [])
 
-    def __exact(self, files: Set[str], entry: MatchEntry) -> None:
-        for f in files:
-            if f == entry["exact"]:
-                self.__add_entry(entry)
+    def __exact(self, file: str, entry: MatchEntry) -> None:
+        if file == entry["exact"]:
+            self.__add_entry(entry)
 
-    def __partial_regex(self, files: Set[str], entry: MatchEntry) -> None:
-        for f in files:
-            if re.search(entry["partial_regex"], f):
-                self.__add_entry(entry)
+    def __partial_regex(self, file: str, entry: MatchEntry) -> None:
+        if re.search(entry["partial_regex"], file):
+            self.__add_entry(entry)
 
-    def __regex(self, files: Set[str], entry: MatchEntry) -> None:
-        for f in files:
-            if re.fullmatch(entry["regex"], f):
-                self.__add_entry(entry)
+    def __regex(self, file: str, entry: MatchEntry) -> None:
+        if re.fullmatch(entry["regex"], file):
+            self.__add_entry(entry)
 
-    def __suffix(self, files: Set[str], entry: MatchEntry) -> None:
-        for f in files:
-            if os.path.splitext(f)[1] == entry["suffix"]:
-                self.__add_entry(entry)
+    def __suffix(self, file: str, entry: MatchEntry) -> None:
+        if os.path.splitext(file)[1] == entry["suffix"]:
+            self.__add_entry(entry)
 
 
 # The subcommand to get the reviewers.
-def subcmd_reviewers(args: argparse.Namespace, data: OwnersData) -> None:
+def subcmd_reviewers(
+    args: argparse.Namespace, data: Dict[str, OwnersData]
+) -> None:
     matcher = CommitMatch(args, data)
 
     # Print in `git push refs/for/branch%<reviewers>` format.
@@ -164,8 +191,17 @@ def main() -> None:
 
     args = parser.parse_args()
 
-    file = YamlLoader.load(args.path + "/OWNERS")
-    args.func(args, file)
+    owners_files = git.bake("-C", args.path)(
+        "ls-files", "OWNERS", "**/OWNERS"
+    ).splitlines()
+
+    files = {}
+    for f in owners_files:
+        file = YamlLoader.load(os.path.join(args.path, f))
+        dirpath = os.path.dirname(f)
+        files[dirpath] = file
+
+    args.func(args, files)
 
 
 if __name__ == "__main__":
