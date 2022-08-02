@@ -119,7 +119,8 @@ RUN pip3 install \
     websocket-client \
     json2yaml \
     robotframework \
-    robotframework-requests==0.7.0 \
+    robotframework-requests \
+    robotframework-jsonlibrary \
     robotframework-sshlibrary \
     robotframework-scplibrary \
     pysnmp \
