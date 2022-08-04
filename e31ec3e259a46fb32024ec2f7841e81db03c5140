@@ -407,6 +407,24 @@
       "parentUuid": "81cbdeb4_41278ff0",
       "revId": "e31ec3e259a46fb32024ec2f7841e81db03c5140",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "09717150_aca2afe8",
+        "filename": "scripts/format-code.sh",
+        "patchSetId": 2
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 1000153
+      },
+      "writtenOn": "2022-08-04T20:57:01Z",
+      "side": 1,
+      "message": "\u003e FWIW, I\u0027d really prefer if we can get away from per-repo policies. \n\nPatrick submitted this as I was typing, and I completely agree with what he said.",
+      "parentUuid": "42053b44_af344adf",
+      "revId": "e31ec3e259a46fb32024ec2f7841e81db03c5140",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
