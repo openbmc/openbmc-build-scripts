@@ -22,7 +22,9 @@ codespell -D openbmc-spelling.txt -d --count "${DIR}"/.git/COMMIT_EDITMSG
 
 # Run the codespell with generic dictionary on the patchset
 echo "generic-dictionary - misspelling count >> "
-codespell --builtin clear,rare,en-GB_to_en-US -d --count "${DIR}"/.git/COMMIT_EDITMSG
+codespell --builtin clear,rare,en-GB_to_en-US -d --count \
+    -i config/openbmc-spelling-ignore.txt \
+    "${DIR}"/.git/COMMIT_EDITMSG
 
 cd "${DIR}"
 
