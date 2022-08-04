@@ -314,6 +314,30 @@
       "parentUuid": "602f4618_42030fbb",
       "revId": "38402e08578452716284770e2968996028c80161",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6bc60933_d40a3e9b",
+        "filename": "scripts/format-code.sh",
+        "patchSetId": 1
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 1000153
+      },
+      "writtenOn": "2022-08-04T23:14:44Z",
+      "side": 1,
+      "message": "I think this issue can be punted because:\n1. This doesn\u0027t enforce anything on openbmc/openbmc, and I believe that\u0027s the only exception\n2. There\u0027s a path to allow ignoring meta-\u003cname\u003e in the plugin we now have.  I\u0027m pretty sure the above concern is addressed.",
+      "parentUuid": "a21dd56e_bcfd3d5a",
+      "range": {
+        "startLine": 31,
+        "startChar": 30,
+        "endLine": 31,
+        "endChar": 44
+      },
+      "revId": "38402e08578452716284770e2968996028c80161",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }

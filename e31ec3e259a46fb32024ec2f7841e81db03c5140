@@ -191,6 +191,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "48988708_22c63117",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 1000153
+      },
+      "writtenOn": "2022-08-04T23:14:44Z",
+      "side": 1,
+      "message": "I ended up writing a minor plugin that handles a bunch of openbmc-specific stuff.  Arguably we could add to the plugin to check for meta-\u003cname\u003e and not include that in the limit, but for the moment, that\u0027s left until we add this to repotest.\n\nDoes that work for you?",
+      "parentUuid": "2fe80147_c1b8222b",
+      "range": {
+        "startLine": 32,
+        "startChar": 11,
+        "endLine": 34,
+        "endChar": 13
+      },
+      "revId": "e31ec3e259a46fb32024ec2f7841e81db03c5140",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "1a1c1e5a_a1c2a979",
@@ -359,6 +383,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "df404730_42d55e8e",
+        "filename": "config/.gitlint",
+        "patchSetId": 2
+      },
+      "lineNbr": 47,
+      "author": {
+        "id": 1000153
+      },
+      "writtenOn": "2022-08-04T23:14:44Z",
+      "side": 1,
+      "message": "\u003e Maybe we should move the discussion we were having on the other file to here - I\u0027m against hard-setting the title max length to 50 and instead using 72 due to how openbmc/openbmc usually prefers at a minimum specifying the meta layer, preferring to also list the repo it\u0027s touching (OR we should change that rule). When I\u0027m reviewing code here and downstream, I tell people that 50 is the rule to follow but 72 is the real hard limit.\n\nThis commit doesn\u0027t apply to openbmc/openbmc.  Yes, when and if we do that, we should take that into consideration, does that seem reasonable?\n\n\u003e \n\u003e \"meta-google: \" is 13 characters for instance, so we\u0027d have 37 chars left for the header which is often not enough.",
+      "parentUuid": "9963632d_4fbf4869",
+      "range": {
+        "startLine": 46,
+        "startChar": 0,
+        "endLine": 47,
+        "endChar": 14
+      },
+      "revId": "e31ec3e259a46fb32024ec2f7841e81db03c5140",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "9e276137_b1ab7507",
         "filename": "scripts/build-unit-test-docker",
         "patchSetId": 2
@@ -394,6 +442,30 @@
       "side": 1,
       "message": "because gitlint installs in 2 packages, gitlint-core and gitlint, but because of the way the pip machinery works, we needed to install gitlint-core first.\n\nWe could talk about taking out the SHA1 if this goes forward, but I did it because it seems like something we\u0027d want to pin on major versions.",
       "parentUuid": "9e276137_b1ab7507",
+      "range": {
+        "startLine": 847,
+        "startChar": 0,
+        "endLine": 848,
+        "endChar": 105
+      },
+      "revId": "e31ec3e259a46fb32024ec2f7841e81db03c5140",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ee529559_bacf5b06",
+        "filename": "scripts/build-unit-test-docker",
+        "patchSetId": 2
+      },
+      "lineNbr": 848,
+      "author": {
+        "id": 1000153
+      },
+      "writtenOn": "2022-08-04T23:14:44Z",
+      "side": 1,
+      "message": "Answered.  Please reopen if this isn\u0027t adequate.",
+      "parentUuid": "d15aca89_0a0f56e5",
       "range": {
         "startLine": 847,
         "startChar": 0,
@@ -471,6 +543,24 @@
       "side": 1,
       "message": "\u003e FWIW, I\u0027d really prefer if we can get away from per-repo policies. \n\nPatrick submitted this as I was typing, and I completely agree with what he said.",
       "parentUuid": "42053b44_af344adf",
+      "revId": "e31ec3e259a46fb32024ec2f7841e81db03c5140",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "00e85f64_44127e53",
+        "filename": "scripts/format-code.sh",
+        "patchSetId": 2
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 1000153
+      },
+      "writtenOn": "2022-08-04T23:14:44Z",
+      "side": 1,
+      "message": "I\u0027ve updated my position in the commit message;  PTAL.",
+      "parentUuid": "09717150_aca2afe8",
       "revId": "e31ec3e259a46fb32024ec2f7841e81db03c5140",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
