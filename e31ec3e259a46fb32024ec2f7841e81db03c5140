@@ -407,6 +407,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "ab20b8f4_720df0ce",
+        "filename": "config/.gitlint",
+        "patchSetId": 2
+      },
+      "lineNbr": 47,
+      "author": {
+        "id": 1000733
+      },
+      "writtenOn": "2022-08-04T23:36:36Z",
+      "side": 1,
+      "message": "It\u0027s also common to use that style of subject-line tagging in other repos though -- for example in dbus-sensors, I (and others) often put something like \"hwmontempsensor: \" or the like, which eats up a third of a 50-char budget.  Personally, I find that tagging useful and wouldn\u0027t want to discourage it.",
+      "parentUuid": "df404730_42d55e8e",
+      "range": {
+        "startLine": 46,
+        "startChar": 0,
+        "endLine": 47,
+        "endChar": 14
+      },
+      "revId": "e31ec3e259a46fb32024ec2f7841e81db03c5140",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "9e276137_b1ab7507",
         "filename": "scripts/build-unit-test-docker",
         "patchSetId": 2
