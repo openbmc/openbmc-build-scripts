@@ -1,6 +1,52 @@
 {
   "comments": [
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "b901ae6e_31aae454",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2022-08-04T14:34:00Z",
+      "side": 1,
+      "message": "A few violations of the 72 char limit in this commit message. Maybe you were trying to make a point that this is needed? :)",
+      "range": {
+        "startLine": 16,
+        "startChar": 72,
+        "endLine": 16,
+        "endChar": 73
+      },
+      "revId": "e31ec3e259a46fb32024ec2f7841e81db03c5140",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8d231a6c_a89c5b2d",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2022-08-04T14:34:00Z",
+      "side": 1,
+      "message": "My vote would be that this always be an opt-in for projects. As noted elsewhere, when you have to do something like \"meta-facebook:\" or \"meta-google\" in the commit message title, it takes a lot of real estate. And I like those in the title for openbmc/openbmc to know what to ignore. As seen in the review comments here, this feels like a pretty personal choice for a maintainer.",
+      "range": {
+        "startLine": 32,
+        "startChar": 11,
+        "endLine": 34,
+        "endChar": 13
+      },
+      "revId": "e31ec3e259a46fb32024ec2f7841e81db03c5140",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "1a1c1e5a_a1c2a979",
@@ -104,6 +150,24 @@
       "side": 1,
       "message": "Joel?",
       "parentUuid": "64b210e8_b79096ec",
+      "revId": "e31ec3e259a46fb32024ec2f7841e81db03c5140",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "caac8b8c_32480a82",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2022-08-04T14:34:00Z",
+      "side": 1,
+      "message": "Did you get a chance to run those tests noted above Ed (how a URL is treated, quoted things like stack traces)? May be somewhat moot if we agree this will be enabled at each repos maintainers discretion.",
+      "parentUuid": "5fda6c92_79f9eb99",
       "revId": "e31ec3e259a46fb32024ec2f7841e81db03c5140",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
