@@ -119,6 +119,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "81305a2f_c154adf7",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 1000153
+      },
+      "writtenOn": "2022-08-04T20:56:18Z",
+      "side": 1,
+      "message": "I think the later is what I\u0027m hoping for.  That gitlint file was a starting point, which is why I intentionally included everything that\u0027s the default, so we can talk about which things are universal, and which things would we sometimes allow.",
+      "parentUuid": "52ac0c45_f08d9ac7",
+      "range": {
+        "startLine": 32,
+        "startChar": 11,
+        "endLine": 34,
+        "endChar": 13
+      },
+      "revId": "e31ec3e259a46fb32024ec2f7841e81db03c5140",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "1a1c1e5a_a1c2a979",
@@ -362,6 +386,24 @@
       "writtenOn": "2022-08-04T20:53:53Z",
       "side": 1,
       "message": "FWIW, I\u0027d really prefer if we can get away from per-repo policies.  We have too many repositories that languish behind and don\u0027t hold up to the expectations of the rest of the project, and then others that make their own exceptions / policies you have to be aware of and follow.  I\u0027d prefer at most 2 configs for this one: meta-layer (openbmc/openbmc) and code repo (everything else).",
+      "parentUuid": "81cbdeb4_41278ff0",
+      "revId": "e31ec3e259a46fb32024ec2f7841e81db03c5140",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "42053b44_af344adf",
+        "filename": "scripts/format-code.sh",
+        "patchSetId": 2
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 1000153
+      },
+      "writtenOn": "2022-08-04T20:56:18Z",
+      "side": 1,
+      "message": "probably if we\u0027re going to do the per-repo thing first.  I was really hoping that we\u0027d avoid the combinatorial problem we have today where we have N versions of .clang-format/tidy checked into N repos, where there\u0027s little consistency.  In that case, it makes sense to take the hit, because it requires code changes to be made.  Because gitlint only applies to NEW commits, I had thought we could just have one config, and that the \"enable gitlint for this repo\" flag would be temporary.  Maybe that means it should be .gitlint-openbmc as the filename, to disambiguate from .gitlint?",
       "parentUuid": "81cbdeb4_41278ff0",
       "revId": "e31ec3e259a46fb32024ec2f7841e81db03c5140",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
