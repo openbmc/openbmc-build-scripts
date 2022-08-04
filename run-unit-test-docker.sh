@@ -37,7 +37,7 @@ UNIT_TEST_PY_DIR="scripts"
 CONFIG_DIR="config"
 UNIT_TEST_PY="unit-test.py"
 FORMAT_CODE_SH="format-code.sh"
-SPELLINGS_TXT="openbmc-spelling.txt"
+SPELLINGS_TXT="openbmc-spelling.txt openbmc-spelling-ignore.txt"
 ESLINT_CONFIG="eslint-global-config.json"
 DBUS_UNIT_TEST_PY="dbus-unit-test.py"
 TEST_ONLY="${TEST_ONLY:-}"
@@ -82,8 +82,10 @@ cp "${WORKSPACE}"/${OBMC_BUILD_SCRIPTS}/${UNIT_TEST_PY_DIR}/${FORMAT_CODE_SH} \
 chmod a+x "${WORKSPACE}"/${FORMAT_CODE_SH}
 
 # Copy spellings.txt file into workspace
-cp "${WORKSPACE}"/${OBMC_BUILD_SCRIPTS}/${CONFIG_DIR}/${SPELLINGS_TXT} \
-"${WORKSPACE}"/${SPELLINGS_TXT}
+for f in ${SPELLINGS_TXT}; do
+    cp "${WORKSPACE}/${OBMC_BUILD_SCRIPTS}/${CONFIG_DIR}/${f}" \
+        "${WORKSPACE}/${f}"
+done
 
 # Copy the eslintconfig file into workspce
 cp "${WORKSPACE}"/${OBMC_BUILD_SCRIPTS}/${CONFIG_DIR}/${ESLINT_CONFIG} \
