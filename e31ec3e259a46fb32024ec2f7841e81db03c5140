@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "2738933f_03add5ef",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 1000153
+      },
+      "writtenOn": "2022-08-04T16:16:18Z",
+      "side": 1,
+      "message": "Not done intentionally, but HA!\n\nWill fix.",
+      "parentUuid": "b901ae6e_31aae454",
+      "range": {
+        "startLine": 16,
+        "startChar": 72,
+        "endLine": 16,
+        "endChar": 73
+      },
+      "revId": "e31ec3e259a46fb32024ec2f7841e81db03c5140",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "8d231a6c_a89c5b2d",
         "filename": "/COMMIT_MSG",
         "patchSetId": 2
@@ -37,6 +61,30 @@
       "writtenOn": "2022-08-04T14:34:00Z",
       "side": 1,
       "message": "My vote would be that this always be an opt-in for projects. As noted elsewhere, when you have to do something like \"meta-facebook:\" or \"meta-google\" in the commit message title, it takes a lot of real estate. And I like those in the title for openbmc/openbmc to know what to ignore. As seen in the review comments here, this feels like a pretty personal choice for a maintainer.",
+      "range": {
+        "startLine": 32,
+        "startChar": 11,
+        "endLine": 34,
+        "endChar": 13
+      },
+      "revId": "e31ec3e259a46fb32024ec2f7841e81db03c5140",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4e23681e_e749158d",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 1000153
+      },
+      "writtenOn": "2022-08-04T16:16:18Z",
+      "side": 1,
+      "message": "Like I said in the above thread, surely there\u0027s SOMETHING we can enforce project wide.  A 300 word paragraph put into the first line is surely universally something CI could flag?\n\nI\u0027m happy to just have this in, at least it helps me as a maintainer, but I really think there\u0027s some level of rules that we could enforce.  I think we can all agree that there is no case where we\u0027d accept a whitespace character at the end of a line, or a single paragraph of text?  (and even in those cases, maintainers can override).",
+      "parentUuid": "8d231a6c_a89c5b2d",
       "range": {
         "startLine": 32,
         "startChar": 11,
@@ -168,6 +216,24 @@
       "side": 1,
       "message": "Did you get a chance to run those tests noted above Ed (how a URL is treated, quoted things like stack traces)? May be somewhat moot if we agree this will be enabled at each repos maintainers discretion.",
       "parentUuid": "5fda6c92_79f9eb99",
+      "revId": "e31ec3e259a46fb32024ec2f7841e81db03c5140",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f98572eb_56a96793",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000153
+      },
+      "writtenOn": "2022-08-04T16:16:18Z",
+      "side": 1,
+      "message": "I have not yet.  I\u0027m wanting to make sure this as an idea isn\u0027t completely dead in the water before I spend a lot more time refining it.",
+      "parentUuid": "caac8b8c_32480a82",
       "revId": "e31ec3e259a46fb32024ec2f7841e81db03c5140",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
