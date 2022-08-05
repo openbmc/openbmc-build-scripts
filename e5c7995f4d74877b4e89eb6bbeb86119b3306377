@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "25ab8822_84bb3a7d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2022-08-05T13:45:54Z",
+      "side": 1,
+      "message": "I wouldn\u0027t sign up for this being enabled globally at this point but I like how this commit allows the opt-in via the .openbmc-enforce-gitlint file which will allow us to do some learning with a few repos. We\u0027ve got the flexibility of the plugin to adapt to what we learn and if a few maintainers still have issues in the future, maybe we switch to a opt-out option for them.",
+      "revId": "e5c7995f4d74877b4e89eb6bbeb86119b3306377",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
