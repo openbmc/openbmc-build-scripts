@@ -503,6 +503,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "888609f0_437a4dcc",
+        "filename": "config/.gitlint",
+        "patchSetId": 2
+      },
+      "lineNbr": 47,
+      "author": {
+        "id": 1000388
+      },
+      "writtenOn": "2022-08-05T17:01:06Z",
+      "side": 1,
+      "message": "I think 72/72 is a good enough limit - and is how I usually enforce my code reviews (I usually tell them that 50 is technically the limit so that they are aware to try to get it to be shorter if possible).",
+      "parentUuid": "c69087d8_211ee74f",
+      "range": {
+        "startLine": 46,
+        "startChar": 0,
+        "endLine": 47,
+        "endChar": 14
+      },
+      "revId": "e31ec3e259a46fb32024ec2f7841e81db03c5140",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "9e276137_b1ab7507",
         "filename": "scripts/build-unit-test-docker",
         "patchSetId": 2
