@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "51bc3aad_d753a30b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2022-08-05T01:50:54Z",
+      "side": 1,
+      "message": "looks like upstream Yocto has 0.63 now but we haven’t pulled in the subtree update yet. we need to merge this after we do the subtree so we don’t end up with meson files passing CI but not working in the Yocto build. usually we do subtree updates on Friday. either Andrew G or I can try that tomorrow.  ",
+      "revId": "7f74267ffc501f69294086e106037567de5f0120",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
