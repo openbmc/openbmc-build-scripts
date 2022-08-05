@@ -479,6 +479,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "c69087d8_211ee74f",
+        "filename": "config/.gitlint",
+        "patchSetId": 2
+      },
+      "lineNbr": 47,
+      "author": {
+        "id": 1000153
+      },
+      "writtenOn": "2022-08-05T16:59:02Z",
+      "side": 1,
+      "message": "For the prefix on the commit message, sure, I can see the advantage, but surely there needs to be some limit?  Would 72 be enough?  Technically the rules are 50/72, but 72/72 might be a good starting point?\n\nAs for reverts, gitlint already ignores reverts by default, so no problems there.",
+      "parentUuid": "ee866c6e_42681023",
+      "range": {
+        "startLine": 46,
+        "startChar": 0,
+        "endLine": 47,
+        "endChar": 14
+      },
+      "revId": "e31ec3e259a46fb32024ec2f7841e81db03c5140",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "9e276137_b1ab7507",
         "filename": "scripts/build-unit-test-docker",
         "patchSetId": 2
