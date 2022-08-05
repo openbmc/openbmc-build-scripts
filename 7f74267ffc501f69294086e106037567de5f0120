@@ -1,6 +1,29 @@
 {
   "comments": [
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "20f1fbad_521468e4",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2022-08-05T12:59:14Z",
+      "side": 1,
+      "message": "I really don\u0027t think this is something we want to encourage, is it?  Patching an upstream repository so you can... make tests fail?  Carrying patch files is already disabled in openbmc/openbmc.  If this becomes a thing people do we\u0027ll probably need to do the same in code repos.\n\nI can understand leveraging this feature while you are developing a new feature, maybe.  We should never have patch files checked in to a code repository.",
+      "range": {
+        "startLine": 8,
+        "startChar": 0,
+        "endLine": 11,
+        "endChar": 51
+      },
+      "revId": "7f74267ffc501f69294086e106037567de5f0120",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "51bc3aad_d753a30b",
