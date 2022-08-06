@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "813cdca7_3ca9dcae",
+        "filename": "config/.gitlint",
+        "patchSetId": 5
+      },
+      "lineNbr": 47,
+      "author": {
+        "id": 1000153
+      },
+      "writtenOn": "2022-08-06T01:20:56Z",
+      "side": 1,
+      "message": "ACK;  I can do the later, I\u0027ll rig it into the custom rule (seems pretty trivial to add, as we already track the \"in a block comment\" state.",
+      "parentUuid": "a099c9cc_63ec3e76",
+      "range": {
+        "startLine": 45,
+        "startChar": 0,
+        "endLine": 47,
+        "endChar": 14
+      },
+      "revId": "bdbb4f59278b5d8bd41373551fd268c1a471f5f5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "39cd9fb5_821c8b82",
         "filename": "config/gitlint/block_comment.py",
         "patchSetId": 5
@@ -37,6 +61,24 @@
       "writtenOn": "2022-08-05T22:56:25Z",
       "side": 1,
       "message": "Nit: I might suggest \"shell transcripts\" instead of \"bash lines\".\n\nAlso, might we want to allow triple-backticks as well, markdown-style?",
+      "revId": "bdbb4f59278b5d8bd41373551fd268c1a471f5f5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5c65201d_9501a65e",
+        "filename": "config/gitlint/block_comment.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 1000153
+      },
+      "writtenOn": "2022-08-06T01:20:56Z",
+      "side": 1,
+      "message": "ACK.  Both sound totally reasonable to me.  Will try to get them in monday.",
+      "parentUuid": "39cd9fb5_821c8b82",
       "revId": "bdbb4f59278b5d8bd41373551fd268c1a471f5f5",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
