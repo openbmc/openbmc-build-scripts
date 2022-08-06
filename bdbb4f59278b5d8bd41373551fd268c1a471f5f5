@@ -48,6 +48,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7066ef11_78f57400",
+        "filename": "config/.gitlint",
+        "patchSetId": 5
+      },
+      "lineNbr": 47,
+      "author": {
+        "id": 1000153
+      },
+      "writtenOn": "2022-08-06T16:22:15Z",
+      "side": 1,
+      "message": "I\u0027ve disabled rule B3, and incorporated the tab checking behavior into our custom plugin rule.",
+      "parentUuid": "813cdca7_3ca9dcae",
+      "range": {
+        "startLine": 45,
+        "startChar": 0,
+        "endLine": 47,
+        "endChar": 14
+      },
+      "revId": "bdbb4f59278b5d8bd41373551fd268c1a471f5f5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "39cd9fb5_821c8b82",
@@ -79,6 +103,42 @@
       "side": 1,
       "message": "ACK.  Both sound totally reasonable to me.  Will try to get them in monday.",
       "parentUuid": "39cd9fb5_821c8b82",
+      "revId": "bdbb4f59278b5d8bd41373551fd268c1a471f5f5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ede90bdd_9c2bdf52",
+        "filename": "config/gitlint/block_comment.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 1000153
+      },
+      "writtenOn": "2022-08-06T16:22:15Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5c65201d_9501a65e",
+      "revId": "bdbb4f59278b5d8bd41373551fd268c1a471f5f5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "76225a8e_ddbba404",
+        "filename": "config/gitlint/block_comment.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 1000153
+      },
+      "writtenOn": "2022-08-06T16:22:15Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5c65201d_9501a65e",
       "revId": "bdbb4f59278b5d8bd41373551fd268c1a471f5f5",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
