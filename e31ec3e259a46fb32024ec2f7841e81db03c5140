@@ -573,6 +573,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "58d9f88b_e672502b",
+        "filename": "config/.gitlint",
+        "patchSetId": 2
+      },
+      "lineNbr": 47,
+      "author": {
+        "id": 1000153
+      },
+      "writtenOn": "2022-08-08T21:53:21Z",
+      "side": 1,
+      "message": "\u003e I guess if we want to be fancy, we would want to enforce that there IS a meta* prefix in our meta layer repos like openbmc/openbmc but that\u0027s a nice to have feature for the future.\n\nNow that we know how to use the gitlint plugins the above is roughly my eventual lan.  Allow meta-*: at the beginning of the line, an don\u0027t count it.",
+      "parentUuid": "0be73828_8847772b",
+      "range": {
+        "startLine": 46,
+        "startChar": 0,
+        "endLine": 47,
+        "endChar": 14
+      },
+      "revId": "e31ec3e259a46fb32024ec2f7841e81db03c5140",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9e276137_b1ab7507",
