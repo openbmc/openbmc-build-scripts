@@ -24,6 +24,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "73f7b449_7c6698a0",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1000937
+      },
+      "writtenOn": "2022-08-08T06:01:32Z",
+      "side": 1,
+      "message": "I understand we don\u0027t encourage patching the upstream repository. But I have a special scenario which needs to do this.\n\nThe scenario is:\n\n1. We have a internal patch called `patchA` for a public upstream repo `pubicRepoB`\n\n2. And we have another internal repo `privateRepoC` which depends on `pubicRepoB` + `patchA`\n\n3. Then we run unit test on `privateRepoC`. It will fetch the `pubicRepoB` to the subprojects. However it won\u0027t fetch/apply `patchA` so the unit test will fail due to compile failure.\n\n4. Wo don\u0027t clone a downstream `pubicRepoB` and apply `patchA` because of the maintenance effort.\n\nIn this scenario, if we can specify the patch in the `.wrap` file.\nThen the `patchA` will be auto patching to `pubicRepoB` during fetching, and everything will be fine.",
+      "parentUuid": "20f1fbad_521468e4",
+      "range": {
+        "startLine": 8,
+        "startChar": 0,
+        "endLine": 11,
+        "endChar": 51
+      },
+      "revId": "7f74267ffc501f69294086e106037567de5f0120",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "51bc3aad_d753a30b",
