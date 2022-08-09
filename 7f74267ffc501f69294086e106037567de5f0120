@@ -120,6 +120,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "d6d74e26_93917dfe",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1000937
+      },
+      "writtenOn": "2022-08-09T22:28:32Z",
+      "side": 1,
+      "message": "\u003e I see no reason for us to hold public patches to public repositories in order to get your private repository to work. Do you agree?\n\nAh sorry, seems like I didn\u0027t explain it clearly.\nThe `patchA` is private. Let\u0027s change it to `privatePatchA`\nSo it\u0027s the `parivatePatchA` for `publicRepoB`\n\n\u003e I’m probably going to explicitly add something to our repo CI that causes patch or diff files to fail the build so we don’t even need to consider this as a possibility (before merging this bump).\n\nI think it fails the build already without adding anything to repo CI.",
+      "parentUuid": "c31c002f_10a1935d",
+      "range": {
+        "startLine": 8,
+        "startChar": 0,
+        "endLine": 11,
+        "endChar": 51
+      },
+      "revId": "7f74267ffc501f69294086e106037567de5f0120",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "51bc3aad_d753a30b",
