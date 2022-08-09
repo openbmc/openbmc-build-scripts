@@ -100,6 +100,8 @@ RUN apt-get update && apt-get install -yy \
     xvfb \
     rustc
 
+RUN apt-get update && apt-get install -y wget bzip2 libxtst6 libgtk-3-0 libx11-xcb-dev libdbus-glib-1-2 libxt6 libpci-dev && rm -rf /var/lib/apt/lists/*RUN apt-get update && apt-get install -y wget bzip2 libxtst6 libgtk-3-0 libx11-xcb-dev libdbus-glib-1-2 libxt6 libpci-dev && rm -rf /var/lib/apt/lists/*
+
 RUN apt-get update -qqy \
   && apt-get -qqy --no-install-recommends install firefox \
   && wget --no-verbose -O /tmp/firefox.tar.bz2 https://download-installer.cdn.mozilla.net/pub/firefox/releases/72.0/linux-x86_64/en-US/firefox-72.0.tar.bz2 \
