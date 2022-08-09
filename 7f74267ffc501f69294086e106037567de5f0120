@@ -146,6 +146,30 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "b1394e9b_86fb9ad1",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2022-08-09T22:35:51Z",
+      "side": 1,
+      "message": "\u003e So it\u0027s the `parivatePatchA` for `publicRepoB`\n\nSounds fine if you want to deal with that elsewhere.  As long as we don\u0027t end up with them committed to any repositories in the openbmc org.\n\n\u003e I think it fails the build already without adding anything to repo CI.\n\nWe have code for CI against openbmc/openbmc that checks for new patch files but nothing in the code repositories.  It\u0027s never really been an issue before.",
+      "parentUuid": "d6d74e26_93917dfe",
+      "range": {
+        "startLine": 8,
+        "startChar": 0,
+        "endLine": 11,
+        "endChar": 51
+      },
+      "revId": "7f74267ffc501f69294086e106037567de5f0120",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "51bc3aad_d753a30b",
         "filename": "/PATCHSET_LEVEL",
         "patchSetId": 2
@@ -175,6 +199,23 @@
       "side": 1,
       "message": "I see, thanks for your help.",
       "parentUuid": "51bc3aad_d753a30b",
+      "revId": "7f74267ffc501f69294086e106037567de5f0120",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bdcd988d_881bbad2",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2022-08-09T22:35:51Z",
+      "side": 1,
+      "message": "BTW, I made the subtree update commit for openbmc/openbmc but there was a compile failure in a Google machine.  I\u0027m waiting for William to fix this (or tell me how he wants it fixed).  We had a discussion in #yocto on Discord about the issue.",
       "revId": "7f74267ffc501f69294086e106037567de5f0120",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
