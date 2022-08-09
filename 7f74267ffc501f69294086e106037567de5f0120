@@ -72,6 +72,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "649d5668_32239016",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1000937
+      },
+      "writtenOn": "2022-08-09T15:35:01Z",
+      "side": 1,
+      "message": "\u003e Just to confirm, you only intend on adding these patches in \u0027privateRepoC\u0027 then?\n\nNo, `patchA` is for `pubicRepoB`.\n\nWe need `patchA` to be applied to `pubicRepoB` during building `privateRepoC`\nBecause `privateRepoC` calls a function(let\u0027s say `foo`) from `pubicRepoB`. However `foo` is defined and implemented in `patchA`.\nSo if we build `privateRepoC` without `patchA` applied to `pubicRepoB`, there will be an error says something like:\n```\nprivateRepoC/main.cc: `foo` function not found.\n```",
+      "parentUuid": "c76e95b5_c4b529dd",
+      "range": {
+        "startLine": 8,
+        "startChar": 0,
+        "endLine": 11,
+        "endChar": 51
+      },
+      "revId": "7f74267ffc501f69294086e106037567de5f0120",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "51bc3aad_d753a30b",
