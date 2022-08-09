@@ -1,0 +1,78 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a2b37a51_4c85f03e",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2022-08-09T12:53:55Z",
+      "side": 1,
+      "message": "Please add a much more descriptive commit message.  I cannot even begin reviewing this for correctness until you do.",
+      "revId": "bb84fcb40be17693b21a6104abf489d984dddc3d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0ad03cf8_557f635c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2022-08-09T12:53:55Z",
+      "side": 1,
+      "message": "I see you keep removing reviewers.  Jenkins automatically adds them now and you shouldn\u0027t remove them because those are the people that can help get your code merged.  If this commit is still a \"work in progress\" mark it as such please.",
+      "revId": "bb84fcb40be17693b21a6104abf489d984dddc3d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "83df7102_7e144dcf",
+        "filename": "scripts/build-qemu-robot-docker.sh",
+        "patchSetId": 2
+      },
+      "lineNbr": 103,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2022-08-09T12:53:55Z",
+      "side": 1,
+      "message": "Please add these to the apt-get on line 61.  We try to do as many as we can in a large set in order to reduce the size of the Docker checkpoints.",
+      "revId": "bb84fcb40be17693b21a6104abf489d984dddc3d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d3634cab_4e5e28e3",
+        "filename": "scripts/build-qemu-robot-docker.sh",
+        "patchSetId": 2
+      },
+      "lineNbr": 103,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2022-08-09T12:53:55Z",
+      "side": 1,
+      "message": "What is all this about?",
+      "range": {
+        "startLine": 103,
+        "startChar": 125,
+        "endLine": 103,
+        "endChar": 155
+      },
+      "revId": "bb84fcb40be17693b21a6104abf489d984dddc3d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
