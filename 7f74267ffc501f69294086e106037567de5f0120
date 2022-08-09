@@ -218,6 +218,24 @@
       "message": "BTW, I made the subtree update commit for openbmc/openbmc but there was a compile failure in a Google machine.  I\u0027m waiting for William to fix this (or tell me how he wants it fixed).  We had a discussion in #yocto on Discord about the issue.",
       "revId": "7f74267ffc501f69294086e106037567de5f0120",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a04560b0_2fab561e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000937
+      },
+      "writtenOn": "2022-08-09T22:59:26Z",
+      "side": 1,
+      "message": "Oh I see https://gerrit.openbmc.org/c/openbmc/openbmc/+/56307\nThanks for your help, I will just abandon this CL",
+      "parentUuid": "bdcd988d_881bbad2",
+      "revId": "7f74267ffc501f69294086e106037567de5f0120",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
