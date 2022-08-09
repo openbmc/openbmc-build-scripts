@@ -236,6 +236,24 @@
       "parentUuid": "bdcd988d_881bbad2",
       "revId": "7f74267ffc501f69294086e106037567de5f0120",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2e7cb757_06802040",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2022-08-09T23:07:24Z",
+      "side": 1,
+      "message": "I think you misunderstood. That commit is for the Yocto side of it. This commit is for Docker (which runs in repo CI). we still need this one.",
+      "parentUuid": "a04560b0_2fab561e",
+      "revId": "7f74267ffc501f69294086e106037567de5f0120",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
