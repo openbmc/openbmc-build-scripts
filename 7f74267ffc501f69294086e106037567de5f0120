@@ -254,6 +254,24 @@
       "parentUuid": "a04560b0_2fab561e",
       "revId": "7f74267ffc501f69294086e106037567de5f0120",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7fa62850_9a14b9ca",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000937
+      },
+      "writtenOn": "2022-08-11T10:05:11Z",
+      "side": 1,
+      "message": "Yea.. Seems like I misunderstood.\n\nI thought you mean that there will be a CL updates all the dependency\u0027s version to match yocto after https://gerrit.openbmc.org/c/openbmc/openbmc/+/56307 merged.\n\nThanks for clarification.",
+      "parentUuid": "2e7cb757_06802040",
+      "revId": "7f74267ffc501f69294086e106037567de5f0120",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
