@@ -16,6 +16,7 @@ from mesonbuild.mesonlib import OptionKey
 from mesonbuild.mesonlib import version_compare as meson_version_compare
 from urllib.parse import urljoin
 from subprocess import check_call, call, CalledProcessError
+from tempfile import TemporaryDirectory
 import os
 import sys
 import argparse
@@ -373,28 +374,25 @@ def run_cppcheck():
     if not os.path.exists(os.path.join("build", "compile_commands.json")):
         return None
 
-    try:
-        os.mkdir("cppcheck-temp")
-    except FileExistsError as e:
-        pass
+    with TemporaryDirectory() as cpp_dir:
 
-    # http://cppcheck.sourceforge.net/manual.pdf
-    try:
-        check_call_cmd(
-            'cppcheck',
-            '-j', str(multiprocessing.cpu_count()),
-            '--enable=style,performance,portability,missingInclude',
-            '--suppress=useStlAlgorithm',
-            '--suppress=unusedStructMember',
-            '--suppress=postfixOperator',
-            '--suppress=unreadVariable',
-            '--suppress=knownConditionTrueFalse',
-            '--library=googletest',
-            '--project=build/compile_commands.json',
-            '--cppcheck-build-dir=cppcheck-temp',
-        )
-    except subprocess.CalledProcessError:
-        print("cppcheck found errors")
+        # http://cppcheck.sourceforge.net/manual.pdf
+        try:
+            check_call_cmd(
+                'cppcheck',
+                '-j', str(multiprocessing.cpu_count()),
+                '--enable=style,performance,portability,missingInclude',
+                '--suppress=useStlAlgorithm',
+                '--suppress=unusedStructMember',
+                '--suppress=postfixOperator',
+                '--suppress=unreadVariable',
+                '--suppress=knownConditionTrueFalse',
+                '--library=googletest',
+                '--project=build/compile_commands.json',
+                f'--cppcheck-build-dir={cpp_dir}',
+            )
+        except subprocess.CalledProcessError:
+            print("cppcheck found errors")
 
 
 def is_valgrind_safe():
