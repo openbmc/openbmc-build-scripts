@@ -85,6 +85,7 @@ GERRIT_CI_GROUPS=( \
     intel/ci-authorized \
     inventec/ci-authorized \
     lenovo/ci-authorized \
+    microsoft/ci-authorized \
     nineelements/ci-authorized \
     nuvoton/ci-authorized \
     nvidia/ci-authorized \
