@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "440b9f24_661c681f",
+        "filename": "config/.gitlint",
+        "patchSetId": 7
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1000153
+      },
+      "writtenOn": "2022-08-16T22:19:56Z",
+      "side": 1,
+      "message": "\u003e Why\u0027d we disable this?  Does `Testing:` files sometimes contain tabs?\n\u003e \n\u003e I guess we implement our own `body-hard-tab`.  Maybe make that more obvious in what you wrote?\n\n\nCheck out the conversation earlier in the review.  Someone found that this rule had some issues on quoted blocks, so it got rolled into our custom rule.  It is still enforced, just in a different rule, and ignores quoted blocks.  I\u0027m of the opinion that even within quoted blocks, your block shouldn\u0027t start with a tab, but in the overall theme of \"Start permissive and ratchet down in later patchsets to what we want\" I left it as an option to try to get concensus.",
+      "parentUuid": "cd48a6a6_a17d8070",
+      "range": {
+        "startLine": 10,
+        "startChar": 28,
+        "endLine": 10,
+        "endChar": 41
+      },
+      "revId": "17864f53d11c4c9db1bc8a69550520ea55ceb702",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "db1b780c_e78aff5f",
         "filename": "config/.gitlint",
         "patchSetId": 7
@@ -37,6 +61,30 @@
       "writtenOn": "2022-08-16T21:43:04Z",
       "side": 1,
       "message": "Do you want WIP or DO_NOT_MERGE?\n\nI\u0027d lean towards no because our format script runs first and ends up bailing out.  Maintainers should be smart enough not to merge one of those so we still get UT signal on the rest of the commit.",
+      "range": {
+        "startLine": 54,
+        "startChar": 0,
+        "endLine": 58,
+        "endChar": 6
+      },
+      "revId": "17864f53d11c4c9db1bc8a69550520ea55ceb702",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "df6d0ef5_69cf22f6",
+        "filename": "config/.gitlint",
+        "patchSetId": 7
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 1000153
+      },
+      "writtenOn": "2022-08-16T22:19:56Z",
+      "side": 1,
+      "message": "\u003e Do you want WIP or DO_NOT_MERGE?\n\u003e \n\u003e I\u0027d lean towards no because our format script runs first and ends up bailing out.  Maintainers should be smart enough not to merge one of those so we still get UT signal on the rest of the commit.\n\nEventually, yes/maybe, but in terms of keeping this small and less controversial, I didn\u0027t want to do this in this patchset.  I would rather we treat this as slowly ratcheting the rules up, instead of starting overly draconian and backing it off.",
+      "parentUuid": "db1b780c_e78aff5f",
       "range": {
         "startLine": 54,
         "startChar": 0,
@@ -72,6 +120,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "c2d71c0e_13c2fd41",
+        "filename": "config/.gitlint",
+        "patchSetId": 7
+      },
+      "lineNbr": 74,
+      "author": {
+        "id": 1000153
+      },
+      "writtenOn": "2022-08-16T22:19:56Z",
+      "side": 1,
+      "message": "I don\u0027t think this is going to flag subtree commits?  They have a body don\u0027t they?\n\nAlso, subtree updates occur on openbmc/openbmc, which in the commit message is currently out of scope for this.  Can we push the \"make this work on openbmc/openbmc\" to a future commit just to keep this commit self contained to repo commits?",
+      "parentUuid": "feea5058_a93f21c5",
+      "range": {
+        "startLine": 72,
+        "startChar": 0,
+        "endLine": 74,
+        "endChar": 26
+      },
+      "revId": "17864f53d11c4c9db1bc8a69550520ea55ceb702",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "8c5ebb22_4c4e27b7",
         "filename": "config/.gitlint",
         "patchSetId": 7
@@ -83,6 +155,30 @@
       "writtenOn": "2022-08-16T21:43:04Z",
       "side": 1,
       "message": "Is there anything we can do to ensure that \"Signed-Off-By\" contains at least two words?  I see so many times that we end up with a unix id or github id and we really need something close to what is listed in the CLA.",
+      "range": {
+        "startLine": 88,
+        "startChar": 0,
+        "endLine": 91,
+        "endChar": 21
+      },
+      "revId": "17864f53d11c4c9db1bc8a69550520ea55ceb702",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "95142135_1c717657",
+        "filename": "config/.gitlint",
+        "patchSetId": 7
+      },
+      "lineNbr": 91,
+      "author": {
+        "id": 1000153
+      },
+      "writtenOn": "2022-08-16T22:19:56Z",
+      "side": 1,
+      "message": "\u003e Is there anything we can do to ensure that \"Signed-Off-By\" contains at least two words?\n\nIn the future, absolutely yes; In this patchset, lets get SOME amount of verification turned on and not try to boil the ocean.\n\n\n\u003e  I see so many times that we end up with a unix id or github id and we really need something close to what is listed in the CLA.\n\nACK.  On my list of checks to add.",
+      "parentUuid": "8c5ebb22_4c4e27b7",
       "range": {
         "startLine": 88,
         "startChar": 0,
@@ -118,6 +214,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "cceff6be_4e75759b",
+        "filename": "config/gitlint/block_comment.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 1000153
+      },
+      "writtenOn": "2022-08-16T22:19:56Z",
+      "side": 1,
+      "message": "the intent is for tabbed in block comments.  IE\n\nTested:\n    My super long curl command that has a large block of test that might be larger\n    that this line, but still is readable because it\u0027s a tabbed in block.\n    \nI grabbed it from an upstream gitlint review that was similar, and that\u0027s the source.  If it\u0027s controversial, I can remove it, but to beat on the same drum, can we ratchet down in the next patch?  (full disclosure, it\u0027ll probably take me a week or two to write and test it).",
+      "parentUuid": "d08f23b7_45e30609",
+      "range": {
+        "startLine": 33,
+        "startChar": 0,
+        "endLine": 35,
+        "endChar": 24
+      },
+      "revId": "17864f53d11c4c9db1bc8a69550520ea55ceb702",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "2a79a2dd_125478a4",
         "filename": "config/gitlint/block_comment.py",
         "patchSetId": 7
@@ -141,6 +261,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "c2121f79_cd1a8449",
+        "filename": "config/gitlint/block_comment.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 1000153
+      },
+      "writtenOn": "2022-08-16T22:19:56Z",
+      "side": 1,
+      "message": "If I\u0027m reading that right, the difference is the colon?  I can add that as optional in the regex.  The intent is to be as permissive as we can be while still keeping things readable, and I didn\u0027t think we had a standard for this.\n\nACK.",
+      "parentUuid": "2a79a2dd_125478a4",
+      "range": {
+        "startLine": 40,
+        "startChar": 0,
+        "endLine": 42,
+        "endChar": 46
+      },
+      "revId": "17864f53d11c4c9db1bc8a69550520ea55ceb702",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "9cc6ef87_89ecfbbd",
         "filename": "scripts/format-code.sh",
         "patchSetId": 7
@@ -152,6 +296,30 @@
       "writtenOn": "2022-08-16T21:43:04Z",
       "side": 1,
       "message": "I\u0027d be fine just enabling it and dealing with the fallout by fixing things as they show up.",
+      "range": {
+        "startLine": 27,
+        "startChar": 0,
+        "endLine": 28,
+        "endChar": 51
+      },
+      "revId": "17864f53d11c4c9db1bc8a69550520ea55ceb702",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "045fe58d_9c699522",
+        "filename": "scripts/format-code.sh",
+        "patchSetId": 7
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 1000153
+      },
+      "writtenOn": "2022-08-16T22:19:56Z",
+      "side": 1,
+      "message": "Understood, but I want to get some amount of traction with this with maintainers that know what\u0027s going on (ie, those that have rolled it out) before we blanket roll it out across the project.  This is a new tool, and we always find bugs in new things.  My hope is that we can roll this out to some of the repos maintainers opt-in for, and test it for a couple weeks, get the kinks worked out, then remove this check.\n\nSound reasonable?",
+      "parentUuid": "9cc6ef87_89ecfbbd",
       "range": {
         "startLine": 27,
         "startChar": 0,
