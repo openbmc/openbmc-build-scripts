@@ -283,6 +283,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f240ebdd_c7a18c92",
+        "filename": "config/gitlint/block_comment.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 1000153
+      },
+      "writtenOn": "2022-08-16T23:23:58Z",
+      "side": 1,
+      "message": "Done.  Latest patch allows for a colon.",
+      "parentUuid": "c2121f79_cd1a8449",
+      "range": {
+        "startLine": 40,
+        "startChar": 0,
+        "endLine": 42,
+        "endChar": 46
+      },
+      "revId": "17864f53d11c4c9db1bc8a69550520ea55ceb702",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9cc6ef87_89ecfbbd",
