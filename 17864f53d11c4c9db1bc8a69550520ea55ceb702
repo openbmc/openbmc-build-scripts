@@ -1,0 +1,165 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cd48a6a6_a17d8070",
+        "filename": "config/.gitlint",
+        "patchSetId": 7
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2022-08-16T21:43:04Z",
+      "side": 1,
+      "message": "Why\u0027d we disable this?  Does `Testing:` files sometimes contain tabs?\n\nI guess we implement our own `body-hard-tab`.  Maybe make that more obvious in what you wrote?",
+      "range": {
+        "startLine": 10,
+        "startChar": 28,
+        "endLine": 10,
+        "endChar": 41
+      },
+      "revId": "17864f53d11c4c9db1bc8a69550520ea55ceb702",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "db1b780c_e78aff5f",
+        "filename": "config/.gitlint",
+        "patchSetId": 7
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2022-08-16T21:43:04Z",
+      "side": 1,
+      "message": "Do you want WIP or DO_NOT_MERGE?\n\nI\u0027d lean towards no because our format script runs first and ends up bailing out.  Maintainers should be smart enough not to merge one of those so we still get UT signal on the rest of the commit.",
+      "range": {
+        "startLine": 54,
+        "startChar": 0,
+        "endLine": 58,
+        "endChar": 6
+      },
+      "revId": "17864f53d11c4c9db1bc8a69550520ea55ceb702",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "feea5058_a93f21c5",
+        "filename": "config/.gitlint",
+        "patchSetId": 7
+      },
+      "lineNbr": 74,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2022-08-16T21:43:04Z",
+      "side": 1,
+      "message": "We\u0027re likely going to end up flagging the subtree bump commits?  Is there something easy we can do on them.\n\nExample:\nhttps://gerrit.openbmc.org/c/openbmc/openbmc/+/56307",
+      "range": {
+        "startLine": 72,
+        "startChar": 0,
+        "endLine": 74,
+        "endChar": 26
+      },
+      "revId": "17864f53d11c4c9db1bc8a69550520ea55ceb702",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8c5ebb22_4c4e27b7",
+        "filename": "config/.gitlint",
+        "patchSetId": 7
+      },
+      "lineNbr": 91,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2022-08-16T21:43:04Z",
+      "side": 1,
+      "message": "Is there anything we can do to ensure that \"Signed-Off-By\" contains at least two words?  I see so many times that we end up with a unix id or github id and we really need something close to what is listed in the CLA.",
+      "range": {
+        "startLine": 88,
+        "startChar": 0,
+        "endLine": 91,
+        "endChar": 21
+      },
+      "revId": "17864f53d11c4c9db1bc8a69550520ea55ceb702",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d08f23b7_45e30609",
+        "filename": "config/gitlint/block_comment.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2022-08-16T21:43:04Z",
+      "side": 1,
+      "message": "Can we describe what we were trying to accomplish here?  I think I often indent bullet lists and we\u0027d still want the line-length checked on those?",
+      "range": {
+        "startLine": 33,
+        "startChar": 0,
+        "endLine": 35,
+        "endChar": 24
+      },
+      "revId": "17864f53d11c4c9db1bc8a69550520ea55ceb702",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2a79a2dd_125478a4",
+        "filename": "config/gitlint/block_comment.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2022-08-16T21:43:04Z",
+      "side": 1,
+      "message": "Why isn\u0027t this:\n\n[1]: http://www.myspace.com\n\nThat is proper markdown footnote links.  I\u0027d think we\u0027d want to follow markdown as much as possible for less-thought-required.",
+      "range": {
+        "startLine": 40,
+        "startChar": 0,
+        "endLine": 42,
+        "endChar": 46
+      },
+      "revId": "17864f53d11c4c9db1bc8a69550520ea55ceb702",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9cc6ef87_89ecfbbd",
+        "filename": "scripts/format-code.sh",
+        "patchSetId": 7
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2022-08-16T21:43:04Z",
+      "side": 1,
+      "message": "I\u0027d be fine just enabling it and dealing with the fallout by fixing things as they show up.",
+      "range": {
+        "startLine": 27,
+        "startChar": 0,
+        "endLine": 28,
+        "endChar": 51
+      },
+      "revId": "17864f53d11c4c9db1bc8a69550520ea55ceb702",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
