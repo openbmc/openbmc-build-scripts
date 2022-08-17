@@ -50,6 +50,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "68ba5c24_495c3bb9",
+        "filename": "config/.gitlint",
+        "patchSetId": 7
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2022-08-17T15:22:35Z",
+      "side": 1,
+      "message": "\u003e ...it is still enforced, just in a different rule, and ignores quoted blocks.\n\nAck.  My suggestion was that the comment here (line 9) elaborate on why `body-hard-tab` is ignored.\n\n\u003e I\u0027m of the opinion that even within quoted blocks, your block shouldn\u0027t start with a tab,\n\nI\u0027d be onboard with \"no tabs are allowed in commit messages\".  They likely make the display of the commit message different depending on the system used for viewing, which isn\u0027t appreciated.",
+      "parentUuid": "440b9f24_661c681f",
+      "range": {
+        "startLine": 10,
+        "startChar": 28,
+        "endLine": 10,
+        "endChar": 41
+      },
+      "revId": "17864f53d11c4c9db1bc8a69550520ea55ceb702",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "db1b780c_e78aff5f",
         "filename": "config/.gitlint",
         "patchSetId": 7
@@ -85,6 +109,30 @@
       "side": 1,
       "message": "\u003e Do you want WIP or DO_NOT_MERGE?\n\u003e \n\u003e I\u0027d lean towards no because our format script runs first and ends up bailing out.  Maintainers should be smart enough not to merge one of those so we still get UT signal on the rest of the commit.\n\nEventually, yes/maybe, but in terms of keeping this small and less controversial, I didn\u0027t want to do this in this patchset.  I would rather we treat this as slowly ratcheting the rules up, instead of starting overly draconian and backing it off.",
       "parentUuid": "db1b780c_e78aff5f",
+      "range": {
+        "startLine": 54,
+        "startChar": 0,
+        "endLine": 58,
+        "endChar": 6
+      },
+      "revId": "17864f53d11c4c9db1bc8a69550520ea55ceb702",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ea92ff59_e28d31d2",
+        "filename": "config/.gitlint",
+        "patchSetId": 7
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2022-08-17T15:22:35Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "df6d0ef5_69cf22f6",
       "range": {
         "startLine": 54,
         "startChar": 0,
@@ -144,6 +192,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "686a2576_69883f55",
+        "filename": "config/.gitlint",
+        "patchSetId": 7
+      },
+      "lineNbr": 74,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2022-08-17T15:22:35Z",
+      "side": 1,
+      "message": "I probably put this into a bad location.  I suspect there is a lot in this gitlint that would flag the subtree updates.  Maybe it is as simple as us modifying the tools that generate those to put the blanked \"ignore gitlint\" exception on every subtree commit.\n\nI also forgot that this doesn\u0027t cover that repo yet.",
+      "parentUuid": "c2d71c0e_13c2fd41",
+      "range": {
+        "startLine": 72,
+        "startChar": 0,
+        "endLine": 74,
+        "endChar": 26
+      },
+      "revId": "17864f53d11c4c9db1bc8a69550520ea55ceb702",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "8c5ebb22_4c4e27b7",
         "filename": "config/.gitlint",
         "patchSetId": 7
@@ -191,6 +263,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "3383d432_30e883c4",
+        "filename": "config/.gitlint",
+        "patchSetId": 7
+      },
+      "lineNbr": 91,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2022-08-17T15:22:35Z",
+      "side": 1,
+      "message": "Feel free for that to be another commit.  Not trying to slow this down for additional requests.  Just raising the common concerns I raise in commit messages (and that one specifically I feel like a lot of maintainers are missing).",
+      "parentUuid": "95142135_1c717657",
+      "range": {
+        "startLine": 88,
+        "startChar": 0,
+        "endLine": 91,
+        "endChar": 21
+      },
+      "revId": "17864f53d11c4c9db1bc8a69550520ea55ceb702",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "d08f23b7_45e30609",
         "filename": "config/gitlint/block_comment.py",
         "patchSetId": 7
@@ -226,6 +322,30 @@
       "side": 1,
       "message": "the intent is for tabbed in block comments.  IE\n\nTested:\n    My super long curl command that has a large block of test that might be larger\n    that this line, but still is readable because it\u0027s a tabbed in block.\n    \nI grabbed it from an upstream gitlint review that was similar, and that\u0027s the source.  If it\u0027s controversial, I can remove it, but to beat on the same drum, can we ratchet down in the next patch?  (full disclosure, it\u0027ll probably take me a week or two to write and test it).",
       "parentUuid": "d08f23b7_45e30609",
+      "range": {
+        "startLine": 33,
+        "startChar": 0,
+        "endLine": 35,
+        "endChar": 24
+      },
+      "revId": "17864f53d11c4c9db1bc8a69550520ea55ceb702",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8dd55745_3b698e05",
+        "filename": "config/gitlint/block_comment.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2022-08-17T15:22:35Z",
+      "side": 1,
+      "message": "I guess.  It just didn\u0027t make much sense to me that you could simply add 4 spaces to the front of each line and then make lines as long as you wanted.  Couldn\u0027t tell what we were accomplishing.\n\nShouldn\u0027t any curl command just be escaped with backticks?",
+      "parentUuid": "cceff6be_4e75759b",
       "range": {
         "startLine": 33,
         "startChar": 0,
@@ -307,6 +427,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4c162fa1_1a715268",
+        "filename": "config/gitlint/block_comment.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2022-08-17T15:22:35Z",
+      "side": 1,
+      "message": "👍",
+      "parentUuid": "f240ebdd_c7a18c92",
+      "range": {
+        "startLine": 40,
+        "startChar": 0,
+        "endLine": 42,
+        "endChar": 46
+      },
+      "revId": "17864f53d11c4c9db1bc8a69550520ea55ceb702",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9cc6ef87_89ecfbbd",
@@ -344,6 +488,30 @@
       "side": 1,
       "message": "Understood, but I want to get some amount of traction with this with maintainers that know what\u0027s going on (ie, those that have rolled it out) before we blanket roll it out across the project.  This is a new tool, and we always find bugs in new things.  My hope is that we can roll this out to some of the repos maintainers opt-in for, and test it for a couple weeks, get the kinks worked out, then remove this check.\n\nSound reasonable?",
       "parentUuid": "9cc6ef87_89ecfbbd",
+      "range": {
+        "startLine": 27,
+        "startChar": 0,
+        "endLine": 28,
+        "endChar": 51
+      },
+      "revId": "17864f53d11c4c9db1bc8a69550520ea55ceb702",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5e899e27_9ecbc0d6",
+        "filename": "scripts/format-code.sh",
+        "patchSetId": 7
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2022-08-17T15:22:35Z",
+      "side": 1,
+      "message": "Your choice.  Like I said, I\u0027d prefer we just break and fix it as needed.  Someone being held up for a day or two of landing a diff isn\u0027t really a serious problem in my opinion, considering how long it takes to review diffs around here anyhow half the time.\n\nI hope we don\u0027t see a mess of these short-lived commits adding this flag file.",
+      "parentUuid": "045fe58d_9c699522",
       "range": {
         "startLine": 27,
         "startChar": 0,
