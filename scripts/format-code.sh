@@ -55,7 +55,7 @@ else
 fi
 
 ESLINT_COMMAND="eslint . ${ESLINT_IGNORE} ${ESLINT_RC} \
-               --ext .json --format=json \
+               --ext .json --format=stylish \
                --resolve-plugins-relative-to /usr/local/lib/node_modules \
                --no-error-on-unmatched-pattern"
 
