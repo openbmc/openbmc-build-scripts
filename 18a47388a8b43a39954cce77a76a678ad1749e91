@@ -24,6 +24,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0cc788aa_0d8b3a43",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1000018
+      },
+      "writtenOn": "2022-08-17T12:45:15Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "89475035_473c01db",
+      "range": {
+        "startLine": 7,
+        "startChar": 0,
+        "endLine": 7,
+        "endChar": 12
+      },
+      "revId": "18a47388a8b43a39954cce77a76a678ad1749e91",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "93ab1458_0190e383",
@@ -37,6 +61,24 @@
       "writtenOn": "2022-08-17T12:38:26Z",
       "side": 1,
       "message": "net: Empty line needed between body of commit msg and Change-Id",
+      "revId": "18a47388a8b43a39954cce77a76a678ad1749e91",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d86dedf1_86191778",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 1000018
+      },
+      "writtenOn": "2022-08-17T12:45:15Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "93ab1458_0190e383",
       "revId": "18a47388a8b43a39954cce77a76a678ad1749e91",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
