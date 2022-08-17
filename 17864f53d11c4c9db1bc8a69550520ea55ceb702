@@ -72,6 +72,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "fbe568ce_0892b834",
+        "filename": "config/.gitlint",
+        "patchSetId": 7
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1000153
+      },
+      "writtenOn": "2022-08-17T16:14:47Z",
+      "side": 1,
+      "message": "\u003e \u003e ...it is still enforced, just in a different rule, and ignores quoted blocks.\n\u003e \n\u003e Ack.  My suggestion was that the comment here (line 9) elaborate on why `body-hard-tab` is ignored.\n\nAh, fair point, added a comment.\n\n\u003e \n\u003e \u003e I\u0027m of the opinion that even within quoted blocks, your block shouldn\u0027t start with a tab,\n\u003e \n\u003e I\u0027d be onboard with \"no tabs are allowed in commit messages\".  They likely make the display of the commit message different depending on the system used for viewing, which isn\u0027t appreciated.\n\nSounds good.",
+      "parentUuid": "68ba5c24_495c3bb9",
+      "range": {
+        "startLine": 10,
+        "startChar": 28,
+        "endLine": 10,
+        "endChar": 41
+      },
+      "revId": "17864f53d11c4c9db1bc8a69550520ea55ceb702",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "db1b780c_e78aff5f",
@@ -214,6 +238,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4bd38ede_3e9a035e",
+        "filename": "config/.gitlint",
+        "patchSetId": 7
+      },
+      "lineNbr": 74,
+      "author": {
+        "id": 1000153
+      },
+      "writtenOn": "2022-08-17T16:14:47Z",
+      "side": 1,
+      "message": "\u003e I probably put this into a bad location.  I suspect there is a lot in this gitlint that would flag the subtree updates.  Maybe it is as simple as us modifying the tools that generate those to put the blanked \"ignore gitlint\" exception on every subtree commit.\n\nI\u0027m pretty sure it\u0027s that simple, but I haven\u0027t looked yet.  I\u0027ll get there.\n\n\u003e \n\u003e I also forgot that this doesn\u0027t cover that repo yet.",
+      "parentUuid": "686a2576_69883f55",
+      "range": {
+        "startLine": 72,
+        "startChar": 0,
+        "endLine": 74,
+        "endChar": 26
+      },
+      "revId": "17864f53d11c4c9db1bc8a69550520ea55ceb702",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8c5ebb22_4c4e27b7",
@@ -285,6 +333,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f2b5d6e7_9d116390",
+        "filename": "config/.gitlint",
+        "patchSetId": 7
+      },
+      "lineNbr": 91,
+      "author": {
+        "id": 1000153
+      },
+      "writtenOn": "2022-08-17T16:14:47Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "3383d432_30e883c4",
+      "range": {
+        "startLine": 88,
+        "startChar": 0,
+        "endLine": 91,
+        "endChar": 21
+      },
+      "revId": "17864f53d11c4c9db1bc8a69550520ea55ceb702",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d08f23b7_45e30609",
@@ -346,6 +418,30 @@
       "side": 1,
       "message": "I guess.  It just didn\u0027t make much sense to me that you could simply add 4 spaces to the front of each line and then make lines as long as you wanted.  Couldn\u0027t tell what we were accomplishing.\n\nShouldn\u0027t any curl command just be escaped with backticks?",
       "parentUuid": "cceff6be_4e75759b",
+      "range": {
+        "startLine": 33,
+        "startChar": 0,
+        "endLine": 35,
+        "endChar": 24
+      },
+      "revId": "17864f53d11c4c9db1bc8a69550520ea55ceb702",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b3821c76_1c188e0b",
+        "filename": "config/gitlint/block_comment.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 1000153
+      },
+      "writtenOn": "2022-08-17T16:14:47Z",
+      "side": 1,
+      "message": "\u003e I guess.  It just didn\u0027t make much sense to me that you could simply add 4 spaces to the front of each line and then make lines as long as you wanted.  Couldn\u0027t tell what we were accomplishing.\n\u003e \n\u003e Shouldn\u0027t any curl command just be escaped with backticks?\n\nThey should.  I removed this exception in the latest patch, because you\u0027re right, we should be more consistent here.",
+      "parentUuid": "8dd55745_3b698e05",
       "range": {
         "startLine": 33,
         "startChar": 0,
@@ -512,6 +608,30 @@
       "side": 1,
       "message": "Your choice.  Like I said, I\u0027d prefer we just break and fix it as needed.  Someone being held up for a day or two of landing a diff isn\u0027t really a serious problem in my opinion, considering how long it takes to review diffs around here anyhow half the time.\n\nI hope we don\u0027t see a mess of these short-lived commits adding this flag file.",
       "parentUuid": "045fe58d_9c699522",
+      "range": {
+        "startLine": 27,
+        "startChar": 0,
+        "endLine": 28,
+        "endChar": 51
+      },
+      "revId": "17864f53d11c4c9db1bc8a69550520ea55ceb702",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "201c584f_e9af9306",
+        "filename": "scripts/format-code.sh",
+        "patchSetId": 7
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 1000153
+      },
+      "writtenOn": "2022-08-17T16:14:47Z",
+      "side": 1,
+      "message": "I expected that I was going to be the only maintainer to opt into this in the time window.\n\nI stacked another patch so we can start talking about making this mandatory in 4 weeks, just to make sure the intent isn\u0027t lost.",
+      "parentUuid": "5e899e27_9ecbc0d6",
       "range": {
         "startLine": 27,
         "startChar": 0,
