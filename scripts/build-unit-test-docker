@@ -93,11 +93,6 @@ packages = {
         build_type="custom",
         build_steps=[f"cp -a include/cereal/ {prefix}/include/"],
     ),
-    "catchorg/Catch2": PackageDef(
-        rev="v2.13.6",
-        build_type="cmake",
-        config_flags=["-DBUILD_TESTING=OFF", "-DCATCH_INSTALL_DOCS=OFF"],
-    ),
     "danmar/cppcheck": PackageDef(
         rev="27578e9c4c1f90c62b6938867735a054082e178e",
         build_type="cmake",
