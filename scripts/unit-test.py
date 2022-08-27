@@ -745,10 +745,9 @@ class CMake(BuildSystem):
 
     def analyze(self):
         if os.path.isfile('.clang-tidy'):
-            try:
-                os.mkdir("tidy-build")
-            except FileExistsError as e:
-                pass
+            shutil.rmtree("tidy-build", ignore_errors=True)
+            os.mkdir("tidy-build")
+
             # clang-tidy needs to run on a clang-specific build
             check_call_cmd('cmake', '-DCMAKE_C_COMPILER=clang',
                            '-DCMAKE_CXX_COMPILER=clang++',
@@ -756,7 +755,7 @@ class CMake(BuildSystem):
                            '-H.',
                            '-Btidy-build')
             # we need to cd here because otherwise clang-tidy doesn't find the
-            # .clang-tidy file in the roots of repos.  Its arguably a "bug"
+            # .clang-tidy file in the roots of repos.  It's arguably a "bug"
             # with run-clang-tidy at a minimum it's "weird" that it requires
             # the .clang-tidy to be up a dir
             os.chdir("tidy-build")
@@ -765,6 +764,7 @@ class CMake(BuildSystem):
                                '.')
             finally:
                 os.chdir("..")
+                shutil.rmtree("tidy-build", ignore_errors=True)
 
         maybe_make_valgrind()
         maybe_make_coverage()
@@ -892,7 +892,7 @@ class Meson(BuildSystem):
             check_call_cmd('meson', 'setup', '--reconfigure', 'build',
                            *meson_flags)
         except:
-            shutil.rmtree('build')
+            shutil.rmtree('build', ignore_errors=True)
             check_call_cmd('meson', 'setup', 'build', *meson_flags)
 
     def build(self):
@@ -960,6 +960,7 @@ class Meson(BuildSystem):
         # Run clang-tidy only if the project has a configuration
         if os.path.isfile('.clang-tidy'):
             os.environ["CXX"] = "clang++"
+            shutil.rmtree("build-clang", ignore_errors=True)
             check_call_cmd('meson', 'setup', 'build-clang')
             os.chdir("build-clang")
             try:
