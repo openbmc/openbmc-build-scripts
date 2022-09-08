@@ -725,8 +725,8 @@ RUN sed -i '/-\(backports\|security\) /d' /etc/apt/sources.list.d/debug.list
 RUN cat /etc/apt/sources.list.d/debug.list
 
 RUN apt-get update && apt-get dist-upgrade -yy && apt-get install -yy \
-    gcc-11 \
-    g++-11 \
+    gcc-12 \
+    g++-12 \
     libc6-dbg \
     libc6-dev \
     libtool \
@@ -796,11 +796,11 @@ RUN curl "http://git.savannah.gnu.org/gitweb/?p=autoconf-archive.git;a=blob_plai
 
 RUN npm install -g eslint@latest eslint-plugin-json@latest
 
-RUN update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-11 11 \
-  --slave /usr/bin/g++ g++ /usr/bin/g++-11 \
-  --slave /usr/bin/gcov gcov /usr/bin/gcov-11 \
-  --slave /usr/bin/gcov-dump gcov-dump /usr/bin/gcov-dump-11 \
-  --slave /usr/bin/gcov-tool gcov-tool /usr/bin/gcov-tool-11
+RUN update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-12 12 \
+  --slave /usr/bin/g++ g++ /usr/bin/g++-12 \
+  --slave /usr/bin/gcov gcov /usr/bin/gcov-12 \
+  --slave /usr/bin/gcov-dump gcov-dump /usr/bin/gcov-dump-12 \
+  --slave /usr/bin/gcov-tool gcov-tool /usr/bin/gcov-tool-12
 
 RUN update-alternatives --install /usr/bin/clang clang /usr/bin/clang-14 1000 \
   --slave /usr/bin/clang++ clang++ /usr/bin/clang++-14 \
