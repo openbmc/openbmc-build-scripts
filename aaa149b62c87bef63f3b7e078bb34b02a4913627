@@ -20,6 +20,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "cccb461c_712ad3ef",
+        "filename": "scripts/unit-test.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 748,
+      "author": {
+        "id": 1000682
+      },
+      "writtenOn": "2022-09-09T22:02:27Z",
+      "side": 1,
+      "message": "Yes, you mean CPP check, right?\n\nI can look into that and it makes more sense to me to just use TemporaryDirectory.\n\nDoes it make sense to get this change as an incremental improvement?\n\nI found this because meson throws errors on my workstation when I enable clang-tidy in user.manager about directory already exist.",
+      "parentUuid": "dd69d747_48a375b1",
+      "revId": "aaa149b62c87bef63f3b7e078bb34b02a4913627",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "191974f1_8c51b5d6",
         "filename": "scripts/unit-test.py",
         "patchSetId": 2
@@ -31,6 +49,24 @@
       "writtenOn": "2022-09-09T21:45:41Z",
       "side": 1,
       "message": "Any reason we aren\u0027t cleaning it up here?",
+      "revId": "aaa149b62c87bef63f3b7e078bb34b02a4913627",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "06153298_356b643b",
+        "filename": "scripts/unit-test.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 973,
+      "author": {
+        "id": 1000682
+      },
+      "writtenOn": "2022-09-09T22:02:27Z",
+      "side": 1,
+      "message": "Oh, I can add a `shutil.rmtree(\"build-clang\", ignore_errors\u003dTrue) here`. Done",
+      "parentUuid": "191974f1_8c51b5d6",
       "revId": "aaa149b62c87bef63f3b7e078bb34b02a4913627",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
