@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dd69d747_48a375b1",
+        "filename": "scripts/unit-test.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 748,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2022-09-09T21:45:41Z",
+      "side": 1,
+      "message": "Would it be worthwhile to use TemporaryDirectory like I added elsewhere?",
+      "revId": "aaa149b62c87bef63f3b7e078bb34b02a4913627",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "191974f1_8c51b5d6",
+        "filename": "scripts/unit-test.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 973,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2022-09-09T21:45:41Z",
+      "side": 1,
+      "message": "Any reason we aren\u0027t cleaning it up here?",
+      "revId": "aaa149b62c87bef63f3b7e078bb34b02a4913627",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
