@@ -1,0 +1,84 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "68719c86_98c1d115",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000009
+      },
+      "writtenOn": "2022-09-16T03:48:10Z",
+      "side": 1,
+      "message": "Hi Nan, nice cleanup! I\u0027ve left a couple of comments that might clean the logic up further",
+      "revId": "1e0ce70699b157c90e48af7af54406617e451931",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "02a41f39_b97ec28b",
+        "filename": "scripts/unit-test.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 762,
+      "author": {
+        "id": 1000009
+      },
+      "writtenOn": "2022-09-16T03:48:10Z",
+      "side": 1,
+      "message": "This can be `build_dir` and then we can drop the chdir()s and try/finally",
+      "range": {
+        "startLine": 762,
+        "startChar": 35,
+        "endLine": 762,
+        "endChar": 38
+      },
+      "revId": "1e0ce70699b157c90e48af7af54406617e451931",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2c91cc15_92edfe7a",
+        "filename": "scripts/unit-test.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 965,
+      "author": {
+        "id": 1000009
+      },
+      "writtenOn": "2022-09-16T03:48:10Z",
+      "side": 1,
+      "message": "This can be `build_dir` and then we can drop the chdir()s.",
+      "range": {
+        "startLine": 965,
+        "startChar": 53,
+        "endLine": 965,
+        "endChar": 54
+      },
+      "revId": "1e0ce70699b157c90e48af7af54406617e451931",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a078eea5_ad91fde0",
+        "filename": "scripts/unit-test.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 966,
+      "author": {
+        "id": 1000009
+      },
+      "writtenOn": "2022-09-16T03:48:10Z",
+      "side": 1,
+      "message": "Should this exception also be caught by the try block on lines 760-764? And the same action (`git ... diff`) invoked?",
+      "revId": "1e0ce70699b157c90e48af7af54406617e451931",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
