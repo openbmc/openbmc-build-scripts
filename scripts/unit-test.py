@@ -745,26 +745,24 @@ class CMake(BuildSystem):
 
     def analyze(self):
         if os.path.isfile('.clang-tidy'):
-            shutil.rmtree("tidy-build", ignore_errors=True)
-            os.mkdir("tidy-build")
-
-            # clang-tidy needs to run on a clang-specific build
-            check_call_cmd('cmake', '-DCMAKE_C_COMPILER=clang',
-                           '-DCMAKE_CXX_COMPILER=clang++',
-                           '-DCMAKE_EXPORT_COMPILE_COMMANDS=ON',
-                           '-H.',
-                           '-Btidy-build')
-            # we need to cd here because otherwise clang-tidy doesn't find the
-            # .clang-tidy file in the roots of repos.  It's arguably a "bug"
-            # with run-clang-tidy at a minimum it's "weird" that it requires
-            # the .clang-tidy to be up a dir
-            os.chdir("tidy-build")
-            try:
-                check_call_cmd('run-clang-tidy', "-header-filter=.*", '-p',
-                               '.')
-            finally:
-                os.chdir("..")
-                osshutilmtree("tidy-build", ignore_errors=True)
+            with TemporaryDirectory(prefix='build', dir='.') as build_dir:
+                # clang-tidy needs to run on a clang-specific build
+                check_call_cmd('cmake', '-DCMAKE_C_COMPILER=clang',
+                               '-DCMAKE_CXX_COMPILER=clang++',
+                               '-DCMAKE_EXPORT_COMPILE_COMMANDS=ON',
+                               '-H.',
+                               '-B' + build_dir)
+                # we need to cd here because otherwise clang-tidy doesn't find
+                # the  .clang-tidy file in the roots of repos.  It's arguably
+                # a "bug"
+                # with run-clang-tidy at a minimum it's "weird" that it
+                # requires the .clang-tidy to be up a dir
+                os.chdir(build_dir)
+                try:
+                    check_call_cmd('run-clang-tidy', "-header-filter=.*", '-p',
+                                   '.')
+                finally:
+                    os.chdir("..")
 
         maybe_make_valgrind()
         maybe_make_coverage()
@@ -960,17 +958,18 @@ class Meson(BuildSystem):
         # Run clang-tidy only if the project has a configuration
         if os.path.isfile('.clang-tidy'):
             os.environ["CXX"] = "clang++"
-            shutil.rmtree("build-clang", ignore_errors=True)
-            check_call_cmd('meson', 'setup', 'build-clang')
-            os.chdir("build-clang")
-            try:
-                check_call_cmd('run-clang-tidy', '-fix', '-format', '-p', '.')
-            except subprocess.CalledProcessError:
-                check_call_cmd("git", "-C", CODE_SCAN_DIR,
-                               "--no-pager", "diff")
-                raise
-            finally:
-                os.chdir("..")
+            with TemporaryDirectory(prefix='build', dir='.') as build_dir:
+                check_call_cmd('meson', 'setup', build_dir)
+                os.chdir(build_dir)
+                try:
+                    check_call_cmd('run-clang-tidy', '-fix',
+                                   '-format', '-p', '.')
+                except subprocess.CalledProcessError:
+                    check_call_cmd("git", "-C", CODE_SCAN_DIR,
+                                   "--no-pager", "diff")
+                    raise
+                finally:
+                    os.chdir("..")
 
         # Run the basic clang static analyzer otherwise
         else:
