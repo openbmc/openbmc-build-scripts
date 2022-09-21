@@ -246,7 +246,7 @@ packages = {
         ],
     ),
     "openbmc/sdeventplus": PackageDef(
-        depends=["Naios/function2", "openbmc/stdplus"],
+        depends=["openbmc/stdplus"],
         build_type="meson",
         config_flags=[
             "-Dexamples=false",
@@ -254,7 +254,7 @@ packages = {
         ],
     ),
     "openbmc/stdplus": PackageDef(
-        depends=["fmtlib/fmt", "google/googletest"],
+        depends=["fmtlib/fmt", "Naios/function2", "google/googletest"],
         build_type="meson",
         config_flags=[
             "-Dexamples=false",
