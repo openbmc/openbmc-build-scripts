@@ -34,6 +34,24 @@
       "parentUuid": "29b5506f_52bd9cf9",
       "revId": "b8a51ba2577fb2acdb619a917b32e0dff2866bca",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "47f50ffc_423c542f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000153
+      },
+      "writtenOn": "2022-09-21T16:21:38Z",
+      "side": 1,
+      "message": "Don\u0027t we already have out commit message rules documented in the docs repo?\n\n\u003e Could you send an email to the list on this one?\n\nHappy to, and seems reasonable to signal boost a little bit.\n\n\u003e Maybe include some info on how to do longer lines for things like FFDC and web links?\n\nWhen you fail the check, the custom code we have spits out the rules, and makes suggestions.  I can reiterate them in the email, but I think I\u0027ll just point back at the docs.  If they need updates, I\u0027ll push a patch there.",
+      "parentUuid": "b9b33930_e431fe77",
+      "revId": "b8a51ba2577fb2acdb619a917b32e0dff2866bca",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
