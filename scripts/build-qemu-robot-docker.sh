@@ -124,7 +124,7 @@ RUN pip3 install \
     robotframework-sshlibrary \
     robotframework-scplibrary \
     pysnmp \
-    redfish \
+    redfish>=3.1.7 \
     beautifulsoup4 --upgrade \
     lxml \
     jsonschema \
