@@ -33,6 +33,24 @@
       "message": "Does it break anything in general apart from the test cases\nOne that I know of, example https://github.com/openbmc/openbmc-test-automation/blob/master/redfish/service_root/test_service_root_security.robot#L25  \n\nwhich is fixed to handle both older 3.1.6 and new 3.1.7 latest. ",
       "revId": "8b36256f7ab480c4a199221c8731ee9d0f09c0e9",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c8eb5381_1424988e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1001371
+      },
+      "writtenOn": "2022-09-23T10:51:51Z",
+      "side": 1,
+      "message": "I was going to put this merge request in a chain with https://gerrit.openbmc.org/c/openbmc/openbmc-test-automation/+/57366, but I just pushed to gerrit and I saw your change https://gerrit. openbmc.org/c/openbmc/openbmc-test-automation/+/57363 so this one just triggers a docker upgrade, I\u0027m not sure if it\u0027s necessary, you can decide this.",
+      "parentUuid": "f0f14988_12c02e2e",
+      "revId": "8b36256f7ab480c4a199221c8731ee9d0f09c0e9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
