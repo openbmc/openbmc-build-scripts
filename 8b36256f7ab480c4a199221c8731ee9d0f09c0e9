@@ -16,6 +16,23 @@
       "message": "So does this have a co-req with a change to the robot tests George?",
       "revId": "8b36256f7ab480c4a199221c8731ee9d0f09c0e9",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f0f14988_12c02e2e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000018
+      },
+      "writtenOn": "2022-09-23T05:37:08Z",
+      "side": 1,
+      "message": "Does it break anything in general apart from the test cases\nOne that I know of, example https://github.com/openbmc/openbmc-test-automation/blob/master/redfish/service_root/test_service_root_security.robot#L25  \n\nwhich is fixed to handle both older 3.1.6 and new 3.1.7 latest. ",
+      "revId": "8b36256f7ab480c4a199221c8731ee9d0f09c0e9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
