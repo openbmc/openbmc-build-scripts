@@ -826,6 +826,7 @@ RUN pip3 install inflection
 RUN pip3 install pycodestyle
 RUN pip3 install jsonschema
 RUN pip3 install meson==0.63.0
+RUN pip3 install packaging
 RUN pip3 install protobuf
 RUN pip3 install codespell
 RUN pip3 install requests
