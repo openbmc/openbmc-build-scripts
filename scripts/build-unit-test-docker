@@ -802,6 +802,7 @@ RUN update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-12 12 \
   --slave /usr/bin/gcov gcov /usr/bin/gcov-12 \
   --slave /usr/bin/gcov-dump gcov-dump /usr/bin/gcov-dump-12 \
   --slave /usr/bin/gcov-tool gcov-tool /usr/bin/gcov-tool-12
+RUN update-alternatives --install /usr/bin/cpp cpp /usr/bin/cpp-12 12
 
 RUN update-alternatives --install /usr/bin/clang clang /usr/bin/clang-14 1000 \
   --slave /usr/bin/clang++ clang++ /usr/bin/clang++-14 \
