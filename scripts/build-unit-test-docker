@@ -201,9 +201,10 @@ packages = {
     ),
     "openbmc/phosphor-objmgr": PackageDef(
         depends=[
-            "boost",
             "CLIUtils/CLI11",
+            "boost",
             "leethomason/tinyxml2",
+            "openbmc/phosphor-dbus-interfaces",
             "openbmc/phosphor-logging",
             "openbmc/sdbusplus",
         ],
@@ -242,7 +243,10 @@ packages = {
         ],
     ),
     "openbmc/sdeventplus": PackageDef(
-        depends=["Naios/function2", "openbmc/stdplus"],
+        depends=[
+            "Naios/function2",
+            "openbmc/stdplus",
+        ],
         build_type="meson",
         config_flags=[
             "-Dexamples=false",
@@ -250,7 +254,10 @@ packages = {
         ],
     ),
     "openbmc/stdplus": PackageDef(
-        depends=["fmtlib/fmt", "Naios/function2", "google/googletest"],
+        depends=[
+            "Naios/function2",
+            "fmtlib/fmt",
+        ],
         build_type="meson",
         config_flags=[
             "-Dexamples=false",
