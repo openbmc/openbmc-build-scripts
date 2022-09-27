@@ -77,7 +77,7 @@ class PackageDef(TypedDict, total=False):
 # Packages to include in image.
 packages = {
     "boost": PackageDef(
-        rev="1.79.0",
+        rev="1.80.0",
         url=(
             lambda pkg, rev: f"https://downloads.yoctoproject.org/mirror/sources/{pkg}_{rev.replace('.', '_')}.tar.bz2"
         ),
@@ -89,7 +89,7 @@ packages = {
         ],
     ),
     "USCiLab/cereal": PackageDef(
-        rev="3e4d1b84cab4891368d2179a61a7ba06a5693e7f",
+        rev="v1.3.2",
         build_type="custom",
         build_steps=[f"cp -a include/cereal/ {prefix}/include/"],
     ),
@@ -115,7 +115,7 @@ packages = {
         ],
     ),
     "Naios/function2": PackageDef(
-        rev="4.1.0",
+        rev="4.2.1",
         build_type="custom",
         build_steps=[
             f"mkdir {prefix}/include/function2",
@@ -129,9 +129,8 @@ packages = {
         config_env=["CXXFLAGS=-std=c++20"],
         config_flags=["-DTHREADS_PREFER_PTHREAD_FLAG=ON"],
     ),
-    # Release 2020-08-06
     "nlohmann/json": PackageDef(
-        rev="v3.10.4",
+        rev="v3.11.2",
         build_type="cmake",
         config_flags=["-DJSON_BuildTests=OFF"],
         custom_post_install=[
@@ -143,23 +142,21 @@ packages = {
         rev="v1.15",
         build_type="make",
     ),
-    # dev-5.8 2021-01-11
+    # dev-5.15 2022-09-27
     "openbmc/linux": PackageDef(
-        rev="3cc95ae40716e56f81b69615781f54c78079042d",
+        rev="c9fb275212dac5b300311f6f6b1dcc5ed18a3493",
         build_type="custom",
         build_steps=[
             f"make -j{proc_count} defconfig",
             f"make INSTALL_HDR_PATH={prefix} headers_install",
         ],
     ),
-    # Snapshot from 2020-06-13
     "LibVNC/libvncserver": PackageDef(
         rev="LibVNCServer-0.9.13",
         build_type="cmake",
     ),
-    # version from meta-openembedded/meta-oe/recipes-support/libtinyxml2/libtinyxml2_8.0.0.bb
     "leethomason/tinyxml2": PackageDef(
-        rev="8.0.0",
+        rev="9.0.0",
         build_type="cmake",
     ),
     # version from /meta-openembedded/meta-oe/recipes-devtools/boost-url/boost-url_git.bb
@@ -168,9 +165,8 @@ packages = {
         build_type="custom",
         build_steps=[f"cp -a include/** {prefix}/include/"],
     ),
-    # version from meta-openembedded/meta-oe/dynamic-layers/networking-layer/recipes-devools/valijson/valijson_0.6.bb
     "tristanpenman/valijson": PackageDef(
-        rev="v0.6",
+        rev="v0.7",
         build_type="cmake",
         config_flags=[
             "-Dvalijson_BUILD_TESTS=0",
