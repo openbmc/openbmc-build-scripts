@@ -213,19 +213,9 @@ packages = {
             "-Dtests=disabled",
         ],
     ),
-    "openbmc/pldm": PackageDef(
-        depends=[
-            "CLIUtils/CLI11",
-            "boost",
-            "nlohmann/json",
-            "openbmc/phosphor-dbus-interfaces",
-            "openbmc/phosphor-logging",
-            "openbmc/sdbusplus",
-            "openbmc/sdeventplus",
-        ],
+    "openbmc/libpldm": PackageDef(
         build_type="meson",
         config_flags=[
-            "-Dlibpldm-only=enabled",
             "-Doem-ibm=enabled",
             "-Dtests=disabled",
         ],
