@@ -94,7 +94,7 @@ packages = {
         build_steps=[f"cp -a include/cereal/ {prefix}/include/"],
     ),
     "danmar/cppcheck": PackageDef(
-        rev="27578e9c4c1f90c62b6938867735a054082e178e",
+        rev="2.9",
         build_type="cmake",
     ),
     "CLIUtils/CLI11": PackageDef(
