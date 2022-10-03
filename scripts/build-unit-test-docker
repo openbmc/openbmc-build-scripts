@@ -107,7 +107,7 @@ packages = {
         ],
     ),
     "fmtlib/fmt": PackageDef(
-        rev="8.1.1",
+        rev="9.1.0",
         build_type="cmake",
         config_flags=[
             "-DFMT_DOC=OFF",
