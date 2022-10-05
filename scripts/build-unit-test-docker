@@ -196,6 +196,8 @@ packages = {
         ],
         build_type="meson",
         config_flags=[
+            "-Dlibonly=true",
+            "-Dtests=disabled",
             f"-Dyamldir={prefix}/share/phosphor-dbus-yaml/yaml",
         ],
     ),
