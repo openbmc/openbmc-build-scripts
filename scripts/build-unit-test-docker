@@ -255,13 +255,15 @@ packages = {
     ),
     "openbmc/stdplus": PackageDef(
         depends=[
-            "Naios/function2",
             "fmtlib/fmt",
+            "google/googletest",
+            "Naios/function2",
         ],
         build_type="meson",
         config_flags=[
             "-Dexamples=false",
             "-Dtests=disabled",
+            "-Dgtest=enabled",
         ],
     ),
 }  # type: Dict[str, PackageDef]
