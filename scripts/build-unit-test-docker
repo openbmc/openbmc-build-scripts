@@ -45,7 +45,7 @@ proc_count = nproc().strip()
 
 
 class PackageDef(TypedDict, total=False):
-    """ Package Definition for packages dictionary. """
+    """Package Definition for packages dictionary."""
 
     # rev [optional]: Revision of package to use.
     rev: str
@@ -297,7 +297,7 @@ class Package(threading.Thread):
     lock = threading.Lock()
 
     def __init__(self, pkg: str):
-        """ pkg - The name of this package (ex. foo/bar ) """
+        """pkg - The name of this package (ex. foo/bar )"""
         super(Package, self).__init__()
 
         self.package = pkg
@@ -308,7 +308,7 @@ class Package(threading.Thread):
         self.pkg_def["__package"] = self
 
     def run(self) -> None:
-        """ Thread 'run' function.  Builds the Docker stage. """
+        """Thread 'run' function.  Builds the Docker stage."""
 
         # In case this package has no rev, fetch it from Github.
         self._update_rev()
@@ -398,7 +398,7 @@ FROM {docker_base_img_name}
         return depcache
 
     def _update_rev(self) -> None:
-        """ Look up the HEAD for missing a static rev. """
+        """Look up the HEAD for missing a static rev."""
 
         if "rev" in self.pkg_def:
             return
@@ -413,7 +413,9 @@ FROM {docker_base_img_name}
             return
 
         # Ask Github for all the branches.
-        lookup = git("ls-remote", "--heads", f"https://github.com/{self.package}")
+        lookup = git(
+            "ls-remote", "--heads", f"https://github.com/{self.package}"
+        )
 
         # Find the branch matching {branch} (or fallback to master).
         #   This section is locked because we are modifying the PackageDef.
@@ -428,11 +430,11 @@ FROM {docker_base_img_name}
         Package.lock.release()
 
     def _stagename(self) -> str:
-        """ Create a name for the Docker stage associated with this pkg. """
+        """Create a name for the Docker stage associated with this pkg."""
         return self.package.replace("/", "-").lower()
 
     def _url(self) -> str:
-        """ Get the URL for this package. """
+        """Get the URL for this package."""
         rev = self.pkg_def["rev"]
 
         # If the lambda exists, call it.
@@ -465,11 +467,11 @@ FROM {docker_base_img_name}
         return cmd
 
     def _cmd_cd_srcdir(self) -> str:
-        """ Formulate the command necessary to 'cd' into the source dir. """
+        """Formulate the command necessary to 'cd' into the source dir."""
         return f"cd {self.package.split('/')[-1]}*"
 
     def _df_copycmds(self) -> str:
-        """ Formulate the dockerfile snippet necessary to COPY all depends. """
+        """Formulate the dockerfile snippet necessary to COPY all depends."""
 
         if "depends" not in self.pkg_def:
             return ""
@@ -567,13 +569,13 @@ class Docker:
 
     @staticmethod
     def timestamp() -> str:
-        """ Generate a timestamp for today using the ISO week. """
+        """Generate a timestamp for today using the ISO week."""
         today = date.today().isocalendar()
         return f"{today[0]}-W{today[1]:02}"
 
     @staticmethod
     def tagname(pkgname: str, dockerfile: str) -> str:
-        """ Generate a tag name for a package using a hash of the Dockerfile. """
+        """Generate a tag name for a package using a hash of the Dockerfile."""
         result = docker_image_name
         if pkgname:
             result += "-" + pkgname
@@ -590,7 +592,9 @@ class Docker:
         # If we're not forcing builds, check if it already exists and skip.
         if not force_build:
             if docker.image.ls(tag, "--format", '"{{.Repository}}:{{.Tag}}"'):
-                print(f"Image {tag} already exists.  Skipping.", file=sys.stderr)
+                print(
+                    f"Image {tag} already exists.  Skipping.", file=sys.stderr
+                )
                 return
 
         # Build it.
@@ -620,7 +624,9 @@ class Docker:
 
 
 # Read a bunch of environment variables.
-docker_image_name = os.environ.get("DOCKER_IMAGE_NAME", "openbmc/ubuntu-unit-test")
+docker_image_name = os.environ.get(
+    "DOCKER_IMAGE_NAME", "openbmc/ubuntu-unit-test"
+)
 force_build = os.environ.get("FORCE_DOCKER_BUILD")
 is_automated_ci_build = os.environ.get("BUILD_URL", False)
 distro = os.environ.get("DISTRO", "ubuntu:kinetic")
