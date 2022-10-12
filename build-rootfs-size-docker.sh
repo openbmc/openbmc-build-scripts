@@ -6,6 +6,14 @@
 #   DOCKER_IMG_NAME:  <optional, the name of the docker image to generate>
 #                     default is openbmc/ubuntu-rootfs-size
 #   DISTRO:           <optional, the distro to build a docker image against>
+#   UBUNTU_MIRROR:    [optional] The URL of a mirror of Ubuntu to override the
+#                     default ones in /etc/apt/sources.list
+#                     default is empty, and no mirror is used.
+#   http_proxy:       The HTTP address of the proxy server to connect to.
+#                     Default: "", proxy is not setup if this is not set
+
+http_proxy=${http_proxy:-}
+UBUNTU_MIRROR=${UBUNTU_MIRROR:-""}
 
 set -uo pipefail
 
@@ -29,11 +37,30 @@ case ${ARCH} in
         exit 1
 esac
 
+PROXY=""
+
+MIRROR=""
+if [[ -n "${UBUNTU_MIRROR}" ]]; then
+    MIRROR="RUN echo \"deb ${UBUNTU_MIRROR} \$(. /etc/os-release && echo \$VERSION_CODENAME) main restricted universe multiverse\" > /etc/apt/sources.list && \
+        echo \"deb ${UBUNTU_MIRROR} \$(. /etc/os-release && echo \$VERSION_CODENAME)-updates main restricted universe multiverse\" >> /etc/apt/sources.list && \
+        echo \"deb ${UBUNTU_MIRROR} \$(. /etc/os-release && echo \$VERSION_CODENAME)-security main restricted universe multiverse\" >> /etc/apt/sources.list && \
+        echo \"deb ${UBUNTU_MIRROR} \$(. /etc/os-release && echo \$VERSION_CODENAME)-proposed main restricted universe multiverse\" >> /etc/apt/sources.list && \
+        echo \"deb ${UBUNTU_MIRROR} \$(. /etc/os-release && echo \$VERSION_CODENAME)-backports main restricted universe multiverse\" >> /etc/apt/sources.list"
+fi
+
 ################################# docker img # #################################
 
 if [[ "${DISTRO}" == "ubuntu"* ]]; then
+
+if [[ -n "${http_proxy}" ]]; then
+  PROXY="RUN echo \"Acquire::http::Proxy \\"\"${http_proxy}/\\"\";\" > /etc/apt/apt.conf.d/000apt-cacher-ng-proxy"
+fi
+
 Dockerfile=$(cat << EOF
 FROM ${DOCKER_BASE}${DISTRO}
+
+${PROXY}
+${MIRROR}
 
 ENV DEBIAN_FRONTEND noninteractive
 
