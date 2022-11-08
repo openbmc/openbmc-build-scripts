@@ -176,6 +176,24 @@
       "message": "A lot of my review comments continue to be around commit message formatting, so lets get the email out to the list and we can get this merged (and I can stop making the same comments)",
       "revId": "b8a51ba2577fb2acdb619a917b32e0dff2866bca",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "02881c1a_255019bd",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000153
+      },
+      "writtenOn": "2022-11-08T04:17:31Z",
+      "side": 1,
+      "message": "I was kind of waiting for Joel to reply to see if there was any kind of consensus we could get to.",
+      "parentUuid": "20102cbc_ee6e7cc5",
+      "revId": "b8a51ba2577fb2acdb619a917b32e0dff2866bca",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
