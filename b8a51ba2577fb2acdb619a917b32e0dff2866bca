@@ -212,6 +212,23 @@
       "parentUuid": "02881c1a_255019bd",
       "revId": "b8a51ba2577fb2acdb619a917b32e0dff2866bca",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "19955bb2_768b6d53",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000153
+      },
+      "writtenOn": "2022-11-09T21:55:47Z",
+      "side": 1,
+      "message": "Opened up a couple documentation updates here:\nhttps://gerrit.openbmc.org/c/openbmc/docs/+/58605",
+      "revId": "b8a51ba2577fb2acdb619a917b32e0dff2866bca",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
