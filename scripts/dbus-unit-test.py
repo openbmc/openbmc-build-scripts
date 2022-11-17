@@ -83,7 +83,7 @@ if __name__ == '__main__':
                         required=True, help="Unit test script and params \
                         as comma delimited string")
     args = parser.parse_args(sys.argv[1:])
-    DBUS_DIR = tempfile.mkdtemp()
+    DBUS_DIR = tempfile.mkdtemp(dir='/tmp/')
     DBUS_SYS_CONFIG_FILE = args.DBUS_SYS_CONFIG_FILE
     UNIT_TEST = args.UNIT_TEST
 
