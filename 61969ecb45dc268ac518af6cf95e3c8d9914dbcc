@@ -16,6 +16,24 @@
       "message": "Ideally this would have been tempfile.TemporaryDirectory so that it was automatically cleaned.\n\nDon\u0027t we have a leak here since `DBUS_DIR` is never cleaned up?",
       "revId": "61969ecb45dc268ac518af6cf95e3c8d9914dbcc",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "70a96799_6890e24f",
+        "filename": "scripts/dbus-unit-test.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 86,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2022-11-18T15:36:52Z",
+      "side": 1,
+      "message": "Yeah, it looks like dbus_cleanup cleans up the files created in this dir but not the dir itself. AndrewJ, I think you originally wrote this? Any concerns with just lettnig .TemporaryDirectory do the clean up? I\u0027ll put a patch on top of this with that change.",
+      "parentUuid": "f3bb529c_1cf30b7c",
+      "revId": "61969ecb45dc268ac518af6cf95e3c8d9914dbcc",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
