@@ -52,22 +52,15 @@ def launch_session_dbus(dbus_dir, dbus_config_file):
 def dbus_cleanup(dbus_dir):
     """
     Kills the dbus session started by launch_session_dbus
-    and removes the generated files.
 
     Parameter descriptions:
     dbus_dir            Directory location of generated files
     """
 
     dbus_pid = os.path.join(dbus_dir,'pid')
-    dbus_socket = os.path.join(dbus_dir,'system_bus_socket')
-    dbus_local_conf = os.path.join(dbus_dir,'system-local.conf')
     if os.path.isfile(dbus_pid):
         dbus_pid = open(dbus_pid,'r').read().replace('\n','')
         check_call(['kill', dbus_pid])
-    if os.path.isfile(dbus_local_conf):
-        os.remove(dbus_local_conf)
-    if os.path.exists(dbus_socket):
-        os.remove(dbus_socket)
 
 
 if __name__ == '__main__':
@@ -83,10 +76,10 @@ if __name__ == '__main__':
                         required=True, help="Unit test script and params \
                         as comma delimited string")
     args = parser.parse_args(sys.argv[1:])
-    DBUS_DIR = tempfile.mkdtemp(dir='/tmp/')
+    DBUS_DIR = tempfile.TemporaryDirectory(dir='/tmp/')
     DBUS_SYS_CONFIG_FILE = args.DBUS_SYS_CONFIG_FILE
     UNIT_TEST = args.UNIT_TEST
 
-    launch_session_dbus(DBUS_DIR, DBUS_SYS_CONFIG_FILE)
+    launch_session_dbus(DBUS_DIR.name, DBUS_SYS_CONFIG_FILE)
     check_call(UNIT_TEST.split(','), env=os.environ)
-    dbus_cleanup(DBUS_DIR)
+    dbus_cleanup(DBUS_DIR.name)
