@@ -1,0 +1,10 @@
+Code-Review+2: Patrick Williams <patrick@stwcx.xyz>
+Code-Review+1: Brad Bishop <bradleyb@fuzziesquirrel.com>
+Code-Review+2: Andrew Geissler <andrew@geissonator.com>
+Code-Review-1: Joel Stanley <joel@jms.id.au>
+Verified+1: OpenBMC CI <openbmcbump-ci@yahoo.com>
+Submitted-by: Patrick Williams <patrick@stwcx.xyz>
+Submitted-at: Sat, 26 Nov 2022 22:30:01 +0000
+Reviewed-on: https://gerrit.openbmc.org/c/openbmc/openbmc-build-scripts/+/56592
+Project: openbmc/openbmc-build-scripts
+Branch: refs/heads/master
