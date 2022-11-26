@@ -25,17 +25,18 @@ import sys
 import threading
 from datetime import date
 from hashlib import sha256
-from sh import docker, git, nproc, uname  # type: ignore
 from typing import Any, Callable, Dict, Iterable, Optional
+
+from sh import docker, git, nproc, uname  # type: ignore
 
 try:
     # Python before 3.8 doesn't have TypedDict, so reroute to standard 'dict'.
     from typing import TypedDict
-except:
+except Exception:
 
     class TypedDict(dict):  # type: ignore
         # We need to do this to eat the 'total' argument.
-        def __init_subclass__(cls, **kwargs):
+        def __init_subclass__(cls, **kwargs: Any) -> None:
             super().__init_subclass__()
 
 
@@ -574,7 +575,7 @@ class Docker:
         return f"{today[0]}-W{today[1]:02}"
 
     @staticmethod
-    def tagname(pkgname: str, dockerfile: str) -> str:
+    def tagname(pkgname: Optional[str], dockerfile: str) -> str:
         """Generate a tag name for a package using a hash of the Dockerfile."""
         result = docker_image_name
         if pkgname:
@@ -726,7 +727,7 @@ RUN apt-get update && apt-get dist-upgrade -yy && \
 RUN sed -n '/^deb /s,^deb [^ ]* ,deb http://ddebs.ubuntu.com ,p' /etc/apt/sources.list >/etc/apt/sources.list.d/debug.list
 
 # Remove non-existent debug repos
-RUN sed -i '/-\(backports\|security\) /d' /etc/apt/sources.list.d/debug.list
+RUN sed -i '/-\\(backports\\|security\\) /d' /etc/apt/sources.list.d/debug.list
 
 RUN cat /etc/apt/sources.list.d/debug.list
 
@@ -824,7 +825,7 @@ RUN apt-get update && apt-get dist-upgrade -yy
 
 """
 
-dockerfile_base += f"""
+dockerfile_base += """
 RUN pip3 install inflection
 RUN pip3 install pycodestyle
 RUN pip3 install jsonschema
@@ -838,8 +839,8 @@ RUN pip3 install requests
 # Note, we use sha1s here because the newest gitlint release doesn't include
 # some features we need.  Next time they release, we can rely on a direct
 # release tag
-dockerfile_base += f"""
-RUN pip3 install git+https://github.com/jorisroovers/gitlint.git@8ede310d62d5794efa7518b235f899f8a8ad6a68\#subdirectory=gitlint-core
+dockerfile_base += """
+RUN pip3 install git+https://github.com/jorisroovers/gitlint.git@8ede310d62d5794efa7518b235f899f8a8ad6a68\\#subdirectory=gitlint-core
 RUN pip3 install git+https://github.com/jorisroovers/gitlint.git@8ede310d62d5794efa7518b235f899f8a8ad6a68
 """
 
