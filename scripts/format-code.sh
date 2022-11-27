@@ -11,6 +11,7 @@
 
 DIR=$1
 WORKSPACE=$PWD
+WORKSPACE_CONFIG="${WORKSPACE}/openbmc-build-scripts/config"
 
 set -e
 
@@ -18,19 +19,19 @@ echo "Running spelling check on Commit Message"
 
 # Run the codespell with openbmc spcific spellings on the patchset
 echo "openbmc-dictionary - misspelling count >> "
-codespell -D openbmc-spelling.txt -d --count "${DIR}"/.git/COMMIT_EDITMSG
+sed "s/Signed-off-by.*//" "${DIR}/.git/COMMIT_EDITMSG" | \
+    codespell -D "${WORKSPACE_CONFIG}/openbmc-spelling.txt" -d --count -
 
 # Run the codespell with generic dictionary on the patchset
 echo "generic-dictionary - misspelling count >> "
-codespell --builtin clear,rare,en-GB_to_en-US -d --count \
-    --ignore-words=openbmc-spelling-ignore.txt \
-    "${DIR}"/.git/COMMIT_EDITMSG
+sed "s/Signed-off-by.*//" "${DIR}/.git/COMMIT_EDITMSG" | \
+    codespell --builtin clear,rare,en-GB_to_en-US -d --count -
 
 # Check for commit message issues
 gitlint \
   --target "${DIR}" \
-  --extra-path "${WORKSPACE}/openbmc-build-scripts/config/gitlint/" \
-  --config "${WORKSPACE}/openbmc-build-scripts/config/.gitlint"
+  --extra-path "${WORKSPACE_CONFIG}/gitlint/" \
+  --config "${WORKSPACE_CONFIG}/.gitlint"
 
 cd "${DIR}"
 
@@ -48,7 +49,7 @@ if [[ -f ".eslintrc.json" ]]; then
     ESLINT_RC="-c .eslintrc.json"
 else
     echo "Running the json validator on the repo using the global config"
-    ESLINT_RC="--no-eslintrc -c ${WORKSPACE}/openbmc-build-scripts/config/eslint-global-config.json"
+    ESLINT_RC="--no-eslintrc -c ${WORKSPACE_CONFIG}/eslint-global-config.json"
 fi
 
 ESLINT_COMMAND="eslint . ${ESLINT_IGNORE} ${ESLINT_RC} \
