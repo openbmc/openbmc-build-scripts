@@ -35,7 +35,6 @@ BRANCH=${BRANCH:-"master"}
 OBMC_BUILD_SCRIPTS="openbmc-build-scripts"
 UNIT_TEST_PY_DIR="scripts"
 UNIT_TEST_PY="unit-test.py"
-FORMAT_CODE_SH="format-code.sh"
 DBUS_UNIT_TEST_PY="dbus-unit-test.py"
 TEST_ONLY="${TEST_ONLY:-}"
 DBUS_SYS_CONFIG_FILE=${dbus_sys_config_file:-"/usr/share/dbus-1/system.conf"}
@@ -72,11 +71,6 @@ chmod a+x "${WORKSPACE}"/${UNIT_TEST_PY}
 cp "${WORKSPACE}"/${OBMC_BUILD_SCRIPTS}/${UNIT_TEST_PY_DIR}/${DBUS_UNIT_TEST_PY} \
 "${WORKSPACE}"/${DBUS_UNIT_TEST_PY}
 chmod a+x "${WORKSPACE}"/${DBUS_UNIT_TEST_PY}
-
-# Copy format code script into workspace
-cp "${WORKSPACE}"/${OBMC_BUILD_SCRIPTS}/${UNIT_TEST_PY_DIR}/${FORMAT_CODE_SH} \
-"${WORKSPACE}"/${FORMAT_CODE_SH}
-chmod a+x "${WORKSPACE}"/${FORMAT_CODE_SH}
 
 # Configure docker build
 cd "${WORKSPACE}"/${OBMC_BUILD_SCRIPTS}
@@ -131,5 +125,4 @@ echo "Unit test build completed, $(date)"
 # Clean up copied scripts.
 rm "${WORKSPACE}"/${UNIT_TEST_PY}
 rm "${WORKSPACE}"/${DBUS_UNIT_TEST_PY}
-rm "${WORKSPACE}"/${FORMAT_CODE_SH}
 

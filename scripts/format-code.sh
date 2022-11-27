@@ -1,51 +1,107 @@
 #!/bin/bash
+set -e
 
-# This script reformats source files using the clang-format utility.
+# This script reformats source files using various formatters and linters.
 #
 # Files are changed in-place, so make sure you don't have anything open in an
 # editor, and you may want to commit before formatting in case of awryness.
 #
 # This must be run on a clean repository to succeed
 #
-# Input parmameter must be full path to git repo to scan
+function display_help()
+{
+    echo "usage: format-code.sh [-h | --help] "
+    echo "                      [<path>]"
+    echo
+    echo "Format and lint a repository."
+    echo
+    echo "Arguments:"
+    echo "    path           Path to git repository (default to pwd)"
+}
 
-DIR=$1
-WORKSPACE=$PWD
-WORKSPACE_CONFIG="${WORKSPACE}/openbmc-build-scripts/config"
+eval set -- "$(getopt -o 'h' --long 'help' -n 'format-code.sh' -- "$@")"
+while true; do
+    case "$1" in
+        '-h'|'--help')
+            display_help && exit 0
+            ;;
 
-set -e
+        '--')
+            shift
+            break
+            ;;
+
+        *)
+            echo "unknown option: $1"
+            display_help && exit 1
+            ;;
+    esac
+done
+
+# Detect tty and set nicer colors.
+if [ -t 1 ]; then
+    BLUE="\e[34m"
+    GREEN="\e[32m"
+    NORMAL="\e[0m"
+    RED="\e[31m"
+    YELLOW="\e[33m"
+else # non-tty, no escapes.
+    BLUE=""
+    GREEN=""
+    NORMAL=""
+    RED=""
+    YELLOW=""
+fi
+
+# Path to default config files for linters.
+CONFIG_PATH="$(git -C "$(dirname "${BASH_SOURCE[0]}")" rev-parse --show-toplevel)/config"
+
+# Find repository root for `pwd` or $1.
+if [ -z "$1" ]; then
+    DIR="$(git rev-parse --show-toplevel || pwd)"
+else
+    DIR="$(git -C "$1" rev-parse --show-toplevel)"
+fi
+if [ ! -d "$DIR/.git" ]; then
+    echo "${RED}Error:${NORMAL} Directory ($DIR) does not appear to be a git repository"
+    exit 1
+fi
 
 cd "${DIR}"
-echo "Formatting code under $DIR/"
+echo -e "    ${BLUE}Formatting code under${NORMAL} $DIR"
 
 ALL_OPERATIONS=( \
-        clang_format \
         commit_gitlint \
         commit_spelling \
+        clang_format \
         eslint \
         pycodestyle \
         shellcheck \
     )
 
 function do_commit_spelling() {
-    echo "Running spelling check on Commit Message"
+    if [ ! -e .git/COMMIT_EDITMSG ]; then
+        return
+    fi
+    echo -e "    ${BLUE}Running codespell${NORMAL}"
 
     # Run the codespell with openbmc spcific spellings on the patchset
     echo "openbmc-dictionary - misspelling count >> "
-    sed "s/Signed-off-by.*//" ".git/COMMIT_EDITMSG" | \
-        codespell -D "${WORKSPACE_CONFIG}/openbmc-spelling.txt" -d --count -
+    sed "s/Signed-off-by.*//" .git/COMMIT_EDITMSG | \
+        codespell -D "${CONFIG_PATH}/openbmc-spelling.txt" -d --count -
 
     # Run the codespell with generic dictionary on the patchset
     echo "generic-dictionary - misspelling count >> "
-    sed "s/Signed-off-by.*//" ".git/COMMIT_EDITMSG" | \
+    sed "s/Signed-off-by.*//" .git/COMMIT_EDITMSG | \
         codespell --builtin clear,rare,en-GB_to_en-US -d --count -
 }
 
 function do_commit_gitlint() {
+    echo -e "    ${BLUE}Running gitlint${NORMAL}"
     # Check for commit message issues
     gitlint \
-        --extra-path "${WORKSPACE_CONFIG}/gitlint/" \
-        --config "${WORKSPACE_CONFIG}/.gitlint"
+        --extra-path "${CONFIG_PATH}/gitlint/" \
+        --config "${CONFIG_PATH}/.gitlint"
 }
 
 function do_eslint() {
@@ -57,11 +113,11 @@ function do_eslint() {
 
     # Get the eslint configuration from the repository
     if [[ -f ".eslintrc.json" ]]; then
-        echo "Running the json validator on the repo using it's config > "
+        echo -e "    ${BLUE}Running eslint${NORMAL}"
         ESLINT_RC="-c .eslintrc.json"
     else
-        echo "Running the json validator on the repo using the global config"
-        ESLINT_RC="--no-eslintrc -c ${WORKSPACE_CONFIG}/eslint-global-config.json"
+        echo -e "    ${BLUE}Running eslint using ${YELLOW}the global config${NORMAL}"
+        ESLINT_RC="--no-eslintrc -c ${CONFIG_PATH}/eslint-global-config.json"
     fi
 
     ESLINT_COMMAND="eslint . ${ESLINT_IGNORE} ${ESLINT_RC} \
@@ -77,6 +133,7 @@ function do_eslint() {
 
 function do_pycodestyle() {
     if [[ -f "setup.cfg" ]]; then
+        echo -e "    ${BLUE}Running pycodestyle${NORMAL}"
         pycodestyle --show-source --exclude=subprojects .
         rc=$?
         if [[ ${rc} -ne 0 ]]; then
@@ -96,6 +153,9 @@ function do_shellcheck() {
     # Run shellcheck on any shell-script.
     shell_scripts="$(git ls-files | xargs -n1 file -0 | \
     grep -a "shell script" | cut -d '' -f 1)"
+    if [ -n "${shell_scripts}" ]; then
+        echo -e "    ${BLUE}Running shellcheck${NORMAL}"
+    fi
     for script in ${shell_scripts}; do
         shellcheck --color=never -x "${script}" || ${shellcheck_allowfail}
     done
@@ -156,9 +216,9 @@ do_clang_format() {
     done <<<"$(git ls-files | grep -e '\.[ch]pp$' -e '\.[ch]$' | grep -v '\.mako\.')"
 
     if [[ -f ".clang-format" ]]; then
+        echo -e "    ${BLUE}Running clang-format${NORMAL}"
         # shellcheck disable=SC2090 disable=SC2086
         echo ${searchfiles} | xargs "${CLANG_FORMAT}" -i
-        git --no-pager diff --exit-code
     fi
 
 }
@@ -166,6 +226,14 @@ do_clang_format() {
 for op in "${ALL_OPERATIONS[@]}"; do
     "do_$op"
 done
+
+echo -e "    ${BLUE}Result differences...${NORMAL}"
+if ! git --no-pager diff --exit-code ; then
+    echo -e "Format: ${RED}FAILED${NORMAL}"
+    exit 1
+else
+    echo -e "Format: ${GREEN}PASSED${NORMAL}"
+fi
 
 # Sometimes your situation is terrible enough that you need the flexibility.
 # For example, phosphor-mboxd.
