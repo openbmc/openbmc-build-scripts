@@ -48,7 +48,7 @@ if [[ -f ".eslintrc.json" ]]; then
     ESLINT_RC="-c .eslintrc.json"
 else
     echo "Running the json validator on the repo using the global config"
-    ESLINT_RC="--no-eslintrc -c ${WORKSPACE}/eslint-global-config.json"
+    ESLINT_RC="--no-eslintrc -c ${WORKSPACE}/openbmc-build-scripts/config/eslint-global-config.json"
 fi
 
 ESLINT_COMMAND="eslint . ${ESLINT_IGNORE} ${ESLINT_RC} \
