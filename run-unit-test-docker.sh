@@ -34,10 +34,8 @@ set -uo pipefail
 BRANCH=${BRANCH:-"master"}
 OBMC_BUILD_SCRIPTS="openbmc-build-scripts"
 UNIT_TEST_PY_DIR="scripts"
-CONFIG_DIR="config"
 UNIT_TEST_PY="unit-test.py"
 FORMAT_CODE_SH="format-code.sh"
-SPELLINGS_TXT="openbmc-spelling.txt openbmc-spelling-ignore.txt"
 DBUS_UNIT_TEST_PY="dbus-unit-test.py"
 TEST_ONLY="${TEST_ONLY:-}"
 DBUS_SYS_CONFIG_FILE=${dbus_sys_config_file:-"/usr/share/dbus-1/system.conf"}
@@ -79,12 +77,6 @@ chmod a+x "${WORKSPACE}"/${DBUS_UNIT_TEST_PY}
 cp "${WORKSPACE}"/${OBMC_BUILD_SCRIPTS}/${UNIT_TEST_PY_DIR}/${FORMAT_CODE_SH} \
 "${WORKSPACE}"/${FORMAT_CODE_SH}
 chmod a+x "${WORKSPACE}"/${FORMAT_CODE_SH}
-
-# Copy spellings.txt file into workspace
-for f in ${SPELLINGS_TXT}; do
-    cp "${WORKSPACE}/${OBMC_BUILD_SCRIPTS}/${CONFIG_DIR}/${f}" \
-        "${WORKSPACE}/${f}"
-done
 
 # Configure docker build
 cd "${WORKSPACE}"/${OBMC_BUILD_SCRIPTS}
