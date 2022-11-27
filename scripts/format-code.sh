@@ -10,20 +10,26 @@ set -e
 #
 function display_help()
 {
-    echo "usage: format-code.sh [-h | --help] "
+    echo "usage: format-code.sh [-h | --help] [--no-diff]"
     echo "                      [<path>]"
     echo
     echo "Format and lint a repository."
     echo
     echo "Arguments:"
+    echo "    --no-diff      Don't show final diff output"
     echo "    path           Path to git repository (default to pwd)"
 }
 
-eval set -- "$(getopt -o 'h' --long 'help' -n 'format-code.sh' -- "$@")"
+eval set -- "$(getopt -o 'h' --long 'help,no-diff' -n 'format-code.sh' -- "$@")"
 while true; do
     case "$1" in
         '-h'|'--help')
             display_help && exit 0
+            ;;
+
+        '--no-diff')
+            OPTION_NO_DIFF=1
+            shift
             ;;
 
         '--')
@@ -227,17 +233,21 @@ for op in "${ALL_OPERATIONS[@]}"; do
     "do_$op"
 done
 
-echo -e "    ${BLUE}Result differences...${NORMAL}"
-if ! git --no-pager diff --exit-code ; then
-    echo -e "Format: ${RED}FAILED${NORMAL}"
-    exit 1
-else
-    echo -e "Format: ${GREEN}PASSED${NORMAL}"
+if [ -z "$OPTION_NO_DIFF" ]; then
+    echo -e "    ${BLUE}Result differences...${NORMAL}"
+    if ! git --no-pager diff --exit-code ; then
+        echo -e "Format: ${RED}FAILED${NORMAL}"
+        exit 1
+    else
+        echo -e "Format: ${GREEN}PASSED${NORMAL}"
+    fi
 fi
 
 # Sometimes your situation is terrible enough that you need the flexibility.
 # For example, phosphor-mboxd.
 if [[ -f "format-code.sh" ]]; then
     ./format-code.sh
-    git --no-pager diff --exit-code
+    if [ -z "$OPTION_NO_DIFF" ]; then
+        git --no-pager diff --exit-code
+    fi
 fi
