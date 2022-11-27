@@ -834,14 +834,7 @@ RUN pip3 install packaging
 RUN pip3 install protobuf
 RUN pip3 install codespell
 RUN pip3 install requests
-"""
-
-# Note, we use sha1s here because the newest gitlint release doesn't include
-# some features we need.  Next time they release, we can rely on a direct
-# release tag
-dockerfile_base += """
-RUN pip3 install git+https://github.com/jorisroovers/gitlint.git@8ede310d62d5794efa7518b235f899f8a8ad6a68\\#subdirectory=gitlint-core
-RUN pip3 install git+https://github.com/jorisroovers/gitlint.git@8ede310d62d5794efa7518b235f899f8a8ad6a68
+RUN pip3 install gitlint
 """
 
 # Build the base and stage docker images.
