@@ -143,9 +143,9 @@ packages = {
         rev="v1.15",
         build_type="make",
     ),
-    # dev-5.15 2022-09-27
+    # dev-6.0 2022-11-28
     "openbmc/linux": PackageDef(
-        rev="c9fb275212dac5b300311f6f6b1dcc5ed18a3493",
+        rev="1b16243b004ce4d977a9f3b9d9e715cf5028f867",
         build_type="custom",
         build_steps=[
             f"make -j{proc_count} defconfig",
