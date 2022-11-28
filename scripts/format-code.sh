@@ -245,9 +245,12 @@ fi
 
 # Sometimes your situation is terrible enough that you need the flexibility.
 # For example, phosphor-mboxd.
-if [[ -f "format-code.sh" ]]; then
-    ./format-code.sh
-    if [ -z "$OPTION_NO_DIFF" ]; then
-        git --no-pager diff --exit-code
+for formatter in "format-code.sh" "format-code"; do
+    if [[ -x "${formatter}" ]]; then
+        echo -e "    ${BLUE}Calling secondary formatter:${NORMAL} ${formatter}"
+        "./${formatter}"
+        if [ -z "$OPTION_NO_DIFF" ]; then
+            git --no-pager diff --exit-code
+        fi
     fi
-fi
+done

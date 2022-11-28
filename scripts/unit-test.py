@@ -1197,18 +1197,9 @@ if __name__ == '__main__':
 
     CODE_SCAN_DIR = os.path.join(WORKSPACE, UNIT_TEST_PKG)
 
-    # First validate code formatting if repo has style formatting files.
-    # The format-code.sh checks for these files.
+    # Run format-code.sh, which will in turn call any repo-level formatters.
     if FORMAT_CODE:
-        format_scripts = find_file(['format-code.sh', 'format-code'],
-                                   CODE_SCAN_DIR)
-
-        # use default format-code.sh if no other found
-        if not format_scripts:
-            format_scripts.append(os.path.join(WORKSPACE, "format-code.sh"))
-
-        for f in format_scripts:
-            check_call_cmd(f, CODE_SCAN_DIR)
+        check_call_cmd(os.path.join(WORKSPACE, "format-code.sh"))
 
         # Check to see if any files changed
         check_call_cmd("git", "-C", CODE_SCAN_DIR,
