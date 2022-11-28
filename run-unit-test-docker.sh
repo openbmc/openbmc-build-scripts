@@ -32,14 +32,14 @@ set -uo pipefail
 
 # Default variables
 BRANCH=${BRANCH:-"master"}
+DOCKER_WORKDIR="${DOCKER_WORKDIR:-$WORKSPACE}"
 OBMC_BUILD_SCRIPTS="openbmc-build-scripts"
-UNIT_TEST_PY_DIR="scripts"
+UNIT_TEST_SCRIPT_DIR="${DOCKER_WORKDIR}/${OBMC_BUILD_SCRIPTS}/scripts"
 UNIT_TEST_PY="unit-test.py"
 DBUS_UNIT_TEST_PY="dbus-unit-test.py"
 TEST_ONLY="${TEST_ONLY:-}"
 DBUS_SYS_CONFIG_FILE=${dbus_sys_config_file:-"/usr/share/dbus-1/system.conf"}
 MAKEFLAGS="${MAKEFLAGS:-""}"
-DOCKER_WORKDIR="${DOCKER_WORKDIR:-$WORKSPACE}"
 NO_FORMAT_CODE="${NO_FORMAT_CODE:-}"
 INTERACTIVE="${INTERACTIVE:-}"
 http_proxy=${http_proxy:-}
@@ -62,16 +62,6 @@ if [ ! -d "${WORKSPACE}/${UNIT_TEST_PKG}" ]; then
     exit 1
 fi
 
-# Copy unit test script into workspace
-cp "${WORKSPACE}"/${OBMC_BUILD_SCRIPTS}/${UNIT_TEST_PY_DIR}/${UNIT_TEST_PY} \
-"${WORKSPACE}"/${UNIT_TEST_PY}
-chmod a+x "${WORKSPACE}"/${UNIT_TEST_PY}
-
-# Copy dbus unit test script into workspace
-cp "${WORKSPACE}"/${OBMC_BUILD_SCRIPTS}/${UNIT_TEST_PY_DIR}/${DBUS_UNIT_TEST_PY} \
-"${WORKSPACE}"/${DBUS_UNIT_TEST_PY}
-chmod a+x "${WORKSPACE}"/${DBUS_UNIT_TEST_PY}
-
 # Configure docker build
 cd "${WORKSPACE}"/${OBMC_BUILD_SCRIPTS}
 echo "Building docker image with build-unit-test-docker"
@@ -88,7 +78,7 @@ EXTRA_UNIT_TEST_ARGS="${EXTRA_UNIT_TEST_ARGS:+,${EXTRA_UNIT_TEST_ARGS/ /,}}"
 if [ "${INTERACTIVE}" ]; then
     UNIT_TEST="/bin/bash"
 else
-    UNIT_TEST="${DOCKER_WORKDIR}/${UNIT_TEST_PY},-w,${DOCKER_WORKDIR},\
+    UNIT_TEST="${UNIT_TEST_SCRIPT_DIR}/${UNIT_TEST_PY},-w,${DOCKER_WORKDIR},\
 -p,${UNIT_TEST_PKG},-b,$BRANCH,-v${TEST_ONLY:+,-t}${NO_FORMAT_CODE:+,-n}\
 ${EXTRA_UNIT_TEST_ARGS}"
 fi
@@ -116,13 +106,8 @@ docker run --cap-add=sys_admin --rm=true \
     -w "${DOCKER_WORKDIR}" -v "${WORKSPACE}":"${DOCKER_WORKDIR}" \
     -e "MAKEFLAGS=${MAKEFLAGS}" \
     -${INTERACTIVE:+i}t "${DOCKER_IMG_NAME}" \
-    "${DOCKER_WORKDIR}"/${DBUS_UNIT_TEST_PY} -u "${UNIT_TEST}" \
+    "${UNIT_TEST_SCRIPT_DIR}/${DBUS_UNIT_TEST_PY}" -u "${UNIT_TEST}" \
     -f "${DBUS_SYS_CONFIG_FILE}"
 
 # Timestamp for build
 echo "Unit test build completed, $(date)"
-
-# Clean up copied scripts.
-rm "${WORKSPACE}"/${UNIT_TEST_PY}
-rm "${WORKSPACE}"/${DBUS_UNIT_TEST_PY}
-
