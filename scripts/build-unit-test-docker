@@ -80,9 +80,9 @@ class PackageDef(TypedDict, total=False):
 # Packages to include in image.
 packages = {
     "boost": PackageDef(
-        rev="1.80.0",
+        rev="1.81.0.b1",
         url=(
-            lambda pkg, rev: f"https://downloads.yoctoproject.org/mirror/sources/{pkg}_{rev.replace('.', '_')}.tar.bz2"  # noqa: E501
+            lambda pkg, rev: f"https://boostorg.jfrog.io/artifactory/main/{'release' if not 'b' in rev else 'beta'}/{rev.replace('b', 'beta')}/source/{pkg}_{rev.replace('.', '_')}.tar.gz"  # noqa: E501
         ),
         build_type="custom",
         build_steps=[
@@ -167,12 +167,6 @@ packages = {
     "leethomason/tinyxml2": PackageDef(
         rev="9.0.0",
         build_type="cmake",
-    ),
-    # version from /meta-openembedded/meta-oe/recipes-devtools/boost-url/boost-url_git.bb # noqa: E501
-    "CPPAlliance/url": PackageDef(
-        rev="d740a92d38e3a8f4d5b2153f53b82f1c98e312ab",
-        build_type="custom",
-        build_steps=[f"cp -a include/** {prefix}/include/"],
     ),
     "tristanpenman/valijson": PackageDef(
         rev="v0.7",
