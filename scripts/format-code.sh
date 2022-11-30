@@ -59,6 +59,9 @@ else # non-tty, no escapes.
     YELLOW=""
 fi
 
+# Allow called scripts to know which clang format we are using
+export CLANG_FORMAT="clang-format"
+
 # Path to default config files for linters.
 CONFIG_PATH="$(git -C "$(dirname "${BASH_SOURCE[0]}")" rev-parse --show-toplevel)/config"
 
@@ -76,7 +79,7 @@ fi
 cd "${DIR}"
 echo -e "    ${BLUE}Formatting code under${NORMAL} $DIR"
 
-ALL_OPERATIONS=( \
+LINTERS_ALL=( \
         commit_gitlint \
         commit_spelling \
         clang_format \
@@ -84,7 +87,11 @@ ALL_OPERATIONS=( \
         pycodestyle \
         shellcheck \
     )
+declare -A LINTER_REQUIRE=()
+declare -A LINTER_CONFIG=()
+LINTERS_ENABLED=()
 
+LINTER_REQUIRE+=([commit_spelling]="codespell")
 function do_commit_spelling() {
     if [ ! -e .git/COMMIT_EDITMSG ]; then
         return
@@ -102,6 +109,7 @@ function do_commit_spelling() {
         codespell --builtin clear,rare,en-GB_to_en-US -d --count -
 }
 
+LINTER_REQUIRE+=([commit_gitlint]="gitlint")
 function do_commit_gitlint() {
     echo -e "    ${BLUE}Running gitlint${NORMAL}"
     # Check for commit message issues
@@ -110,52 +118,34 @@ function do_commit_gitlint() {
         --config "${CONFIG_PATH}/.gitlint"
 }
 
+LINTER_REQUIRE+=([eslint]="eslint;.eslintrc.json;${CONFIG_PATH}/eslint-global-config.json")
 function do_eslint() {
+    echo -e "    ${BLUE}Running eslint${NORMAL}"
+
     if [[ -f ".eslintignore" ]]; then
-        ESLINT_IGNORE="--ignore-path .eslintignore"
+        ESLINT_IGNORE="--ignore-path=.eslintignore"
     elif [[ -f ".gitignore" ]]; then
-        ESLINT_IGNORE="--ignore-path .gitignore"
+        ESLINT_IGNORE="--ignore-path=.gitignore"
     fi
 
-    # Get the eslint configuration from the repository
-    if [[ -f ".eslintrc.json" ]]; then
-        echo -e "    ${BLUE}Running eslint${NORMAL}"
-        ESLINT_RC="-c .eslintrc.json"
-    else
-        echo -e "    ${BLUE}Running eslint using ${YELLOW}the global config${NORMAL}"
-        ESLINT_RC="--no-eslintrc -c ${CONFIG_PATH}/eslint-global-config.json"
-    fi
-
-    ESLINT_COMMAND="eslint . ${ESLINT_IGNORE} ${ESLINT_RC} \
-               --ext .json --format=stylish \
-               --resolve-plugins-relative-to /usr/local/lib/node_modules \
-               --no-error-on-unmatched-pattern"
-
-    # Print eslint command
-    echo "$ESLINT_COMMAND"
-    # Run eslint
-    $ESLINT_COMMAND
+    eslint . "${ESLINT_IGNORE}" --no-eslintrc -c "${LINTER_CONFIG[eslint]}" \
+        --ext .json --format=stylish \
+        --resolve-plugins-relative-to /usr/local/lib/node_modules \
+        --no-error-on-unmatched-pattern
 }
 
+LINTER_REQUIRE+=([pycodestyle]="pycodestyle;setup.cfg")
 function do_pycodestyle() {
-    if [[ -f "setup.cfg" ]]; then
-        echo -e "    ${BLUE}Running pycodestyle${NORMAL}"
-        pycodestyle --show-source --exclude=subprojects .
-        rc=$?
-        if [[ ${rc} -ne 0 ]]; then
-            exit ${rc}
-        fi
+    echo -e "    ${BLUE}Running pycodestyle${NORMAL}"
+    pycodestyle --show-source --exclude=subprojects .
+    rc=$?
+    if [[ ${rc} -ne 0 ]]; then
+        exit ${rc}
     fi
 }
 
+LINTER_REQUIRE+=([shellcheck]="shellcheck;.shellcheck")
 function do_shellcheck() {
-    # If .shellcheck exists, stop on error.  Otherwise, allow pass.
-    if [[ -f ".shellcheck" ]]; then
-        local shellcheck_allowfail="false"
-    else
-        local shellcheck_allowfail="true"
-    fi
-
     # Run shellcheck on any shell-script.
     shell_scripts="$(git ls-files | xargs -n1 file -0 | \
     grep -a "shell script" | cut -d '' -f 1)"
@@ -163,14 +153,12 @@ function do_shellcheck() {
         echo -e "    ${BLUE}Running shellcheck${NORMAL}"
     fi
     for script in ${shell_scripts}; do
-        shellcheck --color=never -x "${script}" || ${shellcheck_allowfail}
+        shellcheck --color=never -x "${script}"
     done
 }
 
-
+LINTER_REQUIRE+=([clang_format]="clang-format;.clang-format")
 do_clang_format() {
-    # Allow called scripts to know which clang format we are using
-    export CLANG_FORMAT="clang-format"
     IGNORE_FILE=".clang-ignore"
     declare -a IGNORE_LIST
 
@@ -221,15 +209,46 @@ do_clang_format() {
         # Get C and C++ files managed by git and skip the mako files
     done <<<"$(git ls-files | grep -e '\.[ch]pp$' -e '\.[ch]$' | grep -v '\.mako\.')"
 
-    if [[ -f ".clang-format" ]]; then
-        echo -e "    ${BLUE}Running clang-format${NORMAL}"
-        # shellcheck disable=SC2090 disable=SC2086
-        echo ${searchfiles} | xargs "${CLANG_FORMAT}" -i
-    fi
-
+    echo -e "    ${BLUE}Running clang-format${NORMAL}"
+    # shellcheck disable=SC2090 disable=SC2086
+    echo ${searchfiles} | xargs "${CLANG_FORMAT}" -i
 }
 
-for op in "${ALL_OPERATIONS[@]}"; do
+function check_linter()
+{
+    TITLE="$1"
+    IFS=";" read -r -a ARGS <<< "$2"
+
+    EXE="${ARGS[0]}"
+    if [ ! -x "${EXE}" ]; then
+        if ! which "${EXE}" > /dev/null 2>&1 ; then
+            echo -e "    ${YELLOW}${TITLE}:${NORMAL} cannot find ${EXE}"
+        fi
+    fi
+
+    CONFIG="${ARGS[1]}"
+    FALLBACK="${ARGS[2]}"
+
+    if [ -n "${CONFIG}" ]; then
+        if [ -e "${CONFIG}" ]; then
+            LINTER_CONFIG+=( [${TITLE}]="${CONFIG}" )
+        elif [ -n "${FALLBACK}" ] && [ -e "${FALLBACK}" ]; then
+            echo -e "    ${YELLOW}${TITLE}:${NORMAL} cannot find ${CONFIG}; using ${FALLBACK}"
+            LINTER_CONFIG+=( [${TITLE}]="${FALLBACK}" )
+        else
+            echo -e "    ${YELLOW}${TITLE}:${NORMAL} cannot find config ${CONFIG}"
+            return
+        fi
+    fi
+
+    LINTERS_ENABLED+=( "${TITLE}" )
+}
+
+for op in "${LINTERS_ALL[@]}"; do
+    check_linter "$op" "${LINTER_REQUIRE[${op}]}"
+done
+
+for op in "${LINTERS_ENABLED[@]}"; do
     "do_$op"
 done
 
