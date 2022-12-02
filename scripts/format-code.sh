@@ -159,59 +159,17 @@ function do_shellcheck() {
 
 LINTER_REQUIRE+=([clang_format]="clang-format;.clang-format")
 do_clang_format() {
-    IGNORE_FILE=".clang-ignore"
-    declare -a IGNORE_LIST
-
-    if [[ -f "${IGNORE_FILE}" ]]; then
-        readarray -t IGNORE_LIST < "${IGNORE_FILE}"
-    fi
-
-    ignorepaths=""
-    ignorefiles=""
-
-    for path in "${IGNORE_LIST[@]}"; do
-        # Check for comment, line starting with space, or zero-length string.
-        # Checking for [[:space:]] checks all options.
-        if [[ -z "${path}" ]] || [[ "${path}" =~ ^(#|[[:space:]]).*$ ]]; then
-            continue
-        fi
-
-        # All paths must start with ./ for find's path prune expectation.
-        if [[ "${path}" =~ ^\.\/.+$ ]]; then
-            ignorepaths+=" ${path}"
-        else
-            ignorefiles+=" ${path}"
-        fi
-    done
-
-    searchfiles=""
-    while read -r path; do
-        # skip ignorefiles
-        if [[ $ignorefiles == *"$(basename "${path}")"* ]]; then
-            continue
-        fi
-
-        skip=false
-        #skip paths in ingorepaths
-        for pathname in $ignorepaths; do
-            if [[ "./${path}" == "${pathname}"* ]]; then
-                skip=true
-                break
-            fi
-        done
-
-        if [ "$skip" = true ]; then
-            continue
-        fi
-        # shellcheck disable=2089
-        searchfiles+="\"./${path}\" "
-
-        # Get C and C++ files managed by git and skip the mako files
-    done <<<"$(git ls-files | grep -e '\.[ch]pp$' -e '\.[ch]$' | grep -v '\.mako\.')"
 
     echo -e "    ${BLUE}Running clang-format${NORMAL}"
-    # shellcheck disable=SC2090 disable=SC2086
-    echo ${searchfiles} | xargs "${CLANG_FORMAT}" -i
+    files=$(git ls-files | \
+        grep -e '\.[ch]pp$' -e '\.[ch]$' | \
+        grep -v '\.mako\.')
+
+    if [ -e .clang-ignore ]; then
+        files=$("${CONFIG_PATH}/lib/ignore-filter" .clang-ignore <<< "${files}")
+    fi
+
+    xargs "${CLANG_FORMAT}" -i <<< "${files}"
 }
 
 function check_linter()
