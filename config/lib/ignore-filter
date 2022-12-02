@@ -1,0 +1,47 @@
+#!/usr/bin/env python3
+
+import argparse
+import fnmatch
+import itertools
+import os
+import pathlib
+import sys
+
+parser = argparse.ArgumentParser(
+    "ignore-filter",
+    description="Filter files from stdin using a .gitignore-style filter file",
+)
+parser.add_argument("filename", nargs="+", help="The filter file", type=str)
+
+args = parser.parse_args()
+
+ignore_patterns = list()
+for f in args.filename:
+    if not os.path.exists(f):
+        raise RuntimeError(f"File {args.filename} does not exist.")
+    with open(f, "r") as ignore_file:
+        for line in [i.strip() for i in ignore_file.readlines()]:
+            # Ignore comments.
+            if line.startswith("#"):
+                continue
+
+            # Drop leading "/" or "./" ( this isn't 100% correct for
+            # .gitignore format) .
+            if line.startswith("/"):
+                line = line[1:]
+            elif line.startswith("./"):
+                line = line[2:]
+
+            ignore_patterns.append(line)
+
+for c in sys.stdin:
+    candidate = c.strip()
+    match = False
+    for seg in itertools.accumulate(
+        pathlib.PurePath(candidate).parts, os.path.join
+    ):
+        if any(fnmatch.fnmatch(seg, i) for i in ignore_patterns):
+            match = True
+            break
+    if not match:
+        print(candidate)
