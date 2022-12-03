@@ -89,87 +89,91 @@ LINTERS_ALL=( \
     )
 declare -A LINTER_REQUIRE=()
 declare -A LINTER_CONFIG=()
+declare -A LINTER_IGNORE=()
 LINTERS_ENABLED=()
+declare -A LINTER_TYPES=()
 
 LINTER_REQUIRE+=([commit_spelling]="codespell")
+LINTER_TYPES+=([commit_spelling]="commit")
 function do_commit_spelling() {
-    if [ ! -e .git/COMMIT_EDITMSG ]; then
-        return
-    fi
-    echo -e "    ${BLUE}Running codespell${NORMAL}"
-
     # Run the codespell with openbmc spcific spellings on the patchset
-    echo "openbmc-dictionary - misspelling count >> "
-    sed "s/Signed-off-by.*//" .git/COMMIT_EDITMSG | \
+    echo -n "openbmc-dictionary - misspelling count >> "
+    sed "s/Signed-off-by.*//" "$@" | \
         codespell -D "${CONFIG_PATH}/openbmc-spelling.txt" -d --count -
 
     # Run the codespell with generic dictionary on the patchset
-    echo "generic-dictionary - misspelling count >> "
-    sed "s/Signed-off-by.*//" .git/COMMIT_EDITMSG | \
+    echo -n "generic-dictionary - misspelling count >> "
+    sed "s/Signed-off-by.*//" "$@" | \
         codespell --builtin clear,rare,en-GB_to_en-US -d --count -
 }
 
 LINTER_REQUIRE+=([commit_gitlint]="gitlint")
+LINTER_TYPES+=([commit_gitlint]="commit")
 function do_commit_gitlint() {
-    echo -e "    ${BLUE}Running gitlint${NORMAL}"
-    # Check for commit message issues
-    gitlint \
-        --extra-path "${CONFIG_PATH}/gitlint/" \
+    gitlint --extra-path "${CONFIG_PATH}/gitlint/" \
         --config "${CONFIG_PATH}/.gitlint"
 }
 
 LINTER_REQUIRE+=([eslint]="eslint;.eslintrc.json;${CONFIG_PATH}/eslint-global-config.json")
+LINTER_IGNORE+=([eslint]=".eslintignore")
+LINTER_TYPES+=([eslint]="json")
 function do_eslint() {
-    echo -e "    ${BLUE}Running eslint${NORMAL}"
-
-    if [[ -f ".eslintignore" ]]; then
-        ESLINT_IGNORE="--ignore-path=.eslintignore"
-    elif [[ -f ".gitignore" ]]; then
-        ESLINT_IGNORE="--ignore-path=.gitignore"
-    fi
-
-    eslint . "${ESLINT_IGNORE}" --no-eslintrc -c "${LINTER_CONFIG[eslint]}" \
+    eslint --no-eslintrc -c "${LINTER_CONFIG[eslint]}" \
         --ext .json --format=stylish \
         --resolve-plugins-relative-to /usr/local/lib/node_modules \
-        --no-error-on-unmatched-pattern
+        --no-error-on-unmatched-pattern "$@"
 }
 
 LINTER_REQUIRE+=([pycodestyle]="pycodestyle;setup.cfg")
+LINTER_TYPES+=([pycodestyle]="python")
 function do_pycodestyle() {
-    echo -e "    ${BLUE}Running pycodestyle${NORMAL}"
-    pycodestyle --show-source --exclude=subprojects .
-    rc=$?
-    if [[ ${rc} -ne 0 ]]; then
-        exit ${rc}
-    fi
+    pycodestyle --show-source "$@"
 }
 
 LINTER_REQUIRE+=([shellcheck]="shellcheck;.shellcheck")
+LINTER_TYPES+=([shellcheck]="bash;sh")
 function do_shellcheck() {
-    # Run shellcheck on any shell-script.
-    shell_scripts="$(git ls-files | xargs -n1 file -0 | \
-    grep -a "shell script" | cut -d '' -f 1)"
-    if [ -n "${shell_scripts}" ]; then
-        echo -e "    ${BLUE}Running shellcheck${NORMAL}"
-    fi
-    for script in ${shell_scripts}; do
-        shellcheck --color=never -x "${script}"
-    done
+    shellcheck --color=never -x "$@"
 }
 
 LINTER_REQUIRE+=([clang_format]="clang-format;.clang-format")
+LINTER_IGNORE+=([clang_format]=".clang-ignore;.clang-format-ignore")
+LINTER_TYPES+=([clang_format]="c;cpp")
 do_clang_format() {
+    "${CLANG_FORMAT}" -i "$@"
+}
 
-    echo -e "    ${BLUE}Running clang-format${NORMAL}"
-    files=$(git ls-files | \
-        grep -e '\.[ch]pp$' -e '\.[ch]$' | \
-        grep -v '\.mako\.')
+function get_file_type()
+{
+    case "$(basename "$1")" in
+            # First to early detect template files.
+        *.in | *.meson) echo "meson-template" && return ;;
+        *.mako | *.mako.*) echo "mako" && return ;;
 
-    if [ -e .clang-ignore ]; then
-        files=$("${CONFIG_PATH}/lib/ignore-filter" .clang-ignore <<< "${files}")
-    fi
+        *.ac) echo "autoconf" && return ;;
+        *.[ch]) echo "c" && return ;;
+        *.[ch]pp) echo "cpp" &&  return ;;
+        *.json) echo "json" && return ;;
+        *.md) echo "markdown" && return ;;
+        *.py) echo "python" && return ;;
+        *.yaml | *.yml) echo "yaml" && return ;;
 
-    xargs "${CLANG_FORMAT}" -i <<< "${files}"
+            # Special files.
+        .git/COMMIT_EDITMSG) echo "commit" && return ;;
+        meson.build) echo "meson" && return ;;
+    esac
+
+    case "$(file "$1")" in
+        *Bourne-Again\ shell*) echo "bash" && return ;;
+        *C++\ source*) echo "cpp" && return ;;
+        *C\ source*) echo "c" && return ;;
+        *JSON\ data*) echo "json" && return ;;
+        *POSIX\ shell*) echo "sh" && return ;;
+        *Python\ script*) echo "python" && return ;;
+        *zsh\ shell*) echo "zsh" && return ;;
+    esac
+
+    echo "unknown"
 }
 
 function check_linter()
@@ -202,14 +206,66 @@ function check_linter()
     LINTERS_ENABLED+=( "${TITLE}" )
 }
 
+# Check for a global .linter-ignore file.
+GLOBAL_IGNORE=("cat")
+if [ -e ".linter-ignore" ]; then
+    GLOBAL_IGNORE=("${CONFIG_PATH}/lib/ignore-filter" ".linter-ignore")
+fi
+
+# Find all the files in the git repository and organize by type.
+declare -A FILES=()
+if [ -e .git/COMMIT_EDITMSG ]; then
+    FILES+=([commit]=".git/COMMIT_EDITMSG")
+fi
+while read -r file; do
+    ftype="$(get_file_type "$file")"
+    FILES+=([$ftype]="$(echo -ne "$file;${FILES[$ftype]:-}")")
+done < <(git ls-files | "${GLOBAL_IGNORE[@]}")
+
+# For each linter, check if there are an applicable files and if it can
+# be enabled.
 for op in "${LINTERS_ALL[@]}"; do
-    check_linter "$op" "${LINTER_REQUIRE[${op}]}"
+    for ftype in ${LINTER_TYPES[$op]//;/ }; do
+        if [[ -v FILES["$ftype"] ]]; then
+            check_linter "$op" "${LINTER_REQUIRE[${op}]}"
+            break
+        fi
+    done
 done
 
+# Call each linter.
 for op in "${LINTERS_ENABLED[@]}"; do
-    "do_$op"
+
+    # Determine the linter-specific ignore file(s).
+    LOCAL_IGNORE=("${CONFIG_PATH}/lib/ignore-filter")
+    if [[ -v LINTER_IGNORE["$op"] ]]; then
+        for ignorefile in ${LINTER_IGNORE["$op"]//;/ } ; do
+            if [ -e "$ignorefile" ]; then
+                LOCAL_IGNORE+=("$ignorefile")
+            fi
+        done
+    fi
+    if [ 1 -eq ${#LOCAL_IGNORE[@]} ]; then
+        LOCAL_IGNORE=("cat")
+    fi
+
+    # Find all the files for this linter, filtering out the ignores.
+    LINTER_FILES=()
+    while read -r file ; do
+        if [ -e "$file" ]; then
+            LINTER_FILES+=("$file")
+        fi
+        done < <(for ftype in ${LINTER_TYPES[$op]//;/ }; do
+            # shellcheck disable=SC2001
+            echo "${FILES["$ftype"]:-}" | sed "s/;/\\n/g"
+    done | "${LOCAL_IGNORE[@]}")
+
+    # Call the linter now with all the files.
+    echo -e "    ${BLUE}Running $op${NORMAL}"
+    "do_$op" "${LINTER_FILES[@]}"
 done
 
+# Check for differences.
 if [ -z "$OPTION_NO_DIFF" ]; then
     echo -e "    ${BLUE}Result differences...${NORMAL}"
     if ! git --no-pager diff --exit-code ; then
