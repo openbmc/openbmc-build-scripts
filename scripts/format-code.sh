@@ -10,26 +10,52 @@ set -e
 #
 function display_help()
 {
-    echo "usage: format-code.sh [-h | --help] [--no-diff]"
-    echo "                      [<path>]"
+    echo "usage: format-code.sh [-h | --help] [--no-diff] [--disable <tool>]"
+    echo "                      [--list-tools] [<path>]"
     echo
     echo "Format and lint a repository."
     echo
     echo "Arguments:"
-    echo "    --no-diff      Don't show final diff output"
-    echo "    path           Path to git repository (default to pwd)"
+    echo "    --list-tools      Display available linters and formatters"
+    echo "    --no-diff         Don't show final diff output"
+    echo "    --disable <tool>  Disable linter"
+    echo "    path              Path to git repository (default to pwd)"
 }
 
-eval set -- "$(getopt -o 'h' --long 'help,no-diff' -n 'format-code.sh' -- "$@")"
+LINTERS_ALL=( \
+        commit_gitlint \
+        commit_spelling \
+        clang_format \
+        eslint \
+        pycodestyle \
+        shellcheck \
+    )
+LINTERS_DISABLED=()
+LINTERS_ENABLED=()
+
+eval set -- "$(getopt -o 'h' --long 'help,list-tools,no-diff,disable:' -n 'format-code.sh' -- "$@")"
 while true; do
     case "$1" in
         '-h'|'--help')
             display_help && exit 0
             ;;
 
+        '--list-tools')
+            echo "Available tools:"
+            for t in "${LINTERS_ALL[@]}"; do
+                echo "    $t"
+            done
+            exit 0
+            ;;
+
         '--no-diff')
             OPTION_NO_DIFF=1
             shift
+            ;;
+
+        '--disable')
+            LINTERS_DISABLED+=("$2")
+            shift && shift
             ;;
 
         '--')
@@ -79,18 +105,10 @@ fi
 cd "${DIR}"
 echo -e "    ${BLUE}Formatting code under${NORMAL} $DIR"
 
-LINTERS_ALL=( \
-        commit_gitlint \
-        commit_spelling \
-        clang_format \
-        eslint \
-        pycodestyle \
-        shellcheck \
-    )
+
 declare -A LINTER_REQUIRE=()
 declare -A LINTER_CONFIG=()
 declare -A LINTER_IGNORE=()
-LINTERS_ENABLED=()
 declare -A LINTER_TYPES=()
 
 LINTER_REQUIRE+=([commit_spelling]="codespell")
@@ -180,6 +198,10 @@ function check_linter()
 {
     TITLE="$1"
     IFS=";" read -r -a ARGS <<< "$2"
+
+    if [[ "${LINTERS_DISABLED[*]}" =~ $1 ]]; then
+        return
+    fi
 
     EXE="${ARGS[0]}"
     if [ ! -x "${EXE}" ]; then
