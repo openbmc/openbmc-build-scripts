@@ -36,6 +36,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "80f2e5b7_230abd1c",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2022-12-05T21:08:19Z",
+      "side": 1,
+      "message": "remote:   https://gerrit.openbmc.org/c/openbmc/openbmc-build-scripts/+/59166 format-code: halt on missing linter [NEW]",
+      "parentUuid": "ab55b979_c668eaa4",
+      "revId": "3a460d7e12471f20fa74d216fc9a6563114f117b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "55a4458b_caaeea4c",
@@ -71,6 +89,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "91c0727b_614f8cf7",
+        "filename": "scripts/format-code.sh",
+        "patchSetId": 1
+      },
+      "lineNbr": 90,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2022-12-05T21:08:19Z",
+      "side": 1,
+      "message": "remote:   https://gerrit.openbmc.org/c/openbmc/openbmc-build-scripts/+/59165 format-code: document current linter-config hashes [NEW]",
+      "parentUuid": "f825a46d_1a10c49e",
+      "revId": "3a460d7e12471f20fa74d216fc9a6563114f117b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "baa9d9fd_0903eec3",
@@ -84,6 +120,24 @@
       "writtenOn": "2022-12-05T16:52:18Z",
       "side": 1,
       "message": "Need a \"return\" after this?",
+      "revId": "3a460d7e12471f20fa74d216fc9a6563114f117b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "07afb309_d223203b",
+        "filename": "scripts/format-code.sh",
+        "patchSetId": 1
+      },
+      "lineNbr": 225,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2022-12-05T21:08:19Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "baa9d9fd_0903eec3",
       "revId": "3a460d7e12471f20fa74d216fc9a6563114f117b",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
