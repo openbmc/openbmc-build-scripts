@@ -68,8 +68,8 @@ if [ -z "$1" ]; then
 else
     DIR="$(git -C "$1" rev-parse --show-toplevel)"
 fi
-if [ ! -d "$DIR/.git" ]; then
-    echo "${RED}Error:${NORMAL} Directory ($DIR) does not appear to be a git repository"
+if [ ! -e "$DIR/.git" ]; then
+    echo -e "${RED}Error:${NORMAL} Directory ($DIR) does not appear to be a git repository"
     exit 1
 fi
 
