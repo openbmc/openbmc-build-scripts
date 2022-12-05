@@ -175,7 +175,8 @@ function do_flake8() {
     # disagree on best practices.
 }
 
-LINTER_REQUIRE+=([shellcheck]="shellcheck;.shellcheck")
+LINTER_REQUIRE+=([shellcheck]="shellcheck")
+LINTER_IGNORE+=([shellcheck]=".shellcheck-ignore")
 LINTER_TYPES+=([shellcheck]="bash;sh")
 function do_shellcheck() {
     shellcheck --color=never -x "$@"
