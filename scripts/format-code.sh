@@ -29,7 +29,7 @@ LINTERS_ALL=( \
         commit_spelling \
         clang_format \
         eslint \
-        pycodestyle \
+        flake8 \
         shellcheck \
     )
 LINTERS_DISABLED=()
@@ -167,11 +167,13 @@ function do_eslint() {
         --no-error-on-unmatched-pattern "$@"
 }
 
-LINTER_REQUIRE+=([pycodestyle]="pycodestyle;setup.cfg")
-LINTER_TYPES+=([pycodestyle]="python")
-function do_pycodestyle() {
-    pycodestyle --ignore=E121,E123,E126,E226,E24,E704,W503,W504,E203,E501 \
-        --show-source "$@"
+LINTER_REQUIRE+=([flake8]="flake8")
+LINTER_IGNORE+=([flake8]=".flake8-ignore")
+LINTER_TYPES+=([flake8]="python")
+function do_flake8() {
+    flake8 --show-source --extend-ignore=E203,E501 "$@"
+    # We disable E203 and E501 because 'black' is handling these and they
+    # disagree on best practices.
 }
 
 LINTER_REQUIRE+=([shellcheck]="shellcheck;.shellcheck")
