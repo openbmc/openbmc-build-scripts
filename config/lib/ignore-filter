@@ -25,7 +25,8 @@ for f in args.filename:
             if line.startswith("#"):
                 continue
 
-            # Drop leading "/" or "./" ( this isn't 100% correct for .gitignore format) .
+            # Drop leading "/" or "./" ( this isn't 100% correct for
+            # .gitignore format) .
             if line.startswith("/"):
                 line = line[1:]
             elif line.startswith("./"):
