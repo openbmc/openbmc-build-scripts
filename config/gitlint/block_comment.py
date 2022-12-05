@@ -1,6 +1,7 @@
 import re
-from gitlint.rules import CommitRule, RuleViolation
+
 from gitlint.options import IntOption
+from gitlint.rules import CommitRule, RuleViolation
 
 
 class BodyMaxLineLengthWithExceptions(CommitRule):
@@ -10,8 +11,10 @@ class BodyMaxLineLengthWithExceptions(CommitRule):
     options_spec = [IntOption("line-length", 80, "Max line length")]
     line_length_violation_message = """Line exceeds max length ({0}>{1}).
     It's possible you intended to use one of the following exceptions:
-    1. Put logs or shell script in a quoted section with triple quotes (''') before and after the section
-    2. Put a long link at the bottom in a footnote.  example: [1] https://my_long_link.com
+    1. Put logs or shell script in a quoted section with triple quotes (''')
+        before and after the section
+    2. Put a long link at the bottom in a footnote.
+        example: [1] https://my_long_link.com
     Line that was too long:
 """
     tabs_violation_message = "Line contains hard tab characters (\\t)"
@@ -31,7 +34,9 @@ class BodyMaxLineLengthWithExceptions(CommitRule):
                 continue
 
             if "\t" in line:
-                return [RuleViolation(self.id, self.tabs_violation_message, line)]
+                return [
+                    RuleViolation(self.id, self.tabs_violation_message, line)
+                ]
 
             # allow footnote url links to be as long as needed example
             # [1] http://www.myspace.com

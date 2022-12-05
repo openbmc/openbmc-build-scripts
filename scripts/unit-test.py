@@ -7,27 +7,28 @@ these dependencies. Then the given package is configured, built, and installed
 prior to executing its unit tests.
 """
 
+import argparse
+import multiprocessing
+import os
+import platform
+import re
+import shutil
+import subprocess
+import sys
+from subprocess import CalledProcessError, check_call
+from tempfile import TemporaryDirectory
+from urllib.parse import urljoin
+
 from git import Repo
 # interpreter is not used directly but this resolves dependency ordering
 # that would be broken if we didn't include it.
-from mesonbuild import interpreter
+from mesonbuild import interpreter  # noqa: F401
 from mesonbuild import coredata, optinterpreter
 from mesonbuild.mesonlib import OptionKey
 from mesonbuild.mesonlib import version_compare as meson_version_compare
-from urllib.parse import urljoin
-from subprocess import check_call, call, CalledProcessError
-from tempfile import TemporaryDirectory
-import os
-import sys
-import argparse
-import multiprocessing
-import re
-import subprocess
-import shutil
-import platform
 
 
-class DepTree():
+class DepTree:
     """
     Represents package dependency tree, where each node is a DepTree with a
     name and DepTree children.
@@ -217,7 +218,7 @@ class DepTree():
         level              Current depth level
         """
         INDENT_PER_LEVEL = 4
-        print(' ' * (level * INDENT_PER_LEVEL) + self.name)
+        print(" " * (level * INDENT_PER_LEVEL) + self.name)
         for child in self.children:
             child.PrintTree(level + 1)
 
@@ -245,16 +246,16 @@ def clone_pkg(pkg, branch):
     branch              Branch to clone from pkg
     """
     pkg_dir = os.path.join(WORKSPACE, pkg)
-    if os.path.exists(os.path.join(pkg_dir, '.git')):
+    if os.path.exists(os.path.join(pkg_dir, ".git")):
         return pkg_dir
-    pkg_repo = urljoin('https://gerrit.openbmc.org/openbmc/', pkg)
+    pkg_repo = urljoin("https://gerrit.openbmc.org/openbmc/", pkg)
     os.mkdir(pkg_dir)
     printline(pkg_dir, "> git clone", pkg_repo, branch, "./")
     try:
         # first try the branch
         clone = Repo.clone_from(pkg_repo, pkg_dir, branch=branch)
         repo_inst = clone.working_dir
-    except:
+    except Exception:
         printline("Input branch not found, default to master")
         clone = Repo.clone_from(pkg_repo, pkg_dir, branch="master")
         repo_inst = clone.working_dir
@@ -270,8 +271,8 @@ def make_target_exists(target):
     target              The make target we are checking
     """
     try:
-        cmd = ['make', '-n', target]
-        with open(os.devnull, 'w') as devnull:
+        cmd = ["make", "-n", target]
+        with open(os.devnull, "w") as devnull:
             check_call(cmd, stdout=devnull, stderr=devnull)
         return True
     except CalledProcessError:
@@ -279,13 +280,15 @@ def make_target_exists(target):
 
 
 make_parallel = [
-    'make',
+    "make",
     # Run enough jobs to saturate all the cpus
-    '-j', str(multiprocessing.cpu_count()),
+    "-j",
+    str(multiprocessing.cpu_count()),
     # Don't start more jobs if the load avg is too high
-    '-l', str(multiprocessing.cpu_count()),
+    "-l",
+    str(multiprocessing.cpu_count()),
     # Synchronize the output so logs aren't intermixed in stdout / stderr
-    '-O',
+    "-O",
 ]
 
 
@@ -301,7 +304,7 @@ def build_and_install(name, build_for_testing=False):
     os.chdir(os.path.join(WORKSPACE, name))
 
     # Refresh dynamic linker run time bindings for dependencies
-    check_call_cmd('sudo', '-n', '--', 'ldconfig')
+    check_call_cmd("sudo", "-n", "--", "ldconfig")
 
     pkg = Package()
     if build_for_testing:
@@ -334,7 +337,7 @@ def build_dep_tree(name, pkgdir, dep_added, head, branch, dep_tree=None):
     pkg = Package(name, pkgdir)
 
     build = pkg.build_system()
-    if build == None:
+    if not build:
         raise Exception(f"Unable to find build system for {name}.")
 
     for dep in set(build.dependencies()):
@@ -350,19 +353,16 @@ def build_dep_tree(name, pkgdir, dep_added, head, branch, dep_tree=None):
             # Determine this dependency package's
             # dependencies and add them before
             # returning to add this package
-            dep_added = build_dep_tree(dep,
-                                       dep_pkgdir,
-                                       dep_added,
-                                       head,
-                                       branch,
-                                       new_child)
+            dep_added = build_dep_tree(
+                dep, dep_pkgdir, dep_added, head, branch, new_child
+            )
         else:
             # Dependency package known and added
             if dep_added[dep]:
                 continue
             else:
                 # Cyclic dependency failure
-                raise Exception("Cyclic dependencies found in "+name)
+                raise Exception("Cyclic dependencies found in " + name)
 
     if not dep_added[name]:
         dep_added[name] = True
@@ -375,21 +375,21 @@ def run_cppcheck():
         return None
 
     with TemporaryDirectory() as cpp_dir:
-
         # http://cppcheck.sourceforge.net/manual.pdf
         try:
             check_call_cmd(
-                'cppcheck',
-                '-j', str(multiprocessing.cpu_count()),
-                '--enable=style,performance,portability,missingInclude',
-                '--suppress=useStlAlgorithm',
-                '--suppress=unusedStructMember',
-                '--suppress=postfixOperator',
-                '--suppress=unreadVariable',
-                '--suppress=knownConditionTrueFalse',
-                '--library=googletest',
-                '--project=build/compile_commands.json',
-                f'--cppcheck-build-dir={cpp_dir}',
+                "cppcheck",
+                "-j",
+                str(multiprocessing.cpu_count()),
+                "--enable=style,performance,portability,missingInclude",
+                "--suppress=useStlAlgorithm",
+                "--suppress=unusedStructMember",
+                "--suppress=postfixOperator",
+                "--suppress=unreadVariable",
+                "--suppress=knownConditionTrueFalse",
+                "--library=googletest",
+                "--project=build/compile_commands.json",
+                f"--cppcheck-build-dir={cpp_dir}",
             )
         except subprocess.CalledProcessError:
             print("cppcheck found errors")
@@ -399,31 +399,35 @@ def is_valgrind_safe():
     """
     Returns whether it is safe to run valgrind on our platform
     """
-    src = 'unit-test-vg.c'
-    exe = './unit-test-vg'
-    with open(src, 'w') as h:
-        h.write('#include <errno.h>\n')
-        h.write('#include <stdio.h>\n')
-        h.write('#include <stdlib.h>\n')
-        h.write('#include <string.h>\n')
-        h.write('int main() {\n')
-        h.write('char *heap_str = malloc(16);\n')
+    src = "unit-test-vg.c"
+    exe = "./unit-test-vg"
+    with open(src, "w") as h:
+        h.write("#include <errno.h>\n")
+        h.write("#include <stdio.h>\n")
+        h.write("#include <stdlib.h>\n")
+        h.write("#include <string.h>\n")
+        h.write("int main() {\n")
+        h.write("char *heap_str = malloc(16);\n")
         h.write('strcpy(heap_str, "RandString");\n')
         h.write('int res = strcmp("RandString", heap_str);\n')
-        h.write('free(heap_str);\n')
-        h.write('char errstr[64];\n')
-        h.write('strerror_r(EINVAL, errstr, sizeof(errstr));\n')
+        h.write("free(heap_str);\n")
+        h.write("char errstr[64];\n")
+        h.write("strerror_r(EINVAL, errstr, sizeof(errstr));\n")
         h.write('printf("%s\\n", errstr);\n')
-        h.write('return res;\n')
-        h.write('}\n')
+        h.write("return res;\n")
+        h.write("}\n")
     try:
-        with open(os.devnull, 'w') as devnull:
-            check_call(['gcc', '-O2', '-o', exe, src],
-                       stdout=devnull, stderr=devnull)
-            check_call(['valgrind', '--error-exitcode=99', exe],
-                       stdout=devnull, stderr=devnull)
+        with open(os.devnull, "w") as devnull:
+            check_call(
+                ["gcc", "-O2", "-o", exe, src], stdout=devnull, stderr=devnull
+            )
+            check_call(
+                ["valgrind", "--error-exitcode=99", exe],
+                stdout=devnull,
+                stderr=devnull,
+            )
         return True
-    except:
+    except Exception:
         sys.stderr.write("###### Platform is not valgrind safe ######\n")
         return False
     finally:
@@ -435,25 +439,35 @@ def is_sanitize_safe():
     """
     Returns whether it is safe to run sanitizers on our platform
     """
-    src = 'unit-test-sanitize.c'
-    exe = './unit-test-sanitize'
-    with open(src, 'w') as h:
-        h.write('int main() { return 0; }\n')
+    src = "unit-test-sanitize.c"
+    exe = "./unit-test-sanitize"
+    with open(src, "w") as h:
+        h.write("int main() { return 0; }\n")
     try:
-        with open(os.devnull, 'w') as devnull:
-            check_call(['gcc', '-O2', '-fsanitize=address',
-                        '-fsanitize=undefined', '-o', exe, src],
-                       stdout=devnull, stderr=devnull)
+        with open(os.devnull, "w") as devnull:
+            check_call(
+                [
+                    "gcc",
+                    "-O2",
+                    "-fsanitize=address",
+                    "-fsanitize=undefined",
+                    "-o",
+                    exe,
+                    src,
+                ],
+                stdout=devnull,
+                stderr=devnull,
+            )
             check_call([exe], stdout=devnull, stderr=devnull)
 
         # TODO - Sanitizer not working on ppc64le
         # https://github.com/openbmc/openbmc-build-scripts/issues/31
-        if (platform.processor() == 'ppc64le'):
+        if platform.processor() == "ppc64le":
             sys.stderr.write("###### ppc64le is not sanitize safe ######\n")
             return False
         else:
             return True
-    except:
+    except Exception:
         sys.stderr.write("###### Platform is not sanitize safe ######\n")
         return False
     finally:
@@ -474,19 +488,19 @@ def maybe_make_valgrind():
     if not is_valgrind_safe():
         sys.stderr.write("###### Skipping valgrind ######\n")
         return
-    if not make_target_exists('check-valgrind'):
+    if not make_target_exists("check-valgrind"):
         return
 
     try:
-        cmd = make_parallel + ['check-valgrind']
+        cmd = make_parallel + ["check-valgrind"]
         check_call_cmd(*cmd)
     except CalledProcessError:
         for root, _, files in os.walk(os.getcwd()):
             for f in files:
-                if re.search('test-suite-[a-z]+.log', f) is None:
+                if re.search("test-suite-[a-z]+.log", f) is None:
                     continue
-                check_call_cmd('cat', os.path.join(root, f))
-        raise Exception('Valgrind tests failed')
+                check_call_cmd("cat", os.path.join(root, f))
+        raise Exception("Valgrind tests failed")
 
 
 def maybe_make_coverage():
@@ -495,15 +509,15 @@ def maybe_make_coverage():
     via `make check-code-coverage`. If the package does not have code coverage
     testing then it just skips over this.
     """
-    if not make_target_exists('check-code-coverage'):
+    if not make_target_exists("check-code-coverage"):
         return
 
     # Actually run code coverage
     try:
-        cmd = make_parallel + ['check-code-coverage']
+        cmd = make_parallel + ["check-code-coverage"]
         check_call_cmd(*cmd)
     except CalledProcessError:
-        raise Exception('Code coverage failed')
+        raise Exception("Code coverage failed")
 
 
 class BuildSystem(object):
@@ -516,7 +530,8 @@ class BuildSystem(object):
     """
 
     def __init__(self, package, path):
-        """Initialise the driver with properties independent of the build system
+        """Initialise the driver with properties independent of the build
+        system
 
         Keyword arguments:
         package: The name of the package. Derived from the path if None
@@ -536,7 +551,7 @@ class BuildSystem(object):
         Generally probe() is implemented by testing for the presence of the
         build system's configuration file(s).
         """
-        raise NotImplemented
+        raise NotImplementedError
 
     def dependencies(self):
         """Provide the package's dependencies
@@ -547,7 +562,7 @@ class BuildSystem(object):
         Generally dependencies() is implemented by analysing and extracting the
         data from the build system configuration.
         """
-        raise NotImplemented
+        raise NotImplementedError
 
     def configure(self, build_for_testing):
         """Configure the source ready for building
@@ -565,7 +580,7 @@ class BuildSystem(object):
         Generally configure() is implemented by invoking the build system
         tooling to generate Makefiles or equivalent.
         """
-        raise NotImplemented
+        raise NotImplementedError
 
     def build(self):
         """Build the software ready for installation and/or testing
@@ -574,7 +589,7 @@ class BuildSystem(object):
 
         Generally build() is implemented by invoking `make` or `ninja`.
         """
-        raise NotImplemented
+        raise NotImplementedError
 
     def install(self):
         """Install the software ready for use
@@ -584,7 +599,7 @@ class BuildSystem(object):
         Like build(), install() is generally implemented by invoking `make` or
         `ninja`.
         """
-        raise NotImplemented
+        raise NotImplementedError
 
     def test(self):
         """Build and run the test suite associated with the package
@@ -594,7 +609,7 @@ class BuildSystem(object):
         Like install(), test() is generally implemented by invoking `make` or
         `ninja`.
         """
-        raise NotImplemented
+        raise NotImplementedError
 
     def analyze(self):
         """Run any supported analysis tools over the codebase
@@ -607,7 +622,7 @@ class BuildSystem(object):
         specified here but at the cost of possible duplication of code between
         the build system driver implementations.
         """
-        raise NotImplemented
+        raise NotImplementedError
 
 
 class Autotools(BuildSystem):
@@ -615,27 +630,36 @@ class Autotools(BuildSystem):
         super(Autotools, self).__init__(package, path)
 
     def probe(self):
-        return os.path.isfile(os.path.join(self.path, 'configure.ac'))
+        return os.path.isfile(os.path.join(self.path, "configure.ac"))
 
     def dependencies(self):
-        configure_ac = os.path.join(self.path, 'configure.ac')
+        configure_ac = os.path.join(self.path, "configure.ac")
 
-        contents = ''
+        contents = ""
         # Prepend some special function overrides so we can parse out
         # dependencies
         for macro in DEPENDENCIES.keys():
-            contents += ('m4_define([' + macro + '], [' + macro + '_START$' +
-                         str(DEPENDENCIES_OFFSET[macro] + 1) +
-                         macro + '_END])\n')
+            contents += (
+                "m4_define(["
+                + macro
+                + "], ["
+                + macro
+                + "_START$"
+                + str(DEPENDENCIES_OFFSET[macro] + 1)
+                + macro
+                + "_END])\n"
+            )
         with open(configure_ac, "rt") as f:
             contents += f.read()
 
-        autoconf_cmdline = ['autoconf', '-Wno-undefined', '-']
-        autoconf_process = subprocess.Popen(autoconf_cmdline,
-                                            stdin=subprocess.PIPE,
-                                            stdout=subprocess.PIPE,
-                                            stderr=subprocess.PIPE)
-        document = contents.encode('utf-8')
+        autoconf_cmdline = ["autoconf", "-Wno-undefined", "-"]
+        autoconf_process = subprocess.Popen(
+            autoconf_cmdline,
+            stdin=subprocess.PIPE,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+        )
+        document = contents.encode("utf-8")
         (stdout, stderr) = autoconf_process.communicate(input=document)
         if not stdout:
             print(stderr)
@@ -644,14 +668,14 @@ class Autotools(BuildSystem):
         # Parse out all of the dependency text
         matches = []
         for macro in DEPENDENCIES.keys():
-            pattern = '(' + macro + ')_START(.*?)' + macro + '_END'
-            for match in re.compile(pattern).finditer(stdout.decode('utf-8')):
+            pattern = "(" + macro + ")_START(.*?)" + macro + "_END"
+            for match in re.compile(pattern).finditer(stdout.decode("utf-8")):
                 matches.append((match.group(1), match.group(2)))
 
         # Look up dependencies from the text
         found_deps = []
         for macro, deptext in matches:
-            for potential_dep in deptext.split(' '):
+            for potential_dep in deptext.split(" "):
                 for known_dep in DEPENDENCIES[macro].keys():
                     if potential_dep.startswith(known_dep):
                         found_deps.append(DEPENDENCIES[macro][known_dep])
@@ -666,38 +690,40 @@ class Autotools(BuildSystem):
         flag                The name of the flag
         enabled             Whether the flag is enabled or disabled
         """
-        return '--' + ('enable' if enabled else 'disable') + '-' + flag
+        return "--" + ("enable" if enabled else "disable") + "-" + flag
 
     def configure(self, build_for_testing):
         self.build_for_testing = build_for_testing
         conf_flags = [
-            self._configure_feature('silent-rules', False),
-            self._configure_feature('examples', build_for_testing),
-            self._configure_feature('tests', build_for_testing),
-            self._configure_feature('itests', INTEGRATION_TEST),
+            self._configure_feature("silent-rules", False),
+            self._configure_feature("examples", build_for_testing),
+            self._configure_feature("tests", build_for_testing),
+            self._configure_feature("itests", INTEGRATION_TEST),
         ]
-        conf_flags.extend([
-            self._configure_feature('code-coverage', build_for_testing),
-            self._configure_feature('valgrind', build_for_testing),
-        ])
+        conf_flags.extend(
+            [
+                self._configure_feature("code-coverage", build_for_testing),
+                self._configure_feature("valgrind", build_for_testing),
+            ]
+        )
         # Add any necessary configure flags for package
         if CONFIGURE_FLAGS.get(self.package) is not None:
             conf_flags.extend(CONFIGURE_FLAGS.get(self.package))
-        for bootstrap in ['bootstrap.sh', 'bootstrap', 'autogen.sh']:
+        for bootstrap in ["bootstrap.sh", "bootstrap", "autogen.sh"]:
             if os.path.exists(bootstrap):
-                check_call_cmd('./' + bootstrap)
+                check_call_cmd("./" + bootstrap)
                 break
-        check_call_cmd('./configure', *conf_flags)
+        check_call_cmd("./configure", *conf_flags)
 
     def build(self):
         check_call_cmd(*make_parallel)
 
     def install(self):
-        check_call_cmd('sudo', '-n', '--', *(make_parallel + ['install']))
+        check_call_cmd("sudo", "-n", "--", *(make_parallel + ["install"]))
 
     def test(self):
         try:
-            cmd = make_parallel + ['check']
+            cmd = make_parallel + ["check"]
             for i in range(0, args.repeat):
                 check_call_cmd(*cmd)
 
@@ -705,10 +731,10 @@ class Autotools(BuildSystem):
             maybe_make_coverage()
         except CalledProcessError:
             for root, _, files in os.walk(os.getcwd()):
-                if 'test-suite.log' not in files:
+                if "test-suite.log" not in files:
                     continue
-                check_call_cmd('cat', os.path.join(root, 'test-suite.log'))
-            raise Exception('Unit tests failed')
+                check_call_cmd("cat", os.path.join(root, "test-suite.log"))
+            raise Exception("Unit tests failed")
 
     def analyze(self):
         run_cppcheck()
@@ -719,7 +745,7 @@ class CMake(BuildSystem):
         super(CMake, self).__init__(package, path)
 
     def probe(self):
-        return os.path.isfile(os.path.join(self.path, 'CMakeLists.txt'))
+        return os.path.isfile(os.path.join(self.path, "CMakeLists.txt"))
 
     def dependencies(self):
         return []
@@ -727,34 +753,48 @@ class CMake(BuildSystem):
     def configure(self, build_for_testing):
         self.build_for_testing = build_for_testing
         if INTEGRATION_TEST:
-            check_call_cmd('cmake', '-DCMAKE_EXPORT_COMPILE_COMMANDS=ON',
-                           '-DITESTS=ON', '.')
+            check_call_cmd(
+                "cmake",
+                "-DCMAKE_EXPORT_COMPILE_COMMANDS=ON",
+                "-DITESTS=ON",
+                ".",
+            )
         else:
-            check_call_cmd('cmake', '-DCMAKE_EXPORT_COMPILE_COMMANDS=ON', '.')
+            check_call_cmd("cmake", "-DCMAKE_EXPORT_COMPILE_COMMANDS=ON", ".")
 
     def build(self):
-        check_call_cmd('cmake', '--build', '.', '--', '-j',
-                       str(multiprocessing.cpu_count()))
+        check_call_cmd(
+            "cmake",
+            "--build",
+            ".",
+            "--",
+            "-j",
+            str(multiprocessing.cpu_count()),
+        )
 
     def install(self):
         pass
 
     def test(self):
-        if make_target_exists('test'):
-            check_call_cmd('ctest', '.')
+        if make_target_exists("test"):
+            check_call_cmd("ctest", ".")
 
     def analyze(self):
-        if os.path.isfile('.clang-tidy'):
-            with TemporaryDirectory(prefix='build', dir='.') as build_dir:
+        if os.path.isfile(".clang-tidy"):
+            with TemporaryDirectory(prefix="build", dir=".") as build_dir:
                 # clang-tidy needs to run on a clang-specific build
-                check_call_cmd('cmake', '-DCMAKE_C_COMPILER=clang',
-                               '-DCMAKE_CXX_COMPILER=clang++',
-                               '-DCMAKE_EXPORT_COMPILE_COMMANDS=ON',
-                               '-H.',
-                               '-B' + build_dir)
+                check_call_cmd(
+                    "cmake",
+                    "-DCMAKE_C_COMPILER=clang",
+                    "-DCMAKE_CXX_COMPILER=clang++",
+                    "-DCMAKE_EXPORT_COMPILE_COMMANDS=ON",
+                    "-H.",
+                    "-B" + build_dir,
+                )
 
-                check_call_cmd('run-clang-tidy', "-header-filter=.*", '-p',
-                               build_dir)
+                check_call_cmd(
+                    "run-clang-tidy", "-header-filter=.*", "-p", build_dir
+                )
 
         maybe_make_valgrind()
         maybe_make_coverage()
@@ -766,23 +806,23 @@ class Meson(BuildSystem):
         super(Meson, self).__init__(package, path)
 
     def probe(self):
-        return os.path.isfile(os.path.join(self.path, 'meson.build'))
+        return os.path.isfile(os.path.join(self.path, "meson.build"))
 
     def dependencies(self):
-        meson_build = os.path.join(self.path, 'meson.build')
+        meson_build = os.path.join(self.path, "meson.build")
         if not os.path.exists(meson_build):
             return []
 
         found_deps = []
         for root, dirs, files in os.walk(self.path):
-            if 'meson.build' not in files:
+            if "meson.build" not in files:
                 continue
-            with open(os.path.join(root, 'meson.build'), 'rt') as f:
+            with open(os.path.join(root, "meson.build"), "rt") as f:
                 build_contents = f.read()
             pattern = r"dependency\('([^']*)'.*?\),?\n"
             for match in re.finditer(pattern, build_contents):
                 group = match.group(1)
-                maybe_dep = DEPENDENCIES['PKG_CHECK_MODULES'].get(group)
+                maybe_dep = DEPENDENCIES["PKG_CHECK_MODULES"].get(group)
                 if maybe_dep is not None:
                     found_deps.append(maybe_dep)
 
@@ -795,7 +835,7 @@ class Meson(BuildSystem):
         Parameters:
         options_file        The file containing options
         """
-        oi = optinterpreter.OptionInterpreter('')
+        oi = optinterpreter.OptionInterpreter("")
         oi.process(options_file)
         return oi.options
 
@@ -810,9 +850,9 @@ class Meson(BuildSystem):
         val                 The value being converted
         """
         if val is True:
-            return 'true'
+            return "true"
         elif val is False:
-            return 'false'
+            return "false"
         else:
             raise Exception("Bad meson boolean value")
 
@@ -850,7 +890,7 @@ class Meson(BuildSystem):
         elif isinstance(opts[key], coredata.UserFeatureOption):
             str_val = self._configure_feature(val)
         else:
-            raise Exception('Unknown meson option type')
+            raise Exception("Unknown meson option type")
         return "-D{}={}".format(key, str_val)
 
     def configure(self, build_for_testing):
@@ -859,37 +899,47 @@ class Meson(BuildSystem):
         if os.path.exists("meson_options.txt"):
             meson_options = self._parse_options("meson_options.txt")
         meson_flags = [
-            '-Db_colorout=never',
-            '-Dwerror=true',
-            '-Dwarning_level=3',
+            "-Db_colorout=never",
+            "-Dwerror=true",
+            "-Dwarning_level=3",
         ]
         if build_for_testing:
-            meson_flags.append('--buildtype=debug')
+            meson_flags.append("--buildtype=debug")
         else:
-            meson_flags.append('--buildtype=debugoptimized')
-        if OptionKey('tests') in meson_options:
-            meson_flags.append(self._configure_option(
-                meson_options, OptionKey('tests'), build_for_testing))
-        if OptionKey('examples') in meson_options:
-            meson_flags.append(self._configure_option(
-                meson_options, OptionKey('examples'), build_for_testing))
-        if OptionKey('itests') in meson_options:
-            meson_flags.append(self._configure_option(
-                meson_options, OptionKey('itests'), INTEGRATION_TEST))
+            meson_flags.append("--buildtype=debugoptimized")
+        if OptionKey("tests") in meson_options:
+            meson_flags.append(
+                self._configure_option(
+                    meson_options, OptionKey("tests"), build_for_testing
+                )
+            )
+        if OptionKey("examples") in meson_options:
+            meson_flags.append(
+                self._configure_option(
+                    meson_options, OptionKey("examples"), build_for_testing
+                )
+            )
+        if OptionKey("itests") in meson_options:
+            meson_flags.append(
+                self._configure_option(
+                    meson_options, OptionKey("itests"), INTEGRATION_TEST
+                )
+            )
         if MESON_FLAGS.get(self.package) is not None:
             meson_flags.extend(MESON_FLAGS.get(self.package))
         try:
-            check_call_cmd('meson', 'setup', '--reconfigure', 'build',
-                           *meson_flags)
-        except:
-            shutil.rmtree('build', ignore_errors=True)
-            check_call_cmd('meson', 'setup', 'build', *meson_flags)
+            check_call_cmd(
+                "meson", "setup", "--reconfigure", "build", *meson_flags
+            )
+        except Exception:
+            shutil.rmtree("build", ignore_errors=True)
+            check_call_cmd("meson", "setup", "build", *meson_flags)
 
     def build(self):
-        check_call_cmd('ninja', '-C', 'build')
+        check_call_cmd("ninja", "-C", "build")
 
     def install(self):
-        check_call_cmd('sudo', '-n', '--', 'ninja', '-C', 'build', 'install')
+        check_call_cmd("sudo", "-n", "--", "ninja", "-C", "build", "install")
 
     def test(self):
         # It is useful to check various settings of the meson.build file
@@ -901,11 +951,11 @@ class Meson(BuildSystem):
         self._extra_meson_checks()
 
         try:
-            test_args = ('--repeat', str(args.repeat), '-C', 'build')
-            check_call_cmd('meson', 'test', '--print-errorlogs', *test_args)
+            test_args = ("--repeat", str(args.repeat), "-C", "build")
+            check_call_cmd("meson", "test", "--print-errorlogs", *test_args)
 
         except CalledProcessError:
-            raise Exception('Unit tests failed')
+            raise Exception("Unit tests failed")
 
     def _setup_exists(self, setup):
         """
@@ -915,15 +965,24 @@ class Meson(BuildSystem):
         setup              The setup target to check
         """
         try:
-            with open(os.devnull, 'w') as devnull:
+            with open(os.devnull, "w"):
                 output = subprocess.check_output(
-                    ['meson', 'test', '-C', 'build',
-                     '--setup', setup, '-t', '0'],
-                    stderr=subprocess.STDOUT)
+                    [
+                        "meson",
+                        "test",
+                        "-C",
+                        "build",
+                        "--setup",
+                        setup,
+                        "-t",
+                        "0",
+                    ],
+                    stderr=subprocess.STDOUT,
+                )
         except CalledProcessError as e:
             output = e.output
-        output = output.decode('utf-8')
-        return not re.search('Test setup .* not found from project', output)
+        output = output.decode("utf-8")
+        return not re.search("Test setup .* not found from project", output)
 
     def _maybe_valgrind(self):
         """
@@ -935,34 +994,53 @@ class Meson(BuildSystem):
             sys.stderr.write("###### Skipping valgrind ######\n")
             return
         try:
-            if self._setup_exists('valgrind'):
-                check_call_cmd('meson', 'test', '-t', '10', '-C', 'build',
-                               '--print-errorlogs', '--setup', 'valgrind')
+            if self._setup_exists("valgrind"):
+                check_call_cmd(
+                    "meson",
+                    "test",
+                    "-t",
+                    "10",
+                    "-C",
+                    "build",
+                    "--print-errorlogs",
+                    "--setup",
+                    "valgrind",
+                )
             else:
-                check_call_cmd('meson', 'test', '-t', '10', '-C', 'build',
-                               '--print-errorlogs', '--wrapper', 'valgrind')
+                check_call_cmd(
+                    "meson",
+                    "test",
+                    "-t",
+                    "10",
+                    "-C",
+                    "build",
+                    "--print-errorlogs",
+                    "--wrapper",
+                    "valgrind",
+                )
         except CalledProcessError:
-            raise Exception('Valgrind tests failed')
+            raise Exception("Valgrind tests failed")
 
     def analyze(self):
         self._maybe_valgrind()
 
         # Run clang-tidy only if the project has a configuration
-        if os.path.isfile('.clang-tidy'):
+        if os.path.isfile(".clang-tidy"):
             os.environ["CXX"] = "clang++"
-            with TemporaryDirectory(prefix='build', dir='.') as build_dir:
-                check_call_cmd('meson', 'setup', build_dir)
+            with TemporaryDirectory(prefix="build", dir=".") as build_dir:
+                check_call_cmd("meson", "setup", build_dir)
                 try:
-                    check_call_cmd('run-clang-tidy', '-fix',
-                                   '-format', '-p', build_dir)
+                    check_call_cmd(
+                        "run-clang-tidy", "-fix", "-format", "-p", build_dir
+                    )
                 except subprocess.CalledProcessError:
-                    check_call_cmd("git", "-C", CODE_SCAN_DIR,
-                                   "--no-pager", "diff")
+                    check_call_cmd(
+                        "git", "-C", CODE_SCAN_DIR, "--no-pager", "diff"
+                    )
                     raise
         # Run the basic clang static analyzer otherwise
         else:
-            check_call_cmd('ninja', '-C', 'build',
-                           'scan-build')
+            check_call_cmd("ninja", "-C", "build", "scan-build")
 
         # Run tests through sanitizers
         # b_lundef is needed if clang++ is CXX since it resolves the
@@ -970,37 +1048,44 @@ class Meson(BuildSystem):
         # in the build process to ensure we don't have undefined
         # runtime code.
         if is_sanitize_safe():
-            check_call_cmd('meson', 'configure', 'build',
-                           '-Db_sanitize=address,undefined',
-                           '-Db_lundef=false')
-            check_call_cmd('meson', 'test', '-C', 'build', '--print-errorlogs',
-                           '--logbase', 'testlog-ubasan')
+            check_call_cmd(
+                "meson",
+                "configure",
+                "build",
+                "-Db_sanitize=address,undefined",
+                "-Db_lundef=false",
+            )
+            check_call_cmd(
+                "meson",
+                "test",
+                "-C",
+                "build",
+                "--print-errorlogs",
+                "--logbase",
+                "testlog-ubasan",
+            )
             # TODO: Fix memory sanitizer
             # check_call_cmd('meson', 'configure', 'build',
             #                '-Db_sanitize=memory')
             # check_call_cmd('meson', 'test', '-C', 'build'
             #                '--logbase', 'testlog-msan')
-            check_call_cmd('meson', 'configure', 'build',
-                           '-Db_sanitize=none')
+            check_call_cmd("meson", "configure", "build", "-Db_sanitize=none")
         else:
             sys.stderr.write("###### Skipping sanitizers ######\n")
 
         # Run coverage checks
-        check_call_cmd('meson', 'configure', 'build',
-                       '-Db_coverage=true')
+        check_call_cmd("meson", "configure", "build", "-Db_coverage=true")
         self.test()
         # Only build coverage HTML if coverage files were produced
-        for root, dirs, files in os.walk('build'):
-            if any([f.endswith('.gcda') for f in files]):
-                check_call_cmd('ninja', '-C', 'build',
-                               'coverage-html')
+        for root, dirs, files in os.walk("build"):
+            if any([f.endswith(".gcda") for f in files]):
+                check_call_cmd("ninja", "-C", "build", "coverage-html")
                 break
-        check_call_cmd('meson', 'configure', 'build',
-                       '-Db_coverage=false')
+        check_call_cmd("meson", "configure", "build", "-Db_coverage=false")
         run_cppcheck()
 
     def _extra_meson_checks(self):
-        with open(os.path.join(self.path, 'meson.build'), 'rt') as f:
+        with open(os.path.join(self.path, "meson.build"), "rt") as f:
             build_contents = f.read()
 
         # Find project's specified meson_version.
@@ -1015,8 +1100,9 @@ class Meson(BuildSystem):
         # get a meson.build missing this.
         pattern = r"'cpp_std=c\+\+20'"
         for match in re.finditer(pattern, build_contents):
-            if not meson_version or \
-                    not meson_version_compare(meson_version, ">=0.57"):
+            if not meson_version or not meson_version_compare(
+                meson_version, ">=0.57"
+            ):
                 raise Exception(
                     "C++20 support requires specifying in meson.build: "
                     + "meson_version: '>=0.57'"
@@ -1082,10 +1168,10 @@ def find_file(filename, basedir):
 
     filepaths = []
     for root, dirs, files in os.walk(basedir):
-        if os.path.split(root)[-1] == 'subprojects':
+        if os.path.split(root)[-1] == "subprojects":
             for f in files:
-                subproject = '.'.join(f.split('.')[0:-1])
-                if f.endswith('.wrap') and subproject in dirs:
+                subproject = ".".join(f.split(".")[0:-1])
+                if f.endswith(".wrap") and subproject in dirs:
                     # don't find files in meson subprojects with wraps
                     dirs.remove(subproject)
         for f in filename:
@@ -1094,91 +1180,132 @@ def find_file(filename, basedir):
     return filepaths
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     # CONFIGURE_FLAGS = [GIT REPO]:[CONFIGURE FLAGS]
     CONFIGURE_FLAGS = {
-        'phosphor-logging':
-        ['--enable-metadata-processing', '--enable-openpower-pel-extension',
-         'YAML_DIR=/usr/local/share/phosphor-dbus-yaml/yaml']
+        "phosphor-logging": [
+            "--enable-metadata-processing",
+            "--enable-openpower-pel-extension",
+            "YAML_DIR=/usr/local/share/phosphor-dbus-yaml/yaml",
+        ]
     }
 
     # MESON_FLAGS = [GIT REPO]:[MESON FLAGS]
     MESON_FLAGS = {
-        'phosphor-dbus-interfaces':
-        ['-Ddata_com_ibm=true', '-Ddata_org_open_power=true'],
-        'phosphor-logging':
-        ['-Dopenpower-pel-extension=enabled']
+        "phosphor-dbus-interfaces": [
+            "-Ddata_com_ibm=true",
+            "-Ddata_org_open_power=true",
+        ],
+        "phosphor-logging": ["-Dopenpower-pel-extension=enabled"],
     }
 
     # DEPENDENCIES = [MACRO]:[library/header]:[GIT REPO]
     DEPENDENCIES = {
-        'AC_CHECK_LIB': {'mapper': 'phosphor-objmgr'},
-        'AC_CHECK_HEADER': {
-            'host-ipmid': 'phosphor-host-ipmid',
-            'blobs-ipmid': 'phosphor-ipmi-blobs',
-            'sdbusplus': 'sdbusplus',
-            'sdeventplus': 'sdeventplus',
-            'stdplus': 'stdplus',
-            'gpioplus': 'gpioplus',
-            'phosphor-logging/log.hpp': 'phosphor-logging',
+        "AC_CHECK_LIB": {"mapper": "phosphor-objmgr"},
+        "AC_CHECK_HEADER": {
+            "host-ipmid": "phosphor-host-ipmid",
+            "blobs-ipmid": "phosphor-ipmi-blobs",
+            "sdbusplus": "sdbusplus",
+            "sdeventplus": "sdeventplus",
+            "stdplus": "stdplus",
+            "gpioplus": "gpioplus",
+            "phosphor-logging/log.hpp": "phosphor-logging",
         },
-        'AC_PATH_PROG': {'sdbus++': 'sdbusplus'},
-        'PKG_CHECK_MODULES': {
-            'phosphor-dbus-interfaces': 'phosphor-dbus-interfaces',
-            'libipmid': 'phosphor-host-ipmid',
-            'libipmid-host': 'phosphor-host-ipmid',
-            'sdbusplus': 'sdbusplus',
-            'sdeventplus': 'sdeventplus',
-            'stdplus': 'stdplus',
-            'gpioplus': 'gpioplus',
-            'phosphor-logging': 'phosphor-logging',
-            'phosphor-snmp': 'phosphor-snmp',
-            'ipmiblob': 'ipmi-blob-tool',
-            'hei': 'openpower-libhei',
-            'phosphor-ipmi-blobs': 'phosphor-ipmi-blobs',
-            'libcr51sign': 'google-misc',
+        "AC_PATH_PROG": {"sdbus++": "sdbusplus"},
+        "PKG_CHECK_MODULES": {
+            "phosphor-dbus-interfaces": "phosphor-dbus-interfaces",
+            "libipmid": "phosphor-host-ipmid",
+            "libipmid-host": "phosphor-host-ipmid",
+            "sdbusplus": "sdbusplus",
+            "sdeventplus": "sdeventplus",
+            "stdplus": "stdplus",
+            "gpioplus": "gpioplus",
+            "phosphor-logging": "phosphor-logging",
+            "phosphor-snmp": "phosphor-snmp",
+            "ipmiblob": "ipmi-blob-tool",
+            "hei": "openpower-libhei",
+            "phosphor-ipmi-blobs": "phosphor-ipmi-blobs",
+            "libcr51sign": "google-misc",
         },
     }
 
     # Offset into array of macro parameters MACRO(0, 1, ...N)
     DEPENDENCIES_OFFSET = {
-        'AC_CHECK_LIB': 0,
-        'AC_CHECK_HEADER': 0,
-        'AC_PATH_PROG': 1,
-        'PKG_CHECK_MODULES': 1,
+        "AC_CHECK_LIB": 0,
+        "AC_CHECK_HEADER": 0,
+        "AC_PATH_PROG": 1,
+        "PKG_CHECK_MODULES": 1,
     }
 
     # DEPENDENCIES_REGEX = [GIT REPO]:[REGEX STRING]
-    DEPENDENCIES_REGEX = {
-        'phosphor-logging': r'\S+-dbus-interfaces$'
-    }
+    DEPENDENCIES_REGEX = {"phosphor-logging": r"\S+-dbus-interfaces$"}
 
     # Set command line arguments
     parser = argparse.ArgumentParser()
-    parser.add_argument("-w", "--workspace", dest="WORKSPACE", required=True,
-                        help="Workspace directory location(i.e. /home)")
-    parser.add_argument("-p", "--package", dest="PACKAGE", required=True,
-                        help="OpenBMC package to be unit tested")
-    parser.add_argument("-t", "--test-only", dest="TEST_ONLY",
-                        action="store_true", required=False, default=False,
-                        help="Only run test cases, no other validation")
+    parser.add_argument(
+        "-w",
+        "--workspace",
+        dest="WORKSPACE",
+        required=True,
+        help="Workspace directory location(i.e. /home)",
+    )
+    parser.add_argument(
+        "-p",
+        "--package",
+        dest="PACKAGE",
+        required=True,
+        help="OpenBMC package to be unit tested",
+    )
+    parser.add_argument(
+        "-t",
+        "--test-only",
+        dest="TEST_ONLY",
+        action="store_true",
+        required=False,
+        default=False,
+        help="Only run test cases, no other validation",
+    )
     arg_inttests = parser.add_mutually_exclusive_group()
-    arg_inttests.add_argument("--integration-tests", dest="INTEGRATION_TEST",
-                              action="store_true", required=False, default=True,
-                              help="Enable integration tests [default].")
-    arg_inttests.add_argument("--no-integration-tests", dest="INTEGRATION_TEST",
-                              action="store_false", required=False,
-                              help="Disable integration tests.")
-    parser.add_argument("-v", "--verbose", action="store_true",
-                        help="Print additional package status messages")
-    parser.add_argument("-r", "--repeat", help="Repeat tests N times",
-                        type=int, default=1)
-    parser.add_argument("-b", "--branch", dest="BRANCH", required=False,
-                        help="Branch to target for dependent repositories",
-                        default="master")
-    parser.add_argument("-n", "--noformat", dest="FORMAT",
-                        action="store_false", required=False,
-                        help="Whether or not to run format code")
+    arg_inttests.add_argument(
+        "--integration-tests",
+        dest="INTEGRATION_TEST",
+        action="store_true",
+        required=False,
+        default=True,
+        help="Enable integration tests [default].",
+    )
+    arg_inttests.add_argument(
+        "--no-integration-tests",
+        dest="INTEGRATION_TEST",
+        action="store_false",
+        required=False,
+        help="Disable integration tests.",
+    )
+    parser.add_argument(
+        "-v",
+        "--verbose",
+        action="store_true",
+        help="Print additional package status messages",
+    )
+    parser.add_argument(
+        "-r", "--repeat", help="Repeat tests N times", type=int, default=1
+    )
+    parser.add_argument(
+        "-b",
+        "--branch",
+        dest="BRANCH",
+        required=False,
+        help="Branch to target for dependent repositories",
+        default="master",
+    )
+    parser.add_argument(
+        "-n",
+        "--noformat",
+        dest="FORMAT",
+        action="store_false",
+        required=False,
+        help="Whether or not to run format code",
+    )
     args = parser.parse_args(sys.argv[1:])
     WORKSPACE = args.WORKSPACE
     UNIT_TEST_PKG = args.PACKAGE
@@ -1187,11 +1314,14 @@ if __name__ == '__main__':
     BRANCH = args.BRANCH
     FORMAT_CODE = args.FORMAT
     if args.verbose:
+
         def printline(*line):
             for arg in line:
-                print(arg, end=' ')
+                print(arg, end=" ")
             print()
+
     else:
+
         def printline(*line):
             pass
 
@@ -1199,13 +1329,17 @@ if __name__ == '__main__':
 
     # Run format-code.sh, which will in turn call any repo-level formatters.
     if FORMAT_CODE:
-        check_call_cmd(os.path.join(WORKSPACE, "openbmc-build-scripts",
-                                    "scripts", "format-code.sh"),
-                       CODE_SCAN_DIR)
+        check_call_cmd(
+            os.path.join(
+                WORKSPACE, "openbmc-build-scripts", "scripts", "format-code.sh"
+            ),
+            CODE_SCAN_DIR,
+        )
 
         # Check to see if any files changed
-        check_call_cmd("git", "-C", CODE_SCAN_DIR,
-                       "--no-pager", "diff", "--exit-code")
+        check_call_cmd(
+            "git", "-C", CODE_SCAN_DIR, "--no-pager", "diff", "--exit-code"
+        )
 
     # Check if this repo has a supported make infrastructure
     pkg = Package(UNIT_TEST_PKG, CODE_SCAN_DIR)
@@ -1245,7 +1379,7 @@ if __name__ == '__main__':
 
     # Run any custom CI scripts the repo has, of which there can be
     # multiple of and anywhere in the repository.
-    ci_scripts = find_file(['run-ci.sh', 'run-ci'], CODE_SCAN_DIR)
+    ci_scripts = find_file(["run-ci.sh", "run-ci"], CODE_SCAN_DIR)
     if ci_scripts:
         os.chdir(CODE_SCAN_DIR)
         for ci_script in ci_scripts:
