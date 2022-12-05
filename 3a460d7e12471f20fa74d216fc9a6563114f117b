@@ -20,6 +20,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "ab55b979_c668eaa4",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2022-12-05T17:39:00Z",
+      "side": 1,
+      "message": "Understood.  Let me add an option that allows it to pass if a tool isn\u0027t installed but stops by default.",
+      "parentUuid": "730ae204_f154a1c9",
+      "revId": "3a460d7e12471f20fa74d216fc9a6563114f117b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "55a4458b_caaeea4c",
         "filename": "scripts/format-code.sh",
         "patchSetId": 1
@@ -31,6 +49,24 @@
       "writtenOn": "2022-12-05T16:52:18Z",
       "side": 1,
       "message": "I think it would be good to have a comment where we define the expected structure of this. Looks like the exe, config, and alternative config?",
+      "revId": "3a460d7e12471f20fa74d216fc9a6563114f117b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f825a46d_1a10c49e",
+        "filename": "scripts/format-code.sh",
+        "patchSetId": 1
+      },
+      "lineNbr": 90,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2022-12-05T17:39:00Z",
+      "side": 1,
+      "message": "👍",
+      "parentUuid": "55a4458b_caaeea4c",
       "revId": "3a460d7e12471f20fa74d216fc9a6563114f117b",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
