@@ -33,6 +33,7 @@ LINTERS_ALL=( \
     )
 LINTERS_DISABLED=()
 LINTERS_ENABLED=()
+declare -A LINTERS_FAILED=()
 
 eval set -- "$(getopt -o 'h' --long 'help,list-tools,no-diff,disable:,allow-missing' -n 'format-code.sh' -- "$@")"
 while true; do
@@ -306,8 +307,18 @@ for op in "${LINTERS_ENABLED[@]}"; do
 
     # Call the linter now with all the files.
     echo -e "    ${BLUE}Running $op${NORMAL}"
-    "do_$op" "${LINTER_FILES[@]}"
+    if ! "do_$op" "${LINTER_FILES[@]}" ; then
+        LINTERS_FAILED+=([$op]=1)
+    fi
 done
+
+# Check for failing linters.
+if [ 0 -ne ${#LINTERS_FAILED[@]} ]; then
+    for op in "${!LINTERS_FAILED[@]}"; do
+        echo -e "$op: ${RED}FAILED${NORMAL}"
+    done
+    exit 1
+fi
 
 # Check for differences.
 if [ -z "$OPTION_NO_DIFF" ]; then
