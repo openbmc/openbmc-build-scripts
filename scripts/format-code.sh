@@ -105,11 +105,23 @@ fi
 cd "${DIR}"
 echo -e "    ${BLUE}Formatting code under${NORMAL} $DIR"
 
-
+# Config hashes:
+#   LINTER_REQUIRE - The requirements to run a linter, semi-colon separated.
+#       1. Executable.
+#       2. [optional] Configuration file.
+#       3. [optional] Global fallback configuration file.
+#
+#   LINTER_IGNORE - An optional set of semi-colon separated ignore-files
+#       specific to the linter.
+#
+#   LINTER_TYPES - The file types supported by the linter, semi-colon separated.
+#
+#   LINTER_CONFIG - The config (from LINTER_REQUIRE) chosen for the repository.
+#
 declare -A LINTER_REQUIRE=()
-declare -A LINTER_CONFIG=()
 declare -A LINTER_IGNORE=()
 declare -A LINTER_TYPES=()
+declare -A LINTER_CONFIG=()
 
 LINTER_REQUIRE+=([commit_spelling]="codespell")
 LINTER_TYPES+=([commit_spelling]="commit")
