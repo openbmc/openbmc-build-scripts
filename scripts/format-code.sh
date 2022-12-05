@@ -19,6 +19,7 @@ function display_help()
     echo "    --list-tools      Display available linters and formatters"
     echo "    --no-diff         Don't show final diff output"
     echo "    --disable <tool>  Disable linter"
+    echo "    --allow-missing   Run even if linters are not all present"
     echo "    path              Path to git repository (default to pwd)"
 }
 
@@ -33,7 +34,7 @@ LINTERS_ALL=( \
 LINTERS_DISABLED=()
 LINTERS_ENABLED=()
 
-eval set -- "$(getopt -o 'h' --long 'help,list-tools,no-diff,disable:' -n 'format-code.sh' -- "$@")"
+eval set -- "$(getopt -o 'h' --long 'help,list-tools,no-diff,disable:,allow-missing' -n 'format-code.sh' -- "$@")"
 while true; do
     case "$1" in
         '-h'|'--help')
@@ -56,6 +57,11 @@ while true; do
         '--disable')
             LINTERS_DISABLED+=("$2")
             shift && shift
+            ;;
+
+        '--allow-missing')
+            ALLOW_MISSING=yes
+            shift
             ;;
 
         '--')
@@ -219,6 +225,9 @@ function check_linter()
     if [ ! -x "${EXE}" ]; then
         if ! which "${EXE}" > /dev/null 2>&1 ; then
             echo -e "    ${YELLOW}${TITLE}:${NORMAL} cannot find ${EXE}"
+            if [ -z "$ALLOW_MISSING" ]; then
+                exit 1
+            fi
             return
         fi
     fi
