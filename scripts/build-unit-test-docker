@@ -80,11 +80,14 @@ packages = {
     "boost": PackageDef(
         rev="1.80.0",
         url=(
-            lambda pkg, rev: f"https://downloads.yoctoproject.org/mirror/sources/{pkg}_{rev.replace('.', '_')}.tar.bz2"
+            lambda pkg, rev: f"https://downloads.yoctoproject.org/mirror/sources/{pkg}_{rev.replace('.', '_')}.tar.bz2"  # noqa: E501
         ),
         build_type="custom",
         build_steps=[
-            f"./bootstrap.sh --prefix={prefix} --with-libraries=context,coroutine",
+            (
+                "./bootstrap.sh"
+                f" --prefix={prefix} --with-libraries=context,coroutine"
+            ),
             "./b2",
             f"./b2 install --prefix={prefix}",
         ],
@@ -135,7 +138,10 @@ packages = {
         build_type="cmake",
         config_flags=["-DJSON_BuildTests=OFF"],
         custom_post_install=[
-            f"ln -s {prefix}/include/nlohmann/json.hpp {prefix}/include/json.hpp",
+            (
+                f"ln -s {prefix}/include/nlohmann/json.hpp"
+                f" {prefix}/include/json.hpp"
+            ),
         ],
     ),
     # Snapshot from 2019-05-24
@@ -160,7 +166,7 @@ packages = {
         rev="9.0.0",
         build_type="cmake",
     ),
-    # version from /meta-openembedded/meta-oe/recipes-devtools/boost-url/boost-url_git.bb
+    # version from /meta-openembedded/meta-oe/recipes-devtools/boost-url/boost-url_git.bb # noqa: E501
     "CPPAlliance/url": PackageDef(
         rev="d740a92d38e3a8f4d5b2153f53b82f1c98e312ab",
         build_type="custom",
@@ -588,7 +594,8 @@ class Docker:
 
     @staticmethod
     def build(pkg: str, tag: str, dockerfile: str) -> None:
-        """Build a docker image using the Dockerfile and tagging it with 'tag'."""
+        """Build a docker image using the Dockerfile and tagging it with 'tag'.
+        """
 
         # If we're not forcing builds, check if it already exists and skip.
         if not force_build:
@@ -669,11 +676,21 @@ else:
 mirror = ""
 if "ubuntu" in distro and ubuntu_mirror:
     mirror = f"""
-RUN echo "deb {ubuntu_mirror} $(. /etc/os-release && echo $VERSION_CODENAME) main restricted universe multiverse" > /etc/apt/sources.list && \\
-    echo "deb {ubuntu_mirror} $(. /etc/os-release && echo $VERSION_CODENAME)-updates main restricted universe multiverse" >> /etc/apt/sources.list && \\
-    echo "deb {ubuntu_mirror} $(. /etc/os-release && echo $VERSION_CODENAME)-security main restricted universe multiverse" >> /etc/apt/sources.list && \\
-    echo "deb {ubuntu_mirror} $(. /etc/os-release && echo $VERSION_CODENAME)-proposed main restricted universe multiverse" >> /etc/apt/sources.list && \\
-    echo "deb {ubuntu_mirror} $(. /etc/os-release && echo $VERSION_CODENAME)-backports main restricted universe multiverse" >> /etc/apt/sources.list
+RUN echo "deb {ubuntu_mirror} \
+        $(. /etc/os-release && echo $VERSION_CODENAME) \
+        main restricted universe multiverse" > /etc/apt/sources.list && \\
+    echo "deb {ubuntu_mirror} \
+        $(. /etc/os-release && echo $VERSION_CODENAME)-updates \
+            main restricted universe multiverse" >> /etc/apt/sources.list && \\
+    echo "deb {ubuntu_mirror} \
+        $(. /etc/os-release && echo $VERSION_CODENAME)-security \
+            main restricted universe multiverse" >> /etc/apt/sources.list && \\
+    echo "deb {ubuntu_mirror} \
+        $(. /etc/os-release && echo $VERSION_CODENAME)-proposed \
+            main restricted universe multiverse" >> /etc/apt/sources.list && \\
+    echo "deb {ubuntu_mirror} \
+        $(. /etc/os-release && echo $VERSION_CODENAME)-backports \
+            main restricted universe multiverse" >> /etc/apt/sources.list
 """
 
 # Special flags for proxying.
@@ -724,7 +741,8 @@ RUN apt-get update && apt-get dist-upgrade -yy && \
                       --recv-keys F2EDC64DC5AEE1F6B9C621F0C8CAB6595FDFF622 ) )
 
 # Parse the current repo list into a debug repo list
-RUN sed -n '/^deb /s,^deb [^ ]* ,deb http://ddebs.ubuntu.com ,p' /etc/apt/sources.list >/etc/apt/sources.list.d/debug.list
+RUN sed -n '/^deb /s,^deb [^ ]* ,deb http://ddebs.ubuntu.com ,p' \
+        /etc/apt/sources.list >/etc/apt/sources.list.d/debug.list
 
 # Remove non-existent debug repos
 RUN sed -i '/-\\(backports\\|security\\) /d' /etc/apt/sources.list.d/debug.list
@@ -811,7 +829,8 @@ RUN update-alternatives --install /usr/bin/clang clang /usr/bin/clang-15 1000 \
   --slave /usr/bin/clang++ clang++ /usr/bin/clang++-15 \
   --slave /usr/bin/clang-tidy clang-tidy /usr/bin/clang-tidy-15 \
   --slave /usr/bin/clang-format clang-format /usr/bin/clang-format-15 \
-  --slave /usr/bin/run-clang-tidy run-clang-tidy.py /usr/bin/run-clang-tidy-15 \
+  --slave /usr/bin/run-clang-tidy run-clang-tidy.py \
+        /usr/bin/run-clang-tidy-15 \
   --slave /usr/bin/scan-build scan-build /usr/bin/scan-build-15
 
 """
@@ -856,7 +875,8 @@ RUN echo '{Package.depcache()}' > /tmp/depcache
 # Final configuration for the workspace
 RUN grep -q {gid} /etc/group || groupadd -f -g {gid} {username}
 RUN mkdir -p "{os.path.dirname(homedir)}"
-RUN grep -q {uid} /etc/passwd || useradd -d {homedir} -m -u {uid} -g {gid} {username}
+RUN grep -q {uid} /etc/passwd || \
+        useradd -d {homedir} -m -u {uid} -g {gid} {username}
 RUN sed -i '1iDefaults umask=000' /etc/sudoers
 RUN echo "{username} ALL=(ALL) NOPASSWD: ALL" >>/etc/sudoers
 
