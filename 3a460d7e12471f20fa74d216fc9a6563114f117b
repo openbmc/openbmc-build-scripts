@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "730ae204_f154a1c9",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2022-12-05T16:52:18Z",
+      "side": 1,
+      "message": "One slight concern here is that prior to this change, if a tool like gitlint was not present in the docker image, then we\u0027d get an error and CI will fail. Now we just wont run the test, and things will pass. That could provide a false sense of success. The optional ones that depended on config files, I get just skipping those.",
+      "revId": "3a460d7e12471f20fa74d216fc9a6563114f117b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "55a4458b_caaeea4c",
+        "filename": "scripts/format-code.sh",
+        "patchSetId": 1
+      },
+      "lineNbr": 90,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2022-12-05T16:52:18Z",
+      "side": 1,
+      "message": "I think it would be good to have a comment where we define the expected structure of this. Looks like the exe, config, and alternative config?",
+      "revId": "3a460d7e12471f20fa74d216fc9a6563114f117b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "baa9d9fd_0903eec3",
+        "filename": "scripts/format-code.sh",
+        "patchSetId": 1
+      },
+      "lineNbr": 225,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2022-12-05T16:52:18Z",
+      "side": 1,
+      "message": "Need a \"return\" after this?",
+      "revId": "3a460d7e12471f20fa74d216fc9a6563114f117b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
