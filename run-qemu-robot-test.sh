@@ -81,18 +81,18 @@ ARCH=$(uname -m)
 
 # Determine the prefix of the Dockerfile's base image and the QEMU_ARCH variable
 case ${ARCH} in
-  "ppc64le")
-    QEMU_ARCH="ppc64le-linux"
-    ;;
-  "x86_64")
-    QEMU_ARCH="x86_64-linux"
-    ;;
-  "aarch64")
-    QEMU_ARCH="arm64-linux"
-    ;;
-  *)
-    echo "Unsupported system architecture(${ARCH}) found for docker image"
-    exit 1
+    "ppc64le")
+        QEMU_ARCH="ppc64le-linux"
+        ;;
+    "x86_64")
+        QEMU_ARCH="x86_64-linux"
+        ;;
+    "aarch64")
+        QEMU_ARCH="arm64-linux"
+        ;;
+    *)
+        echo "Unsupported system architecture(${ARCH}) found for docker image"
+        exit 1
 esac
 
 # Set the location of the qemu binary relative to UPSTREAM_WORKSPACE
@@ -112,84 +112,84 @@ cp "$DIR"/scripts/boot-qemu* "${UPSTREAM_WORKSPACE}"
 
 if [[ ${LAUNCH} == "local" ]]; then
 
-  # Start QEMU docker instance
-  # root in docker required to open up the https/ssh ports
-  obmc_qemu_docker=$(docker run --detach \
-                                --rm \
-                                --user root \
-                                --env HOME="${OBMC_BUILD_DIR}" \
-                                --env QEMU_RUN_TIMER="${QEMU_RUN_TIMER}" \
-                                --env QEMU_ARCH="${QEMU_ARCH}" \
-                                --env QEMU_BIN="${QEMU_BIN}" \
-                                --env MACHINE="${MACHINE}" \
-                                --env DEFAULT_IMAGE_LOC="${DEFAULT_IMAGE_LOC}" \
-                                --workdir "${OBMC_BUILD_DIR}"           \
-                                --volume "${UPSTREAM_WORKSPACE}:${OBMC_BUILD_DIR}:ro" \
-                                --tty \
-                                "${DOCKER_IMG_NAME}" "${OBMC_BUILD_DIR}"/boot-qemu-test.exp)
+    # Start QEMU docker instance
+    # root in docker required to open up the https/ssh ports
+    obmc_qemu_docker=$(docker run --detach \
+            --rm \
+            --user root \
+            --env HOME="${OBMC_BUILD_DIR}" \
+            --env QEMU_RUN_TIMER="${QEMU_RUN_TIMER}" \
+            --env QEMU_ARCH="${QEMU_ARCH}" \
+            --env QEMU_BIN="${QEMU_BIN}" \
+            --env MACHINE="${MACHINE}" \
+            --env DEFAULT_IMAGE_LOC="${DEFAULT_IMAGE_LOC}" \
+            --workdir "${OBMC_BUILD_DIR}"           \
+            --volume "${UPSTREAM_WORKSPACE}:${OBMC_BUILD_DIR}:ro" \
+            --tty \
+        "${DOCKER_IMG_NAME}" "${OBMC_BUILD_DIR}"/boot-qemu-test.exp)
 
-  # We can use default ports because we're going to have the 2
-  # docker instances talk over their private network
-  DOCKER_SSH_PORT=22
-  DOCKER_HTTPS_PORT=443
+    # We can use default ports because we're going to have the 2
+    # docker instances talk over their private network
+    DOCKER_SSH_PORT=22
+    DOCKER_HTTPS_PORT=443
 
-  # This docker command intermittently asserts a SIGPIPE which
-  # causes the whole script to fail. The IP address comes through
-  # fine on these errors so just ignore the SIGPIPE
-  trap '' PIPE
+    # This docker command intermittently asserts a SIGPIPE which
+    # causes the whole script to fail. The IP address comes through
+    # fine on these errors so just ignore the SIGPIPE
+    trap '' PIPE
 
-  DOCKER_QEMU_IP_ADDR="$(docker inspect "$obmc_qemu_docker" |  \
+    DOCKER_QEMU_IP_ADDR="$(docker inspect "$obmc_qemu_docker" |  \
                        grep "IPAddress\":" | tail -n1 | cut -d '"' -f 4)"
 
-  #Now wait for the OpenBMC QEMU Docker instance to get to standby
-  delay=5
-  attempt=$(( QEMU_LOGIN_TIMER / delay ))
-  while [ $attempt -gt 0 ]; do
-    attempt=$(( attempt - 1 ))
-    echo "Waiting for qemu to get to standby (attempt: $attempt)..."
-    result=$(docker logs "$obmc_qemu_docker")
-    if grep -q 'OPENBMC-READY' <<< "$result" ; then
-      echo "QEMU is ready!"
-      # Give QEMU a few secs to stabilize
-      sleep $delay
-      break
+    #Now wait for the OpenBMC QEMU Docker instance to get to standby
+    delay=5
+    attempt=$(( QEMU_LOGIN_TIMER / delay ))
+    while [ $attempt -gt 0 ]; do
+        attempt=$(( attempt - 1 ))
+        echo "Waiting for qemu to get to standby (attempt: $attempt)..."
+        result=$(docker logs "$obmc_qemu_docker")
+        if grep -q 'OPENBMC-READY' <<< "$result" ; then
+            echo "QEMU is ready!"
+            # Give QEMU a few secs to stabilize
+            sleep $delay
+            break
+        fi
+        sleep $delay
+    done
+
+    if [ "$attempt" -eq 0 ]; then
+        echo "Timed out waiting for QEMU, exiting"
+        exit 1
     fi
-      sleep $delay
-  done
 
-  if [ "$attempt" -eq 0 ]; then
-    echo "Timed out waiting for QEMU, exiting"
-    exit 1
-  fi
+    # Now run the Robot test (Tests commented out until they are working again)
 
-  # Now run the Robot test (Tests commented out until they are working again)
+    # Timestamp for job
+    echo "Robot Test started, $(date)"
 
-  # Timestamp for job
-  echo "Robot Test started, $(date)"
+    mkdir -p "${WORKSPACE}"
+    cd "${WORKSPACE}"
 
-  mkdir -p "${WORKSPACE}"
-  cd "${WORKSPACE}"
+    # Copy in the script which will execute the Robot tests
+    cp "$DIR"/scripts/run-robot.sh "${WORKSPACE}"
 
-  # Copy in the script which will execute the Robot tests
-  cp "$DIR"/scripts/run-robot.sh "${WORKSPACE}"
+    # Run the Docker container to execute the Robot test cases
+    # The test results will be put in ${WORKSPACE}
+    docker run --rm \
+        --env HOME="${HOME}" \
+        --env IP_ADDR="${DOCKER_QEMU_IP_ADDR}" \
+        --env SSH_PORT="${DOCKER_SSH_PORT}" \
+        --env HTTPS_PORT="${DOCKER_HTTPS_PORT}" \
+        --env MACHINE="${MACHINE_QEMU}" \
+        --workdir "${HOME}" \
+        --volume "${WORKSPACE}":"${HOME}" \
+        --tty \
+        "${DOCKER_IMG_NAME}" "${HOME}"/run-robot.sh
 
-  # Run the Docker container to execute the Robot test cases
-  # The test results will be put in ${WORKSPACE}
-  docker run --rm \
-             --env HOME="${HOME}" \
-             --env IP_ADDR="${DOCKER_QEMU_IP_ADDR}" \
-             --env SSH_PORT="${DOCKER_SSH_PORT}" \
-             --env HTTPS_PORT="${DOCKER_HTTPS_PORT}" \
-             --env MACHINE="${MACHINE_QEMU}" \
-             --workdir "${HOME}" \
-             --volume "${WORKSPACE}":"${HOME}" \
-             --tty \
-             "${DOCKER_IMG_NAME}" "${HOME}"/run-robot.sh
-
-  # Now stop the QEMU Docker image
-  docker stop "$obmc_qemu_docker"
+    # Now stop the QEMU Docker image
+    docker stop "$obmc_qemu_docker"
 
 else
-  echo "LAUNCH variable invalid, Exiting"
-  exit 1
+    echo "LAUNCH variable invalid, Exiting"
+    exit 1
 fi

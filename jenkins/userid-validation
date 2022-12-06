@@ -14,9 +14,9 @@
 
 GERRIT_COMMAND="curl -s --anyauth -n https://gerrit.openbmc.org"
 GERRIT_SSH_CMD=( \
-    ssh -o 'StrictHostKeyChecking no' -i "$SSH_KEY" \
-    -p 29418 jenkins-openbmc-ci@gerrit.openbmc.org gerrit \
-)
+        ssh -o 'StrictHostKeyChecking no' -i "$SSH_KEY" \
+        -p 29418 jenkins-openbmc-ci@gerrit.openbmc.org gerrit \
+    )
 
 echo "Checking ${GERRIT_PROJECT}:${GERRIT_BRANCH}:${GERRIT_CHANGE_ID}:${GERRIT_PATCHSET_REVISION}"
 
@@ -63,43 +63,43 @@ fi
 
 # Write full list of users to a file
 GERRIT_CI_GROUPS=( \
-    alibaba/ci-authorized \
-    amd/ci-authorized \
-    ami/ci-authorized \
-    ampere/ci-authorized \
-    arm/ci-authorized \
-    aspeed/ci-authorized \
-    bytedance/ci-authorized \
-    code-construct/ci-authorized \
-    depo/ci-authorized \
-    erg/ci-authorized \
-    facebook/ci-authorized \
-    fii/ci-authorized \
-    gager-in/ci-authorized \
-    google/ci-authorized \
-    hcl/ci-authorized \
-    hpe/ci-authorized \
-    ibm/ci-authorized \
-    individual/ci-authorized \
-    inspur/ci-authorized \
-    intel/ci-authorized \
-    inventec/ci-authorized \
-    lenovo/ci-authorized \
-    microsoft/ci-authorized \
-    nineelements/ci-authorized \
-    nuvoton/ci-authorized \
-    nvidia/ci-authorized \
-    openbmc/ci-authorized \
-    pcpartner/ci-authorized \
-    phytium/ci-authorized \
-    quanta/ci-authorized \
-    quic/ci-authorized \
-    rcs/ci-authorized \
-    supermicro/ci-authorized \
-    wistron/ci-authorized \
-    wiwynn/ci-authorized \
-    yadro/ci-authorized \
-)
+        alibaba/ci-authorized \
+        amd/ci-authorized \
+        ami/ci-authorized \
+        ampere/ci-authorized \
+        arm/ci-authorized \
+        aspeed/ci-authorized \
+        bytedance/ci-authorized \
+        code-construct/ci-authorized \
+        depo/ci-authorized \
+        erg/ci-authorized \
+        facebook/ci-authorized \
+        fii/ci-authorized \
+        gager-in/ci-authorized \
+        google/ci-authorized \
+        hcl/ci-authorized \
+        hpe/ci-authorized \
+        ibm/ci-authorized \
+        individual/ci-authorized \
+        inspur/ci-authorized \
+        intel/ci-authorized \
+        inventec/ci-authorized \
+        lenovo/ci-authorized \
+        microsoft/ci-authorized \
+        nineelements/ci-authorized \
+        nuvoton/ci-authorized \
+        nvidia/ci-authorized \
+        openbmc/ci-authorized \
+        pcpartner/ci-authorized \
+        phytium/ci-authorized \
+        quanta/ci-authorized \
+        quic/ci-authorized \
+        rcs/ci-authorized \
+        supermicro/ci-authorized \
+        wistron/ci-authorized \
+        wiwynn/ci-authorized \
+        yadro/ci-authorized \
+    )
 
 rm -f "$WORKSPACE/users.txt"
 for g in "${GERRIT_CI_GROUPS[@]}"; do

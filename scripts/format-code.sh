@@ -176,7 +176,7 @@ function do_shellcheck() {
 LINTER_REQUIRE+=([clang_format]="clang-format;.clang-format")
 LINTER_IGNORE+=([clang_format]=".clang-ignore;.clang-format-ignore")
 LINTER_TYPES+=([clang_format]="c;cpp")
-do_clang_format() {
+function do_clang_format() {
     "${CLANG_FORMAT}" -i "$@"
 }
 

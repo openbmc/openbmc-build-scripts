@@ -54,7 +54,7 @@ fi
 
 # Copy rootfs_size.py script into workspace
 cp "${WORKSPACE}"/${OBMC_TOOLS}/${ROOTFS_SIZE_PY_DIR}/${ROOTFS_SIZE_PY} \
-"${WORKSPACE}"/${ROOTFS_SIZE_PY}
+    "${WORKSPACE}"/${ROOTFS_SIZE_PY}
 chmod a+x "${WORKSPACE}"/${ROOTFS_SIZE_PY}
 
 # Configure docker build

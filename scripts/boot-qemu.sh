@@ -88,7 +88,7 @@ fi
 # Obtain IP from /etc/hosts if IP is not valid set to localhost
 IP=$(awk 'END{print $1}' /etc/hosts)
 if [[ "$IP" != *.*.*.* ]]; then
-  IP=127.0.0.1
+    IP=127.0.0.1
 fi
 
 # Forward all needed ports for the robot test framework to run

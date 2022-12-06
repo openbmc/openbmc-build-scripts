@@ -52,11 +52,11 @@ fi
 
 if [[ "${DISTRO}" == "ubuntu"* ]]; then
 
-if [[ -n "${http_proxy}" ]]; then
-  PROXY="RUN echo \"Acquire::http::Proxy \\"\"${http_proxy}/\\"\";\" > /etc/apt/apt.conf.d/000apt-cacher-ng-proxy"
-fi
+    if [[ -n "${http_proxy}" ]]; then
+        PROXY="RUN echo \"Acquire::http::Proxy \\"\"${http_proxy}/\\"\";\" > /etc/apt/apt.conf.d/000apt-cacher-ng-proxy"
+    fi
 
-Dockerfile=$(cat << EOF
+    Dockerfile=$(cat << EOF
 FROM ${DOCKER_BASE}${DISTRO}
 
 ${PROXY}
@@ -86,7 +86,7 @@ RUN echo "${USER} ALL=(ALL) NOPASSWD: ALL" >>/etc/sudoers
 
 RUN /bin/bash
 EOF
-)
+    )
 fi
 ################################# docker img # #################################
 
