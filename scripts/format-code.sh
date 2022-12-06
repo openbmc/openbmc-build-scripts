@@ -26,6 +26,8 @@ function display_help()
 LINTERS_ALL=( \
         commit_gitlint \
         commit_spelling \
+        beautysh \
+        beautysh_sh \
         clang_format \
         eslint \
         flake8 \
@@ -150,6 +152,22 @@ LINTER_TYPES+=([commit_gitlint]="commit")
 function do_commit_gitlint() {
     gitlint --extra-path "${CONFIG_PATH}/gitlint/" \
         --config "${CONFIG_PATH}/.gitlint"
+}
+
+# We need different function style for bash/zsh vs plain sh, so beautysh is
+# split into two linters.  "function foo()" is not traditionally accepted
+# POSIX-shell syntax, so shellcheck barfs on it.
+LINTER_REQUIRE+=([beautysh]="beautysh")
+LINTER_IGNORE+=([beautysh]=".beautysh-ignore")
+LINTER_TYPES+=([beautysh]="bash;zsh")
+function do_beautysh() {
+    beautysh --force-function-style fnpar "$@"
+}
+LINTER_REQUIRE+=([beautysh_sh]="beautysh")
+LINTER_IGNORE+=([beautysh_sh]=".beautysh-ignore")
+LINTER_TYPES+=([beautysh_sh]="sh")
+function do_beautysh_sh() {
+    beautysh --force-function-style paronly "$@"
 }
 
 LINTER_REQUIRE+=([eslint]="eslint;.eslintrc.json;${CONFIG_PATH}/eslint-global-config.json")
