@@ -20,8 +20,8 @@ echo "Build started, $(date)"
 
 # if there is no open-power directory clone in master into workspace
 if [ ! -e "${WORKSPACE}"/op-build ]; then
-        echo "Clone in openpower master to ${WORKSPACE}/op-build"
-        git clone --recursive https://github.com/open-power/op-build "${WORKSPACE}"/op-build
+    echo "Clone in openpower master to ${WORKSPACE}/op-build"
+    git clone --recursive https://github.com/open-power/op-build "${WORKSPACE}"/op-build
 fi
 
 # Determine the architecture
@@ -47,7 +47,7 @@ esac
 # Configure docker build
 if [[ "${distro}" == fedora ]];then
 
-  Dockerfile=$(cat << EOF
+    Dockerfile=$(cat << EOF
 FROM ${DOCKER_BASE}fedora:latest
 
 RUN dnf --refresh repolist && dnf install -y \
@@ -94,11 +94,11 @@ USER ${USER}
 ENV HOME ${HOME}
 RUN /bin/bash
 EOF
-)
+    )
 
 elif [[ "${distro}" == ubuntu ]]; then
 
-  Dockerfile=$(cat << EOF
+    Dockerfile=$(cat << EOF
 FROM ${DOCKER_BASE}ubuntu:latest
 
 ENV DEBIAN_FRONTEND noninteractive
@@ -137,13 +137,13 @@ USER ${USER}
 ENV HOME ${HOME}
 RUN /bin/bash
 EOF
-)
+    )
 fi
 
 # Build the docker container
 if ! docker build -t op-build/"${distro}" - <<< "${Dockerfile}" ; then
-  echo "Failed to build docker container."
-  exit 1
+    echo "Failed to build docker container."
+    exit 1
 fi
 
 mkdir -p "${WORKSPACE}"
@@ -174,7 +174,7 @@ chmod a+x "${WORKSPACE}"/build.sh
 
 # Run the docker container, execute the build script we just built
 docker run --net=host --rm=true -e WORKSPACE="${WORKSPACE}" --user="${USER}" \
-  -w "${HOME}" -v "${HOME}":"${HOME}" -t op-build/"${distro}" "${WORKSPACE}"/build.sh
+    -w "${HOME}" -v "${HOME}":"${HOME}" -t op-build/"${distro}" "${WORKSPACE}"/build.sh
 
 # Create link to images for archiving
 ln -sf "${WORKSPACE}"/op-build/output/images "${WORKSPACE}"/images

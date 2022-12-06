@@ -15,7 +15,7 @@ echo "Build started, $(date)"
 
 # Configure docker build
 if [[ -n "${http_proxy}" ]]; then
-PROXY="RUN echo \"Acquire::http::Proxy \\"\"${http_proxy}/\\"\";\" > /etc/apt/apt.conf.d/000apt-cacher-ng-proxy"
+    PROXY="RUN echo \"Acquire::http::Proxy \\"\"${http_proxy}/\\"\";\" > /etc/apt/apt.conf.d/000apt-cacher-ng-proxy"
 fi
 
 Dockerfile=$(cat << EOF
@@ -42,8 +42,8 @@ EOF
 
 # Build the docker container
 if ! docker build -t linux-build/ubuntu - <<< "${Dockerfile}" ; then
-  echo "Failed to build docker container."
-  exit 1
+    echo "Failed to build docker container."
+    exit 1
 fi
 
 # Create the docker run script
@@ -71,4 +71,4 @@ chmod a+x "${WORKSPACE}/build.sh"
 
 # Run the docker container, execute the build script we just built
 docker run --cap-add=sys_admin --net=host --rm=true -e WORKSPACE="${WORKSPACE}" --user="${USER}" \
-  -w "${HOME}" -v "${HOME}":"${HOME}" -t linux-build/ubuntu "${WORKSPACE}/build.sh"
+    -w "${HOME}" -v "${HOME}":"${HOME}" -t linux-build/ubuntu "${WORKSPACE}/build.sh"

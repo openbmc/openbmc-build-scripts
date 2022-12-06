@@ -157,7 +157,7 @@ EOF
 
 PROXY_ARGS=""
 if [[ -n "${http_proxy}" ]]; then
-  PROXY_ARGS="--build-arg http_proxy=${http_proxy} --build-arg https_proxy=${http_proxy}"
+    PROXY_ARGS="--build-arg http_proxy=${http_proxy} --build-arg https_proxy=${http_proxy}"
 fi
 
 # Build above image

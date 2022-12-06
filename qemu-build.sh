@@ -45,23 +45,23 @@ echo "Build started, $(date)"
 
 # Setup Proxy
 if [[ -n "${http_proxy}" ]]; then
-PROXY="RUN echo \"Acquire::http::Proxy \\"\"${http_proxy}/\\"\";\" > /etc/apt/apt.conf.d/000apt-cacher-ng-proxy"
+    PROXY="RUN echo \"Acquire::http::Proxy \\"\"${http_proxy}/\\"\";\" > /etc/apt/apt.conf.d/000apt-cacher-ng-proxy"
 fi
 
 # Determine the prefix of the Dockerfile's base image
 case ${ARCH} in
-  "ppc64le")
-    DOCKER_BASE="ppc64le/"
-    ;;
-  "x86_64")
-    DOCKER_BASE=""
-    ;;
-  "aarch64")
-    DOCKER_BASE="arm64v8/"
-    ;;
-  *)
-    echo "Unsupported system architecture(${ARCH}) found for docker image"
-    exit 1
+    "ppc64le")
+        DOCKER_BASE="ppc64le/"
+        ;;
+    "x86_64")
+        DOCKER_BASE=""
+        ;;
+    "aarch64")
+        DOCKER_BASE="arm64v8/"
+        ;;
+    *)
+        echo "Unsupported system architecture(${ARCH}) found for docker image"
+        exit 1
 esac
 
 # Create the docker run script
@@ -138,8 +138,8 @@ EOF
 )
 
 if ! docker build -t ${img_name} - <<< "${Dockerfile}" ; then
-  echo "Failed to build docker container."
-  exit 1
+    echo "Failed to build docker container."
+    exit 1
 fi
 
 docker run \

@@ -5,7 +5,7 @@
 
 # Debug
 if grep -q debug <<< "$@"; then
-	set -x
+    set -x
 fi
 set -o errexit
 set -o pipefail
@@ -17,8 +17,8 @@ http_proxy=${http_proxy:-}
 ENDIANESS=${ENDIANESS:-le}
 PROXY=""
 
-usage(){
-	cat << EOF_USAGE
+function usage() {
+    cat << EOF_USAGE
 Usage: $0 [options]
 
 Options:
@@ -28,7 +28,7 @@ Short Options:
 -e			same as --endianess
 
 EOF_USAGE
-	exit 1
+    exit 1
 }
 
 # Arguments
@@ -36,25 +36,25 @@ CMD_LINE=$(getopt -o d,e: --longoptions debug,endianess: -n "$0" -- "$@")
 eval set -- "${CMD_LINE}"
 
 while true ; do
-	case "${1}" in
-		-e|--endianess)
-			if [[ "${2,,}" == "be" ]]; then
-				ENDIANESS=""
-			fi
-			shift 2
-			;;
-		-d|--debug)
-			set -x
-			shift
-			;;
-		--)
-			shift
-			break
-			;;
-		*)
-			usage
-			;;
-	esac
+    case "${1}" in
+        -e|--endianess)
+            if [[ "${2,,}" == "be" ]]; then
+                ENDIANESS=""
+            fi
+            shift 2
+            ;;
+        -d|--debug)
+            set -x
+            shift
+            ;;
+        --)
+            shift
+            break
+            ;;
+        *)
+            usage
+            ;;
+    esac
 done
 
 # Timestamp for job
@@ -62,7 +62,7 @@ echo "Build started, $(date)"
 
 # Configure docker build
 if [[ -n "${http_proxy}" ]]; then
-	PROXY="RUN echo \"Acquire::http::Proxy \\"\"${http_proxy}/\\"\";\" > /etc/apt/apt.conf.d/000apt-cacher-ng-proxy"
+    PROXY="RUN echo \"Acquire::http::Proxy \\"\"${http_proxy}/\\"\";\" > /etc/apt/apt.conf.d/000apt-cacher-ng-proxy"
 fi
 
 Dockerfile=$(cat << EOF
@@ -97,8 +97,8 @@ EOF
 
 # Build the docker container
 if ! docker build -t initramfs-build/ubuntu - <<< "${Dockerfile}" ; then
-	echo "Failed to build docker container."
-	exit 1
+    echo "Failed to build docker container."
+    exit 1
 fi
 
 # Create the docker run script
@@ -146,15 +146,15 @@ chmod a+x "${WORKSPACE}/build.sh"
 
 # Run the docker container, execute the build script we just built
 docker run \
-	--cap-add=sys_admin \
-	--net=host \
-	--rm=true \
-	-e WORKSPACE="${WORKSPACE}" \
-	--user="${USER}" \
-	-w "${HOME}" \
-	-v "${HOME}":"${HOME}" \
-	-t initramfs-build/ubuntu \
-	"${WORKSPACE}/build.sh"
+    --cap-add=sys_admin \
+    --net=host \
+    --rm=true \
+    -e WORKSPACE="${WORKSPACE}" \
+    --user="${USER}" \
+    -w "${HOME}" \
+    -v "${HOME}":"${HOME}" \
+    -t initramfs-build/ubuntu \
+    "${WORKSPACE}/build.sh"
 
 # Timestamp for build
 echo "Build completed, $(date)"
