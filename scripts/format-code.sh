@@ -30,6 +30,7 @@ LINTERS_ALL=( \
         clang_format \
         eslint \
         flake8 \
+        prettier \
         shellcheck \
     )
 LINTERS_DISABLED=()
@@ -174,6 +175,13 @@ function do_flake8() {
     flake8 --show-source --extend-ignore=E203,E501 "$@"
     # We disable E203 and E501 because 'black' is handling these and they
     # disagree on best practices.
+}
+
+LINTER_REQUIRE+=([prettier]="prettier;.prettierrc.yaml;${CONFIG_PATH}/prettierrc.yaml")
+LINTER_IGNORE+=([prettier]=".prettierignore")
+LINTER_TYPES+=([prettier]="json;markdown;yaml")
+function do_prettier() {
+    prettier --config "${LINTER_CONFIG[prettier]}" --write "$@"
 }
 
 LINTER_REQUIRE+=([shellcheck]="shellcheck")
