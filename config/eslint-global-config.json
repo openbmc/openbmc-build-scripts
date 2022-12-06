@@ -7,5 +7,5 @@
     // We dont want to lint the json files in the suprojects, so
     // ignoring the json files in the subprojects folder
 
-    "ignorePatterns":["**/meson-*/*.json", "subprojects/**/*.json"]
+    "ignorePatterns": ["**/meson-*/*.json", "subprojects/**/*.json"]
 }
