@@ -306,9 +306,13 @@ for op in "${LINTERS_ENABLED[@]}"; do
     done | "${LOCAL_IGNORE[@]}")
 
     # Call the linter now with all the files.
-    echo -e "    ${BLUE}Running $op${NORMAL}"
-    if ! "do_$op" "${LINTER_FILES[@]}" ; then
-        LINTERS_FAILED+=([$op]=1)
+    if [ 0 -ne ${#LINTER_FILES[@]} ]; then
+        echo -e "    ${BLUE}Running $op${NORMAL}"
+        if ! "do_$op" "${LINTER_FILES[@]}" ; then
+            LINTERS_FAILED+=([$op]=1)
+        fi
+    else
+        echo -e "    ${YELLOW}${op}:${NORMAL} all applicable files are on ignore-lists"
     fi
 done
 
