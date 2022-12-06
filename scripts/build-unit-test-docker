@@ -817,8 +817,6 @@ RUN apt-get update && apt-get dist-upgrade -yy && apt-get install -yy \
     rsync \
     libcryptsetup-dev
 
-RUN npm install -g eslint@latest eslint-plugin-json@latest
-
 # Kinetic comes with GCC-12, so skip this.
 #RUN update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-12 12 \
 #  --slave /usr/bin/g++ g++ /usr/bin/g++-12 \
@@ -856,6 +854,10 @@ RUN pip3 install meson==0.63.0
 RUN pip3 install packaging
 RUN pip3 install protobuf
 RUN pip3 install requests
+
+RUN npm install -g \
+        eslint@latest eslint-plugin-json@latest \
+        prettier@latest
 """
 
 # Build the base and stage docker images.
