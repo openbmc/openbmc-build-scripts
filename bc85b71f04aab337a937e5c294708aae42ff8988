@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ebf73abd_72a99083",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000331
+      },
+      "writtenOn": "2022-12-06T15:57:53Z",
+      "side": 1,
+      "message": "FYI I cherry-picked this fix, and it solved the problem I was hitting.",
+      "revId": "bc85b71f04aab337a937e5c294708aae42ff8988",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
