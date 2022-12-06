@@ -20,11 +20,11 @@ echo "Build started, $(date)"
 # Configure docker build
 if [[ "${distro}" == fedora ]];then
 
-  if [[ -n "${http_proxy}" ]]; then
-    PROXY="RUN echo \"proxy=${http_proxy}\" >> /etc/dnf/dnf.conf"
-  fi
+    if [[ -n "${http_proxy}" ]]; then
+        PROXY="RUN echo \"proxy=${http_proxy}\" >> /etc/dnf/dnf.conf"
+    fi
 
-  Dockerfile=$(cat << EOF
+    Dockerfile=$(cat << EOF
 FROM fedora:latest
 
 ${PROXY}
@@ -46,14 +46,14 @@ USER ${USER}
 ENV HOME ${HOME}
 RUN /bin/bash
 EOF
-)
+    )
 
 elif [[ "${distro}" == ubuntu ]]; then
-  if [[ -n "${http_proxy}" ]]; then
-    PROXY="RUN echo \"Acquire::http::Proxy \\"\"${http_proxy}/\\"\";\" > /etc/apt/apt.conf.d/000apt-cacher-ng-proxy"
-  fi
+    if [[ -n "${http_proxy}" ]]; then
+        PROXY="RUN echo \"Acquire::http::Proxy \\"\"${http_proxy}/\\"\";\" > /etc/apt/apt.conf.d/000apt-cacher-ng-proxy"
+    fi
 
-  Dockerfile=$(cat << EOF
+    Dockerfile=$(cat << EOF
 FROM ubuntu:latest
 
 ${PROXY}
@@ -77,13 +77,13 @@ USER ${USER}
 ENV HOME ${HOME}
 RUN /bin/bash
 EOF
-)
+    )
 fi
 
 # Build the docker container
 if ! docker build -t "linux-aspeed/${distro}" - <<< "${Dockerfile}" ; then
-  echo "Failed to build docker container."
-  exit 1
+    echo "Failed to build docker container."
+    exit 1
 fi
 
 # Create the docker run script
@@ -127,7 +127,7 @@ chmod a+x "${WORKSPACE}"/build.sh
 
 # Run the docker container, execute the build script we just built
 docker run --cap-add=sys_admin --net=host --rm=true -e WORKSPACE="${WORKSPACE}" --user="${USER}" \
-  -w "${HOME}" -v "${HOME}":"${HOME}" -t linux-aspeed/"${distro}" "${WORKSPACE}"/build.sh
+    -w "${HOME}" -v "${HOME}":"${HOME}" -t linux-aspeed/"${distro}" "${WORKSPACE}"/build.sh
 
 # Timestamp for build
 echo "Build completed, $(date)"

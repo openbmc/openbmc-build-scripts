@@ -7,7 +7,7 @@ ARTIFACT_DIR=$(mktemp -d)
 
 trap 'rm -rf ${ARTIFACT_DIR}' EXIT
 
-acquire() {
+function acquire() {
     local target="$1"
     wget --quiet --show-progress --directory-prefix="${ARTIFACT_DIR}" https://jenkins.openbmc.org/view/latest/job/latest-master/lastSuccessfulBuild/label=docker-builder,target="${target}"/artifact/openbmc/build/tmp/deploy/images/"${target}"/'*zip*'/"${target}".zip
     unzip -qq -d "${ARTIFACT_DIR}" "${ARTIFACT_DIR}"/"${target}".zip
@@ -24,7 +24,7 @@ expect \
             -drive file=${PALMETTO_MTD},if=mtd,format=raw \
             -nographic \
             -net nic \
-            -net user,hostfwd=:127.0.0.1:2222-:22,hostfwd=:127.0.0.1:2443-:443,hostname=qemu" \
+    -net user,hostfwd=:127.0.0.1:2222-:22,hostfwd=:127.0.0.1:2443-:443,hostname=qemu" \
     -c 'set timeout 300' \
     -c 'expect timeout { exit 1 } "login:"' \
     -c 'spawn sshpass -p 0penBmc ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p2222 root@localhost journalctl -b' \
@@ -40,7 +40,7 @@ expect \
             -drive file=${WITHERSPOON_MTD},if=mtd,format=raw \
             -nographic \
             -net nic \
-            -net user,hostfwd=:127.0.0.1:2222-:22,hostfwd=:127.0.0.1:2443-:443,hostname=qemu" \
+    -net user,hostfwd=:127.0.0.1:2222-:22,hostfwd=:127.0.0.1:2443-:443,hostname=qemu" \
     -c 'set timeout 300' \
     -c 'expect timeout { exit 1 } "login:"' \
     -c 'spawn sshpass -p 0penBmc ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p2222 root@localhost journalctl -b' \
@@ -68,7 +68,7 @@ expect \
             -drive file=${P10BMC_MMC},if=sd,format=raw,index=2 \
             -net nic \
             -net user,hostfwd=:127.0.0.1:2222-:22,hostfwd=:127.0.0.1:2443-:443,hostname=qemu \
-            -nographic" \
+    -nographic" \
     -c 'set timeout 300' \
     -c 'expect timeout { exit 1 } "login:"' \
     -c 'spawn sshpass -p 0penBmc ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p2222 root@localhost journalctl -b' \

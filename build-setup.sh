@@ -117,18 +117,18 @@ ARCH=$(uname -m)
 
 # Determine the prefix of the Dockerfile's base image
 case ${ARCH} in
-  "ppc64le")
-    DOCKER_BASE="ppc64le/"
-    ;;
-  "x86_64")
-    DOCKER_BASE=""
-    ;;
-  "aarch64")
-    DOCKER_BASE="arm64v8/"
-    ;;
-  *)
-    echo "Unsupported system architecture(${ARCH}) found for docker image"
-    exit 1
+    "ppc64le")
+        DOCKER_BASE="ppc64le/"
+        ;;
+    "x86_64")
+        DOCKER_BASE=""
+        ;;
+    "aarch64")
+        DOCKER_BASE="arm64v8/"
+        ;;
+    *)
+        echo "Unsupported system architecture(${ARCH}) found for docker image"
+        exit 1
 esac
 
 # Timestamp for job
@@ -136,25 +136,25 @@ echo "Build started, $(date)"
 
 # If the obmc_dir directory doesn't exist clone it in
 if [ ! -d "${obmc_dir}" ]; then
-  echo "Clone in openbmc master to ${obmc_dir}"
-  git clone https://github.com/openbmc/openbmc "${obmc_dir}"
+    echo "Clone in openbmc master to ${obmc_dir}"
+    git clone https://github.com/openbmc/openbmc "${obmc_dir}"
 fi
 
 if [[ "$target" = repotest ]]; then
-  DOCKER_IMAGE_NAME=$(./scripts/build-unit-test-docker)
-  docker run --cap-add=sys_admin --rm=true \
-      --network host \
-      --privileged=true \
-      -u "$USER" \
-      -w "${obmc_dir}" -v "${obmc_dir}:${obmc_dir}" \
-      -t "${DOCKER_IMAGE_NAME}" \
-      "${obmc_dir}"/meta-phosphor/scripts/run-repotest
-  exit
+    DOCKER_IMAGE_NAME=$(./scripts/build-unit-test-docker)
+    docker run --cap-add=sys_admin --rm=true \
+        --network host \
+        --privileged=true \
+        -u "$USER" \
+        -w "${obmc_dir}" -v "${obmc_dir}:${obmc_dir}" \
+        -t "${DOCKER_IMAGE_NAME}" \
+        "${obmc_dir}"/meta-phosphor/scripts/run-repotest
+    exit
 fi
 
 # Make and chown the xtrct_path directory to avoid permission errors
 if [ ! -d "${xtrct_path}" ]; then
-  mkdir -p "${xtrct_path}"
+    mkdir -p "${xtrct_path}"
 fi
 chown "${UID}:${GROUPS[0]}" "${xtrct_path}"
 
@@ -168,11 +168,11 @@ BITBAKE_CMD="source ./setup ${MACHINE} ${build_dir}"
 # Configure Docker build
 if [[ "${distro}" == fedora ]];then
 
-  if [[ -n "${http_proxy}" ]]; then
-    PROXY="RUN echo \"proxy=${http_proxy}\" >> /etc/dnf/dnf.conf"
-  fi
+    if [[ -n "${http_proxy}" ]]; then
+        PROXY="RUN echo \"proxy=${http_proxy}\" >> /etc/dnf/dnf.conf"
+    fi
 
-  Dockerfile=$(cat << EOF
+    Dockerfile=$(cat << EOF
   FROM ${DOCKER_BASE}${distro}:${img_tag}
 
   ${PROXY}
@@ -217,15 +217,15 @@ if [[ "${distro}" == fedora ]];then
   ENV HOME ${HOME}
   RUN /bin/bash
 EOF
-)
+    )
 
 elif [[ "${distro}" == ubuntu ]]; then
 
-  if [[ -n "${http_proxy}" ]]; then
-    PROXY="RUN echo \"Acquire::http::Proxy \\"\"${http_proxy}/\\"\";\" > /etc/apt/apt.conf.d/000apt-cacher-ng-proxy"
-  fi
+    if [[ -n "${http_proxy}" ]]; then
+        PROXY="RUN echo \"Acquire::http::Proxy \\"\"${http_proxy}/\\"\";\" > /etc/apt/apt.conf.d/000apt-cacher-ng-proxy"
+    fi
 
-  Dockerfile=$(cat << EOF
+    Dockerfile=$(cat << EOF
   FROM ${DOCKER_BASE}${distro}:${img_tag}
 
   ${PROXY}
@@ -268,7 +268,7 @@ elif [[ "${distro}" == ubuntu ]]; then
   ENV HOME ${HOME}
   RUN /bin/bash
 EOF
-)
+    )
 fi
 
 # Create the Docker run script
@@ -402,31 +402,31 @@ mount_obmc_dir="-v ""${obmc_dir}"":""${obmc_dir}"" "
 mount_ssc_dir="-v ""${ssc_dir}"":""${ssc_dir}"" "
 mount_workspace_dir="-v ""${WORKSPACE}"":""${WORKSPACE}"" "
 if [[ "${obmc_dir}" = "${HOME}/"* || "${obmc_dir}" = "${HOME}" ]];then
-mount_obmc_dir=""
+    mount_obmc_dir=""
 fi
 if [[ "${ssc_dir}" = "${HOME}/"* || "${ssc_dir}" = "${HOME}" ]];then
-mount_ssc_dir=""
+    mount_ssc_dir=""
 fi
 if [[ "${WORKSPACE}" = "${HOME}/"* || "${WORKSPACE}" = "${HOME}" ]];then
-mount_workspace_dir=""
+    mount_workspace_dir=""
 fi
 
 # Run the Docker container, execute the build.sh script
 # shellcheck disable=SC2086 # mount commands word-split purposefully
 docker run \
---cap-add=sys_admin \
---cap-add=sys_nice \
---net=host \
---rm=true \
--e WORKSPACE="${WORKSPACE}" \
--w "${HOME}" \
--v "${HOME}:${HOME}" \
-${mount_obmc_dir} \
-${mount_ssc_dir} \
-${mount_workspace_dir} \
---cpus="$num_cpu" \
-"${img_name}" \
-"${WORKSPACE}/build.sh"
+    --cap-add=sys_admin \
+    --cap-add=sys_nice \
+    --net=host \
+    --rm=true \
+    -e WORKSPACE="${WORKSPACE}" \
+    -w "${HOME}" \
+    -v "${HOME}:${HOME}" \
+    ${mount_obmc_dir} \
+    ${mount_ssc_dir} \
+    ${mount_workspace_dir} \
+    --cpus="$num_cpu" \
+    "${img_name}" \
+    "${WORKSPACE}/build.sh"
 
 # To maintain function of resources that used an older path, add a link
 ln -sf "${xtrct_path}/deploy" "${WORKSPACE}/deploy"

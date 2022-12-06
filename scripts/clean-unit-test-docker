@@ -9,6 +9,6 @@
 #       * ww is the two digit ISO week. (date format %V)
 
 docker image ls \
-        "openbmc/ubuntu-unit-test*" \
-        --format "{{.Repository}}:{{.Tag}}" |
-    grep -v "$(date '+%Y-W%V')" | xargs -r docker image rm || true
+    "openbmc/ubuntu-unit-test*" \
+    --format "{{.Repository}}:{{.Tag}}" |
+grep -v "$(date '+%Y-W%V')" | xargs -r docker image rm || true

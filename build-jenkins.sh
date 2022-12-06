@@ -92,34 +92,34 @@ j_url=https://repo.jenkins-ci.org/public/org/jenkins-ci/main/jenkins-war/${j_vrs
 
 # Make or Clean WORKSPACE
 if [[ -d "${workspace}" ]]; then
-  rm -rf "${workspace}/Dockerfile" \
-         "${workspace}/docker-jenkins" \
-         "${workspace}/plugins.*" \
-         "${workspace}/install-plugins.sh" \
-         "${workspace}/jenkins.sh" \
-         "${workspace}/jenkins-support" \
-         "${workspace}/init.groovy"
+    rm -rf "${workspace}/Dockerfile" \
+        "${workspace}/docker-jenkins" \
+        "${workspace}/plugins.*" \
+        "${workspace}/install-plugins.sh" \
+        "${workspace}/jenkins.sh" \
+        "${workspace}/jenkins-support" \
+        "${workspace}/init.groovy"
 else
-  mkdir -p "${workspace}"
+    mkdir -p "${workspace}"
 fi
 
 # Determine the prefix of the Dockerfile's base image
 case ${ARCH} in
-  "ppc64le")
-    docker_base="ppc64le/"
-    tini_arch="ppc64el"
-    ;;
-  "x86_64")
-    docker_base=""
-    tini_arch="amd64"
-    ;;
-  "aarch64")
-    docker_base="arm64v8/"
-    tini_arch="arm64"
-    ;;
-  *)
-    echo "Unsupported system architecture(${ARCH}) found for docker image"
-    exit 1
+    "ppc64le")
+        docker_base="ppc64le/"
+        tini_arch="ppc64el"
+        ;;
+    "x86_64")
+        docker_base=""
+        tini_arch="amd64"
+        ;;
+    "aarch64")
+        docker_base="arm64v8/"
+        tini_arch="arm64"
+        ;;
+    *)
+        echo "Unsupported system architecture(${ARCH}) found for docker image"
+        exit 1
 esac
 
 # Move Into the WORKSPACE
@@ -208,60 +208,60 @@ docker build -t "${img_name}" .
 
 if [[ "${launch}" == "docker" ]]; then
 
-  # Ensure directories that will be mounted exist
-  if [[ -n "${host_import_mnt}" && ! -d "${host_import_mnt}" ]]; then
-      mkdir -p "${host_import_mnt}"
-  fi
-
-  if [[ ! -d "${home_mnt}" ]]; then
-    mkdir -p "${home_mnt}"
-  fi
-
-  # Ensure directories that will be mounted are owned by the jenkins user
-  if [[ "$(id -u)" != 0 ]]; then
-    echo "Not running as root:"
-    echo "Checking if j_gid and j_uid are the owners of mounted directories"
-    # shellcheck disable=SC2012 # use ls to get permissions.
-    test_1="$(ls -nd "${home_mnt}" | awk '{print $3 " " $4}')"
-    if [[ "${test_1}" != "${j_uid} ${j_gid}" ]]; then
-      echo "Owner of ${home_mnt} is not the jenkins user"
-      echo "${test_1} != ${j_uid} ${j_gid}"
-      will_fail=1
+    # Ensure directories that will be mounted exist
+    if [[ -n "${host_import_mnt}" && ! -d "${host_import_mnt}" ]]; then
+        mkdir -p "${host_import_mnt}"
     fi
+
+    if [[ ! -d "${home_mnt}" ]]; then
+        mkdir -p "${home_mnt}"
+    fi
+
+    # Ensure directories that will be mounted are owned by the jenkins user
+    if [[ "$(id -u)" != 0 ]]; then
+        echo "Not running as root:"
+        echo "Checking if j_gid and j_uid are the owners of mounted directories"
+        # shellcheck disable=SC2012 # use ls to get permissions.
+        test_1="$(ls -nd "${home_mnt}" | awk '{print $3 " " $4}')"
+        if [[ "${test_1}" != "${j_uid} ${j_gid}" ]]; then
+            echo "Owner of ${home_mnt} is not the jenkins user"
+            echo "${test_1} != ${j_uid} ${j_gid}"
+            will_fail=1
+        fi
+        if [[ -n "${host_import_mnt}" ]]; then
+            # shellcheck disable=SC2012 # use ls to get permissions.
+            test_2="$(ls -nd "${host_import_mnt}" | awk '{print $3 " " $4}' )"
+            if [[ "${test_2}" != "${j_uid} ${j_gid}" ]]; then
+                echo "Owner of ${host_import_mnt} is not the jenkins user"
+                echo "${test_2} != ${j_uid} ${j_gid}"
+                will_fail=1
+            fi
+        fi
+        if [[ "${will_fail}" == 1 ]]; then
+            echo "Failing before attempting to launch container"
+            echo "Try again as root or use correct uid/gid pairs"
+            exit 1
+        fi
+    else
+        if [[ -n "${host_import_mnt}" ]]; then
+            chown -R "${j_uid}:${j_gid}" "${host_import_mnt}"
+        fi
+        chown -R "${j_uid}:${j_gid}" "${home_mnt}"
+    fi
+
+    #If we don't have import mount don't add to docker command
     if [[ -n "${host_import_mnt}" ]]; then
-      # shellcheck disable=SC2012 # use ls to get permissions.
-      test_2="$(ls -nd "${host_import_mnt}" | awk '{print $3 " " $4}' )"
-      if [[ "${test_2}" != "${j_uid} ${j_gid}" ]]; then
-        echo "Owner of ${host_import_mnt} is not the jenkins user"
-        echo "${test_2} != ${j_uid} ${j_gid}"
-        will_fail=1
-      fi
+        import_vol_cmd="-v ${host_import_mnt}:${cont_import_mnt}"
     fi
-    if [[ "${will_fail}" == 1 ]]; then
-      echo "Failing before attempting to launch container"
-      echo "Try again as root or use correct uid/gid pairs"
-      exit 1
-    fi
-  else
-    if [[ -n "${host_import_mnt}" ]]; then
-      chown -R "${j_uid}:${j_gid}" "${host_import_mnt}"
-    fi
-    chown -R "${j_uid}:${j_gid}" "${home_mnt}"
-  fi
-
-  #If we don't have import mount don't add to docker command
-  if [[ -n "${host_import_mnt}" ]]; then
-   import_vol_cmd="-v ${host_import_mnt}:${cont_import_mnt}"
-  fi
-  # Launch the jenkins image with Docker
-  # shellcheck disable=SC2086 # import_vol_cmd is intentially word-split.
-  docker run -d \
-    ${import_vol_cmd} \
-    -v "${home_mnt}:${j_home}" \
-    -p "${http_port}:8080" \
-    -p "${agent_port}:${agent_port}" \
-    --env JAVA_OPTS=\""${java_options}"\" \
-    --env JENKINS_OPTS=\""${jenkins_options}"\" \
-    "${img_name}"
+    # Launch the jenkins image with Docker
+    # shellcheck disable=SC2086 # import_vol_cmd is intentially word-split.
+    docker run -d \
+        ${import_vol_cmd} \
+        -v "${home_mnt}:${j_home}" \
+        -p "${http_port}:8080" \
+        -p "${agent_port}:${agent_port}" \
+        --env JAVA_OPTS=\""${java_options}"\" \
+        --env JENKINS_OPTS=\""${jenkins_options}"\" \
+        "${img_name}"
 
 fi
