@@ -26,6 +26,7 @@ function display_help()
 LINTERS_ALL=( \
         commit_gitlint \
         commit_spelling \
+        beautysh \
         clang_format \
         eslint \
         flake8 \
@@ -150,6 +151,13 @@ LINTER_TYPES+=([commit_gitlint]="commit")
 function do_commit_gitlint() {
     gitlint --extra-path "${CONFIG_PATH}/gitlint/" \
         --config "${CONFIG_PATH}/.gitlint"
+}
+
+LINTER_REQUIRE+=([beautysh]="beautysh")
+LINTER_IGNORE+=([beautysh]=".beautysh-ignore")
+LINTER_TYPES+=([beautysh]="bash;sh;zsh")
+function do_beautysh() {
+    beautysh --force-function-style fnpar "$@"
 }
 
 LINTER_REQUIRE+=([eslint]="eslint;.eslintrc.json;${CONFIG_PATH}/eslint-global-config.json")
