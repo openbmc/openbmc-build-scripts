@@ -846,10 +846,12 @@ RUN apt-get update && apt-get dist-upgrade -yy
 
 dockerfile_base += """
 RUN pip3 install beautysh
+RUN pip3 install black
 RUN pip3 install codespell
 RUN pip3 install flake8
 RUN pip3 install gitlint
 RUN pip3 install inflection
+RUN pip3 install isort
 RUN pip3 install jsonschema
 RUN pip3 install meson==0.63.0
 RUN pip3 install packaging

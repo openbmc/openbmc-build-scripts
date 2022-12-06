@@ -20,6 +20,7 @@ from tempfile import TemporaryDirectory
 from urllib.parse import urljoin
 
 from git import Repo
+
 # interpreter is not used directly but this resolves dependency ordering
 # that would be broken if we didn't include it.
 from mesonbuild import interpreter  # noqa: F401
