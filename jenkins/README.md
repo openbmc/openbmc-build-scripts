@@ -1,8 +1,8 @@
-These are the top level scripts launched by the [OpenBMC Jenkins
-instance](https://jenkins.openbmc.org):
+These are the top level scripts launched by the
+[OpenBMC Jenkins instance](https://jenkins.openbmc.org):
 
 | Job                               | Script                          | Notes      |
-| --                                | --                              | --         |
+| --------------------------------- | ------------------------------- | ---------- |
 | CI-MISC/ci-build-seed             | jenkins/build-seed              |            |
 | CI-MISC/ci-meta                   | jenkins/run-meta-ci             | Deprecated |
 | CI-MISC/ci-openbmc-build-scripts  | jenkins/run-build-script-ci     |            |
