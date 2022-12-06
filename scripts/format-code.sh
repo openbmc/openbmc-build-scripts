@@ -29,6 +29,7 @@ LINTERS_ALL=( \
         clang_format \
         eslint \
         flake8 \
+        prettier \
         shellcheck \
     )
 LINTERS_DISABLED=()
@@ -165,6 +166,13 @@ LINTER_REQUIRE+=([flake8]="flake8")
 LINTER_TYPES+=([flake8]="python")
 function do_flake8() {
     flake8 --show-source "$@"
+}
+
+LINTER_REQUIRE+=([prettier]="prettier;.prettierrc.yaml;${CONFIG_PATH}/prettierrc.yaml")
+LINTER_IGNORE+=([prettier]=".prettierignore")
+LINTER_TYPES+=([prettier]="json;markdown;yaml")
+function do_prettier() {
+    prettier --config "${LINTER_CONFIG[prettier]}" --write "$@"
 }
 
 LINTER_REQUIRE+=([shellcheck]="shellcheck")
