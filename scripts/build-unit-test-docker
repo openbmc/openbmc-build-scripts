@@ -845,6 +845,7 @@ RUN apt-get update && apt-get dist-upgrade -yy
 """
 
 dockerfile_base += """
+RUN pip3 install beautysh
 RUN pip3 install codespell
 RUN pip3 install flake8
 RUN pip3 install gitlint
