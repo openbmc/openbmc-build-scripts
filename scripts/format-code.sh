@@ -28,9 +28,11 @@ LINTERS_ALL=( \
         commit_spelling \
         beautysh \
         beautysh_sh \
+        black \
         clang_format \
         eslint \
         flake8 \
+        isort \
         prettier \
         shellcheck \
     )
@@ -170,6 +172,12 @@ function do_beautysh_sh() {
     beautysh --force-function-style paronly "$@"
 }
 
+LINTER_REQUIRE+=([black]="black")
+LINTER_TYPES+=([black]="python")
+function do_black() {
+    black -l 79 --preview "$@"
+}
+
 LINTER_REQUIRE+=([eslint]="eslint;.eslintrc.json;${CONFIG_PATH}/eslint-global-config.json")
 LINTER_IGNORE+=([eslint]=".eslintignore")
 LINTER_TYPES+=([eslint]="json")
@@ -186,6 +194,12 @@ function do_flake8() {
     flake8 --show-source --extend-ignore=E203,E501 "$@"
     # We disable E203 and E501 because 'black' is handling these and they
     # disagree on best practices.
+}
+
+LINTER_REQUIRE+=([isort]="isort")
+LINTER_TYPES+=([isort]="python")
+function do_isort() {
+    isort --profile black "$@"
 }
 
 LINTER_REQUIRE+=([prettier]="prettier;.prettierrc.yaml;${CONFIG_PATH}/prettierrc.yaml")
