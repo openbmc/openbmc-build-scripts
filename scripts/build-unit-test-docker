@@ -859,6 +859,7 @@ RUN pip3 install requests
 
 RUN npm install -g \
         eslint@latest eslint-plugin-json@latest \
+        markdownlint-cli@latest \
         prettier@latest
 """
 

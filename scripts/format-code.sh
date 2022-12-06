@@ -34,6 +34,7 @@ LINTERS_ALL=( \
         eslint \
         flake8 \
         isort \
+        markdownlint \
         prettier \
         shellcheck \
     )
@@ -207,6 +208,16 @@ LINTER_REQUIRE+=([isort]="isort")
 LINTER_TYPES+=([isort]="python")
 function do_isort() {
     isort --profile black "$@"
+}
+
+LINTER_REQUIRE+=([markdownlint]="markdownlint;.markdownlint.yaml;${CONFIG_PATH}/markdownlint.yaml")
+LINTER_IGNORE+=([markdownlint]=".markdownlint-ignore")
+LINTER_TYPES+=([markdownlint]="markdown")
+function do_markdownlint() {
+    markdownlint --config "${LINTER_CONFIG[markdownlint]}" \
+        --disable line-length -- "$@" || \
+        echo -e "    ${YELLOW}Failed markdownlint; temporarily ignoring."
+    # We disable line-length because prettier should handle prose wrap for us.
 }
 
 LINTER_REQUIRE+=([prettier]="prettier;.prettierrc.yaml;${CONFIG_PATH}/prettierrc.yaml")
