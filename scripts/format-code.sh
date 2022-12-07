@@ -164,7 +164,8 @@ function do_eslint() {
 LINTER_REQUIRE+=([pycodestyle]="pycodestyle;setup.cfg")
 LINTER_TYPES+=([pycodestyle]="python")
 function do_pycodestyle() {
-    pycodestyle --show-source "$@"
+    pycodestyle --ignore=E121,E123,E126,E226,E24,E704,W503,W504,E203,E501 \
+        --show-source "$@"
 }
 
 LINTER_REQUIRE+=([shellcheck]="shellcheck;.shellcheck")
