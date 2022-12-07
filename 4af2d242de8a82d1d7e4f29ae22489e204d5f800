@@ -34,6 +34,24 @@
       "parentUuid": "204b3f51_ae8b3f77",
       "revId": "4af2d242de8a82d1d7e4f29ae22489e204d5f800",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ea0a820a_cde35b04",
+        "filename": "scripts/format-code.sh",
+        "patchSetId": 2
+      },
+      "lineNbr": 309,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2022-12-07T03:15:04Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ae0a493a_c34d6923",
+      "revId": "4af2d242de8a82d1d7e4f29ae22489e204d5f800",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
