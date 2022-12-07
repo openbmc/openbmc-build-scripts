@@ -1,6 +1,23 @@
 {
   "comments": [
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ec37c45b_1345de72",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2022-12-07T11:52:17Z",
+      "side": 1,
+      "message": "Merging because I seem to have broken something with eslint.  I think Andrew\u0027s comments are resolved and if not I\u0027ll handle in a follow up.",
+      "revId": "71b73249a30d589c97e15b387d4a18e8e6b795a9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "134a0bba_59f2b2be",
