@@ -208,6 +208,7 @@ function get_file_type()
         *JSON\ data*) echo "json" && return ;;
         *POSIX\ shell*) echo "sh" && return ;;
         *Python\ script*) echo "python" && return ;;
+        *python3\ script*) echo "python" && return ;;
         *zsh\ shell*) echo "zsh" && return ;;
     esac
 

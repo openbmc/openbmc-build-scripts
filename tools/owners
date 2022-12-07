@@ -1,18 +1,19 @@
-#!/bin/env python3
+#!/usr/bin/env python3
 import argparse
 import json
 import os
 import re
-import yaml
+from typing import Dict, List, Optional, Set, TypedDict
 
+import yaml
 from sh import git  # type: ignore
-from typing import Dict, List, Set, TypedDict, Optional
 from yaml.loader import SafeLoader
 
 # A list of Gerrit users (email addresses).
 #   Some OWNERS files have empty lists for 'owners' or 'reviewers', which
 #   results in a None type for the value.
 UsersList = Optional[List[str]]
+
 
 # A YAML node with an extra line number.
 class NumberedNode(TypedDict):
@@ -66,8 +67,6 @@ class CommitMatch:
             .show(args.commit, pretty="", name_only=True, _tty_out=False)
             .splitlines()
         )
-
-        root_owners = owners[""]
 
         self.owners: Set[str] = set()
         self.reviewers: Set[str] = set()
