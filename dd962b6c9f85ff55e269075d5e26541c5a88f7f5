@@ -38,6 +38,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "3be0ea94_d0c84539",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2022-12-08T20:42:01Z",
+      "side": 1,
+      "message": "ok, I\u0027m good to get this rolling, looks like you need a rebase.",
+      "parentUuid": "e40573f6_64d5d94f",
+      "revId": "dd962b6c9f85ff55e269075d5e26541c5a88f7f5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "f50ba6c9_402eefb0",
         "filename": "scripts/build-unit-test-docker",
         "patchSetId": 1
@@ -73,6 +91,30 @@
       "side": 1,
       "message": "I was trying to mirror what existed previously, which used a lambda replace to generate the url from the version.  The added complexity is because beta releases are under /beta/ and non-beta are under /release/  I could remove that logic if you\u0027d prefer and just put beta?  Up to you.",
       "parentUuid": "f50ba6c9_402eefb0",
+      "range": {
+        "startLine": 83,
+        "startChar": 75,
+        "endLine": 83,
+        "endChar": 140
+      },
+      "revId": "dd962b6c9f85ff55e269075d5e26541c5a88f7f5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d403440c_ee95f043",
+        "filename": "scripts/build-unit-test-docker",
+        "patchSetId": 1
+      },
+      "lineNbr": 83,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2022-12-08T20:42:01Z",
+      "side": 1,
+      "message": "ok gotcha, we can just simplify it when we move back from beta.",
+      "parentUuid": "af548cc3_a4c1f913",
       "range": {
         "startLine": 83,
         "startChar": 75,
