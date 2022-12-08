@@ -200,6 +200,7 @@ function get_file_type()
         *.json) echo "json" && return ;;
         *.md) echo "markdown" && return ;;
         *.py) echo "python" && return ;;
+        *.tcl) echo "tcl" && return ;;
         *.yaml | *.yml) echo "yaml" && return ;;
 
             # Special files.
