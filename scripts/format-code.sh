@@ -10,8 +10,8 @@ set -e
 #
 function display_help()
 {
-    echo "usage: format-code.sh [-h | --help] [--no-diff] [--disable <tool>]"
-    echo "                      [--list-tools] [<path>]"
+    echo "usage: format-code.sh [-h | --help] [--no-diff] [--list-tools]"
+    echo "                      [--disable <tool>] [--enable <tool>] [<path>]"
     echo
     echo "Format and lint a repository."
     echo
@@ -19,6 +19,7 @@ function display_help()
     echo "    --list-tools      Display available linters and formatters"
     echo "    --no-diff         Don't show final diff output"
     echo "    --disable <tool>  Disable linter"
+    echo "    --enable <tool>   Enable only specific linters"
     echo "    --allow-missing   Run even if linters are not all present"
     echo "    path              Path to git repository (default to pwd)"
 }
@@ -35,7 +36,7 @@ LINTERS_DISABLED=()
 LINTERS_ENABLED=()
 declare -A LINTERS_FAILED=()
 
-eval set -- "$(getopt -o 'h' --long 'help,list-tools,no-diff,disable:,allow-missing' -n 'format-code.sh' -- "$@")"
+eval set -- "$(getopt -o 'h' --long 'help,list-tools,no-diff,disable:,enable:,allow-missing' -n 'format-code.sh' -- "$@")"
 while true; do
     case "$1" in
         '-h'|'--help')
@@ -57,6 +58,11 @@ while true; do
 
         '--disable')
             LINTERS_DISABLED+=("$2")
+            shift && shift
+            ;;
+
+        '--enable')
+            LINTERS_ENABLED+=("$2")
             shift && shift
             ;;
 
@@ -215,6 +221,7 @@ function get_file_type()
     echo "unknown"
 }
 
+LINTERS_AVAILABLE=()
 function check_linter()
 {
     TITLE="$1"
@@ -222,6 +229,12 @@ function check_linter()
 
     if [[ "${LINTERS_DISABLED[*]}" =~ $1 ]]; then
         return
+    fi
+
+    if [ 0 -ne "${#LINTERS_ENABLED[@]}" ]; then
+        if ! [[ "${LINTERS_ENABLED[*]}" =~ $1 ]]; then
+            return
+        fi
     fi
 
     EXE="${ARGS[0]}"
@@ -250,7 +263,7 @@ function check_linter()
         fi
     fi
 
-    LINTERS_ENABLED+=( "${TITLE}" )
+    LINTERS_AVAILABLE+=( "${TITLE}" )
 }
 
 # Check for a global .linter-ignore file.
@@ -281,7 +294,7 @@ for op in "${LINTERS_ALL[@]}"; do
 done
 
 # Call each linter.
-for op in "${LINTERS_ENABLED[@]}"; do
+for op in "${LINTERS_AVAILABLE[@]}"; do
 
     # Determine the linter-specific ignore file(s).
     LOCAL_IGNORE=("${CONFIG_PATH}/lib/ignore-filter")
