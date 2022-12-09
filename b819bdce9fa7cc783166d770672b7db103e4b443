@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fe5fbfb5_8e978fd9",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000018
+      },
+      "writtenOn": "2022-12-09T08:22:13Z",
+      "side": 1,
+      "message": " ---\u003e Running in 4a14a181ddee\n[91mERROR: robotframework-seleniumlibrary 6.0.0 has requirement selenium\u003e\u003d4.0.0, but you\u0027ll have selenium 3.141.0 which is incompatible.\n[0m[91m  ERROR: Can\u0027t roll back chardet; was not uninstalled\nERROR: Could not install packages due to an EnvironmentError: [Errno 13] Permission denied: \u0027/usr/local/lib/python3.8/dist-packages/chardet/__pycache__/johabprober.cpython-38.pyc.139874427464624\u0027",
+      "revId": "b819bdce9fa7cc783166d770672b7db103e4b443",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
