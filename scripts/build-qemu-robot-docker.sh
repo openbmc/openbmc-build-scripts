@@ -135,7 +135,7 @@ RUN pip3 install \
     robotframework-xvfb \
     robotframework-angularjs \
     scp \
-    selenium==3.141.0 \
+    selenium>=4.0.0 \
     urllib3 \
     click \
     xvfbwrapper
