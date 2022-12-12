@@ -1,0 +1,7 @@
+Verified+1: OpenBMC CI <openbmcbump-ci@yahoo.com>
+Code-Review+2: Patrick Williams <patrick@stwcx.xyz>
+Submitted-by: Ed Tanous <ed@tanous.net>
+Submitted-at: Mon, 12 Dec 2022 20:18:28 +0000
+Reviewed-on: https://gerrit.openbmc.org/c/openbmc/openbmc-build-scripts/+/59634
+Project: openbmc/openbmc-build-scripts
+Branch: refs/heads/master
