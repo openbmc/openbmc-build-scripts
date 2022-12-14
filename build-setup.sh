@@ -252,6 +252,7 @@ elif [[ "${distro}" == ubuntu ]]; then
       socat \
       subversion \
       texinfo \
+      vim \
       wget \
       zstd
 
