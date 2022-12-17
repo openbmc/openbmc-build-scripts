@@ -19,6 +19,9 @@
 #                     default is empty, and no mirror is used.
 #   http_proxy        The HTTP address of the proxy server to connect to.
 #                     Default: "", proxy is not setup if this is not set
+#   PATCH_PATH        The folder patch to look for patches to applied for each
+#                     pacakges.
+#                     Default: "", patches are not enabled.
 
 import os
 import sys
@@ -65,6 +68,10 @@ class PackageDef(TypedDict, total=False):
     config_flags: Iterable[str]
     # config_env [optional]: List of environment variables to set for config.
     config_env: Iterable[str]
+    # patches [optional]: List of patches to applied after download, but before
+    #   custom_post_dl / config / build / install. The patches must be hosted
+    #   in ${PATCH_PATH}/${package_name}
+    patches: Iterable[str]
     # custom_post_dl [optional]: List of steps to run after download, but
     #   before config / build / install.
     custom_post_dl: Iterable[str]
@@ -473,6 +480,27 @@ FROM {docker_base_img_name}
         """Formulate the command necessary to 'cd' into the source dir."""
         return f"cd {self.package.split('/')[-1]}*"
 
+    def _cmd_patch(self, patches: Iterable[str]) -> Iterable[str]:
+        """Formulate the command necessary to apply patches to the source."""
+        cmd = [
+            'git config --global init.defaultBranch apply-patch',
+            'git init',
+            'git config --global user.name root',
+            'git config --global user.email "youremail@yourdomain.com"',
+            'git add .',
+            'git commit -m apply=patch --no-verify'
+        ]
+
+        cmd.append("mkdir /patches")
+        for patch in patches:
+            with open(f"{patch_path}/{self.package}/{patch}", 'r') as file:
+                cmd.append(f"touch /patches/{patch}")
+                for line in file:
+                    line_stripped = line.replace("\n", "")
+                    cmd.append(f"echo \"{line_stripped}\" >> /patches/{patch}")
+                cmd.append(f"git am /patches/{patch}")
+        return cmd
+
     def _df_copycmds(self) -> str:
         """Formulate the dockerfile snippet necessary to COPY all depends."""
 
@@ -510,6 +538,10 @@ FROM {docker_base_img_name}
         custom_post_dl = self.pkg_def.get("custom_post_dl")
         if custom_post_dl:
             result += " && ".join(custom_post_dl) + " && "
+
+        patches = self.pkg_def.get("patches")
+        if patches and patch_path is not None:
+            result += " && ".join(self._cmd_patch(patches)) + " && "
 
         # Build and install package based on 'build_type'.
         build_type = self.pkg_def["build_type"]
@@ -637,6 +669,7 @@ distro = os.environ.get("DISTRO", "ubuntu:kinetic")
 branch = os.environ.get("BRANCH", "master")
 ubuntu_mirror = os.environ.get("UBUNTU_MIRROR")
 http_proxy = os.environ.get("http_proxy")
+patch_path = os.environ.get("PATCH_PATH")
 
 gerrit_project = os.environ.get("GERRIT_PROJECT")
 gerrit_rev = os.environ.get("GERRIT_PATCHSET_REVISION")
