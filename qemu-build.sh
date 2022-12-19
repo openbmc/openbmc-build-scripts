@@ -92,8 +92,7 @@ git submodule update --init dtc
     --disable-gnutls \
     --disable-vte \
     --disable-vnc \
-    --disable-werror \
-    --disable-vnc-png
+    --disable-werror
 make clean
 make -j4
 
@@ -109,7 +108,7 @@ chmod a+x "${WORKSPACE}"/build.sh
 # !!!
 
 Dockerfile=$(cat << EOF
-FROM ${DOCKER_BASE}ubuntu:bionic
+FROM ${DOCKER_BASE}ubuntu:latest
 
 ${PROXY}
 
@@ -125,6 +124,7 @@ RUN apt-get update && apt-get install -yy --no-install-recommends \
     libfdt-dev \
     libglib2.0-dev \
     libpixman-1-dev \
+    libslirp-dev \
     make \
     ninja-build \
     python3-yaml \
