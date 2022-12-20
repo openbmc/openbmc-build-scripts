@@ -1030,6 +1030,7 @@ class Meson(BuildSystem):
             os.environ["CXX"] = "clang++"
             with TemporaryDirectory(prefix="build", dir=".") as build_dir:
                 check_call_cmd("meson", "setup", build_dir)
+                check_call_cmd('meson', 'compile', '-C', build_dir)
                 try:
                     check_call_cmd(
                         "run-clang-tidy", "-fix", "-format", "-p", build_dir
