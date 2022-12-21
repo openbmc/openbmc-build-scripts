@@ -267,6 +267,9 @@ packages = {
             "-Dgtest=enabled",
         ],
     ),
+    "json-c/json-c": PackageDef(
+        build_type="cmake",
+    ),
 }  # type: Dict[str, PackageDef]
 
 # Define common flags used for builds
