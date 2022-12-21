@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c33d727c_556ba433",
+        "filename": "scripts/build-unit-test-docker",
+        "patchSetId": 1
+      },
+      "lineNbr": 271,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2022-12-21T14:49:43Z",
+      "side": 1,
+      "message": "should we be picking a release version?  suggest matching what is in Yocto. \n\nplease keep in sorted order.",
+      "revId": "12807527d7f24668aefc2be5d7334fbb7df92dd5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
