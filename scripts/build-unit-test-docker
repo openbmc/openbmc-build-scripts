@@ -146,6 +146,10 @@ packages = {
             ),
         ],
     ),
+    "json-c/json-c": PackageDef(
+        rev="json-c-0.16-20220414",
+        build_type="cmake",
+    ),
     # Snapshot from 2019-05-24
     "linux-test-project/lcov": PackageDef(
         rev="v1.15",
