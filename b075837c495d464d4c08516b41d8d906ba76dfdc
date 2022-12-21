@@ -50,6 +50,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "32eadc63_59672775",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2022-12-21T12:48:09Z",
+      "side": 1,
+      "message": "\u003e I guess I\u0027ll just keep this downstream instead if not appropriate.\n\nIt is not necessarily \"not appropriate\".  We need to make sure we\u0027re documenting well what the purpose is.  The way this reads is that we\u0027re patching stdplus (as that is the only example) and I think someone a year from now is likely to ask \"why do we need this feature\" and rip it out.\n\nIt does seem slightly odd to support downstream patches of our repos if that\u0027s what you\u0027re needing.  It might be easier for us to allow override scripts at various stages of the container/package build and if you happen to patch in that, that is on you?",
+      "parentUuid": "7ad3bf5f_878cdda9",
+      "range": {
+        "startLine": 10,
+        "startChar": 8,
+        "endLine": 12,
+        "endChar": 38
+      },
+      "revId": "b075837c495d464d4c08516b41d8d906ba76dfdc",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "41804bd4_62735992",
         "filename": "scripts/build-unit-test-docker",
         "patchSetId": 4
