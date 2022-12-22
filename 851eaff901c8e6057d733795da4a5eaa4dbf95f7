@@ -3,6 +3,23 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "6012b96c_eaaef05d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2022-12-22T16:09:07Z",
+      "side": 1,
+      "message": "Hot fix, I cherry-picked in the jenkins job and verified it worked as expected.",
+      "revId": "851eaff901c8e6057d733795da4a5eaa4dbf95f7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "fe286f25_2f4ff287",
         "filename": "qemu-build.sh",
         "patchSetId": 1
