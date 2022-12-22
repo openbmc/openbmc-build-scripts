@@ -108,7 +108,7 @@ chmod a+x "${WORKSPACE}"/build.sh
 # !!!
 
 Dockerfile=$(cat << EOF
-FROM ${DOCKER_BASE}ubuntu:latest
+FROM ${DOCKER_BASE}ubuntu:jammy
 
 ${PROXY}
 

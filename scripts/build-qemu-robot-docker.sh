@@ -92,6 +92,7 @@ RUN apt-get update && apt-get install -yy \
     libasound2 \
     libfdt1 \
     libpcre3 \
+    libslirp-dev \
     openssl \
     libxml2-dev \
     libxslt-dev \
