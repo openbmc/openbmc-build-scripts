@@ -22,6 +22,30 @@
       },
       "revId": "f4a1f130d577acc797796ab5b0deb67749cb5319",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b85b84d3_135958cb",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 1000153
+      },
+      "writtenOn": "2022-12-28T19:35:40Z",
+      "side": 1,
+      "message": "Crap.  Yep, messed that up.  To cross reference, https://gerrit.openbmc.org/c/openbmc/openbmc-build-scripts/+/51391 was the original",
+      "parentUuid": "83522251_a193b175",
+      "range": {
+        "startLine": 32,
+        "startChar": 0,
+        "endLine": 36,
+        "endChar": 52
+      },
+      "revId": "f4a1f130d577acc797796ab5b0deb67749cb5319",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
