@@ -1,6 +1,23 @@
 {
   "comments": [
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c8f12fb2_2858c6da",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000153
+      },
+      "writtenOn": "2022-12-28T19:36:22Z",
+      "side": 1,
+      "message": "Mistakenly reopened as 59779.  All comments previously mentioned have been addressed as part of 59779",
+      "revId": "d94846ec34b843df37f5abbb1ff12948c3250b1e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "31b4f091_c89fc300",
@@ -68,6 +85,24 @@
       "side": 1,
       "message": "This change is going to get held up for other reasons (lg2 can\u0027t pass clang yet).  Once it\u0027s through, I can make the changes when I rebase this.",
       "parentUuid": "24ccf526_5245a2d2",
+      "revId": "d94846ec34b843df37f5abbb1ff12948c3250b1e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ef2cdd8e_152f7c9b",
+        "filename": "scripts/unit-test.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 977,
+      "author": {
+        "id": 1000153
+      },
+      "writtenOn": "2022-12-28T19:36:22Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2cdc55db_73ffceaf",
       "revId": "d94846ec34b843df37f5abbb1ff12948c3250b1e",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
