@@ -375,6 +375,11 @@ def run_cppcheck():
     if not os.path.exists(os.path.join("build", "compile_commands.json")):
         return None
 
+    if os.path.exists(".openbmc-enforce-cppcheck"):
+      error_on_exit = "--error-exitcode=1"
+    else:
+      error_on_exit = "--error-exitcode=0"
+
     with TemporaryDirectory() as cpp_dir:
         # http://cppcheck.sourceforge.net/manual.pdf
         try:
@@ -382,6 +387,7 @@ def run_cppcheck():
                 "cppcheck",
                 "-j",
                 str(multiprocessing.cpu_count()),
+                error_on_exit,
                 "--enable=style,performance,portability,missingInclude",
                 "--suppress=useStlAlgorithm",
                 "--suppress=unusedStructMember",
