@@ -52,6 +52,24 @@
       "parentUuid": "13de38b7_7cf52745",
       "revId": "a2f48d0d61de98225cab0e2095832545af422d76",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3521f1ae_64fc8f84",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000153
+      },
+      "writtenOn": "2023-01-03T17:38:48Z",
+      "side": 1,
+      "message": "At some point there\u0027s probably more parallelization we could do between the various build jobs.  For example, the coverage report builds in single-threaded perl script, it could be run at the same time as the debug build for example.",
+      "parentUuid": "6f381c0e_d1c0cc4d",
+      "revId": "a2f48d0d61de98225cab0e2095832545af422d76",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
