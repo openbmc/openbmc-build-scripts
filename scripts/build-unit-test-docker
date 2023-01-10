@@ -612,7 +612,7 @@ class Docker:
                         file=sys.stderr
                         )
                     return
-                except Exception as ex:
+                except Exception:
                     pass
 
         # Build it.
@@ -643,7 +643,7 @@ class Docker:
         if docker_registry:
             try:
                 docker.image.push(tag)
-            except Exception as ex:
+            except Exception:
                 print(
                     f"Error pushing {tag} to the registry", file=sys.stderr
                     )
