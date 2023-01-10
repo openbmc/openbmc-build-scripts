@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d73a21cc_28cc1a1b",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2023-01-10T17:49:25Z",
+      "side": 1,
+      "message": "Please check formatting with black and gitlint.  Both your commit message and the Python change you made do not conform and are thus failing CI.",
+      "revId": "5136b888a29a0d10425297736f731535d02384f7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dd1b2c50_3fc181ce",
+        "filename": "scripts/build-unit-test-docker",
+        "patchSetId": 1
+      },
+      "lineNbr": 668,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2023-01-10T17:49:25Z",
+      "side": 1,
+      "message": "Keep in mind that this registry concept is likely a lot less useful than you might image.  Currently all the images are built and only runnable by the user who built it.  This might be useful in CI if you have a consistent username for your Jenkins agents, but it isn\u0027t useful to distribute to developers.",
+      "revId": "5136b888a29a0d10425297736f731535d02384f7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
