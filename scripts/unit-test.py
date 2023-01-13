@@ -774,7 +774,7 @@ class CMake(BuildSystem):
         )
 
     def install(self):
-        pass
+        check_call_cmd("sudo", "cmake", "--install", ".")
 
     def test(self):
         if make_target_exists("test"):
