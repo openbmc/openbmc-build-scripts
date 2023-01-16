@@ -52,6 +52,24 @@
       "parentUuid": "3bb2c779_727b55f7",
       "revId": "1473542e4f435a87c023d1b8c4521694403fe657",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7831d8d0_7c57955a",
+        "filename": "scripts/unit-test.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 777,
+      "author": {
+        "id": 1000937
+      },
+      "writtenOn": "2023-01-16T01:21:54Z",
+      "side": 1,
+      "message": "\u003e Why would anyone do this? This is an ill-formed CMake file if you are explicitly setting a full install path to your DESTINATION.\n\nThanks for informing me this. I don\u0027t know that is ill-formed.\n\n---\n\n\u003e It should always be based on a variable like ${CMAKE_INSTALL_BINDIR}.\n\nIn my case it based on the `${CMAKE_CURRENT_BINARY_DIR}`.\n\n```\nset(CMAKE_INSTALL_PREFIX \"${CMAKE_CURRENT_BINARY_DIR}/${LIB_NAME}/usr/\"\n\t\t\t\t\tCACHE STRING \"Default installation directory.\")\n```\n\nSo it installs the library under the repository directory instead of `/usr`\n\n---\n\n\u003e I guess a meta question is why did you add --install-prefix?\n\nThe explaination above is the reason.\n\n----\n\nI think I understand your concern now.\nHowever my case doesn\u0027t use `/usr` nor `/usr/local` as default. The only solution I found is to change the `--prefix`\nDo you have any suggestion for these cases?",
+      "parentUuid": "3ab9f566_ea21a429",
+      "revId": "1473542e4f435a87c023d1b8c4521694403fe657",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
