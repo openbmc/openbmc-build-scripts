@@ -70,6 +70,24 @@
       "parentUuid": "3ab9f566_ea21a429",
       "revId": "1473542e4f435a87c023d1b8c4521694403fe657",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "014e7349_90c3cea4",
+        "filename": "scripts/unit-test.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 777,
+      "author": {
+        "id": 1000937
+      },
+      "writtenOn": "2023-01-16T10:15:15Z",
+      "side": 1,
+      "message": "Removed `check_call_cmd(\"cmake\", \"--install-prefix\", \"/\")`.\nSince this should be take care by the repo itself. Not the unit-test script",
+      "parentUuid": "7831d8d0_7c57955a",
+      "revId": "1473542e4f435a87c023d1b8c4521694403fe657",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
