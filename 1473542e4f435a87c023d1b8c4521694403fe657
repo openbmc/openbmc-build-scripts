@@ -88,6 +88,24 @@
       "parentUuid": "7831d8d0_7c57955a",
       "revId": "1473542e4f435a87c023d1b8c4521694403fe657",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8e7653a7_289ef486",
+        "filename": "scripts/unit-test.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 777,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2023-01-17T18:44:32Z",
+      "side": 1,
+      "message": "\u003e set(CMAKE_INSTALL_PREFIX \"${CMAKE_CURRENT_BINARY_DIR}/${LIB_NAME}/usr/\"\n\u003e                    CACHE STRING \"Default installation directory.\")\n\nI don\u0027t understand why a cmake repo would be doing this.  This says \"install into [something like] `pwd`/.../usr\".  I don\u0027t really have any feedback on how to fix it (but I\u0027m not a cmake expert in any way).\n\nDo you have pointers to this cmake file?",
+      "parentUuid": "014e7349_90c3cea4",
+      "revId": "1473542e4f435a87c023d1b8c4521694403fe657",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
