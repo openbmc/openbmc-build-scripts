@@ -106,6 +106,24 @@
       "parentUuid": "014e7349_90c3cea4",
       "revId": "1473542e4f435a87c023d1b8c4521694403fe657",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e03d0d3d_50636cd2",
+        "filename": "scripts/unit-test.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 777,
+      "author": {
+        "id": 1000937
+      },
+      "writtenOn": "2023-01-18T00:27:58Z",
+      "side": 1,
+      "message": "Yes. https://github.com/amd/esmi_oob_library/blob/master/CMakeLists.txt#L60-L61",
+      "parentUuid": "8e7653a7_289ef486",
+      "revId": "1473542e4f435a87c023d1b8c4521694403fe657",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
