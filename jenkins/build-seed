@@ -24,6 +24,8 @@ fi
 export build_dir="${WORKSPACE}/build"
 
 SEED_MACHINES=(
+    bletchley
+    e3c246d4i
     gbs
     gsj
     p10bmc
