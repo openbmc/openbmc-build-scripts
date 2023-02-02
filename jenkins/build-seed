@@ -24,12 +24,14 @@ fi
 export build_dir="${WORKSPACE}/build"
 
 SEED_MACHINES=(
+    ahe50dc
     bletchley
     e3c246d4i
     gbs
     gsj
     p10bmc
     palmetto
+    romed8hm3
     romulus
     tiogapass
     witherspoon
