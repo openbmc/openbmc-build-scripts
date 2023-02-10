@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c077be76_e62b11ee",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2023-02-10T22:36:20Z",
+      "side": 1,
+      "message": "I\u0027m rather confused.  We already have Gerrit configured to block commits without a SOB, don\u0027t we?\n\nhttps://github.com/GerritCodeReview/gerrit/blob/master/Documentation/error-not-signed-off-by.txt\n\nWhy do we also need it in gitlint?",
+      "revId": "a0a62b5c6a9c4855ccccd146ca64174593ec1bbb",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
