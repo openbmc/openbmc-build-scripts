@@ -1034,7 +1034,7 @@ class Meson(BuildSystem):
                     check_call_cmd("meson", "compile", "-C", build_dir)
                 try:
                     check_call_cmd(
-                        "run-clang-tidy", "-fix", "-format", "-p", build_dir
+                        "ninja", "-C", build_dir, "clang-tidy"
                     )
                 except subprocess.CalledProcessError:
                     check_call_cmd(
