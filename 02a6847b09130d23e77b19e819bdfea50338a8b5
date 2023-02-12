@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8aead0b2_167e32d3",
+        "filename": "scripts/unit-test.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 378,
+      "author": {
+        "id": 1000009
+      },
+      "writtenOn": "2023-02-12T23:57:47Z",
+      "side": 1,
+      "message": "Creating a one-off file for this isn\u0027t my preference as the result will be spread out across all the repos. Can we pull data out of the file instead? Maybe treat it like an environment file? That way we could define something like CPPCHECK_ERR_EXIT\u003d1 and then just set the value of `--error-exitcode`?",
+      "revId": "02a6847b09130d23e77b19e819bdfea50338a8b5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
