@@ -16,6 +16,24 @@
       "message": "Creating a one-off file for this isn\u0027t my preference as the result will be spread out across all the repos. Can we pull data out of the file instead? Maybe treat it like an environment file? That way we could define something like CPPCHECK_ERR_EXIT\u003d1 and then just set the value of `--error-exitcode`?",
       "revId": "02a6847b09130d23e77b19e819bdfea50338a8b5",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0b17483c_11a08c7c",
+        "filename": "scripts/unit-test.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 378,
+      "author": {
+        "id": 1000153
+      },
+      "writtenOn": "2023-02-13T17:20:50Z",
+      "side": 1,
+      "message": "\u003e Creating a one-off file for this isn\u0027t my preference as the result will be spread out across all the repos. Can we pull data out of the file instead? Maybe treat it like an environment file? That way we could define something like CPPCHECK_ERR_EXIT\u003d1 and then just set the value of `--error-exitcode`?\n\nWhat would the advantage of this be?  I\u0027m happy to do it, just not sure it\u0027s worth the effort, and would lead to propagation of this flag in a way that\u0027s harder to fix and search for.",
+      "parentUuid": "8aead0b2_167e32d3",
+      "revId": "02a6847b09130d23e77b19e819bdfea50338a8b5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
