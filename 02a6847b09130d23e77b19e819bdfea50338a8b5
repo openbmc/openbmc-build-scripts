@@ -34,6 +34,24 @@
       "parentUuid": "8aead0b2_167e32d3",
       "revId": "02a6847b09130d23e77b19e819bdfea50338a8b5",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b9f92975_08a1c482",
+        "filename": "scripts/unit-test.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 378,
+      "author": {
+        "id": 1000009
+      },
+      "writtenOn": "2023-02-14T02:59:03Z",
+      "side": 1,
+      "message": "It\u0027s a file that\u0027s specific to one command-line option of one specific tool, and it  sets a precedent that this is acceptable. It feels brittle to me, in that if we decide we want to set a different commandline option for cppcheck, we have to create different file altogether. Given the broad impact (scattering through the subproject repos) I figured we should give thought to other approaches.",
+      "parentUuid": "0b17483c_11a08c7c",
+      "revId": "02a6847b09130d23e77b19e819bdfea50338a8b5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
