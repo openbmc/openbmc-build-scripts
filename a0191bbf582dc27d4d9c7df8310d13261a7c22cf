@@ -16,6 +16,24 @@
       "message": "I\u0027m a bit concerned about this.\n\nhttps://github.com/mesonbuild/meson/issues/7200",
       "revId": "a0191bbf582dc27d4d9c7df8310d13261a7c22cf",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "652f68b1_8c9cb032",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 1000153
+      },
+      "writtenOn": "2023-02-14T18:23:52Z",
+      "side": 1,
+      "message": "We don\u0027t use subprojects in CI, so I\u0027m not quite following why the above is a concern?",
+      "parentUuid": "11254a45_958d63a5",
+      "revId": "a0191bbf582dc27d4d9c7df8310d13261a7c22cf",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
