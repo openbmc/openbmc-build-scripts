@@ -52,6 +52,24 @@
       "parentUuid": "0b17483c_11a08c7c",
       "revId": "02a6847b09130d23e77b19e819bdfea50338a8b5",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6703fd41_d1e91b91",
+        "filename": "scripts/unit-test.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 378,
+      "author": {
+        "id": 1000153
+      },
+      "writtenOn": "2023-02-14T18:05:13Z",
+      "side": 1,
+      "message": "Ah, I gotcha.  Probably the right answer here is to do the same thing we\u0027ve done elsewhere, and have a default cppcheck config file that can be overridden.  That was a lot of work, but probably worthwhile.  I can put this on the back burner until I can go sort that out.",
+      "parentUuid": "b9f92975_08a1c482",
+      "revId": "02a6847b09130d23e77b19e819bdfea50338a8b5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
