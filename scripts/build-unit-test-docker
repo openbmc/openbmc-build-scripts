@@ -594,8 +594,7 @@ class Docker:
 
     @staticmethod
     def build(pkg: str, tag: str, dockerfile: str) -> None:
-        """Build a docker image using the Dockerfile and tagging it with 'tag'.
-        """
+        """Build a docker image using the Dockerfile and tagging it with 'tag'."""
 
         # If we're not forcing builds, check if it already exists and skip.
         if not force_build:
