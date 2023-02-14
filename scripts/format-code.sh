@@ -182,7 +182,7 @@ function do_beautysh_sh() {
 LINTER_REQUIRE+=([black]="black")
 LINTER_TYPES+=([black]="python")
 function do_black() {
-    black -l 79 --preview "$@"
+    black -l 79 "$@"
 }
 
 LINTER_REQUIRE+=([eslint]="eslint;.eslintrc.json;${CONFIG_PATH}/eslint-global-config.json")
