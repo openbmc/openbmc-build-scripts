@@ -34,6 +34,24 @@
       "parentUuid": "11254a45_958d63a5",
       "revId": "a0191bbf582dc27d4d9c7df8310d13261a7c22cf",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3122a977_12ef492f",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2023-02-14T19:39:22Z",
+      "side": 1,
+      "message": "Uh... I\u0027m not 100% convinced that is true.  I know originally we maintained all dependencies in scripts/build-unit-test-docker but I\u0027m pretty sure I\u0027ve seen some leveraging subprojects.  Unfortunately, I can\u0027t tell you with any certainty which ones that is.\n\nDevelopers are certainly exposed to this though.  Does everyone run this unit-test script exclusively from within the Docker containers?",
+      "parentUuid": "652f68b1_8c9cb032",
+      "revId": "a0191bbf582dc27d4d9c7df8310d13261a7c22cf",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
