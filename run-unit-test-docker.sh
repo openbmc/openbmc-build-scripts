@@ -23,6 +23,7 @@
 #                         `/usr/share/dbus-1/system.conf`
 #   TEST_ONLY:       Optional, do not run analysis tools
 #   NO_FORMAT_CODE:  Optional, do not run format-code.sh
+#   EXTRA_DOCKER_RUN_ARGS:  Optional, pass arguments to docker run
 #   EXTRA_UNIT_TEST_ARGS:  Optional, pass arguments to unit-test.py
 #   INTERACTIVE: Optional, run a bash shell instead of unit-test.py
 #   http_proxy: Optional, run the container with proxy environment
@@ -98,13 +99,15 @@ if [ -n "${http_proxy}" ]; then
         --env ftp_proxy=${http_proxy}"
 fi
 
-# shellcheck disable=SC2086 # ${PROXY_ENV} is meant to be splitted
+# shellcheck disable=SC2086 # ${PROXY_ENV} and ${EXTRA_DOCKER_RUN_ARGS} are
+# meant to be split
 docker run --cap-add=sys_admin --rm=true \
     --privileged=true \
     ${PROXY_ENV} \
     -u "$USER" \
     -w "${DOCKER_WORKDIR}" -v "${WORKSPACE}":"${DOCKER_WORKDIR}" \
     -e "MAKEFLAGS=${MAKEFLAGS}" \
+    ${EXTRA_DOCKER_RUN_ARGS:-} \
     -${INTERACTIVE:+i}t "${DOCKER_IMG_NAME}" \
     "${UNIT_TEST_SCRIPT_DIR}/${DBUS_UNIT_TEST_PY}" -u "${UNIT_TEST}" \
     -f "${DBUS_SYS_CONFIG_FILE}"
