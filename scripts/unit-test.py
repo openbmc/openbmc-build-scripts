@@ -383,6 +383,7 @@ def run_cppcheck():
                 "-j",
                 str(multiprocessing.cpu_count()),
                 "--enable=style,performance,portability,missingInclude",
+                "--inline-suppr",
                 "--suppress=useStlAlgorithm",
                 "--suppress=unusedStructMember",
                 "--suppress=postfixOperator",
