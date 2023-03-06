@@ -96,6 +96,7 @@ GERRIT_CI_GROUPS=( \
         quic/ci-authorized \
         rcs/ci-authorized \
         supermicro/ci-authorized \
+        ufispace/ci-authorized \
         wistron/ci-authorized \
         wiwynn/ci-authorized \
         yadro/ci-authorized \
