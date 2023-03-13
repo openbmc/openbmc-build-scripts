@@ -180,6 +180,7 @@ function do_beautysh_sh() {
 }
 
 LINTER_REQUIRE+=([black]="black")
+LINTER_IGNORE+=([black]=".black-ignore")
 LINTER_TYPES+=([black]="python")
 function do_black() {
     black -l 79 "$@"
@@ -205,6 +206,7 @@ function do_flake8() {
 }
 
 LINTER_REQUIRE+=([isort]="isort")
+LINTER_IGNORE+=([isort]=".isort-ignore")
 LINTER_TYPES+=([isort]="python")
 function do_isort() {
     isort --profile black "$@"
