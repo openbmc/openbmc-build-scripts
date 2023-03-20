@@ -34,6 +34,24 @@
       "parentUuid": "bd35f27e_a8e7ce5e",
       "revId": "1b1cda79e75574c900fc621029209334f54c4050",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9179ed72_83d275d6",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2023-03-20T11:33:10Z",
+      "side": 1,
+      "message": "As a project, we are not interested in adding additional \u0027ignore\u0027 files.  As we are able to remove need for repository-level/linter-level ignore files, we are likely to remove support for them in this script.  We are not going to be able to know about your private repository needs and maintain support for you.\n\nI would suggest the following:\n\n1. You report this as an issue to Intel.  There is no reason for them to not be following generally-accepted Python guidelines.\n\n2. You leverage the global .linter-ignore for files you\u0027re unwilling to change anyhow.\n\n3. If needed, you call `format-code.sh` with `--disable black --disable isort` in your specific CI environment.",
+      "parentUuid": "96cbc138_84924eda",
+      "revId": "1b1cda79e75574c900fc621029209334f54c4050",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
