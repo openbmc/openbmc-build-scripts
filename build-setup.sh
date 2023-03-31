@@ -412,6 +412,10 @@ if [[ "${WORKSPACE}" = "${HOME}/"* || "${WORKSPACE}" = "${HOME}" ]];then
     mount_workspace_dir=""
 fi
 
+# If we are building on a podman based machine, need to have this set in
+# the env to allow the home mount to work (no impact on non-podman systems)
+export PODMAN_USERNS="keep-id"
+
 # Run the Docker container, execute the build.sh script
 # shellcheck disable=SC2086 # mount commands word-split purposefully
 docker run \
