@@ -412,6 +412,17 @@ if [[ "${WORKSPACE}" = "${HOME}/"* || "${WORKSPACE}" = "${HOME}" ]];then
     mount_workspace_dir=""
 fi
 
+# determine if we are using docker or podman. systems running podman will make
+# a link called docker that points to podman
+docker=$(which docker)
+container=$(readlink -f "$docker")
+if [[ $container = *"podman" ]]; then
+    # podman requires this parameter to run with the HOME mount
+    USERNS="--userns=keep-id"
+else
+    USERNS=""
+fi
+
 # Run the Docker container, execute the build.sh script
 # shellcheck disable=SC2086 # mount commands word-split purposefully
 docker run \
@@ -419,6 +430,7 @@ docker run \
     --cap-add=sys_nice \
     --net=host \
     --rm=true \
+    ${USERNS} \
     -e WORKSPACE="${WORKSPACE}" \
     -w "${HOME}" \
     -v "${HOME}:${HOME}" \
