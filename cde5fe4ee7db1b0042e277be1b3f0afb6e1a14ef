@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8d110645_a2195043",
+        "filename": "build-setup.sh",
+        "patchSetId": 2
+      },
+      "lineNbr": 416,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2023-04-03T15:51:42Z",
+      "side": 1,
+      "message": "nit: I would recommend we not write this in terms of a specific distro.  This is really applicable to anyone who decides to use Podman instead of Docker.  Arch and Gentoo, for instance, allow this.",
+      "range": {
+        "startLine": 415,
+        "startChar": 0,
+        "endLine": 416,
+        "endChar": 71
+      },
+      "revId": "cde5fe4ee7db1b0042e277be1b3f0afb6e1a14ef",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
