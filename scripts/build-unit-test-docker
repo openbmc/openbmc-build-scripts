@@ -644,6 +644,10 @@ http_proxy = os.environ.get("http_proxy")
 gerrit_project = os.environ.get("GERRIT_PROJECT")
 gerrit_rev = os.environ.get("GERRIT_PATCHSET_REVISION")
 
+# Ensure appropriate docker build output to see progress and identify
+# any issues
+os.environ["BUILDKIT_PROGRESS"] = "plain"
+
 # Set up some common variables.
 username = os.environ.get("USER", "root")
 homedir = os.environ.get("HOME", "/root")
