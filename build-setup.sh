@@ -395,6 +395,10 @@ chmod a+x "${WORKSPACE}/build.sh"
 # Give the Docker image a name based on the distro,tag,arch,and target
 img_name=${img_name:-openbmc/${distro}:${img_tag}-${target}-${ARCH}}
 
+# Ensure appropriate docker build output to see progress and identify
+# any issues
+export BUILDKIT_PROGRESS=plain
+
 # Build the Docker image
 docker build -t "${img_name}" - <<< "${Dockerfile}"
 
