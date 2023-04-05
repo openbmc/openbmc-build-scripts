@@ -770,6 +770,7 @@ RUN apt-get update && apt-get dist-upgrade -yy && apt-get install -yy \
     git \
     iproute2 \
     iputils-ping \
+    libaudit-dev \
     libc6-dbg \
     libc6-dev \
     libconfig++-dev \
