@@ -99,6 +99,10 @@ if [ -n "${http_proxy}" ]; then
         --env ftp_proxy=${http_proxy}"
 fi
 
+# If we are building on a podman based machine, need to have this set in
+# the env to allow the home mount to work (no impact on non-podman systems)
+export PODMAN_USERNS="keep-id"
+
 # shellcheck disable=SC2086 # ${PROXY_ENV} and ${EXTRA_DOCKER_RUN_ARGS} are
 # meant to be split
 docker run --cap-add=sys_admin --rm=true \
