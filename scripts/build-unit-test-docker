@@ -848,7 +848,7 @@ RUN pip3 install \
         inflection \
         isort \
         jsonschema \
-        meson==0.63.0 \
+        meson==1.0.1 \
         protobuf \
         requests \
 
