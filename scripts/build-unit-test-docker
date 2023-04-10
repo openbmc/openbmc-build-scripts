@@ -839,17 +839,18 @@ RUN apt-get update && apt-get dist-upgrade -yy
 """
 
 dockerfile_base += """
-RUN pip3 install beautysh
-RUN pip3 install black
-RUN pip3 install codespell
-RUN pip3 install flake8
-RUN pip3 install gitlint
-RUN pip3 install inflection
-RUN pip3 install isort
-RUN pip3 install jsonschema
-RUN pip3 install meson==0.63.0
-RUN pip3 install protobuf
-RUN pip3 install requests
+RUN pip3 install \
+        beautysh \
+        black \
+        codespell \
+        flake8 \
+        gitlint \
+        inflection \
+        isort \
+        jsonschema \
+        meson==0.63.0 \
+        protobuf \
+        requests
 
 RUN npm install -g \
         eslint@latest eslint-plugin-json@latest \
