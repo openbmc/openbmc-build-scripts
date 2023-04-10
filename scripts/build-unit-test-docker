@@ -155,15 +155,6 @@ packages = {
         rev="v1.15",
         build_type="make",
     ),
-    # dev-6.0 2022-11-28
-    "openbmc/linux": PackageDef(
-        rev="1b16243b004ce4d977a9f3b9d9e715cf5028f867",
-        build_type="custom",
-        build_steps=[
-            f"make -j{proc_count} defconfig",
-            f"make INSTALL_HDR_PATH={prefix} headers_install",
-        ],
-    ),
     "LibVNC/libvncserver": PackageDef(
         rev="LibVNCServer-0.9.13",
         build_type="cmake",
