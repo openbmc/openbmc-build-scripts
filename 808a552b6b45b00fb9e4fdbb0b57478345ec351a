@@ -16,6 +16,24 @@
       "message": "Why?",
       "revId": "808a552b6b45b00fb9e4fdbb0b57478345ec351a",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "809970f5_8cc1a9f6",
+        "filename": "scripts/build-unit-test-docker",
+        "patchSetId": 1
+      },
+      "lineNbr": 841,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2023-04-12T11:39:18Z",
+      "side": 1,
+      "message": "The latest ubuntu / pip combination are not thrilled about installing packages at a system level otherwise.\n\n```\nroot@e164eb2a4343:/# pip3 install beautysh\nerror: externally-managed-environment\n\n× This environment is externally managed\n╰─\u003e To install Python packages system-wide, try apt install\n    python3-xyz, where xyz is the package you are trying to\n    install.\n    \n    If you wish to install a non-Debian-packaged Python package,\n    create a virtual environment using python3 -m venv path/to/venv.\n    Then use path/to/venv/bin/python and path/to/venv/bin/pip. Make\n    sure you have python3-full installed.\n    \n    If you wish to install a non-Debian packaged Python application,\n    it may be easiest to use pipx install xyz, which will manage a\n    virtual environment for you. Make sure you have pipx installed.\n    \n    See /usr/share/doc/python3.11/README.venv for more information.\n\nnote: If you believe this is a mistake, please contact your Python installation or OS distribution provider. You can override this, at the risk of breaking your Python installation or OS, by passing --break-system-packages.\nhint: See PEP 668 for the detailed specification.\n```\n\nLet me know if you\u0027d like me to document this differently.  I\u0027m not sure that a comment forever is appropriate but I can certainly add to the commit message.",
+      "parentUuid": "569b311e_37bf030f",
+      "revId": "808a552b6b45b00fb9e4fdbb0b57478345ec351a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
