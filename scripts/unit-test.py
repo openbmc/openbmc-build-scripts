@@ -1110,6 +1110,15 @@ class Meson(BuildSystem):
                     + "meson_version: '>=0.57'"
                 )
 
+        if "get_variable(" in build_contents:
+            if not meson_version or not meson_version_compare(
+                meson_version, ">=0.58"
+            ):
+                raise Exception(
+                    "dep.get_variable() with positional argument requires "
+                    + "meson_Version: '>=0.58'"
+                )
+
 
 class Package(object):
     def __init__(self, name=None, path=None):
