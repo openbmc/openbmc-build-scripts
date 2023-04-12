@@ -874,11 +874,19 @@ FROM {docker_base_img_name}
 # NOTE: The file is sorted to ensure the ordering is stable.
 RUN echo '{Package.depcache()}' > /tmp/depcache
 
-# Final configuration for the workspace
-RUN grep -q {gid} /etc/group || groupadd -f -g {gid} {username}
+# Ensure the group, user, and home directory are created (or rename them if
+# they already exist).
+RUN if grep -q ":{gid}:" /etc/group ; then \
+        groupmod -n {username} $(awk -F : '{{ if ($3 == {gid}) {{ print $1 }} }}' /etc/group) ; \
+    else \
+        groupadd -f -g {gid} {username} ; \
+    fi
 RUN mkdir -p "{os.path.dirname(homedir)}"
-RUN grep -q {uid} /etc/passwd || \
-        useradd -d {homedir} -m -u {uid} -g {gid} {username}
+RUN if grep -q ":{uid}:" /etc/passwd ; then \
+        usermod -l {username} -d {homedir} $(awk -F : '{{ if ($3 == {uid}) {{ print $1 }} }}' /etc/passwd) ; \
+    else \
+        useradd -d {homedir} -m -u {uid} -g {gid} {username} ; \
+    fi
 RUN sed -i '1iDefaults umask=000' /etc/sudoers
 RUN echo "{username} ALL=(ALL) NOPASSWD: ALL" >>/etc/sudoers
 
