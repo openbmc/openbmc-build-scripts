@@ -34,6 +34,24 @@
       "parentUuid": "569b311e_37bf030f",
       "revId": "808a552b6b45b00fb9e4fdbb0b57478345ec351a",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b2c0626b_8037b98c",
+        "filename": "scripts/build-unit-test-docker",
+        "patchSetId": 1
+      },
+      "lineNbr": 841,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2023-04-12T12:05:52Z",
+      "side": 1,
+      "message": "Done.  Added more details to the commit message.",
+      "parentUuid": "809970f5_8cc1a9f6",
+      "revId": "808a552b6b45b00fb9e4fdbb0b57478345ec351a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
