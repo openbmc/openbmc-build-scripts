@@ -224,7 +224,7 @@ class DepTree:
             child.PrintTree(level + 1)
 
 
-def check_call_cmd(*cmd):
+def check_call_cmd(*cmd, **kwargs):
     """
     Verbose prints the directory location the given command is called from and
     the command, then executes the command using check_call.
@@ -234,7 +234,7 @@ def check_call_cmd(*cmd):
     cmd                 List of parameters constructing the complete command
     """
     printline(os.getcwd(), ">", " ".join(cmd))
-    check_call(cmd)
+    check_call(cmd, **kwargs)
 
 
 def clone_pkg(pkg, branch):
@@ -1057,6 +1057,7 @@ class Meson(BuildSystem):
                 "-Db_sanitize=address,undefined",
                 "-Db_lundef=false",
             )
+            
             check_call_cmd(
                 "meson",
                 "test",
@@ -1065,6 +1066,7 @@ class Meson(BuildSystem):
                 "--print-errorlogs",
                 "--logbase",
                 "testlog-ubasan",
+                env=os.environ | {"UBSAN_OPTIONS": "halt_on_error=1"},
             )
             # TODO: Fix memory sanitizer
             # check_call_cmd('meson', 'configure', 'build',
