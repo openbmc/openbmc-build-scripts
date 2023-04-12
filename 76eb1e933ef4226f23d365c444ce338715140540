@@ -24,6 +24,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a6869fcc_7db41174",
+        "filename": "scripts/build-unit-test-docker",
+        "patchSetId": 1
+      },
+      "lineNbr": 879,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2023-04-12T12:05:31Z",
+      "side": 1,
+      "message": "Will do.  I can\u0027t say awk is the first, second or third tool I reach for usually. ;)",
+      "parentUuid": "ce6239fd_4fc5955d",
+      "range": {
+        "startLine": 879,
+        "startChar": 33,
+        "endLine": 879,
+        "endChar": 74
+      },
+      "revId": "76eb1e933ef4226f23d365c444ce338715140540",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8e940cbd_cc183833",
@@ -37,6 +61,30 @@
       "writtenOn": "2023-04-12T03:34:28Z",
       "side": 1,
       "message": "Similar to above suggestion",
+      "range": {
+        "startLine": 885,
+        "startChar": 45,
+        "endLine": 885,
+        "endChar": 87
+      },
+      "revId": "76eb1e933ef4226f23d365c444ce338715140540",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "cd587c0f_75c32ab7",
+        "filename": "scripts/build-unit-test-docker",
+        "patchSetId": 1
+      },
+      "lineNbr": 885,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2023-04-12T12:05:31Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8e940cbd_cc183833",
       "range": {
         "startLine": 885,
         "startChar": 45,
