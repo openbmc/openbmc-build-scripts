@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c9b975f8_d8a69267",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2023-04-12T13:45:01Z",
+      "side": 1,
+      "message": "I\u0027m not sure why this was added but I guess we\u0027ll figure out pretty soon if there was a reason!",
+      "revId": "b55d249dfd9698e659706484ee95f62c164be00b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a8adfaa7_423af516",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2023-04-12T13:45:01Z",
+      "side": 1,
+      "message": "Thanks for keeping us on the latest and greatest Patrick!",
+      "revId": "b55d249dfd9698e659706484ee95f62c164be00b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
