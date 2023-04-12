@@ -627,7 +627,7 @@ docker_image_name = os.environ.get(
 )
 force_build = os.environ.get("FORCE_DOCKER_BUILD")
 is_automated_ci_build = os.environ.get("BUILD_URL", False)
-distro = os.environ.get("DISTRO", "ubuntu:kinetic")
+distro = os.environ.get("DISTRO", "ubuntu:lunar")
 branch = os.environ.get("BRANCH", "master")
 ubuntu_mirror = os.environ.get("UBUNTU_MIRROR")
 http_proxy = os.environ.get("http_proxy")
@@ -785,7 +785,6 @@ RUN apt-get update && apt-get dist-upgrade -yy && apt-get install -yy \
     libssl-dev \
     libsystemd-dev \
     libtool \
-    liburing2-dbgsym \
     liburing-dev \
     libxml2-utils \
     libxml-simple-perl \
@@ -811,7 +810,7 @@ RUN apt-get update && apt-get dist-upgrade -yy && apt-get install -yy \
     wget \
     xxd
 
-# Kinetic comes with GCC-12, so skip this.
+# Lunar comes with GCC-12, so skip this.
 #RUN update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-12 12 \
 #  --slave /usr/bin/g++ g++ /usr/bin/g++-12 \
 #  --slave /usr/bin/gcov gcov /usr/bin/gcov-12 \
@@ -839,7 +838,7 @@ RUN apt-get update && apt-get dist-upgrade -yy
 """
 
 dockerfile_base += """
-RUN pip3 install \
+RUN pip3 install --break-system-packages \
         beautysh \
         black \
         codespell \
