@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ce6239fd_4fc5955d",
+        "filename": "scripts/build-unit-test-docker",
+        "patchSetId": 1
+      },
+      "lineNbr": 879,
+      "author": {
+        "id": 1000009
+      },
+      "writtenOn": "2023-04-12T03:34:28Z",
+      "side": 1,
+      "message": "`awk -F : \u0027{ if ($3 \u003d\u003d {gid}) { print $1 } }\u0027 /etc/group` ?",
+      "range": {
+        "startLine": 879,
+        "startChar": 33,
+        "endLine": 879,
+        "endChar": 74
+      },
+      "revId": "76eb1e933ef4226f23d365c444ce338715140540",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8e940cbd_cc183833",
+        "filename": "scripts/build-unit-test-docker",
+        "patchSetId": 1
+      },
+      "lineNbr": 885,
+      "author": {
+        "id": 1000009
+      },
+      "writtenOn": "2023-04-12T03:34:28Z",
+      "side": 1,
+      "message": "Similar to above suggestion",
+      "range": {
+        "startLine": 885,
+        "startChar": 45,
+        "endLine": 885,
+        "endChar": 87
+      },
+      "revId": "76eb1e933ef4226f23d365c444ce338715140540",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
