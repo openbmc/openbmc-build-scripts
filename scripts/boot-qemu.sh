@@ -112,7 +112,7 @@ if [ "${MACHINE}" = "${DEFAULT_MACHINE}" ]; then
     # Launch default QEMU using the qemu-system-arm
     ${QEMU_BIN} \
         -device virtio-net,netdev=mynet \
-        -netdev user,id=mynet,hostfwd=tcp:${IP}:22-:22,hostfwd=tcp:${IP}:443-:443,hostfwd=tcp:${IP}:80-:80,hostfwd=tcp:${IP}:2200-:2200,hostfwd=udp:${IP}:623-:623,hostfwd=udp:${IP}:664-:664 \
+        -netdev "user,id=mynet,hostfwd=tcp:${IP}:22-:22,hostfwd=tcp:${IP}:443-:443,hostfwd=tcp:${IP}:80-:80,hostfwd=tcp:${IP}:2200-:2200,hostfwd=udp:${IP}:623-:623,hostfwd=udp:${IP}:664-:664" \
         -machine versatilepb \
         -m 256 \
         -drive file="${TMP_DRIVE_PATH}",if=virtio,format=raw \
