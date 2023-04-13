@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "68797fc4_f6f957ca",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2023-04-13T17:59:46Z",
+      "side": 1,
+      "message": "This fails CI due to an expected co-req with sdbusplus (which needs reformatting). The container itself built successfully.",
+      "revId": "4cb760e118cea3c49a0adc971f84a70f3213d71b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
