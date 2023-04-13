@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4679ffa9_99ccd47c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2023-04-13T17:46:17Z",
+      "side": 1,
+      "message": "I\u0027ll probably hold off another day to merging this to give maintainers a little more time to merge the associated topic.\n\nhttps://gerrit.openbmc.org/q/topic:meson_deprecated_pkgconfig+status:open",
+      "revId": "cebaea28a90c2bd04f782253a5902fd6e978417a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
