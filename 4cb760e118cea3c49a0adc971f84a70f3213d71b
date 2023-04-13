@@ -16,6 +16,23 @@
       "message": "This fails CI due to an expected co-req with sdbusplus (which needs reformatting). The container itself built successfully.",
       "revId": "4cb760e118cea3c49a0adc971f84a70f3213d71b",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8f72e654_2b0bbb2d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2023-04-13T18:58:42Z",
+      "side": 1,
+      "message": "I\u0027m good once you\u0027ve got the commits ready to go for the failing repos",
+      "revId": "4cb760e118cea3c49a0adc971f84a70f3213d71b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
