@@ -729,10 +729,10 @@ RUN echo "ubuntu keyserver rev as of 2021-04-21"
 # https://wiki.ubuntu.com/Debug%20Symbol%20Packages
 RUN apt-get update && apt-get dist-upgrade -yy && \
     ( apt-get install gpgv ubuntu-dbgsym-keyring || \
-        ( apt-get install -yy dirmngr && \
-          apt-key adv --keyserver keyserver.ubuntu.com \
-                      {proxy_keyserver} \
-                      --recv-keys F2EDC64DC5AEE1F6B9C621F0C8CAB6595FDFF622 ) )
+        ( apt-get install -yy dirmngr curl && \
+          curl -sSL \
+          'http://keyserver.ubuntu.com/pks/lookup?op=get&search=0xF2EDC64DC5AEE1F6B9C621F0C8CAB6595FDFF622' \
+          | apt-key add - ))
 
 # Parse the current repo list into a debug repo list
 RUN sed -n '/^deb /s,^deb [^ ]* ,deb http://ddebs.ubuntu.com ,p' \
