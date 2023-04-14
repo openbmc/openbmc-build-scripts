@@ -727,12 +727,15 @@ RUN echo "ubuntu keyserver rev as of 2021-04-21"
 # We need the keys to be imported for dbgsym repos
 # New releases have a package, older ones fall back to manual fetching
 # https://wiki.ubuntu.com/Debug%20Symbol%20Packages
+# Known issue with gpg to get keys via proxy -
+# https://bugs.launchpad.net/ubuntu/+source/gnupg2/+bug/1788190, hence using
+# curl to get keys.
 RUN apt-get update && apt-get dist-upgrade -yy && \
     ( apt-get install gpgv ubuntu-dbgsym-keyring || \
-        ( apt-get install -yy dirmngr && \
-          apt-key adv --keyserver keyserver.ubuntu.com \
-                      {proxy_keyserver} \
-                      --recv-keys F2EDC64DC5AEE1F6B9C621F0C8CAB6595FDFF622 ) )
+        ( apt-get install -yy dirmngr curl && \
+          curl -sSL \
+          'https://keyserver.ubuntu.com/pks/lookup?op=get&search=0xF2EDC64DC5AEE1F6B9C621F0C8CAB6595FDFF622' \
+          | apt-key add - ))
 
 # Parse the current repo list into a debug repo list
 RUN sed -n '/^deb /s,^deb [^ ]* ,deb http://ddebs.ubuntu.com ,p' \
