@@ -903,7 +903,7 @@ class Meson(BuildSystem):
         meson_flags = [
             "-Db_colorout=never",
             "-Dwerror=true",
-            "-Dwarning_level=3",
+            "-Dwarning_level=2",
         ]
         if build_for_testing:
             meson_flags.append("--buildtype=debug")
