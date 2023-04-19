@@ -16,6 +16,23 @@
       "message": "This grew out of a discussion with @arj on Discord (https://discord.com/channels/775381525260664832/867820390406422538/1097806990434111539) that in turn stemmed from his series of obmc-console patches: https://gerrit.openbmc.org/q/topic:meson+project:openbmc%252Fobmc-console",
       "revId": "2f5d7d465cc9fa9f6cf07187b0d8bad0e366ab46",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "194893cf_fbb97b02",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2023-04-19T17:37:06Z",
+      "side": 1,
+      "message": "My primary concern with this is that we\u0027ve used `warning_level\u003d3` in almost every repository.  If we merge this we\u0027re going to have repositories that pass CI but don\u0027t pass local builds.  I think we\u0027ll similarly have to change all of these?\n\n```\n$ find -maxdepth 2 -name meson.build -exec grep  warning_level {} \\; | sed \"s/ *//\" | sort | uniq -c\n      1 default_options: [\u0027warning_level\u003d1\u0027, \u0027c_std\u003dgnu11\u0027, \u0027cpp_std\u003dgnu++11\u0027, \u0027b_colorout\u003dauto\u0027,\n      1 default_options: [ \u0027warning_level\u003d3\u0027,\n      1 gtest_opts.set_override_option(\u0027warning_level\u0027, \u00271\u0027)\n      1 \u0027warning_level\u003d2\u0027,\n     64 \u0027warning_level\u003d3\u0027,\n```",
+      "revId": "2f5d7d465cc9fa9f6cf07187b0d8bad0e366ab46",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
