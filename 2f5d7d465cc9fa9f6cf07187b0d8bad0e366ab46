@@ -1,6 +1,23 @@
 {
   "comments": [
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "8a35aa7e_7c1ee295",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 1000153
+      },
+      "writtenOn": "2023-04-19T18:06:42Z",
+      "side": 1,
+      "message": "Can you give an example of the type of change you\u0027re trying to avoid here that -Wpedantic would flag, that you think users shouldn\u0027t be required to fix?\n\nI\u0027m not against fine tuning our flags to our use case, but I think consistency is useful, even in pedantic things, so unless we have good examples of the pedantic things we\u0027re trying to avoid, and reasonable discussion about why they\u0027re too onerous for a user to fix, I\u0027m of the opinion that we keep the warnings as high as we can.\n\nI know there are for sure cases where some gcc extensions aren\u0027t available on clang, so using them prevents us running clang-tidy.  I want to make sure we don\u0027t regress in that regard.",
+      "revId": "2f5d7d465cc9fa9f6cf07187b0d8bad0e366ab46",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "4a043038_4d5f314b",
