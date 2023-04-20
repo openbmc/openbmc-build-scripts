@@ -16,6 +16,24 @@
       "message": "We\u0027re already using `apt-key adv` here, so we can pass other gpg options such as --keyserver-options http-proxy\u003d...`  if we really must according to this SO post:\n\nhttps://unix.stackexchange.com/a/361220\n\nHowever, it looks like gpg might already honour the `http_proxy` environment variable, so you should set that instead?",
       "revId": "5e4d8402bab145200c31fd1d3373cb1379d67697",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "88c2077c_5483540e",
+        "filename": "scripts/build-unit-test-docker",
+        "patchSetId": 1
+      },
+      "lineNbr": 733,
+      "author": {
+        "id": 1001758
+      },
+      "writtenOn": "2023-04-20T17:28:54Z",
+      "side": 0,
+      "message": "I had the http_proxy set and being passed via --keyserver-options to apt-key, but it still didn\u0027t work. So, as mentioned in the post suggested by you, i used the curl to first get the key and then added it by using apt-key -add.",
+      "parentUuid": "126cf1f8_375c8c2c",
+      "revId": "5e4d8402bab145200c31fd1d3373cb1379d67697",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
