@@ -73,6 +73,7 @@ GERRIT_CI_GROUPS=( \
         code-construct/ci-authorized \
         depo/ci-authorized \
         erg/ci-authorized \
+        equinix/ci-authorized \
         facebook/ci-authorized \
         fii/ci-authorized \
         gager-in/ci-authorized \
