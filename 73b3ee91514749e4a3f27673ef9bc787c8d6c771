@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b2662176_b3323726",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 1000020
+      },
+      "writtenOn": "2023-04-24T15:25:54Z",
+      "side": 1,
+      "message": "Bit more background (in case anyone is interested) \n\nwebui-vue commits are failing due to \n```\nnpm ERR! code EACCES\nnpm ERR! syscall mkdir\nnpm ERR! path /home/openbmc\nnpm ERR! errno -13\nnpm ERR! Error: EACCES: permission denied, mkdir \u0027/home/openbmc\u0027\nnpm ERR!  [Error: EACCES: permission denied, mkdir \u0027/home/openbmc\u0027] {\nnpm ERR!   errno: -13,\nnpm ERR!   code: \u0027EACCES\u0027,\nnpm ERR!   syscall: \u0027mkdir\u0027,\nnpm ERR!   path: \u0027/home/openbmc\u0027\n```\nhttps://gerrit.openbmc.org/q/project:openbmc%252Fwebui-vue",
+      "revId": "73b3ee91514749e4a3f27673ef9bc787c8d6c771",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1cb5413f_84be53c6",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000020
+      },
+      "writtenOn": "2023-04-24T15:25:54Z",
+      "side": 1,
+      "message": "Looks good to me based on https://linux.die.net/man/8/usermod",
+      "revId": "73b3ee91514749e4a3f27673ef9bc787c8d6c771",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
