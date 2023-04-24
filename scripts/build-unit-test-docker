@@ -885,7 +885,7 @@ RUN if grep -q ":{gid}:" /etc/group ; then \
     fi
 RUN mkdir -p "{os.path.dirname(homedir)}"
 RUN if grep -q ":{uid}:" /etc/passwd ; then \
-        usermod -l {username} -d {homedir} $(awk -F : '{{ if ($3 == {uid}) {{ print $1 }} }}' /etc/passwd) ; \
+        usermod -l {username} -d {homedir} -m $(awk -F : '{{ if ($3 == {uid}) {{ print $1 }} }}' /etc/passwd) ; \
     else \
         useradd -d {homedir} -m -u {uid} -g {gid} {username} ; \
     fi
