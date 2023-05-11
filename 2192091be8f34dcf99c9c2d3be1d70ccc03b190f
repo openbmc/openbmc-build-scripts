@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2fd5599e_863bf3ff",
+        "filename": "scripts/build-unit-test-docker",
+        "patchSetId": 1
+      },
+      "lineNbr": 91,
+      "author": {
+        "id": 1000153
+      },
+      "writtenOn": "2023-05-11T21:56:31Z",
+      "side": 1,
+      "message": "I\u0027m ok with the patch contents, is there a way we can put it in build-unit-test-docker so people aren\u0027t pulling from your personal github (which is going to flag some warnings in build tooling)?\n\nThis has been reported to beast, and it sounds like they\u0027re working on it.\n\nI suspect the more permanent fix is to some combination of\nBOOST_ASIO_NO_TS_EXECUTORS\nBOOST_ASIO_NO_DEPRECATED\n\napplied to our tree to get the same result, but I\u0027m ok with this temporary fix to get things moving.",
+      "range": {
+        "startLine": 91,
+        "startChar": 18,
+        "endLine": 91,
+        "endChar": 197
+      },
+      "revId": "2192091be8f34dcf99c9c2d3be1d70ccc03b190f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
