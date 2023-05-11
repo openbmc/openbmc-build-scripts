@@ -87,7 +87,11 @@ packages = {
         build_type="custom",
         build_steps=[
             (
-                "./bootstrap.sh"
+                "wget"
+                " https://gist.githubusercontent.com/williamspatrick/8d6cb34009de5bc17b842c036861ed16/raw/87c850588202e8c44d53da18d08d3a51f733e0c7/0001-ssl_stream-fix-ambiguous-async_teardown.patch"
+                " && patch -p1 <"
+                " 0001-ssl_stream-fix-ambiguous-async_teardown.patch &&"
+                " ./bootstrap.sh"
                 f" --prefix={prefix} --with-libraries=context,coroutine"
             ),
             "./b2",
