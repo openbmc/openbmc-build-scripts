@@ -22,6 +22,30 @@
       },
       "revId": "2192091be8f34dcf99c9c2d3be1d70ccc03b190f",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8965e5f7_4ff01b53",
+        "filename": "scripts/build-unit-test-docker",
+        "patchSetId": 1
+      },
+      "lineNbr": 91,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2023-05-11T22:00:43Z",
+      "side": 1,
+      "message": "Not easily, unfortunately. I can put the patch file in the commit itself and wget it from there but the stuff in this script runs as a Dockerfile and doesn’t have access to the outside repository.",
+      "parentUuid": "2fd5599e_863bf3ff",
+      "range": {
+        "startLine": 91,
+        "startChar": 18,
+        "endLine": 91,
+        "endChar": 197
+      },
+      "revId": "2192091be8f34dcf99c9c2d3be1d70ccc03b190f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
