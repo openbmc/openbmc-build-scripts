@@ -46,6 +46,30 @@
       },
       "revId": "2192091be8f34dcf99c9c2d3be1d70ccc03b190f",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0fd93471_08cedd8d",
+        "filename": "scripts/build-unit-test-docker",
+        "patchSetId": 1
+      },
+      "lineNbr": 91,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2023-05-12T02:48:37Z",
+      "side": 1,
+      "message": "I\u0027ve moved this to a patch in a proper github repository.  Hopefully that is more to your liking.\n\nI\u0027m not sure what \"which is going to flag some warnings in build tooling\" you\u0027re referring to.  The Docker build steps already do lots of network access to download the package, but optionally honor the https_proxy setting.  I think the wget should still honor that as I\u0027ve coded it up here.\n\nI\u0027m going to merge this as-is with the repo patch file (instead of from gist) in order to keep things progressing.  If you have feedback I can certainly revisit.",
+      "parentUuid": "8965e5f7_4ff01b53",
+      "range": {
+        "startLine": 91,
+        "startChar": 18,
+        "endLine": 91,
+        "endChar": 197
+      },
+      "revId": "2192091be8f34dcf99c9c2d3be1d70ccc03b190f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
