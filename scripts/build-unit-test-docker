@@ -87,7 +87,7 @@ packages = {
         build_type="custom",
         build_steps=[
             (
-                "wget"
+                "curl --remote-name"
                 " https://github.com/williamspatrick/beast/commit/98f8b1fbd059a35754c2c7b2841769cf8d021272.patch"
                 " && patch -p2 <"
                 " 98f8b1fbd059a35754c2c7b2841769cf8d021272.patch &&"
