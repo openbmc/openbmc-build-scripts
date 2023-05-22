@@ -752,6 +752,7 @@ RUN cat /etc/apt/sources.list.d/debug.list
 
 RUN apt-get update && apt-get dist-upgrade -yy && apt-get install -yy \
     abi-compliance-checker \
+    abi-dumper \
     autoconf \
     autoconf-archive \
     bison \
