@@ -906,7 +906,10 @@ class Meson(BuildSystem):
             "-Dwarning_level=3",
         ]
         if build_for_testing:
-            meson_flags.append("--buildtype=debug")
+            # -Ddebug=true -Doptimization=g is helpful for abi-dumper but isn't a combination that
+            # is supported by meson's build types. Configure it manually.
+            meson_flags.append("-Ddebug=true")
+            meson_flags.append("-Doptimization=g")
         else:
             meson_flags.append("--buildtype=debugoptimized")
         if OptionKey("tests") in meson_options:
