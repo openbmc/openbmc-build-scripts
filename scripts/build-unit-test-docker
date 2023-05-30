@@ -765,8 +765,8 @@ RUN apt-get update && apt-get dist-upgrade -yy && apt-get install -yy \
     dbus \
     device-tree-compiler \
     flex \
-    g++-12 \
-    gcc-12 \
+    g++-13 \
+    gcc-13 \
     git \
     iproute2 \
     iputils-ping \
@@ -819,13 +819,13 @@ RUN apt-get update && apt-get dist-upgrade -yy && apt-get install -yy \
     wget \
     xxd
 
-# Lunar comes with GCC-12, so skip this.
-#RUN update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-12 12 \
-#  --slave /usr/bin/g++ g++ /usr/bin/g++-12 \
-#  --slave /usr/bin/gcov gcov /usr/bin/gcov-12 \
-#  --slave /usr/bin/gcov-dump gcov-dump /usr/bin/gcov-dump-12 \
-#  --slave /usr/bin/gcov-tool gcov-tool /usr/bin/gcov-tool-12
-#RUN update-alternatives --install /usr/bin/cpp cpp /usr/bin/cpp-12 12
+RUN update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-13 13 \
+  --slave /usr/bin/g++ g++ /usr/bin/g++-13 \
+  --slave /usr/bin/gcov gcov /usr/bin/gcov-13 \
+  --slave /usr/bin/gcov-dump gcov-dump /usr/bin/gcov-dump-13 \
+  --slave /usr/bin/gcov-tool gcov-tool /usr/bin/gcov-tool-13
+RUN update-alternatives --remove cpp /usr/bin/cpp && \
+    update-alternatives --install /usr/bin/cpp cpp /usr/bin/cpp-13 13
 
 RUN update-alternatives --install /usr/bin/clang clang /usr/bin/clang-16 1000 \
   --slave /usr/bin/clang++ clang++ /usr/bin/clang++-16 \
