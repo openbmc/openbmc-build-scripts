@@ -220,6 +220,7 @@ packages = {
     "openbmc/libpldm": PackageDef(
         build_type="meson",
         config_flags=[
+            "-Dabi=deprecated,stable",
             "-Doem-ibm=enabled",
             "-Dtests=disabled",
         ],
