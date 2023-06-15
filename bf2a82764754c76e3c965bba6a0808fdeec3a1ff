@@ -16,6 +16,24 @@
       "message": "Do we have any idea if this actually made CI faster?  Even if we get a win on bmcweb it seems relatively safe to enable in CI.  I suspect we\u0027d want more exploration before enabling in Yocto builds.",
       "revId": "bf2a82764754c76e3c965bba6a0808fdeec3a1ff",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5f45019c_6044bc95",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000009
+      },
+      "writtenOn": "2023-06-15T11:34:37Z",
+      "side": 1,
+      "message": "\u003e Do we have any idea if this actually made CI faster?\n\nHonestly I don\u0027t think it\u0027s impact is measurable. So much gunk occurs in a CI run that it\u0027s in the noise. The complexity of the implementation probably makes it more of a burden, especially given it\u0027s currently specific to meson.\n\n\u003e Even if we get a win on bmcweb it seems relatively safe to enable in CI.\n\nMy brief inspections of the bmcweb build suggest it\u0027s not even linking that\u0027s the problem, rather compilation due to almost everything being implemented in a header.\n\n\u003e I suspect we\u0027d want more exploration before enabling in Yocto builds\n\nRoss\u0027 investigation suggests the wins under a bitbake build aren\u0027t that great either:\n\nhttps://lore.kernel.org/yocto/C4B728CE-7BA8-44F4-8B2C-F3F5299EE35C@arm.com/\n\nHowever, certainly for local development using `mold` gets rid of the \"stickiness\" of the link phase for tighter feedback loops.",
+      "parentUuid": "28552f0d_719a8cea",
+      "revId": "bf2a82764754c76e3c965bba6a0808fdeec3a1ff",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
