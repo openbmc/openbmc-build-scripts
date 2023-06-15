@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "28552f0d_719a8cea",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2023-06-15T10:32:46Z",
+      "side": 1,
+      "message": "Do we have any idea if this actually made CI faster?  Even if we get a win on bmcweb it seems relatively safe to enable in CI.  I suspect we\u0027d want more exploration before enabling in Yocto builds.",
+      "revId": "bf2a82764754c76e3c965bba6a0808fdeec3a1ff",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
