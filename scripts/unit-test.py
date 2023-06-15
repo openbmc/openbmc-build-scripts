@@ -934,7 +934,8 @@ class Meson(BuildSystem):
             meson_flags.extend(MESON_FLAGS.get(self.package))
         try:
             check_call_cmd(
-                "meson", "setup", "--reconfigure", "build", *meson_flags
+                "meson", "setup", "--reconfigure", "build", *meson_flags,
+                env=os.environ | {"CC_LD": "mold", "CXX_LD": "mold"}
             )
         except Exception:
             shutil.rmtree("build", ignore_errors=True)
