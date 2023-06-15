@@ -798,6 +798,7 @@ RUN apt-get update && apt-get dist-upgrade -yy && apt-get install -yy \
     liburing-dev \
     libxml2-utils \
     libxml-simple-perl \
+    mold \
     ninja-build \
     npm \
     pkg-config \
