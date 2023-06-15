@@ -139,6 +139,12 @@ packages = {
         config_env=["CXXFLAGS=-std=c++20"],
         config_flags=["-DTHREADS_PREFER_PTHREAD_FLAG=ON"],
     ),
+    "nghttp2/nghttp2": PackageDef(
+        rev="ecbb12f609d073719d1067ae3528fb27cfe925ec",
+        build_type="cmake",
+        config_env=["CXXFLAGS=-std=c++20"],
+        config_flags=["-DTHREADS_PREFER_PTHREAD_FLAG=ON"],
+    ),
     "nlohmann/json": PackageDef(
         rev="v3.11.2",
         build_type="cmake",
