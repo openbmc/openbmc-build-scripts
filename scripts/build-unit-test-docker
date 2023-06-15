@@ -562,7 +562,7 @@ FROM {docker_base_img_name}
     def _cmd_build_meson(self) -> str:
         options = " ".join(self.pkg_def.get("config_flags", []))
         env = " ".join(self.pkg_def.get("config_env", [])) + "CC_LD=mold CXX_LD=mold"
-        result = f"{env} meson builddir {meson_flags} {options} && "
+        result = f"{env} meson setup builddir {meson_flags} {options} && "
         result += "ninja -C builddir && ninja -C builddir install"
         return result
 
