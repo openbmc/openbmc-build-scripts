@@ -16,6 +16,24 @@
       "message": "Is there a release we should point to?  or is this a revision that comes from a Yocto recipe?",
       "revId": "7fd52115e16f22bf3b5acc704d81f63f612b8a0d",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cda64df6_f17eca3d",
+        "filename": "scripts/build-unit-test-docker",
+        "patchSetId": 1
+      },
+      "lineNbr": 143,
+      "author": {
+        "id": 1000153
+      },
+      "writtenOn": "2023-06-15T20:29:05Z",
+      "side": 1,
+      "message": "This is the sha1 that represents the release. (it\u0027s not the tip of the master branch).",
+      "parentUuid": "781fa09c_7f616f53",
+      "revId": "7fd52115e16f22bf3b5acc704d81f63f612b8a0d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
