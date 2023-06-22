@@ -16,6 +16,24 @@
       "message": "Without this change what issue you were running into? The docker build was not able to reach the outside network?",
       "revId": "faab0b8e9b2b70c44a818947e98725cbd617cc71",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a8328146_7bbf450d",
+        "filename": "build-setup.sh",
+        "patchSetId": 1
+      },
+      "lineNbr": 403,
+      "author": {
+        "id": 1001804
+      },
+      "writtenOn": "2023-06-22T23:34:56Z",
+      "side": 1,
+      "message": "Yes that was the problem, at least when using Podman. My personal server which I used to test it on Docker did not required proxy and I assumed this was working on Docker. I know this do not affect Docker without proxy but maybe I should find a way to test Docker with a proxy?",
+      "parentUuid": "9ae0059f_7dfafe90",
+      "revId": "faab0b8e9b2b70c44a818947e98725cbd617cc71",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
