@@ -187,6 +187,7 @@ if [[ "${distro}" == fedora ]];then
       gcc \
       gcc-c++ \
       git \
+      lz4 \
       make \
       patch \
       perl-bignum \
@@ -204,7 +205,8 @@ if [[ "${distro}" == fedora ]];then
       hostname \
       rpcgen \
       glibc-langpack-en \
-      glibc-locale-source
+      glibc-locale-source \
+      zstd
 
   # Set the locale
   ENV LANG=en_US.utf8
@@ -215,7 +217,6 @@ if [[ "${distro}" == fedora ]];then
 
   USER ${USER}
   ENV HOME ${HOME}
-  RUN /bin/bash
 EOF
     )
 
@@ -267,7 +268,6 @@ elif [[ "${distro}" == ubuntu ]]; then
 
   USER ${USER}
   ENV HOME ${HOME}
-  RUN /bin/bash
 EOF
     )
 fi
@@ -400,7 +400,7 @@ img_name=${img_name:-openbmc/${distro}:${img_tag}-${target}-${ARCH}}
 export BUILDKIT_PROGRESS=plain
 
 # Build the Docker image
-docker build -t "${img_name}" - <<< "${Dockerfile}"
+docker build --network=host -t "${img_name}" - <<< "${Dockerfile}"
 
 # If obmc_dir or ssc_dir are ${HOME} or a subdirectory they will not be mounted
 mount_obmc_dir="-v ""${obmc_dir}"":""${obmc_dir}"" "
