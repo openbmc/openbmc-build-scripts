@@ -34,6 +34,24 @@
       "parentUuid": "a11dad66_7096b5e2",
       "revId": "178b4b296b3d7ab1fcff23dc0dfd7e2218d3fdd4",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "00a6cb38_3ebb75a9",
+        "filename": "build-setup.sh",
+        "patchSetId": 1
+      },
+      "lineNbr": 218,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2023-06-23T15:06:42Z",
+      "side": 0,
+      "message": "\u003e I think this just ensures if someone starts this docker container, by default it will just go into a bash shell? \n\nThat should be CMD (or ENTRYPOINT) and not a dangling RUN though.",
+      "parentUuid": "9916bec8_ad4d162c",
+      "revId": "178b4b296b3d7ab1fcff23dc0dfd7e2218d3fdd4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
