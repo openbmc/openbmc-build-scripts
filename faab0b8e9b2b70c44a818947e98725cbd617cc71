@@ -1,6 +1,23 @@
 {
   "comments": [
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0cc425c0_7d5aeb09",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2023-06-23T13:01:59Z",
+      "side": 1,
+      "message": "Hi Fred.  Let\u0027s break this up into 3 commits.  I know they are all small, but they all seem independent.\n\n1. Add missing packages for Fedora.\n2. Remove redundant /bin/bash calls.\n3. Adjust network settings (though this one seems contentious enough we might not merge it).",
+      "revId": "faab0b8e9b2b70c44a818947e98725cbd617cc71",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9ae0059f_7dfafe90",
@@ -32,6 +49,24 @@
       "side": 1,
       "message": "Yes that was the problem, at least when using Podman. My personal server which I used to test it on Docker did not required proxy and I assumed this was working on Docker. I know this do not affect Docker without proxy but maybe I should find a way to test Docker with a proxy?",
       "parentUuid": "9ae0059f_7dfafe90",
+      "revId": "faab0b8e9b2b70c44a818947e98725cbd617cc71",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dda1b7cb_7b5e5474",
+        "filename": "build-setup.sh",
+        "patchSetId": 1
+      },
+      "lineNbr": 403,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2023-06-23T13:01:59Z",
+      "side": 1,
+      "message": "This seems like a bit of overkill for everyone else.\n\nI suspect the issue is that your podman network doesn\u0027t have ipv6 enabled, but we only run IPv6 at Meta, so nothing works inside the container.  Run `podman network ls` and then `podman network inspect \u003cid\u003e`.\n\nYou\u0027ll need to adjust your podman bridge to enable ipv6.",
+      "parentUuid": "a8328146_7bbf450d",
       "revId": "faab0b8e9b2b70c44a818947e98725cbd617cc71",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
