@@ -52,6 +52,24 @@
       "parentUuid": "9916bec8_ad4d162c",
       "revId": "178b4b296b3d7ab1fcff23dc0dfd7e2218d3fdd4",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e48afc88_0126430c",
+        "filename": "build-setup.sh",
+        "patchSetId": 1
+      },
+      "lineNbr": 218,
+      "author": {
+        "id": 1001804
+      },
+      "writtenOn": "2023-06-24T18:54:35Z",
+      "side": 0,
+      "message": "My guess is that it could have been a bug in Docker that resulted in the last RUN to be executing when a container from this image is run and since it is not supposed I also guess Podman fail to build because the last RUN do not ever end. I could add a CMD or ENTRYPOINT to make sure it run bash by default?",
+      "parentUuid": "00a6cb38_3ebb75a9",
+      "revId": "178b4b296b3d7ab1fcff23dc0dfd7e2218d3fdd4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }

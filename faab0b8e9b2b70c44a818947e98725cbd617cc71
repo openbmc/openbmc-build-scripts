@@ -47,6 +47,54 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "f5c0a42b_22dce605",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1001804
+      },
+      "writtenOn": "2023-06-24T18:54:35Z",
+      "side": 1,
+      "message": "Thanks! My first languages is French so my english is not always perfect so I appreciate people correcting me",
+      "parentUuid": "2f419364_e8511808",
+      "range": {
+        "startLine": 9,
+        "startChar": 42,
+        "endLine": 9,
+        "endChar": 44
+      },
+      "revId": "faab0b8e9b2b70c44a818947e98725cbd617cc71",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a49c65c0_3501ac92",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1001804
+      },
+      "writtenOn": "2023-06-24T18:54:35Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "204a225e_ed40aed6",
+      "range": {
+        "startLine": 9,
+        "startChar": 69,
+        "endLine": 9,
+        "endChar": 73
+      },
+      "revId": "faab0b8e9b2b70c44a818947e98725cbd617cc71",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "0cc425c0_7d5aeb09",
@@ -78,6 +126,24 @@
       "side": 1,
       "message": "+1",
       "parentUuid": "0cc425c0_7d5aeb09",
+      "revId": "faab0b8e9b2b70c44a818947e98725cbd617cc71",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "23b00f14_6a4a552d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1001804
+      },
+      "writtenOn": "2023-06-24T18:54:35Z",
+      "side": 1,
+      "message": "I am all in for this! Look like I took bad habit in the last few years ;)",
+      "parentUuid": "906127c3_5012195e",
       "revId": "faab0b8e9b2b70c44a818947e98725cbd617cc71",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -131,6 +197,24 @@
       "side": 1,
       "message": "This seems like a bit of overkill for everyone else.\n\nI suspect the issue is that your podman network doesn\u0027t have ipv6 enabled, but we only run IPv6 at Meta, so nothing works inside the container.  Run `podman network ls` and then `podman network inspect \u003cid\u003e`.\n\nYou\u0027ll need to adjust your podman bridge to enable ipv6.",
       "parentUuid": "a8328146_7bbf450d",
+      "revId": "faab0b8e9b2b70c44a818947e98725cbd617cc71",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3d9c1979_234fa0a0",
+        "filename": "build-setup.sh",
+        "patchSetId": 1
+      },
+      "lineNbr": 403,
+      "author": {
+        "id": 1001804
+      },
+      "writtenOn": "2023-06-24T18:54:35Z",
+      "side": 1,
+      "message": "Let me look at this but looking at other build scripts like in scripts/build-unit-test-docker it use the --network\u003dhost when building container. https://gerrit.openbmc.org/plugins/gitiles/openbmc/openbmc-build-scripts/+/refs/heads/master/scripts/build-unit-test-docker#623",
+      "parentUuid": "dda1b7cb_7b5e5474",
       "revId": "faab0b8e9b2b70c44a818947e98725cbd617cc71",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
