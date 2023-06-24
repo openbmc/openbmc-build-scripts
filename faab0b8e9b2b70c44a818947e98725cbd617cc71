@@ -235,6 +235,24 @@
       "parentUuid": "3d9c1979_234fa0a0",
       "revId": "faab0b8e9b2b70c44a818947e98725cbd617cc71",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "30823cf7_9376904d",
+        "filename": "build-setup.sh",
+        "patchSetId": 1
+      },
+      "lineNbr": 403,
+      "author": {
+        "id": 1001804
+      },
+      "writtenOn": "2023-06-24T22:55:29Z",
+      "side": 1,
+      "message": "From the search I made the host network is more performant since it is simply the host network and do not require any bridging. The problem is less issolation so it is normally not a good idea but I think in this case that it is ok. I found that most script don\u0027t do it but there is 3 scripts that set the network to host for build so I am not sure, one other things all the run call I saw use host network. My take on this will be to add it to all the build call but maybe I don\u0027t see the full use of those script and that it can break things.",
+      "parentUuid": "28bbd207_764b448d",
+      "revId": "faab0b8e9b2b70c44a818947e98725cbd617cc71",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
