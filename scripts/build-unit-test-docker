@@ -866,7 +866,7 @@ RUN pip3 install --break-system-packages \
         inflection \
         isort \
         jsonschema \
-        meson==1.0.1 \
+        meson==1.1.1 \
         protobuf \
         requests
 
