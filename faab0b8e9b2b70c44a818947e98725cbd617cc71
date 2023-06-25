@@ -253,6 +253,24 @@
       "parentUuid": "28bbd207_764b448d",
       "revId": "faab0b8e9b2b70c44a818947e98725cbd617cc71",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "be35c40b_b69ae53a",
+        "filename": "build-setup.sh",
+        "patchSetId": 1
+      },
+      "lineNbr": 403,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2023-06-25T21:32:19Z",
+      "side": 1,
+      "message": "I guess we can\u0027t complain about it too much if there are already other Docker invocations using `--network\u003dhost` or something similar.",
+      "parentUuid": "30823cf7_9376904d",
+      "revId": "faab0b8e9b2b70c44a818947e98725cbd617cc71",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
