@@ -745,7 +745,7 @@ RUN echo "ubuntu keyserver rev as of 2021-04-21"
 # https://bugs.launchpad.net/ubuntu/+source/gnupg2/+bug/1788190, hence using
 # curl to get keys.
 RUN apt-get update && apt-get dist-upgrade -yy && \
-    ( apt-get install gpgv ubuntu-dbgsym-keyring || \
+    ( apt-get install -yy gpgv ubuntu-dbgsym-keyring || \
         ( apt-get install -yy dirmngr curl && \
           curl -sSL \
           'https://keyserver.ubuntu.com/pks/lookup?op=get&search=0xF2EDC64DC5AEE1F6B9C621F0C8CAB6595FDFF622' \
