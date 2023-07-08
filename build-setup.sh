@@ -217,7 +217,6 @@ if [[ "${distro}" == fedora ]];then
 
   USER ${USER}
   ENV HOME ${HOME}
-  RUN /bin/bash
 EOF
     )
 
@@ -269,7 +268,6 @@ elif [[ "${distro}" == ubuntu ]]; then
 
   USER ${USER}
   ENV HOME ${HOME}
-  RUN /bin/bash
 EOF
     )
 fi
