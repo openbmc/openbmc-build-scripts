@@ -187,6 +187,7 @@ if [[ "${distro}" == fedora ]];then
       gcc \
       gcc-c++ \
       git \
+      lz4 \
       make \
       patch \
       perl-bignum \
@@ -204,7 +205,8 @@ if [[ "${distro}" == fedora ]];then
       hostname \
       rpcgen \
       glibc-langpack-en \
-      glibc-locale-source
+      glibc-locale-source \
+      zstd
 
   # Set the locale
   ENV LANG=en_US.utf8
