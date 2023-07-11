@@ -16,6 +16,24 @@
       "message": "Anything jump out at you on this unrelated-to-this-change fail @patrick?\n\n    Running prettier\n[error] Explicitly specified pattern \".prettierrc.yaml\" is a symbolic link.\n[error] Explicitly specified pattern \".markdownlint.yaml\" is a symbolic link.",
       "revId": "529a28d68d480e208e02f01c8413904d75c4bdef",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "547d0aff_aea398f1",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2023-07-11T16:29:42Z",
+      "side": 1,
+      "message": "remote:   https://gerrit.openbmc.org/c/openbmc/openbmc-build-scripts/+/64792 format-code: resolve symlinks in linter arguments [NEW]",
+      "parentUuid": "fab2d4d1_7f53d9cd",
+      "revId": "529a28d68d480e208e02f01c8413904d75c4bdef",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
