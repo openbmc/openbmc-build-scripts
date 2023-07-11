@@ -335,7 +335,7 @@ fi
 while read -r file; do
     ftype="$(get_file_type "$file")"
     FILES+=([$ftype]="$(echo -ne "$file;${FILES[$ftype]:-}")")
-done < <(git ls-files | "${GLOBAL_IGNORE[@]}")
+done < <(git ls-files | xargs realpath --relative-base=. | "${GLOBAL_IGNORE[@]}")
 
 # For each linter, check if there are an applicable files and if it can
 # be enabled.
