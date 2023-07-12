@@ -1114,6 +1114,19 @@ class Meson(BuildSystem):
                     + "meson_version: '>=0.57'"
                 )
 
+        # C++23 requires at least Meson 1.1.1 but Meson itself doesn't
+        # identify this.  Add to our unit-test checks so that we don't
+        # get a meson.build missing this.
+        pattern = r"'cpp_std=c\+\+23'"
+        for match in re.finditer(pattern, build_contents):
+            if not meson_version or not meson_version_compare(
+                meson_version, ">=1.1.1"
+            ):
+                raise Exception(
+                    "C++23 support requires specifying in meson.build: "
+                    + "meson_version: '>=1.1.1'"
+                )
+
         if "get_variable(" in build_contents:
             if not meson_version or not meson_version_compare(
                 meson_version, ">=0.58"
