@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "547202c9_a900a969",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2023-07-12T16:12:09Z",
+      "side": 1,
+      "message": "\"should not be\"",
+      "range": {
+        "startLine": 9,
+        "startChar": 14,
+        "endLine": 9,
+        "endChar": 23
+      },
+      "revId": "b9cdb87dfa4597af6a3def1c3a2a136968b647dc",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c042c607_8c1c75ae",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2023-07-12T16:12:09Z",
+      "side": 1,
+      "message": "Still don\u0027t quite understand this since I use this fine on a Redhat 9 system with podman but it seems no one can explain why it\u0027s here.",
+      "range": {
+        "startLine": 10,
+        "startChar": 33,
+        "endLine": 11,
+        "endChar": 6
+      },
+      "revId": "b9cdb87dfa4597af6a3def1c3a2a136968b647dc",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
