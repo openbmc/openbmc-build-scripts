@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4e332c0f_04c99de3",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2023-07-13T15:18:03Z",
+      "side": 1,
+      "message": "In the future, please respond to the feedback in addition to supplying a new patch set.  Otherwise, maintainers don\u0027t know if you\u0027re done with the commit and if you\u0027ve acted on their feedback.  You end up forcing them to do a review to determine if you\u0027re done.",
+      "revId": "3a55a623c676b8c5bc84efdcc5b25810661cc2e6",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
