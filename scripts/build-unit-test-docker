@@ -108,7 +108,7 @@ packages = {
         build_type="cmake",
     ),
     "CLIUtils/CLI11": PackageDef(
-        rev="v1.9.1",
+        rev="v2.3.2",
         build_type="cmake",
         config_flags=[
             "-DBUILD_TESTING=OFF",
