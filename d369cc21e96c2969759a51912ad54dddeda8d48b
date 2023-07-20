@@ -26,6 +26,30 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "d575964b_72f2f480",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2023-07-20T15:28:33Z",
+      "side": 1,
+      "message": "Done.  I think this is an artifact of how we parse these in the Gerrit config and it would have worked on GH, but I added some extra whitespace.",
+      "parentUuid": "43238ee9_87fbffcb",
+      "range": {
+        "startLine": 15,
+        "startChar": 14,
+        "endLine": 15,
+        "endChar": 38
+      },
+      "revId": "d369cc21e96c2969759a51912ad54dddeda8d48b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "f962da95_789a9c76",
         "filename": "/PATCHSET_LEVEL",
         "patchSetId": 1
