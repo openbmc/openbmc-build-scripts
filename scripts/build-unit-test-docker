@@ -226,6 +226,12 @@ packages = {
             "-Dtests=disabled",
         ],
     ),
+    "openbmc/libpeci": PackageDef(
+        build_type="meson",
+        config_flags=[
+            "-Draw-peci=disabled",
+        ],
+    ),
     "openbmc/libpldm": PackageDef(
         build_type="meson",
         config_flags=[
