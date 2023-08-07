@@ -36,6 +36,7 @@ SEED_MACHINES=(
     tiogapass
     witherspoon
     yosemitev2
+    yosemite4
     zaius
 )
 
