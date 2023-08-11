@@ -33,9 +33,7 @@ SEED_MACHINES=(
     palmetto
     romed8hm3
     romulus
-    tiogapass
     witherspoon
-    yosemitev2
     yosemite4
     zaius
 )
