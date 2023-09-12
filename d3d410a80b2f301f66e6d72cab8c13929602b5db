@@ -16,6 +16,24 @@
       "message": "We probably don’t need MPI support. \n\nhttps://www.open-mpi.org/",
       "revId": "d3d410a80b2f301f66e6d72cab8c13929602b5db",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "224ae4f5_d7bc8ae7",
+        "filename": "scripts/build-unit-test-docker",
+        "patchSetId": 1
+      },
+      "lineNbr": 833,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2023-09-12T16:08:21Z",
+      "side": 1,
+      "message": "Yeah, lets just remove and it can get added back in if someone finds they need it.",
+      "parentUuid": "7acc5b38_32d490c7",
+      "revId": "d3d410a80b2f301f66e6d72cab8c13929602b5db",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
