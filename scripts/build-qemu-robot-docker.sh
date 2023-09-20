@@ -76,7 +76,6 @@ RUN apt-get update && apt-get install -yy \
     libssl-dev \
     xterm \
     mwm \
-    ssh \
     vim \
     iputils-ping \
     sudo \
@@ -101,13 +100,13 @@ RUN apt-get update && apt-get install -yy \
     xvfb \
     rustc
 
-RUN apt-get update -qqy \
-  && apt-get -qqy --no-install-recommends install firefox \
-  && wget --no-verbose -O /tmp/firefox.tar.bz2 https://download-installer.cdn.mozilla.net/pub/firefox/releases/72.0/linux-x86_64/en-US/firefox-72.0.tar.bz2 \
-  && apt-get -y purge firefox \
-  && tar -C /opt -xjf /tmp/firefox.tar.bz2 \
-  && mv /opt/firefox /opt/firefox-72.0 \
-  && ln -fs /opt/firefox-72.0/firefox /usr/bin/firefox
+#RUN apt-get update -qqy \
+#  && apt-get -qqy --no-install-recommends install firefox \
+#  && wget --no-verbose -O /tmp/firefox.tar.bz2 https://download-installer.cdn.mozilla.net/pub/firefox/releases/72.0/linux-x86_64/en-US/firefox-72.0.tar.bz2 \
+#  && apt-get -y purge firefox \
+#  && tar -C /opt -xjf /tmp/firefox.tar.bz2 \
+#  && mv /opt/firefox /opt/firefox-72.0 \
+#  && ln -fs /opt/firefox-72.0/firefox /usr/bin/firefox
 
 ENV HOME ${HOME}
 
@@ -122,8 +121,6 @@ RUN pip3 install \
     robotframework \
     robotframework-requests \
     robotframework-jsonlibrary \
-    robotframework-sshlibrary \
-    robotframework-scplibrary \
     pysnmp \
     redfish>=3.1.7 \
     beautifulsoup4 --upgrade \
@@ -135,7 +132,6 @@ RUN pip3 install \
     robotframework-seleniumlibrary \
     robotframework-xvfb \
     robotframework-angularjs \
-    scp \
     selenium==3.141.0 \
     urllib3 \
     click \
