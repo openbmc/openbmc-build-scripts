@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5db1ae23_390d2232",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2023-09-21T02:17:50Z",
+      "side": 1,
+      "message": "Looks like there are potentially some clang-format impacts of clang-17.  Will investigate further.",
+      "revId": "c773ccd707cd1a4ed6e71ce877281fcc8de3bed7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
