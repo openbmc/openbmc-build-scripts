@@ -16,6 +16,24 @@
       "message": "Can we merge this ?",
       "revId": "6aad7a37719ef1bcf83cf2f9acc796c83a4c368d",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "17a90262_868221aa",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2023-09-25T12:49:06Z",
+      "side": 1,
+      "message": "Once it has the +2, you can just hit the merge button if you\u0027re ready Rahul.",
+      "parentUuid": "7cdb93ad_971aa697",
+      "revId": "6aad7a37719ef1bcf83cf2f9acc796c83a4c368d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
