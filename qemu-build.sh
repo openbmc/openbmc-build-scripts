@@ -127,6 +127,7 @@ RUN apt-get update && apt-get install -yy --no-install-recommends \
     libslirp-dev \
     make \
     ninja-build \
+    python3-venv \
     python3-yaml \
     iputils-ping
 
