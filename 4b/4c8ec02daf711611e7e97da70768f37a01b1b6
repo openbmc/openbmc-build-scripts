@@ -1,0 +1,7 @@
+Verified+1: OpenBMC CI <openbmcbump-ci@yahoo.com>
+Code-Review+2: Joel Stanley <joel@jms.id.au>
+Submitted-by: Joel Stanley <joel@jms.id.au>
+Submitted-at: Mon, 25 Sep 2023 13:13:48 +0000
+Reviewed-on: https://gerrit.openbmc.org/c/openbmc/openbmc-build-scripts/+/66772
+Project: openbmc/openbmc-build-scripts
+Branch: refs/heads/master
