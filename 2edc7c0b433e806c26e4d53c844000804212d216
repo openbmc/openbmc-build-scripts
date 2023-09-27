@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "579ef2a4_7746bb8d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2023-09-27T15:12:57Z",
+      "side": 1,
+      "message": "See https://gerrit.openbmc.org/c/openbmc/openbmc-build-scripts/+/66673",
+      "revId": "2edc7c0b433e806c26e4d53c844000804212d216",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
