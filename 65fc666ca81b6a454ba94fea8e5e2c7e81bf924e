@@ -16,6 +16,24 @@
       "message": "Is this used or needed?",
       "revId": "65fc666ca81b6a454ba94fea8e5e2c7e81bf924e",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "52af73cb_1529a32c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2023-09-28T13:59:00Z",
+      "side": 1,
+      "message": "I do have a script, based on this, that I utilize to build the new docker containers to host gerrit.openbmc.org. But I\u0027m not sure it\u0027s really upstreamable.",
+      "parentUuid": "ed2e78c2_72e63698",
+      "revId": "65fc666ca81b6a454ba94fea8e5e2c7e81bf924e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
