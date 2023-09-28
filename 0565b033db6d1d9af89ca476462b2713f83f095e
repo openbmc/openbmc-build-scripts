@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "eb659341_0d2f4b42",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2023-09-28T13:07:28Z",
+      "side": 1,
+      "message": "I\u0027m going to submit this since it has been hanging open since April.  I think it is safe to do based on the words in the referenced README.",
+      "revId": "0565b033db6d1d9af89ca476462b2713f83f095e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
