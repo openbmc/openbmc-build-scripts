@@ -1,6 +1,7 @@
 {
   "comments": [
     {
+      "unresolved": true,
       "key": {
         "uuid": "57acd296_dced35fd",
         "filename": "/COMMIT_MSG",
@@ -14,10 +15,10 @@
       "side": 1,
       "message": "Who is planning to use protobuf?  Can those few repositories just use a cmake/meson submodule to pick it up in CI testing?",
       "revId": "3602d7b801e5071618d90afd306d1b8829e9553f",
-      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
-      "unresolved": true
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": true,
       "key": {
         "uuid": "8e41e14f_9cca19ff",
         "filename": "scripts/build-unit-test-docker",
@@ -31,8 +32,8 @@
       "side": 1,
       "message": "Do we have an issue to nanopb to get this fixed?  Please add a #TODO.  We really shouldn\u0027t have to know to fix this up every time the underlying distro upgrades the python version and we have no way to detect it when making a change to this repository, do we?",
       "revId": "3602d7b801e5071618d90afd306d1b8829e9553f",
-      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
-      "unresolved": true
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
-  ]
+  ],
+  "submitRequirementResults": []
 }
