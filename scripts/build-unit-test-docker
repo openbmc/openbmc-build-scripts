@@ -80,7 +80,7 @@ class PackageDef(TypedDict, total=False):
 # Packages to include in image.
 packages = {
     "boost": PackageDef(
-        rev="1.82.0",
+        rev="1.83.0",
         url=(
             lambda pkg, rev: f"https://boostorg.jfrog.io/artifactory/main/release/{rev}/source/{pkg}_{rev.replace('.', '_')}.tar.gz"  # noqa: E501
         ),
@@ -92,7 +92,7 @@ packages = {
                 " && patch -p2 <"
                 " 98f8b1fbd059a35754c2c7b2841769cf8d021272.patch &&"
                 " ./bootstrap.sh"
-                f" --prefix={prefix} --with-libraries=context,coroutine"
+                f" --prefix={prefix} --with-libraries=context,coroutine,url"
             ),
             "./b2",
             f"./b2 install --prefix={prefix}",
