@@ -63,6 +63,7 @@ fi
 
 # Write full list of users to a file
 GERRIT_CI_GROUPS=( \
+        akamai/ci-authorized \
         alibaba/ci-authorized \
         amd/ci-authorized \
         ami/ci-authorized \
