@@ -872,12 +872,9 @@ RUN pip3 install --break-system-packages \
         inflection \
         isort \
         jsonschema \
+        meson==1.2.3 \
         protobuf \
         requests
-
-## Patch meson to fix Clang and C++23 on meson 1.1.1
-RUN pip3 install --break-system-packages \
-        https://github.com/williamspatrick/meson/archive/meson-1.1.1-plus-clang-cpp23.tar.gz
 
 RUN npm install -g \
         eslint@latest eslint-plugin-json@latest \
