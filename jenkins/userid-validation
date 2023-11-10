@@ -70,6 +70,7 @@ GERRIT_CI_GROUPS=( \
         ampere/ci-authorized \
         arm/ci-authorized \
         aspeed/ci-authorized \
+        asus/ci-authorized \
         bytedance/ci-authorized \
         code-construct/ci-authorized \
         depo/ci-authorized \
