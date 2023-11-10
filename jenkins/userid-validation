@@ -84,6 +84,7 @@ GERRIT_CI_GROUPS=( \
         hcl/ci-authorized \
         hpe/ci-authorized \
         ibm/ci-authorized \
+        iei/ci-authorized \
         individual/ci-authorized \
         inspur/ci-authorized \
         intel/ci-authorized \
