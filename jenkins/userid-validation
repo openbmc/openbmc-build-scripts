@@ -72,6 +72,7 @@ GERRIT_CI_GROUPS=( \
         aspeed/ci-authorized \
         asus/ci-authorized \
         bytedance/ci-authorized \
+        celestica/ci-authorized \
         code-construct/ci-authorized \
         depo/ci-authorized \
         erg/ci-authorized \
