@@ -16,6 +16,24 @@
       "message": "George could you comment on the difference between IEI and Inspur? Are they two different companies or should they all be under one CLA?",
       "revId": "6ba1da63a1686ed29fb5b0e26e7533f85ee92ab2",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2cf726df_76aa9e72",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000397
+      },
+      "writtenOn": "2023-11-20T05:49:14Z",
+      "side": 1,
+      "message": "`IEI` operates completely independently as an independent legal person, including business independence, asset independence, personnel independence, financial independence, and organizational structure independence.`Inspur` is only one of the shareholders of `IEI`. They have different CLAs.",
+      "parentUuid": "2a7a0dbf_6fa0e6c9",
+      "revId": "6ba1da63a1686ed29fb5b0e26e7533f85ee92ab2",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
