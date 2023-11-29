@@ -33,6 +33,24 @@
       "message": "Please no, the point is that we know there cannot be users until the API is marked stable. It\u0027s easy though to retrigger CI when the stabilisation patch is merged in libpldm.",
       "revId": "e591dcc2e48bc73284d5b28cfbde8cafccad82e9",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fe70fa63_1bde8692",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2023-11-29T21:19:12Z",
+      "side": 1,
+      "message": "I don’t really understand what the expected sequence is then. Why do we even bother with two commits to libpldm?\n\nMy concern is that:\n- Nobody will review PLDM changes that are failing CI. \n- Nobody will give adequate feedback on an unused libpldm API.\n\nSeems like a chicken-and-egg dilemma.",
+      "parentUuid": "e5281588_e1a99bf0",
+      "revId": "e591dcc2e48bc73284d5b28cfbde8cafccad82e9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
