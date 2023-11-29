@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "44377f89_0b1238c5",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2023-11-29T18:57:45Z",
+      "side": 1,
+      "message": "https://gerrit.openbmc.org/c/openbmc/pldm/+/67050 as an example",
+      "revId": "e591dcc2e48bc73284d5b28cfbde8cafccad82e9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
