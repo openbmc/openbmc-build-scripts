@@ -51,6 +51,24 @@
       "parentUuid": "e5281588_e1a99bf0",
       "revId": "e591dcc2e48bc73284d5b28cfbde8cafccad82e9",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "207cc2cf_bd1ae072",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000009
+      },
+      "writtenOn": "2023-11-29T21:59:25Z",
+      "side": 1,
+      "message": "We break that by asking people to review the PLDM change failing CI. I ask that stabilisation patches include links to patches containing use of the API. I review those patches, and in the process often ask others to review them too.\n\nI appreciate that people instinctively won\u0027t review patches failing CI, but we route around that here by starting conversations via the stabilisation patch to libpldm.",
+      "parentUuid": "fe70fa63_1bde8692",
+      "revId": "e591dcc2e48bc73284d5b28cfbde8cafccad82e9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
