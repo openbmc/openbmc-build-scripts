@@ -898,7 +898,9 @@ class Meson(BuildSystem):
     def configure(self, build_for_testing):
         self.build_for_testing = build_for_testing
         meson_options = {}
-        if os.path.exists("meson_options.txt"):
+        if os.path.exists("meson.options"):
+            meson_options = self._parse_options("meson.options")
+        elif os.path.exists("meson_options.txt"):
             meson_options = self._parse_options("meson_options.txt")
         meson_flags = [
             "-Db_colorout=never",
