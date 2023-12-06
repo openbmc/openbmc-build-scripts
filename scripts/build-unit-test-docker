@@ -159,7 +159,7 @@ packages = {
         ],
     ),
     "json-c/json-c": PackageDef(
-        rev="json-c-0.16-20220414",
+        rev="json-c-0.17-20230812",
         build_type="cmake",
     ),
     # Snapshot from 2019-05-24
