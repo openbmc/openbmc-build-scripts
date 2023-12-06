@@ -167,7 +167,7 @@ packages = {
         build_type="make",
     ),
     "LibVNC/libvncserver": PackageDef(
-        rev="LibVNCServer-0.9.13",
+        rev="LibVNCServer-0.9.14",
         build_type="cmake",
     ),
     "leethomason/tinyxml2": PackageDef(
