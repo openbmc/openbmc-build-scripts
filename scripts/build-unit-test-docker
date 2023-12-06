@@ -162,9 +162,8 @@ packages = {
         rev="json-c-0.17-20230812",
         build_type="cmake",
     ),
-    # Snapshot from 2019-05-24
     "linux-test-project/lcov": PackageDef(
-        rev="v1.15",
+        rev="v1.16",
         build_type="make",
     ),
     "LibVNC/libvncserver": PackageDef(
