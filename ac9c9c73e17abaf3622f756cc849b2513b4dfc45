@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5c09adb7_183c896c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2023-12-07T19:21:05Z",
+      "side": 1,
+      "message": "Does CI still fail if it fixes the files? I assume we\u0027d want it to still fail.",
+      "revId": "ac9c9c73e17abaf3622f756cc849b2513b4dfc45",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
