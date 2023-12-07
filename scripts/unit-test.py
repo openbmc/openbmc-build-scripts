@@ -1039,7 +1039,7 @@ class Meson(BuildSystem):
                 if not os.path.isfile(".openbmc-no-clang"):
                     check_call_cmd("meson", "compile", "-C", build_dir)
                 try:
-                    check_call_cmd("ninja", "-C", build_dir, "clang-tidy")
+                    check_call_cmd("ninja", "-C", build_dir, "clang-tidy-fix")
                 except subprocess.CalledProcessError:
                     check_call_cmd(
                         "git", "-C", CODE_SCAN_DIR, "--no-pager", "diff"
