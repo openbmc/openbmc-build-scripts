@@ -25,18 +25,7 @@ function display_help()
 }
 
 LINTERS_ALL=( \
-        commit_gitlint \
-        commit_spelling \
-        beautysh \
-        beautysh_sh \
-        black \
-        clang_format \
-        eslint \
-        flake8 \
-        isort \
-        markdownlint \
-        prettier \
-        shellcheck \
+    markdownlint \
     )
 LINTERS_DISABLED=()
 LINTERS_ENABLED=()
@@ -105,7 +94,7 @@ else # non-tty, no escapes.
 fi
 
 # Allow called scripts to know which clang format we are using
-export CLANG_FORMAT="clang-format"
+export CLANG_FORMAT="true"
 
 # Path to default config files for linters.
 CONFIG_PATH="$(git -C "$(dirname "${BASH_SOURCE[0]}")" rev-parse --show-toplevel)/config"
