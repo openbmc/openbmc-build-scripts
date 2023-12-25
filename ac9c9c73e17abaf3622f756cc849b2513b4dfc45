@@ -22,6 +22,30 @@
       },
       "revId": "ac9c9c73e17abaf3622f756cc849b2513b4dfc45",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a7d8293b_927a3143",
+        "filename": "scripts/format-code.sh",
+        "patchSetId": 1
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2023-12-25T20:22:10Z",
+      "side": 0,
+      "message": "Ooops.  \n\nhttps://gerrit.openbmc.org/c/openbmc/openbmc-build-scripts/+/68519",
+      "parentUuid": "2f2823d4_4d3339d5",
+      "range": {
+        "startLine": 27,
+        "startChar": 0,
+        "endLine": 40,
+        "endChar": 5
+      },
+      "revId": "ac9c9c73e17abaf3622f756cc849b2513b4dfc45",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
