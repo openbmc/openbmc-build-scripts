@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1950801a_4fe9d89c",
+        "filename": "scripts/format-code.sh",
+        "patchSetId": 3
+      },
+      "lineNbr": 163,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2024-01-02T21:14:06Z",
+      "side": 1,
+      "message": "We probably need an at-exit handler for this?  Everything runs `set -e` so if any of the codespell calls fail you never make it here.",
+      "revId": "ad151a0b5b94d5e4c82368cf89c3415c9e1c53da",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
