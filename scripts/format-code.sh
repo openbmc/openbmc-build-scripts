@@ -147,13 +147,18 @@ LINTER_TYPES+=([commit_spelling]="commit")
 function do_commit_spelling() {
     # Run the codespell with openbmc spcific spellings on the patchset
     echo -n "openbmc-dictionary - misspelling count >> "
-    sed "s/Signed-off-by.*//" "$@" | \
-        codespell -D "${CONFIG_PATH}/openbmc-spelling.txt" -d --count -
+
+    filename="$(mktemp)"
+    git log -1 > $filename
+
+    sed -i "s/Signed-off-by.*//" $filename
+
+    codespell -D "${CONFIG_PATH}/openbmc-spelling.txt" -d --count $filename
 
     # Run the codespell with generic dictionary on the patchset
     echo -n "generic-dictionary - misspelling count >> "
-    sed "s/Signed-off-by.*//" "$@" | \
-        codespell --builtin clear,rare,en-GB_to_en-US -d --count -
+    codespell --builtin clear,rare,en-GB_to_en-US -d --count $filename
+    rm $filename
 }
 
 LINTER_REQUIRE+=([commit_gitlint]="gitlint")
@@ -329,9 +334,8 @@ fi
 
 # Find all the files in the git repository and organize by type.
 declare -A FILES=()
-if [ -e .git/COMMIT_EDITMSG ]; then
-    FILES+=([commit]=".git/COMMIT_EDITMSG")
-fi
+FILES+=([commit]=".git")
+
 while read -r file; do
     ftype="$(get_file_type "$file")"
     FILES+=([$ftype]="$(echo -ne "$file;${FILES[$ftype]:-}")")
