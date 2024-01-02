@@ -329,9 +329,8 @@ fi
 
 # Find all the files in the git repository and organize by type.
 declare -A FILES=()
-if [ -e .git/COMMIT_EDITMSG ]; then
-    FILES+=([commit]=".git/COMMIT_EDITMSG")
-fi
+FILES+=([commit]=".git")
+
 while read -r file; do
     ftype="$(get_file_type "$file")"
     FILES+=([$ftype]="$(echo -ne "$file;${FILES[$ftype]:-}")")
