@@ -16,6 +16,24 @@
       "message": "This isn\u0027t going to work for the current commit_spelling code since it takes $@ and runs codespell against it...\n\nWe should probably never use COMMIT_EDITMSG directly but do some git incantation to extract the commit message from the last commit?",
       "revId": "960c8c61f35fe1c540e57663fff19d30639d0587",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "841ce831_26777ba6",
+        "filename": "scripts/format-code.sh",
+        "patchSetId": 1
+      },
+      "lineNbr": 332,
+      "author": {
+        "id": 1000153
+      },
+      "writtenOn": "2024-01-02T21:08:43Z",
+      "side": 1,
+      "message": "Yep.  Hadn\u0027t looked at the commit spelling code before.  gitlint runs the git incantation internally.\n\nFixed to add the git incantation.",
+      "parentUuid": "17d48bbc_64b083c8",
+      "revId": "960c8c61f35fe1c540e57663fff19d30639d0587",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
