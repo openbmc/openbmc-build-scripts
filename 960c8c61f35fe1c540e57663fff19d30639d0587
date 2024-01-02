@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "17d48bbc_64b083c8",
+        "filename": "scripts/format-code.sh",
+        "patchSetId": 1
+      },
+      "lineNbr": 332,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2024-01-02T18:39:27Z",
+      "side": 1,
+      "message": "This isn\u0027t going to work for the current commit_spelling code since it takes $@ and runs codespell against it...\n\nWe should probably never use COMMIT_EDITMSG directly but do some git incantation to extract the commit message from the last commit?",
+      "revId": "960c8c61f35fe1c540e57663fff19d30639d0587",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
