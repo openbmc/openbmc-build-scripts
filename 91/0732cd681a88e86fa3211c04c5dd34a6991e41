@@ -1,0 +1,9 @@
+Verified+1: OpenBMC CI <openbmcbump-ci@yahoo.com>
+Code-Review+1: Patrick Williams <patrick@stwcx.xyz>
+Code-Review+2: Andrew Geissler <geissonator@yahoo.com>
+Submitted-by: Ed Tanous <ed@tanous.net>
+Submitted-at: Thu, 04 Jan 2024 22:52:46 +0000
+Reviewed-on: https://gerrit.openbmc.org/c/openbmc/openbmc-build-scripts/+/68555
+Comments-Total: 4
+Project: openbmc/openbmc-build-scripts
+Branch: refs/heads/master
