@@ -82,7 +82,7 @@ packages = {
     "boost": PackageDef(
         rev="1.83.0",
         url=(
-            lambda pkg, rev: f"https://boostorg.jfrog.io/artifactory/main/release/{rev}/source/{pkg}_{rev.replace('.', '_')}.tar.gz"  # noqa: E501
+            lambda pkg, rev: f"https://github.com/boostorg/{pkg}/releases/download/{pkg}-{rev}/{pkg}-{rev}.tar.gz"
         ),
         build_type="custom",
         build_steps=[
