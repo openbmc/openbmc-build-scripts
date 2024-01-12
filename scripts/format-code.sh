@@ -153,7 +153,7 @@ trap clean_up_file EXIT
 
 function do_commit_spelling() {
     # Write the commit message to a temporary file
-    git log -1 > "$commit_filename"
+    git log --format='%B' -1 > "$commit_filename"
 
     # Some names or emails appear as false-positive misspellings, remove them
     sed -i "s/Signed-off-by.*//" "$commit_filename"
