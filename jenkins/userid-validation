@@ -97,6 +97,7 @@ GERRIT_CI_GROUPS=( \
         openbmc/ci-authorized \
         pcpartner/ci-authorized \
         phytium/ci-authorized \
+        plexus/ci-authorized \
         quanta/ci-authorized \
         quic/ci-authorized \
         rcs/ci-authorized \
