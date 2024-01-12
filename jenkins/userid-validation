@@ -21,8 +21,8 @@ GERRIT_SSH_CMD=( \
 echo "Checking ${GERRIT_PROJECT}:${GERRIT_BRANCH}:${GERRIT_CHANGE_ID}:${GERRIT_PATCHSET_REVISION}"
 
 # shellcheck disable=2086 # GERRIT_COMMAND is purposefully wordsplit.
-COMMITTER_EMAIL=$(${GERRIT_COMMAND}/a/changes/${GERRIT_PROJECT/\//%2F}~${GERRIT_BRANCH}~${GERRIT_CHANGE_ID}/revisions/${GERRIT_PATCHSET_REVISION}/commit | python3 -c "import sys, json; sys.stdin.read(4); print(json.load(sys.stdin)['committer']['email'])")
-if [ "${COMMITTER_EMAIL}" = "" ]; then
+COMMITTER_NAME=$(${GERRIT_COMMAND}/a/changes/${GERRIT_PROJECT/\//%2F}~${GERRIT_BRANCH}~${GERRIT_CHANGE_ID}/revisions/${GERRIT_PATCHSET_REVISION}/commit | python3 -c "import sys, json; sys.stdin.read(4); print(json.load(sys.stdin)['committer']['name'])")
+if [ "${COMMITTER_NAME}" = "" ]; then
     echo "Unable to find committer."
     "${GERRIT_SSH_CMD[@]}" review \
         "${GERRIT_CHANGE_NUMBER},${GERRIT_PATCHSET_NUMBER}" \
@@ -30,10 +30,13 @@ if [ "${COMMITTER_EMAIL}" = "" ]; then
     exit 1
 fi
 
-#echo "Commit by '${COMMITTER_EMAIL}'"
+# Replace spaces with %20 for REST API
+COMMITTER_NAME=$(echo "${COMMITTER_NAME// /%20}")
+
 # shellcheck disable=2086 # GERRIT_COMMAND is purposefully wordsplit.
-COMMITTER_USERNAME=$(${GERRIT_COMMAND}/a/accounts/${COMMITTER_EMAIL} | python3 -c "import sys, json; sys.stdin.read(4); print(json.load(sys.stdin)['username'])")
-#COMMITTER_USERNAME=`${GERRIT_COMMAND}/a/accounts/${COMMITTER_EMAIL}`
+# shellcheck disable=2276 # REST command has a = in it
+# shellcheck disable=2211
+COMMITTER_USERNAME=$(${GERRIT_COMMAND}/a/accounts/?suggest\&q=${COMMITTER_NAME} |  python3 -c "import sys, json; sys.stdin.read(4); print(json.load(sys.stdin)[0]['username'])")
 echo "USERNAME: $COMMITTER_USERNAME"
 if [ "${COMMITTER_USERNAME}" = "" ]; then
     echo "Unable to determine github user for ${COMMITTER_EMAIL}."
