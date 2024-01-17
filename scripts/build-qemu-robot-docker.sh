@@ -119,7 +119,7 @@ RUN pip3 install \
     retrying \
     websocket-client \
     json2yaml \
-    robotframework \
+    robotframework==6.1.1 \
     robotframework-requests \
     robotframework-jsonlibrary \
     robotframework-sshlibrary \
