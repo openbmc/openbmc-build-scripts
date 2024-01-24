@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "325038d9_b163aa96",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2024-01-24T12:24:36Z",
+      "side": 1,
+      "message": "Paul is in the gagar-in group.  I\u0027ll manually trigger Ok-To-Test.",
+      "revId": "83d69a2ab66f6e7396682e979d1a1ca564a3ddbf",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
