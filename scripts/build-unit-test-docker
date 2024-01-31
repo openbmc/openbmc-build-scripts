@@ -912,6 +912,9 @@ RUN echo "{username} ALL=(ALL) NOPASSWD: ALL" >>/etc/sudoers
 # and data installs
 RUN chown -R {username}:{username} /usr/local/share
 
+# Update library cache
+RUN ldconfig
+
 {proxy_cmd}
 
 RUN /bin/bash
