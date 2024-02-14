@@ -86,6 +86,7 @@ RUN apt-get update && apt-get install -yy \
     expect \
     curl \
     build-essential \
+    libdbus-glib-1-2 \
     libpixman-1-0 \
     libglib2.0-0 \
     sshpass \
