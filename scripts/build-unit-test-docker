@@ -766,10 +766,10 @@ RUN apt-get update && apt-get dist-upgrade -yy && apt-get install -yy \
     autoconf \
     autoconf-archive \
     bison \
-    clang-17 \
-    clang-format-17 \
-    clang-tidy-17 \
-    clang-tools-17 \
+    clang-18 \
+    clang-format-18 \
+    clang-tidy-18 \
+    clang-tools-18 \
     cmake \
     curl \
     dbus \
@@ -837,13 +837,13 @@ RUN update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-13 13 \
 RUN update-alternatives --remove cpp /usr/bin/cpp && \
     update-alternatives --install /usr/bin/cpp cpp /usr/bin/cpp-13 13
 
-RUN update-alternatives --install /usr/bin/clang clang /usr/bin/clang-17 1000 \
-  --slave /usr/bin/clang++ clang++ /usr/bin/clang++-17 \
-  --slave /usr/bin/clang-tidy clang-tidy /usr/bin/clang-tidy-17 \
-  --slave /usr/bin/clang-format clang-format /usr/bin/clang-format-17 \
+RUN update-alternatives --install /usr/bin/clang clang /usr/bin/clang-18 1000 \
+  --slave /usr/bin/clang++ clang++ /usr/bin/clang++-18 \
+  --slave /usr/bin/clang-tidy clang-tidy /usr/bin/clang-tidy-18 \
+  --slave /usr/bin/clang-format clang-format /usr/bin/clang-format-18 \
   --slave /usr/bin/run-clang-tidy run-clang-tidy.py \
-        /usr/bin/run-clang-tidy-17 \
-  --slave /usr/bin/scan-build scan-build /usr/bin/scan-build-17
+        /usr/bin/run-clang-tidy-18 \
+  --slave /usr/bin/scan-build scan-build /usr/bin/scan-build-18
 
 """
 
