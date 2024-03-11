@@ -90,6 +90,7 @@ GERRIT_CI_GROUPS=( \
         rcs/ci-authorized \
         supermicro/ci-authorized \
         tencent/ci-authorized \
+        triple-crown/ci-authorized \
         ufispace/ci-authorized \
         vaisala/ci-authorized \
         wistron/ci-authorized \
