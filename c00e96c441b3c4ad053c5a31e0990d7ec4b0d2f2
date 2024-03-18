@@ -34,6 +34,24 @@
       "parentUuid": "6e8d4d3c_611df528",
       "revId": "c00e96c441b3c4ad053c5a31e0990d7ec4b0d2f2",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8e409558_0aa6c476",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000009
+      },
+      "writtenOn": "2024-03-18T23:56:32Z",
+      "side": 1,
+      "message": "Though, possibly because valgrind will inject its own allocator among other things and we need the debug symbols to backtrace out of them if needed?\n\nProbably worth mentioning the following in the commit message:\n\n\u003e Debuginfod\n\u003e\n\u003e If you are on Ubuntu Jammy (22.04) or later, you do not need to worry about installing debug symbol packages anymore. The Ubuntu project maintains a Debuginfod server, and GDB and other debuginfo-consumer applications support it out of the box. For more information about it, please refer to this page.\n\u003e\n\u003e If you are on Ubuntu Noble (24.04) or later, Debuginfod is the preferred method as the following information is outdated and, due to a new format for the sources.list entries being moved to the deb822 format. \n\nhttps://wiki.ubuntu.com/Debug%20Symbol%20Packages#Debuginfod",
+      "parentUuid": "cbc2c7b1_076092bb",
+      "revId": "c00e96c441b3c4ad053c5a31e0990d7ec4b0d2f2",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
