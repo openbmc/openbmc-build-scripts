@@ -16,6 +16,23 @@
       "message": "Change looks good to me.",
       "revId": "82b56fa755469c81c48b1b2f48eeb4087c8423ad",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4592a40a_a60da606",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000411
+      },
+      "writtenOn": "2024-03-19T10:19:28Z",
+      "side": 1,
+      "message": "Build is failing. Please resolve.",
+      "revId": "82b56fa755469c81c48b1b2f48eeb4087c8423ad",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
