@@ -33,6 +33,24 @@
       "message": "Build is failing. Please resolve.",
       "revId": "82b56fa755469c81c48b1b2f48eeb4087c8423ad",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f150208e_257122a7",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2024-03-19T15:43:19Z",
+      "side": 1,
+      "message": "Not sure why it\u0027s not honoring the \u0027\u0027\u0027 around the copy/pasted text but to get this through quick, lets just make it happy by wrapping the commit msg text.",
+      "parentUuid": "4592a40a_a60da606",
+      "revId": "82b56fa755469c81c48b1b2f48eeb4087c8423ad",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
