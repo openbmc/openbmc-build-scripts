@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "66c39770_710c1539",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 1000020
+      },
+      "writtenOn": "2024-03-19T15:33:53Z",
+      "side": 1,
+      "message": "Can you add a bit of the commit history here: \n\nSwitched from valgrind-dbg to valgrind-dbgsym\nhttps://github.com/openbmc/openbmc-build-scripts/commit/eef3c37dcd49694693b2166c0454aca563543057\n\n\nhttps://github.com/openbmc/openbmc-build-scripts/commit/b1da12722a7a8e8cb95be004e0f0aa4b22094001\nadded valgrind-dbg",
+      "revId": "dd143672a3a261cfafa8552106a54f3ecf09ff18",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "22c7948d_b06a8436",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000020
+      },
+      "writtenOn": "2024-03-19T15:33:53Z",
+      "side": 1,
+      "message": "Yeah, saw this on https://gerrit.openbmc.org/c/openbmc/webui-vue/+/66972\n\nI am okay removing based on the original commit reasoning.",
+      "revId": "dd143672a3a261cfafa8552106a54f3ecf09ff18",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
