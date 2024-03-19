@@ -33,6 +33,23 @@
       "message": "Yeah, saw this on https://gerrit.openbmc.org/c/openbmc/webui-vue/+/66972\n\nI am okay removing based on the original commit reasoning.",
       "revId": "dd143672a3a261cfafa8552106a54f3ecf09ff18",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e8a340b2_0f7242a5",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000020
+      },
+      "writtenOn": "2024-03-19T15:36:17Z",
+      "side": 1,
+      "message": "isn\u0027t https://gerrit.openbmc.org/c/openbmc/openbmc-build-scripts/+/70095 the same commit?",
+      "revId": "dd143672a3a261cfafa8552106a54f3ecf09ff18",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
