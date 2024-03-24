@@ -816,6 +816,7 @@ RUN apt-get update && apt-get dist-upgrade -yy && apt-get install -yy \
     python3-git \
     python3-mako \
     python3-pip \
+    python3-protobuf \
     python3-setuptools \
     python3-socks \
     python3-yaml \
@@ -866,7 +867,6 @@ RUN pip3 install --break-system-packages \
         isort \
         jsonschema \
         meson==1.3.0 \
-        protobuf \
         requests
 
 RUN npm install -g \
