@@ -20,7 +20,7 @@ GERRIT_SSH_CMD=( \
 
 echo "Checking ${GERRIT_PROJECT}:${GERRIT_BRANCH}:${GERRIT_CHANGE_ID}:${GERRIT_PATCHSET_REVISION}"
 
-COMMITTER_USERNAME=$("${GERRIT_SSH_CMD[@]}" query "${GERRIT_CHANGE_NUMBER}" --format json | jq -r '.owner.username | select (. != null )')
+COMMITTER_USERNAME=$("${GERRIT_SSH_CMD[@]}" query "${GERRIT_CHANGE_NUMBER}" --current-patch-set --format json | jq -r '.currentPatchSet.uploader.username | select (. != null )')
 echo "USERNAME: $COMMITTER_USERNAME"
 if [ "${COMMITTER_USERNAME}" = "" ]; then
     echo "Unable to determine github user for ${COMMITTER_EMAIL}."
