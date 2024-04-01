@@ -16,6 +16,23 @@
       "message": "https://jenkins.openbmc.org/job/CI-MISC/job/openbmc-userid-validation/103753/console\n\nSeems to do what I expect when AndrewG cherry-picked it into the Jenkins config.",
       "revId": "ac912df88c8c6cbd57a3e813047c4c0a112fd76d",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "58aa4924_d33129ab",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2024-04-01T17:20:18Z",
+      "side": 1,
+      "message": "We\u0027ll let it go for a day to see if anyone else has a comment on it, then I\u0027ll merge (and remove the cherry-pick from the jenkins job).",
+      "revId": "ac912df88c8c6cbd57a3e813047c4c0a112fd76d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
