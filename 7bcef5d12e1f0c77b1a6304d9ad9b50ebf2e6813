@@ -16,6 +16,24 @@
       "message": "Are you sending patches upstream for this also?  Looking at poky master-next, I don\u0027t see them having updated yet.  I know that 1.61 has a fix for a security issue.",
       "revId": "7bcef5d12e1f0c77b1a6304d9ad9b50ebf2e6813",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5c6b4db5_7831f071",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000153
+      },
+      "writtenOn": "2024-04-04T21:55:41Z",
+      "side": 1,
+      "message": "If I\u0027m honest, I didn\u0027t even look, and assumed it had already been patched.  Give me a little bit and I\u0027ll get it submitted;  I gotta get my meta-openembedded re-synced with my new email/desktop.",
+      "parentUuid": "835eb766_39a5be24",
+      "revId": "7bcef5d12e1f0c77b1a6304d9ad9b50ebf2e6813",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
