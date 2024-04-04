@@ -135,7 +135,7 @@ packages = {
         config_flags=["-DTHREADS_PREFER_PTHREAD_FLAG=ON"],
     ),
     "nghttp2/nghttp2": PackageDef(
-        rev="v1.57.0",
+        rev="v1.61.0",
         build_type="cmake",
         config_env=["CXXFLAGS=-std=c++20"],
         config_flags=[
