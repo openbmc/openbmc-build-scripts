@@ -433,8 +433,9 @@ FROM {docker_base_img_name}
         #   This section is locked because we are modifying the PackageDef.
         Package.lock.acquire()
         for line in lookup.split("\n"):
-            if f"refs/heads/{branch}" in line:
+            if re.fullmatch(f".*{branch}$",line.strip()):
                 self.pkg_def["rev"] = line.split()[0]
+                break
             elif (
                 "refs/heads/master" in line or "refs/heads/main" in line
             ) and "rev" not in self.pkg_def:
