@@ -16,6 +16,24 @@
       "message": "I wonder if we should do something here to ensure a more direct match?  I think the annoying thing is that there is some random whitespace immediately after the branch name in the `ls-remote` output?",
       "revId": "3714a073e17e849449d9850d53b38df948a6d6dd",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ca365d72_3608b2e8",
+        "filename": "scripts/build-unit-test-docker",
+        "patchSetId": 2
+      },
+      "lineNbr": 436,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2024-04-15T17:15:43Z",
+      "side": 1,
+      "message": "Yeah, probably, I doubt anyone is using the current \"feature\" where you can just put an abbreviated branch name and it will match with the last branch that contains that string. Figured I\u0027d put this quick fix up to see if you knew of any use cases. I can rework this to do a specific match check (may be a few days).",
+      "parentUuid": "56e76c85_2338094a",
+      "revId": "3714a073e17e849449d9850d53b38df948a6d6dd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
