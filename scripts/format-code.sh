@@ -197,14 +197,15 @@ function do_black() {
     black -l 79 "$@"
 }
 
-LINTER_REQUIRE+=([eslint]="eslint;.eslintrc.json;${CONFIG_PATH}/eslint-global-config.json")
-LINTER_IGNORE+=([eslint]=".eslintignore")
+LINTER_REQUIRE+=([eslint]="eslint;eslint.config.mjs;${CONFIG_PATH}/eslint.config.mjs")
+LINTER_IGNORE+=([eslint]=".eslintIgnore")
 LINTER_TYPES+=([eslint]="json")
 function do_eslint() {
-    eslint --no-eslintrc -c "${LINTER_CONFIG[eslint]}" \
-        --ext .json --format=stylish \
-        --resolve-plugins-relative-to /usr/local/lib/node_modules \
-        --no-error-on-unmatched-pattern "$@"
+    eslint --no-config-lookup --config "${LINTER_CONFIG[eslint]}" \
+            --format=stylish \
+            --color \
+            --report-unused-disable-directives \
+            --no-error-on-unmatched-pattern "$@"
 }
 
 LINTER_REQUIRE+=([flake8]="flake8")
