@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "43907e68_a7bcbd89",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2024-05-02T19:55:59Z",
+      "side": 1,
+      "message": "I found some doc on this up at https://sh.readthedocs.io/en/latest/sections/special_arguments.html#err-to-out (I hadn\u0027t heard of it)",
+      "revId": "88dd792924df8d1173404f83ecda7ccf6fa6af38",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
