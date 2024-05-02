@@ -632,6 +632,7 @@ class Docker:
                     pkg + ":", line, end="", file=sys.stderr, flush=True
                 )
             ),
+            _err_to_out=True,
         )
 
 
