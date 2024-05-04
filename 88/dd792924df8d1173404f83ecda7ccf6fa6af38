@@ -1,0 +1,9 @@
+Code-Review+2: Patrick Williams <patrick@stwcx.xyz>
+Code-Review+1: Andrew Geissler <geissonator@yahoo.com>
+Verified+1: OpenBMC CI <openbmcbump-ci@yahoo.com>
+Submitted-by: Jonathan Doman <jonathan.doman@intel.com>
+Submitted-at: Sat, 04 May 2024 01:16:02 +0000
+Reviewed-on: https://gerrit.openbmc.org/c/openbmc/openbmc-build-scripts/+/71234
+Comments-Total: 1
+Project: openbmc/openbmc-build-scripts
+Branch: refs/heads/master
