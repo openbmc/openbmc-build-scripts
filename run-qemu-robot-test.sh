@@ -22,7 +22,8 @@
 #                       login.
 #  DOCKER_IMG_NAME    = Defaults to openbmc/ubuntu-robot-qemu, the name the
 #                       Docker image will be tagged with when built.
-#  OBMC_BUILD_DIR     = Defaults to /tmp/openbmc/build, the path to the
+#  OBMC_QEMU_SCRIPTS_DIR   = Defaults to /tmp/openbmc/scripts
+#  OBMC_QEMU_BUILD_DIR     = Defaults to /tmp/openbmc/build, the path to the
 #                       directory where the UPSTREAM_WORKSPACE build files will
 #                       be mounted to. Since the build containers have been
 #                       changed to use /tmp as the parent directory for their
@@ -60,7 +61,8 @@ QEMU_RUN_TIMER=${QEMU_RUN_TIMER:-300}
 QEMU_LOGIN_TIMER=${QEMU_LOGIN_TIMER:-180}
 WORKSPACE=${WORKSPACE:-${HOME}/${RANDOM}${RANDOM}}
 DOCKER_IMG_NAME=${DOCKER_IMG_NAME:-openbmc/ubuntu-robot-qemu}
-OBMC_BUILD_DIR=${OBMC_BUILD_DIR:-/tmp/openbmc/build}
+OBMC_QEMU_BUILD_DIR=${OBMC_QEMU_BUILD_DIR:-/tmp/openbmc/build}
+OBMC_QEMU_SCRIPTS_DIR=${OBMC_QEMU_SCRIPTS_DIR:-/tmp/openbmc/scripts}
 UPSTREAM_WORKSPACE=${UPSTREAM_WORKSPACE:-${1}}
 LAUNCH=${LAUNCH:-local}
 DEFAULT_MACHINE=versatilepb
@@ -107,26 +109,30 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 # Copy the scripts to start and verify QEMU in the workspace
 cp "$DIR"/scripts/boot-qemu* "${UPSTREAM_WORKSPACE}"
+ls -al "${UPSTREAM_WORKSPACE}"/boot-qemu*
 
 ################################################################################
 
 if [[ ${LAUNCH} == "local" ]]; then
-
     # Start QEMU docker instance
     # root in docker required to open up the https/ssh ports
+#            --rm \
+echo "DEBUG- bind mount @ --volume "${UPSTREAM_WORKSPACE}:${OBMC_QEMU_BUILD_DIR}:ro""
+
     obmc_qemu_docker=$(docker run --detach \
-            --rm \
             --user root \
-            --env HOME="${OBMC_BUILD_DIR}" \
+            --env HOME="${OBMC_QEMU_BUILD_DIR}" \
+            --env OBMC_QEMU_BUILD_DIR="${OBMC_QEMU_BUILD_DIR}" \
+            --env OBMC_QEMU_SCRIPTS_DIR="${OBMC_QEMU_SCRIPTS_DIR}" \
             --env QEMU_RUN_TIMER="${QEMU_RUN_TIMER}" \
             --env QEMU_ARCH="${QEMU_ARCH}" \
             --env QEMU_BIN="${QEMU_BIN}" \
             --env MACHINE="${MACHINE}" \
             --env DEFAULT_IMAGE_LOC="${DEFAULT_IMAGE_LOC}" \
-            --workdir "${OBMC_BUILD_DIR}"           \
-            --volume "${UPSTREAM_WORKSPACE}:${OBMC_BUILD_DIR}:ro" \
+            --workdir "${OBMC_QEMU_BUILD_DIR}"           \
+            --volume "${UPSTREAM_WORKSPACE}:${OBMC_QEMU_BUILD_DIR}:ro" \
             --tty \
-        "${DOCKER_IMG_NAME}" "${OBMC_BUILD_DIR}"/boot-qemu-test.exp)
+        "${DOCKER_IMG_NAME}" /usr/bin/python3 "${OBMC_QEMU_BUILD_DIR}"/boot-qemu-test.py)
 
     # We can use default ports because we're going to have the 2
     # docker instances talk over their private network
