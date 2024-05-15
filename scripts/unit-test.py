@@ -992,15 +992,14 @@ class Meson(BuildSystem):
                         "build",
                         "--setup",
                         setup,
-                        "-t",
-                        "0",
+                        "__likely_not_a_test__",
                     ],
                     stderr=subprocess.STDOUT,
                 )
         except CalledProcessError as e:
             output = e.output
         output = output.decode("utf-8")
-        return not re.search("Test setup .* not found from project", output)
+        return not re.search("Unknown test setup '[^']+'[.]", output)
 
     def _maybe_valgrind(self):
         """
