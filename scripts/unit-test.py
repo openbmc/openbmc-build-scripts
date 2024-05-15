@@ -992,8 +992,7 @@ class Meson(BuildSystem):
                         "build",
                         "--setup",
                         setup,
-                        "-t",
-                        "0",
+                        "__likely_not_a_test__",
                     ],
                     stderr=subprocess.STDOUT,
                 )
