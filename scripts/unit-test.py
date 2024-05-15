@@ -991,7 +991,7 @@ class Meson(BuildSystem):
                         "-C",
                         "build",
                         "--setup",
-                        setup,
+                        "{}:{}".format(self.package, setup),
                         "__likely_not_a_test__",
                     ],
                     stderr=subprocess.STDOUT,
@@ -1021,7 +1021,7 @@ class Meson(BuildSystem):
                     "build",
                     "--print-errorlogs",
                     "--setup",
-                    "valgrind",
+                    "{}:valgrind".format(self.package),
                 )
             else:
                 check_call_cmd(
