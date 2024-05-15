@@ -991,7 +991,7 @@ class Meson(BuildSystem):
                         "-C",
                         "build",
                         "--setup",
-                        setup,
+                        "{}:{}".format(self.package, setup),
                         "-t",
                         "0",
                     ],
@@ -1022,7 +1022,7 @@ class Meson(BuildSystem):
                     "build",
                     "--print-errorlogs",
                     "--setup",
-                    "valgrind",
+                    "{}:valgrind".format(self.package),
                 )
             else:
                 check_call_cmd(
