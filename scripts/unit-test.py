@@ -8,6 +8,7 @@ prior to executing its unit tests.
 """
 
 import argparse
+import json
 import multiprocessing
 import os
 import platform
@@ -804,6 +805,14 @@ class CMake(BuildSystem):
 
 
 class Meson(BuildSystem):
+    @staticmethod
+    def _project_name(path):
+        doc = subprocess.check_output(
+            ["meson", "introspect", "--projectinfo", path],
+            stderr=subprocess.STDOUT,
+        ).decode("utf-8")
+        return json.loads(doc)["descriptive_name"]
+
     def __init__(self, package=None, path=None):
         super(Meson, self).__init__(package, path)
 
@@ -941,6 +950,8 @@ class Meson(BuildSystem):
         except Exception:
             shutil.rmtree("build", ignore_errors=True)
             check_call_cmd("meson", "setup", "build", *meson_flags)
+
+        self.package = Meson._project_name("build")
 
     def build(self):
         check_call_cmd("ninja", "-C", "build")
