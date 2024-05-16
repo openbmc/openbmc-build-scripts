@@ -991,7 +991,7 @@ class Meson(BuildSystem):
                         "-C",
                         "build",
                         "--setup",
-                        setup,
+                        "{}:{}".format(self.package, setup),
                         "__likely_not_a_test__",
                     ],
                     stderr=subprocess.STDOUT,
@@ -999,7 +999,7 @@ class Meson(BuildSystem):
         except CalledProcessError as e:
             output = e.output
         output = output.decode("utf-8")
-        return not re.search("Test setup .* not found from project", output)
+        return not re.search("Unknown test setup '[^']+'[.]", output)
 
     def _maybe_valgrind(self):
         """
@@ -1021,7 +1021,7 @@ class Meson(BuildSystem):
                     "build",
                     "--print-errorlogs",
                     "--setup",
-                    "valgrind",
+                    "{}:valgrind".format(self.package),
                 )
             else:
                 check_call_cmd(
