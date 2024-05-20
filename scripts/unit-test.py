@@ -1033,7 +1033,7 @@ class Meson(BuildSystem):
                     "build",
                     "--print-errorlogs",
                     "--wrapper",
-                    "valgrind",
+                    "valgrind --error-exitcode=1",
                 )
         except CalledProcessError:
             raise Exception("Valgrind tests failed")
