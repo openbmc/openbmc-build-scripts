@@ -263,6 +263,11 @@ elif [[ "${distro}" == ubuntu ]]; then
   ENV LANGUAGE en_US:en
   ENV LC_ALL en_US.UTF-8
 
+  # Latest Ubuntu added a default user (ubuntu), which takes 1000 UID.
+  # If the user calling this build script happens to also have a UID of 1000
+  # then the container no longer will work. Delete the new ubuntu user
+  # so there is no conflict
+  RUN userdel -r ubuntu
   RUN grep -q ${GROUPS[0]} /etc/group || groupadd -g ${GROUPS[0]} ${USER}
   RUN grep -q ${UID} /etc/passwd || useradd -d ${HOME} -m -u ${UID} -g ${GROUPS[0]} ${USER}
 
