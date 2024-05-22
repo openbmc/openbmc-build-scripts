@@ -267,7 +267,7 @@ elif [[ "${distro}" == ubuntu ]]; then
   # If the user calling this build script happens to also have a UID of 1000
   # then the container no longer will work. Delete the new ubuntu user
   # so there is no conflict
-  RUN userdel -r ubuntu
+  RUN if id ubuntu > /dev/null 2>&1; then userdel -r ubuntu > /dev/null 2>&1; fi
   RUN grep -q ${GROUPS[0]} /etc/group || groupadd -g ${GROUPS[0]} ${USER}
   RUN grep -q ${UID} /etc/passwd || useradd -d ${HOME} -m -u ${UID} -g ${GROUPS[0]} ${USER}
 
