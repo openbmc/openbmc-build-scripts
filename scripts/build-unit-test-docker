@@ -159,7 +159,7 @@ packages = {
         build_type="cmake",
     ),
     "linux-test-project/lcov": PackageDef(
-        rev="v1.16",
+        rev="v2.0",
         build_type="make",
     ),
     "LibVNC/libvncserver": PackageDef(
@@ -784,8 +784,10 @@ RUN apt-get update && apt-get dist-upgrade -yy && apt-get install -yy \
     libaudit-dev \
     libc6-dbg \
     libc6-dev \
+    libcapture-tiny-perl \
     libconfig++-dev \
     libcryptsetup-dev \
+    libdatetime-perl \
     libdbus-1-dev \
     libevdev-dev \
     libgpiod-dev \
