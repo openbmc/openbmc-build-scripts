@@ -957,7 +957,17 @@ class Meson(BuildSystem):
         check_call_cmd("ninja", "-C", "build")
 
     def install(self):
-        check_call_cmd("sudo", "-n", "--", "ninja", "-C", "build", "install")
+        check_call_cmd(
+            "sudo",
+            "-n",
+            "--",
+            "meson",
+            "install",
+            "-C",
+            "build",
+            "--tags",
+            "runtime",
+        )
 
     def test(self):
         # It is useful to check various settings of the meson.build file
