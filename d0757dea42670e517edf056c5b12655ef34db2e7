@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "177d414e_db457b13",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 1000009
+      },
+      "writtenOn": "2024-05-27T06:53:22Z",
+      "side": 1,
+      "message": "Is there any documentation we can link to about the incompatibility?",
+      "revId": "d0757dea42670e517edf056c5b12655ef34db2e7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
