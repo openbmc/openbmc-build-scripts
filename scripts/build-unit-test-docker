@@ -788,6 +788,7 @@ RUN apt-get update && apt-get dist-upgrade -yy && apt-get install -yy \
     libcryptsetup-dev \
     libdbus-1-dev \
     libevdev-dev \
+    libgmp-dev \
     libgpiod-dev \
     libi2c-dev \
     libjpeg-dev \
@@ -823,6 +824,7 @@ RUN apt-get update && apt-get dist-upgrade -yy && apt-get install -yy \
     python3-yaml \
     rsync \
     shellcheck \
+    socat \
     sudo \
     systemd \
     valgrind \
