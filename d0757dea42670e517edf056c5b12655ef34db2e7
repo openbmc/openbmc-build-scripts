@@ -16,6 +16,29 @@
       "message": "Is there any documentation we can link to about the incompatibility?",
       "revId": "d0757dea42670e517edf056c5b12655ef34db2e7",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "361e6515_9e9275a5",
+        "filename": "scripts/build-unit-test-docker",
+        "patchSetId": 1
+      },
+      "lineNbr": 874,
+      "author": {
+        "id": 1000009
+      },
+      "writtenOn": "2024-05-27T06:59:22Z",
+      "side": 1,
+      "message": "Is there a less-specific constraint we can use here? Is it using semver? This will prevent us from picking up bug fixes and backwards compatible features if so, right?",
+      "range": {
+        "startLine": 874,
+        "startChar": 42,
+        "endLine": 874,
+        "endChar": 48
+      },
+      "revId": "d0757dea42670e517edf056c5b12655ef34db2e7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
