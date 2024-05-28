@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "be0e1697_da903b19",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2024-05-28T13:20:16Z",
+      "side": 1,
+      "message": "There was some discord discussion on the fail and https://github.com/linux-test-project/lcov/issues/192 was pointed to as the potential culprit. Will need a lcov level with that fix.",
+      "revId": "a35521a3aecc08fcca714ade479440e12f59efaa",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
