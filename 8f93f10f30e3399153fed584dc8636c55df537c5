@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "052bf5ce_dfca82f0",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2024-05-28T13:23:41Z",
+      "side": 1,
+      "message": "For ease of browsing git history, please put the package names in the header. (\"Add libgmp-dev and socat\u0027",
+      "range": {
+        "startLine": 7,
+        "startChar": 28,
+        "endLine": 7,
+        "endChar": 40
+      },
+      "revId": "8f93f10f30e3399153fed584dc8636c55df537c5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b3fa908c_8a6dcaec",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2024-05-28T13:23:41Z",
+      "side": 1,
+      "message": "Our general policy is to not add packages that the upstream openbmc software is not using so you need to add an argument on why adding these packages is a good thing to do.",
+      "revId": "8f93f10f30e3399153fed584dc8636c55df537c5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
