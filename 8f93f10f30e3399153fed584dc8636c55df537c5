@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "6f676883_88ea4dcc",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2024-05-28T13:36:03Z",
+      "side": 1,
+      "message": "And please put into two different commits with rationale.\n\nThe `socat` one seems more easily accepted.",
+      "parentUuid": "052bf5ce_dfca82f0",
+      "range": {
+        "startLine": 7,
+        "startChar": 28,
+        "endLine": 7,
+        "endChar": 40
+      },
+      "revId": "8f93f10f30e3399153fed584dc8636c55df537c5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "b3fa908c_8a6dcaec",
         "filename": "/COMMIT_MSG",
         "patchSetId": 4
