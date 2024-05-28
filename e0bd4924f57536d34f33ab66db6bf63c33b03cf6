@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ca105a9f_7636f9d1",
+        "filename": "scripts/unit-test.py",
+        "patchSetId": 6
+      },
+      "lineNbr": 964,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2024-05-28T13:39:54Z",
+      "side": 1,
+      "message": "Why do we need to call meson here but we do `ninja` ok on line 957?",
+      "revId": "e0bd4924f57536d34f33ab66db6bf63c33b03cf6",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "17b20a89_a87105cb",
+        "filename": "scripts/unit-test.py",
+        "patchSetId": 6
+      },
+      "lineNbr": 969,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2024-05-28T13:39:54Z",
+      "side": 1,
+      "message": "I\u0027m failing to understand the connection between changing this and the commit message.",
+      "range": {
+        "startLine": 968,
+        "startChar": 0,
+        "endLine": 969,
+        "endChar": 22
+      },
+      "revId": "e0bd4924f57536d34f33ab66db6bf63c33b03cf6",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
