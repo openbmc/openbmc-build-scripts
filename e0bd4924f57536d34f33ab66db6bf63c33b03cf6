@@ -20,6 +20,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "2a8f23b1_24301dc3",
+        "filename": "scripts/unit-test.py",
+        "patchSetId": 6
+      },
+      "lineNbr": 964,
+      "author": {
+        "id": 1002091
+      },
+      "writtenOn": "2024-05-29T08:29:09Z",
+      "side": 1,
+      "message": "I replied here: https://gerrit.openbmc.org/c/openbmc/openbmc-build-scripts/+/71635/comment/17b20a89_a87105cb/",
+      "parentUuid": "ca105a9f_7636f9d1",
+      "revId": "e0bd4924f57536d34f33ab66db6bf63c33b03cf6",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "17b20a89_a87105cb",
         "filename": "scripts/unit-test.py",
         "patchSetId": 6
@@ -31,6 +49,30 @@
       "writtenOn": "2024-05-28T13:39:54Z",
       "side": 1,
       "message": "I\u0027m failing to understand the connection between changing this and the commit message.",
+      "range": {
+        "startLine": 968,
+        "startChar": 0,
+        "endLine": 969,
+        "endChar": 22
+      },
+      "revId": "e0bd4924f57536d34f33ab66db6bf63c33b03cf6",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c7fd4a37_084b13ce",
+        "filename": "scripts/unit-test.py",
+        "patchSetId": 6
+      },
+      "lineNbr": 969,
+      "author": {
+        "id": 1002091
+      },
+      "writtenOn": "2024-05-29T08:29:09Z",
+      "side": 1,
+      "message": "When subproject is installed with main project (first build), in the second build it is not listed to build again and during the main project compilation the are missing headers from subroject.\n\nI had to find a way to exclude subprojects from installing. I choose here meson bacause meson has command-line command: `--skip-subproject`  (and install() is the method of the class Meson). However, there is still ninja in the backend.\nBetter solution is to skip dev files only (\\*.a and \\*.h). To achieve this I use `--tags runtime` instead.",
+      "parentUuid": "17b20a89_a87105cb",
       "range": {
         "startLine": 968,
         "startChar": 0,
