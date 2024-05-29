@@ -34,6 +34,24 @@
       "parentUuid": "be0e1697_da903b19",
       "revId": "a35521a3aecc08fcca714ade479440e12f59efaa",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9ea1fdc3_e3355725",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1002091
+      },
+      "writtenOn": "2024-05-29T08:39:30Z",
+      "side": 1,
+      "message": "lcov v2.1\nwe get the same error:\n`geninfo: ERROR: (inconsistent) mismatched end line for _ZN22Context_RunSimple_Test8TestBodyEv at /data0/jenkins/workspace/CI-MISC/ci-openbmc-build-scripts/sdbusplus/test/async/context.cpp:31: 31 -\u003e 34`\nCan I introduce error suppression here?",
+      "parentUuid": "9e19d963_fe630949",
+      "revId": "a35521a3aecc08fcca714ade479440e12f59efaa",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
