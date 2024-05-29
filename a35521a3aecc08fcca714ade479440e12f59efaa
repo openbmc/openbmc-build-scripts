@@ -16,6 +16,24 @@
       "message": "There was some discord discussion on the fail and https://github.com/linux-test-project/lcov/issues/192 was pointed to as the potential culprit. Will need a lcov level with that fix.",
       "revId": "a35521a3aecc08fcca714ade479440e12f59efaa",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9e19d963_fe630949",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1002091
+      },
+      "writtenOn": "2024-05-29T07:10:15Z",
+      "side": 1,
+      "message": "Yes, I\u0027m in this discussion. Issues in lcov repo shows that this is not a bug in lcov, so there will be no fix for that. Here are mentioned possible solutions: https://github.com/linux-test-project/lcov/issues/238#issuecomment-1709020564 (mostly - ignoring these errors).\nBut I will give a try with the newest lcov version (2.1)",
+      "parentUuid": "be0e1697_da903b19",
+      "revId": "a35521a3aecc08fcca714ade479440e12f59efaa",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
