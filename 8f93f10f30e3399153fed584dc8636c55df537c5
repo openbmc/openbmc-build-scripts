@@ -48,6 +48,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a1ef1f47_ad730387",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1002091
+      },
+      "writtenOn": "2024-05-29T09:21:27Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "6f676883_88ea4dcc",
+      "range": {
+        "startLine": 7,
+        "startChar": 28,
+        "endLine": 7,
+        "endChar": 40
+      },
+      "revId": "8f93f10f30e3399153fed584dc8636c55df537c5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b3fa908c_8a6dcaec",
@@ -61,6 +85,24 @@
       "writtenOn": "2024-05-28T13:23:41Z",
       "side": 1,
       "message": "Our general policy is to not add packages that the upstream openbmc software is not using so you need to add an argument on why adding these packages is a good thing to do.",
+      "revId": "8f93f10f30e3399153fed584dc8636c55df537c5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a2286584_ab4b122d",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1002091
+      },
+      "writtenOn": "2024-05-29T09:21:27Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "b3fa908c_8a6dcaec",
       "revId": "8f93f10f30e3399153fed584dc8636c55df537c5",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
