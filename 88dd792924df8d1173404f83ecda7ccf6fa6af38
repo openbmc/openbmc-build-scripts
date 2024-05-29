@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7cf5e378_eca9e643",
+        "filename": "scripts/boot-qemu-test.exp",
+        "patchSetId": 1
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2024-05-29T21:57:38Z",
+      "side": 0,
+      "message": "I assume this shell script should be removed also since it is now incorporated into your python script?",
+      "revId": "88dd792924df8d1173404f83ecda7ccf6fa6af38",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
