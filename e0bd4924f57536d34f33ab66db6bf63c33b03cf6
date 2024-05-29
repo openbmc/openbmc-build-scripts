@@ -81,6 +81,30 @@
       },
       "revId": "e0bd4924f57536d34f33ab66db6bf63c33b03cf6",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5c717cc4_9d443df0",
+        "filename": "scripts/unit-test.py",
+        "patchSetId": 6
+      },
+      "lineNbr": 969,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2024-05-29T21:40:03Z",
+      "side": 1,
+      "message": "What is \"the second build\"?\n\nAfter reading the manual (https://mesonbuild.com/Installing.html#installation-tags), I\u0027m not convinced `--tags runtime` is appropriate.  First, that means we\u0027re not testing the install in the same way that we\u0027ll eventually be installing for bitbake.  Second, we miss out on non-executable artifacts like files that get installed into `datadir`.  These are required for some subprojects to be useful by other repositories (such as phosphor-dbus-interfaces installing to `datadir` and consumed by phosphor-logging).",
+      "parentUuid": "c7fd4a37_084b13ce",
+      "range": {
+        "startLine": 968,
+        "startChar": 0,
+        "endLine": 969,
+        "endChar": 22
+      },
+      "revId": "e0bd4924f57536d34f33ab66db6bf63c33b03cf6",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
