@@ -13,83 +13,94 @@ import re
 import sys
 import time
 import subprocess
-from sh import awk
-from sh import cp
-from sh import date
-from sh import mktemp
+import sh
 from sh import rm
-from sh import truncate
 
-try;
-    QEMU_BIN=os.environ[[QEMU_BIN])
+try:
+    HOME=os.environ['HOME']
 except Exception as e:
     print(e)
+    sys.exit("HOME not defined")
 
-try;
-    MACHINE=os.environ[[MACHINE])
+try:
+    QEMU_BIN=os.environ['QEMU_BIN']
 except Exception as e:
     print(e)
+    sys.exit("QEMU_BIN not defined")
+
+try:
+    MACHINE=os.environ['MACHINE']
+except Exception as e:
+    print(e)
+    sys.exit("MACHINE not defined")
 
 # Create docker run args and qemu images
-def docker_pre_run();
-    # Grab the container's IP address at the end of the /etc/hosts file
-    IP=str(awk(["END{print $1}", "/etc/hosts"]))
-    IP=IP.strip()
-    m=re.match("\d+\.\d+\.\d+\.\d+", IP)
-    #print("m="+str(m))
+# Grab the container's IP address at the end of the /etc/hosts file
+IP=str(sh.awk(["END{print $1}", "/etc/hosts"]))
+IP=IP.rstrip()
+m=re.match("\d+\.\d+\.\d+\.\d+", IP)
+#print("m="+str(m))
 
-    print("PID=" + str(os.getpid()))
+print("PID=" + str(os.getpid()))
 
-    # else default localhost
-    if (m is None):
-        IP="127.0.0.1"
-    print("IP="+IP)
+# else default localhost
+if (m is None):
+    IP="127.0.0.1"
+print("IP="+IP)
 
-    IMGPATH=HOME+"/local/builds/build-" + MACHINE + "/tmp/deploy/images/" + MACHINE
+# Container HOME
+IMGPATH=f"{HOME}/build-{MACHINE}/tmp/deploy/images/{MACHINE}"
 
-    # global for clean up
-    global IMGFILE=str(mktemp("--dry-run")).strip
-    global IMGFILE_EMMC=str(mktemp()).strip
+# global for clean up
+IMGFILE=str(sh.mktemp("--dry-run")).rstrip()
+IMGFILE_EMMC=str(sh.mktemp()).rstrip()
 
-    cp(IMGPATH+"/flash-" + MACHINE, IMGFILE)
-    truncate("-s", "128M", IMGFILE)
-    truncate("-s", "1G", IMGFILE_EMMC)
+p=f"{IMGPATH}/flash-{MACHINE}"
 
+sh.cp(f"{IMGPATH}/flash-{MACHINE}", IMGFILE)
+sh.truncate("-s", "128M", IMGFILE)
+sh.truncate("-s", "1G", IMGFILE_EMMC)
 
-    #Build docker args
-    NET_FORWARDING="hostfwd=:"+IP+":22-:22,hostfwd=:"+IP+":443-:443,hostfwd=tcp:"+IP+":80-:80,hostfwd=tcp:"+IP+":2200-:2200,hostfwd=udp:"+IP+":623-:623,hostfwd=udp:"+IP+":664-:664"
+#Build docker args
+NET_FORWARDING=f"hostfwd=:{IP}:22-:22,hostfwd=:{IP}:443-:443,hostfwd=tcp:{IP}:80-:80,hostfwd=tcp:{IP}:2200-:2200,hostfwd=udp:{IP}:623-:623,hostfwd=udp:{IP}:664-:664"
 
-    # fby35
-    ## Most system only have one NIC so set this as default
-    NETDEV="user,id=netdev1,"+NET_FORWARDING
-    NIC="nic,model=ftgmac100,netdev=netdev1"
+# fby35
+## Most system only have one NIC so set this as default
+NETDEV="user,id=netdev1,"+NET_FORWARDING
+NIC="nic,model=ftgmac100,netdev=netdev1"
 
-    # From Patrick's scripts
-    NIC_OPTIONS=["-net", "nic", "-net", "user,hostfwd=::2222-:22,hostfwd=::8080-:8080,hostname=qemu"]
+# From Patrick's scripts
+NIC_OPTIONS=["-net", "nic", "-net", "user,hostfwd=::2222-:22,hostfwd=::8080-:8080,hostname=qemu"]
 
-    global args=[
-        "-machine", MACHINE + "-bmc",
-        "-drive",   "file=" + IMGFILE + ",format=raw,if=mtd",
-        "-net",     NIC,
-        "-netdev",  NETDEV,
-        "-nographic",
-        ] + NIC_OPTIONS
+# special case
+if MACHINE=="yosemite4":
+    MODEL="fby35"
+else:
+    MODEL=MACHINE
 
+# Build qemu args
+#    "-machine", "help",
+args=[
+    "-machine", f"{MODEL}-bmc",
+    "-drive",   f"file={IMGFILE},format=raw,if=mtd",
+    "-net",     NIC,
+    "-netdev",  NETDEV,
+    "-nographic",
+    ] + NIC_OPTIONS
+
+#sys.exit(1)
 #    print(" ".join(args))
 
 # Processing images, must be done within the docker container.
-eef docker_qemu_run():
-    # Launch qemu and leave running.
-    try:
-        ret = subprocess.run([QEMU_BIN] + args)
-    except:
-        print(e)
-        print(ret)
-    finally:
-        print(ret)
+# Launch qemu and leave running
 
-docker_pre_run()
-docker_qemu_run()
+try:
+    ret = subprocess.run([QEMU_BIN] + args)
+except Exception as e:
+    print(e)
+    print(ret)
+finally:
+    print(ret)
 
 '''
     if [ "${MACHINE}" = "${DEFAULT_MACHINE}" ]; then

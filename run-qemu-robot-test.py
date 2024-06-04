@@ -67,10 +67,11 @@ from pathlib import Path
 
 HOME=str(os.environ['HOME'])
 
+# Keep shell variables as strings
 try:
-    QEMU_RUN_TIMER=os.environ['QEMU_RUN_TIMER']
+    QEMU_RUN_TIMER=str(os.environ['QEMU_RUN_TIMER'])
 except Exception as e:
-    QEMU_RUN_TIMER=300
+    QEMU_RUN_TIMER=str(300)
 
 try:
     QEMU_LOGIN_TIMER=os.environ['QEMU_LOGIN_TIMER']
@@ -135,20 +136,31 @@ except Exception as e:
 
 # hard exit on failure
 def docker_inspect_check(m):
-    # Sanity check
+    # Sanity check:
     ret = subprocess.run(["docker", "inspect", obmc_qemu_docker], capture_output=True)
     if ret.returncode != 0:
         sys.exit("docker-inspect: failed " + m)
     else:
         print("docker-inspect: succeeded " + m)
 
+    return ret
+
+def docker_attach_interactive(m):
+    ret = subprocess.run(["docker", "attach", obmc_qemu_docker])
+    if ret.returncode != 0:
+        if ret.returncode != 1:
+            print(ret)
+            sys.exit("docker-attach: failed " + m)
+
+    print("docker-attach: succeeded " + m)
+
 try:
     global obmc_qemu_docker
     obmc_qemu_docker=os.environ['obmc_qemu_docker']
     # Example:
-    #99d7c3fd875758880c7a0770f9910c83c696a1ed425c0d0d2e1a2d6256333d04200
-    # Sanity
-    if len(obmc_qemu_docker) == 67: # full length of the docker container
+    #203b45297effa49d4e4049afb491fc7152f5414dc08f08613e01871e8a36664b
+    # Sanity check:
+    if len(obmc_qemu_docker) == 64: # full length of the docker container
         print("docker container variable found, obmc_qemu_docker=" + obmc_qemu_docker.rstrip())
 
         # Sanity check: test docker_inspect and exit on failure
@@ -163,6 +175,8 @@ except Exception as e:
     persist=False
 finally:
     pass
+
+#sys.exit("Test")
 
 # The automated test suite needs a real machine type so
 # if we're using versatilepb for our qemu start parameter
@@ -185,13 +199,13 @@ match ARCH:
     case "aarch64":
         QEMU_ARCH="arm64-linux"
     case _:
-        sys.exit("Unsupported system architecture(" + ARCH + ") found for docker image")
+        sys.exit(f"Unsupported system architecture({ARCH}) found for docker image")
 
 # Set the location of the qemu binary relative to UPSTREAM_WORKSPACE
 try:
     QEMU_BIN=os.environ['QEMU_BIN']
 except:
-    QEMU_BIN="./tmp/sysroots/" + QEMU_ARCH + "/usr/bin/qemu-system-arm"
+    QEMU_BIN=f"./tmp/sysroots/{QEMU_ARCH}/usr/bin/qemu-system-arm"
 
 def signal_handler(sig, frame):
     print("signal hander")
@@ -215,6 +229,38 @@ def docker_post_run():
     pass
 
 
+# Receipt from https://code.activestate.com/recipes/577058/
+#
+def query_yes_no(question, default="yes"):
+    """Ask a yes/no question via raw_input() and return their answer.
+
+    "question" is a string that is presented to the user.
+    "default" is the presumed answer if the user just hits <Enter>.
+            It must be "yes" (the default), "no" or None (meaning
+            an answer is required of the user).
+
+    The "answer" return value is True for "yes" or False for "no".
+    """
+    valid = {"yes": True, "y": True, "ye": True, "no": False, "n": False}
+    if default is None:
+        prompt = " [y/n] "
+    elif default == "yes":
+        prompt = " [Y/n] "
+    elif default == "no":
+        prompt = " [y/N] "
+    else:
+        raise ValueError("invalid default answer: '%s'" % default)
+
+    while True:
+        sys.stdout.write(question + prompt)
+        choice = input().lower()
+        if default is not None and choice == "":
+            return valid[default]
+        elif choice in valid:
+            return valid[choice]
+        else:
+            sys.stdout.write("Please respond with 'yes' or 'no' " "(or 'y' or 'n').\n")
+
 # get script working directory
 def get_script_dir(follow_symlinks=True):
     if getattr(sys, 'frozen', False): # py2exe, PyInstaller, cx_Freeze
@@ -225,14 +271,13 @@ def get_script_dir(follow_symlinks=True):
         path = os.path.realpath(path)
     return os.path.dirname(path)
 
-# local overrides
+# Local overrides
 #MACHINE="fby35"
-
 MACHINE="yosemite4"
 QEMU_BIN="/home/bhuey/local/builds/qemu/build/qemu-system-arm"
 DEFAULT_IMAGE_LOC="/home/bhuey/local/builds/build-fby35/tmp/deploy/images/fby35"
 HOME="/home/bhuey"
-QEMU_RUN_TIMER=800
+QEMU_RUN_TIMER=str(800)
 
 interact=True
 
@@ -314,7 +359,7 @@ def docker_send_expect():
     finally:
         # sleep and hold this container until we are done with testing
         # we can improve on this.
-        #time.sleep(QEMU_RUN_TIMER)
+        #time.sleep(int(QEMU_RUN_TIMER))
 
         child.close()
         print("child.exitstatus =\t{}".format(child.exitstatus))
@@ -333,41 +378,52 @@ if LAUNCH == "local":
     # root in docker required to open up the https/ssh ports
 
     if persist == False:
+        # Command must be a string and not separated by a list delimiter
+        # Example:
+        # "/usr/bin/tail -f /var/log/bootstrap.log"]
+        # "/usr/bin/tail", "-n5", "/var/log/bootstrap.log"]
+        # "/usr/bin/top", "-b"]
+        # "/usr/bin/top"]
         try:
+            #    "--rm", # remove for logging
+            print("QEMU_BIN=" + QEMU_BIN + ", MACHINE=" + MACHINE)
             args=["/usr/bin/docker", "run",
+                "--interactive",
                 "--detach",
-                "--user", "root",
-                "--env", "HOME=" +              OBMC_QEMU_BUILD_DIR,
-                "--env", "OBMC_QEMU_BUILD_DIR="+ OBMC_QEMU_BUILD_DIR,
-                "--env", "QEMU_RUN_TIMER=" +    str(QEMU_RUN_TIMER),
-                "--env", "QEMU_ARCH=" +         QEMU_ARCH,
-                "--env", "QEMU_BIN=" +          QEMU_BIN,
-                "--env", "MACHINE=" +           MACHINE,
-                "--env", "DEFAULT_IMAGE_LOC=" + DEFAULT_IMAGE_LOC,
-                "--workdir",                    OBMC_QEMU_BUILD_DIR,
-                "--volume",			UPSTREAM_WORKSPACE + ":" + OBMC_QEMU_BUILD_DIR + ":ro",
+                "--user",   "root",
+                "--env",    f"HOME={OBMC_QEMU_BUILD_DIR}",
+                "--env",    f"OBMC_QEMU_BUILD_DIR={OBMC_QEMU_BUILD_DIR}",
+                "--env",    f"QEMU_RUN_TIMER={QEMU_RUN_TIMER}",
+                "--env",    f"QEMU_ARCH={QEMU_ARCH}",
+                "--env",    f"QEMU_BIN={QEMU_BIN}",
+                "--env",    f"MACHINE={MACHINE}",
+                "--env",    f"DEFAULT_IMAGE_LOC={DEFAULT_IMAGE_LOC}",
+                "--workdir", f"{OBMC_QEMU_BUILD_DIR}",
+                "--volume", f"{UPSTREAM_WORKSPACE}:{OBMC_QEMU_BUILD_DIR}:ro",
                 "--tty",
                 DOCKER_IMG_NAME,
-                "/usr/bin/tail", "-f", "/var/log/syslog"]
-#                "/usr/bin/python3", OBMC_QEMU_BUILD_DIR + "/boot-qemu-test.py"]
-            print(args)
+                f"{OBMC_QEMU_BUILD_DIR}/boot-qemu-test.py"]
 
+            print(args)
             ret = subprocess.run(
                 args,
                 capture_output=True)
 
             obmc_qemu_docker = ret.stdout.decode("utf-8").rstrip()
-            print("docker_run: obmc_qemu_docker=" + obmc_qemu_docker)
+            print("docker-run: obmc_qemu_docker=" + obmc_qemu_docker)
             print(ret.stdout)
 
             docker_inspect_check("in main")
-
         except subprocess.CalledProcessError as e:
             print(e)
+            sys.exit("docker-run failed")
     else:
-        # persistent therefore attach to an existing container and exit the
-        # shell so that interactive code can be tested
-        pass
+        # docker container is persistent, attach to an existing container and
+	# interactive exit the shell to a login prompt point
+        while True:
+            docker_attach_interactive("logout")
+            if query_yes_no("Logged out ?"):
+                break
 
     print("main: obmc_qemu_docker=" + obmc_qemu_docker)
 
@@ -381,15 +437,9 @@ if LAUNCH == "local":
     # fine on these errors so just ignore the SIGPIPE
 #    trap '' PIPE
 
-    try:
-        ret = subprocess.run(["docker", "inspect", obmc_qemu_docker], capture_output=True)
+    ret = docker_inspect_check("after run")
 #    grep "IPAddress\":" | tail -n1 | cut -d '"' -f 4)"
-        DOCKER_QEMU_IP_ADDR=ret.stdout
-        print(str(ret))
-    except subprocess.CalledProcessError as e:
-        print(e)
-
-    sys.exit(1)
+    DOCKER_QEMU_IP_ADDR=ret.stdout.decode("utf-8").rstrip()
 
     if interact == False:
         print("non-interactive")
@@ -413,9 +463,21 @@ if LAUNCH == "local":
         if attempt == 0:
             sys.exit("Timed out waiting for QEMU, exiting")
     else:
-	    # pass-through via interactive keyboard command
-        # subprocess.run(["docker", "attach, obmc_qemu_docker]
-    	print("interactive passthrough")
+        # Interactive pass-through via manual login
+        while True:
+            print("Interactive login pass-through")
+            docker_attach_interactive("login pass-through")
+            if query_yes_no("pass-through complete ?"):
+                break
+
+        print("interactive passthrough")
+
+    if DOCKER_QEMU_IP_ADDR=="":
+        print("unset DOCKER_QEMU_IP_ADDR=" + DOCKER_QEMU_IP_ADDR)
+        sys.exit("exit end")
+        pass
+
+    sys.exit("Stop here")
 
     # Now run the Robot test (Tests commented out until they are working again)
 
@@ -429,23 +491,22 @@ if LAUNCH == "local":
 #    cd "${WORKSPACE}"
 
     # Copy in the script which will execute the Robot tests
-#    cp "$DIR"/scripts/run-robot.sh "${WORKSPACE}"
-    sh.cp(DIR + "/scripts/run-robot.sh ", WORKSPACE)
+    sh.cp(DIR + "/scripts/run-robot.sh", WORKSPACE)
 
     # Run the Docker container to execute the Robot test cases
     # The test results will be put in ${WORKSPACE}
     try:
         subprocess.run(["docker", "run",
             "--rm",
-            "--env", "HOME=" +      HOME,
-            "--env", "IP_ADDR=" +   DOCKER_QEMU_IP_ADDR,
-            "--env", "SSH_PORT=" +  DOCKER_SSH_PORT,
-            "--env", "HTTPS_PORT=" + DOCKER_HTTPS_PORT,
-            "--env", "MACHINE=" +   MACHINE_QEMU,
-            "--workdir",            HOME,
-            "--volume",             WORKSPACE + ":" +HOME,
+            "--env",     f"HOME={HOME}",
+            "--env",     f"IP_ADDR={DOCKER_QEMU_IP_ADDR}",
+            "--env",     f"SSH_PORT={DOCKER_SSH_PORT}",
+            "--env",     f"HTTPS_PORT={DOCKER_HTTPS_PORT}",
+            "--env",     f"MACHINE={MACHINE_QEMU}",
+            "--workdir", HOME,
+            "--volume",  f"{WORKSPACE}:{HOME}",
             "--tty",
-            DOCKER_IMG_NAME, HOME + "/run-robot.sh"]
+            DOCKER_IMG_NAME, f"{HOME}/run-robot.sh"]
         )
     except subprocess.CalledProcessError as e:
         print(e)
