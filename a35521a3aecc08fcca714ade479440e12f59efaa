@@ -106,6 +106,24 @@
       "parentUuid": "0f4d8472_833a105c",
       "revId": "a35521a3aecc08fcca714ade479440e12f59efaa",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d356cd82_dc64831e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2024-06-09T22:18:30Z",
+      "side": 1,
+      "message": "Is there some way to get Meson to add \"--keep-going\"?  That seems to be the preferred option based on my reading of the referenced github issue.",
+      "parentUuid": "76851044_e0f73798",
+      "revId": "a35521a3aecc08fcca714ade479440e12f59efaa",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
