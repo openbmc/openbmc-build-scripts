@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "564b6080_d395c513",
+        "filename": "config/openbmc-spelling.txt",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2024-06-17T18:34:18Z",
+      "side": 1,
+      "message": "I\u0027m surprised we named this file \"openbmc-spelling\" if it came from somewhere else.  Should be reusing something from the codespell package directly instead of adding this to our repo?",
+      "revId": "901f85dc972dbc4af11b009d51726efbcaa89198",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
