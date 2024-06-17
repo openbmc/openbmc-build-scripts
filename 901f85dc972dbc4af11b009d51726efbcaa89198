@@ -16,6 +16,24 @@
       "message": "I\u0027m surprised we named this file \"openbmc-spelling\" if it came from somewhere else.  Should be reusing something from the codespell package directly instead of adding this to our repo?",
       "revId": "901f85dc972dbc4af11b009d51726efbcaa89198",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "066e3acf_6d1371e5",
+        "filename": "config/openbmc-spelling.txt",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2024-06-17T18:38:41Z",
+      "side": 1,
+      "message": "On my system it looks like this is installed here:\n\n$ more /usr/lib/python3.11/site-packages/codespell_lib/data/dictionary.txt\n\nIf so, we should just use the bundled one, right?\n\nThe comments in format-code.sh say \"Run the codespell with _openbmc specific_ spellings...\" ( emphasis mine )  This implies to me that this file was intended to cover things we noticed that weren\u0027t in upstream codespell like...\n\ndubs -\u003e dbus\n\nMy expectation was that this was covering the \"general\" codespell:\n\n168:    codespell --builtin clear,rare,en-GB_to_en-US -d --count \"$commit_filename\"",
+      "parentUuid": "564b6080_d395c513",
+      "revId": "901f85dc972dbc4af11b009d51726efbcaa89198",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
