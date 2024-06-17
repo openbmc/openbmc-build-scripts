@@ -254,7 +254,7 @@ if [[ "${launch}" == "docker" ]]; then
         import_vol_cmd="-v ${host_import_mnt}:${cont_import_mnt}"
     fi
     # Launch the jenkins image with Docker
-    # shellcheck disable=SC2086 # import_vol_cmd is intentially word-split.
+    # shellcheck disable=SC2086 # import_vol_cmd is intentionally word-split.
     docker run -d \
         ${import_vol_cmd} \
         -v "${home_mnt}:${j_home}" \

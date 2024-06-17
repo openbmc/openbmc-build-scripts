@@ -7,7 +7,7 @@
 #
 # Note: It is assumed this script is run as a part of a jenkins job triggered
 #       by the gerrit plugin. Therefore it assumes certain env variables
-#       provided by that plugin are avialable (i.e. GERRIT_PROJECT, ...)
+#       provided by that plugin are available (i.e. GERRIT_PROJECT, ...)
 #
 # Required Inputs:
 #  SSH_KEY:  Path to private ssh key used to post messages to gerrit

@@ -14,7 +14,7 @@ set -o nounset
 # Default variables
 WORKSPACE=${WORKSPACE:-${HOME}/${RANDOM}${RANDOM}}
 http_proxy=${http_proxy:-}
-ENDIANESS=${ENDIANESS:-le}
+ENDIANNESS=${ENDIANNESS:-le}
 PROXY=""
 
 function usage() {
@@ -22,24 +22,24 @@ function usage() {
 Usage: $0 [options]
 
 Options:
---endianess <le|be>	build an LE or BE initramfs
+--endianness <le|be>	build an LE or BE initramfs
 
 Short Options:
--e			same as --endianess
+-e			same as --endianness
 
 EOF_USAGE
     exit 1
 }
 
 # Arguments
-CMD_LINE=$(getopt -o d,e: --longoptions debug,endianess: -n "$0" -- "$@")
+CMD_LINE=$(getopt -o d,e: --longoptions debug,endianness: -n "$0" -- "$@")
 eval set -- "${CMD_LINE}"
 
 while true ; do
     case "${1}" in
-        -e|--endianess)
+        -e|--endianness)
             if [[ "${2,,}" == "be" ]]; then
-                ENDIANESS=""
+                ENDIANNESS=""
             fi
             shift 2
             ;;
@@ -123,8 +123,8 @@ cd "${WORKSPACE}"
 cd buildroot && make clean
 
 # Build PPC64 defconfig
-cat >> configs/powerpc64${ENDIANESS}_openpower_defconfig << EOF_BUILDROOT
-BR2_powerpc64${ENDIANESS}=y
+cat >> configs/powerpc64${ENDIANNESS}_openpower_defconfig << EOF_BUILDROOT
+BR2_powerpc64${ENDIANNESS}=y
 BR2_CCACHE=y
 BR2_SYSTEM_BIN_SH_BASH=y
 BR2_TARGET_GENERIC_GETTY_PORT="hvc0"
@@ -137,7 +137,7 @@ EOF_BUILDROOT
 
 # Build buildroot
 export BR2_DL_DIR="${HOME}/buildroot_downloads"
-make powerpc64${ENDIANESS}_openpower_defconfig
+make powerpc64${ENDIANNESS}_openpower_defconfig
 make
 
 EOF_SCRIPT

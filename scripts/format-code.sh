@@ -158,7 +158,7 @@ function do_commit_spelling() {
     # Some names or emails appear as false-positive misspellings, remove them
     sed -i "s/Signed-off-by.*//" "$commit_filename"
 
-    # Run the codespell with openbmc spcific spellings on the patchset
+    # Run the codespell with openbmc specific spellings on the patchset
     echo -n "openbmc-dictionary - misspelling count >> "
 
     codespell -D "${CONFIG_PATH}/openbmc-spelling.txt" -d --count "$commit_filename"

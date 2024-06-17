@@ -44,7 +44,7 @@
 #                     Default: "qemuarm"
 #  no_tar             Set to true if you do not want the debug tar built
 #                     Default: "false"
-#  nice_priority      Set nice priotity for bitbake command.
+#  nice_priority      Set nice priority for bitbake command.
 #                     Nice:
 #                       Run with an adjusted niceness, which affects process
 #                       scheduling. Nice values range from -20 (most favorable
