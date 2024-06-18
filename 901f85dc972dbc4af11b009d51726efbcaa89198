@@ -34,6 +34,24 @@
       "parentUuid": "564b6080_d395c513",
       "revId": "901f85dc972dbc4af11b009d51726efbcaa89198",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3655d19d_0c27ed52",
+        "filename": "config/openbmc-spelling.txt",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-06-18T07:02:37Z",
+      "side": 1,
+      "message": "Hi Patrick, long back when we initially added the [support for spellcheck on commit messages](https://lore.kernel.org/openbmc/6EE109AE-3FB9-4E5F-A6E3-88528EABFA56@getmailspring.com/), we agreed that a generic dictionary might not be good enough for openbmc \u0026 also we need an openbmc specific dictionary so that we can add some openbmc specific spellings whenever we can without waiting for things to be merged upstream.\n\nAnd to start with, we copied the existing codespell dictionary used by the Linux kernel community \u0026 marked it as openbmc-spelling.txt\n\n\u003e On my system it looks like this is installed here:\n\u003e $ more /usr/lib/python3.11/site-packages/codespell_lib/data/dictionary.txt\n\u003e If so, we should just use the bundled one, right?\n\nYes, we could use the one that is already shipped with the codespell package, but we will not have the leverage to add words as and when possible without waiting for things to be upstreamed.\n\nThe approach we took was, that we periodically pull the dictionary from upstream and use that to check in CI, this will also provide us the flexibility to add openbmc-specific words to it. This commit basically pulled things from the upstream codespell repository.",
+      "parentUuid": "066e3acf_6d1371e5",
+      "revId": "901f85dc972dbc4af11b009d51726efbcaa89198",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
