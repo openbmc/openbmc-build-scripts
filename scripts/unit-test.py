@@ -759,11 +759,17 @@ class CMake(BuildSystem):
             check_call_cmd(
                 "cmake",
                 "-DCMAKE_EXPORT_COMPILE_COMMANDS=ON",
+                "-DCMAKE_CXX_FLAGS='-DBOOST_USE_VALGRIND'",
                 "-DITESTS=ON",
                 ".",
             )
         else:
-            check_call_cmd("cmake", "-DCMAKE_EXPORT_COMPILE_COMMANDS=ON", ".")
+            check_call_cmd(
+                "cmake",
+                "-DCMAKE_EXPORT_COMPILE_COMMANDS=ON",
+                "-DCMAKE_CXX_FLAGS='-DBOOST_USE_VALGRIND'",
+                ".",
+            )
 
     def build(self):
         check_call_cmd(
@@ -915,6 +921,7 @@ class Meson(BuildSystem):
             "-Db_colorout=never",
             "-Dwerror=true",
             "-Dwarning_level=3",
+            "-Dcpp_args='-DBOOST_USE_VALGRIND'",
         ]
         if build_for_testing:
             # -Ddebug=true -Doptimization=g is helpful for abi-dumper but isn't a combination that
