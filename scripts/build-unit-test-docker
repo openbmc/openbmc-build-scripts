@@ -92,7 +92,7 @@ packages = {
                 f" --prefix={prefix} --with-libraries=context,coroutine,url"
             ),
             "./b2",
-            f"./b2 install --prefix={prefix}",
+            f"./b2 install --prefix={prefix} valgrind=on",
         ],
     ),
     "USCiLab/cereal": PackageDef(
