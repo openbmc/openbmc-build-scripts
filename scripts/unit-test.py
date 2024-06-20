@@ -783,6 +783,9 @@ class CMake(BuildSystem):
             check_call_cmd("ctest", ".")
 
     def analyze(self):
+        maybe_make_coverage()
+        maybe_make_valgrind()
+
         if os.path.isfile(".clang-tidy"):
             with TemporaryDirectory(prefix="build", dir=".") as build_dir:
                 # clang-tidy needs to run on a clang-specific build
@@ -799,8 +802,6 @@ class CMake(BuildSystem):
                     "run-clang-tidy", "-header-filter=.*", "-p", build_dir
                 )
 
-        maybe_make_valgrind()
-        maybe_make_coverage()
         run_cppcheck()
 
 
@@ -1039,6 +1040,16 @@ class Meson(BuildSystem):
             raise Exception("Valgrind tests failed")
 
     def analyze(self):
+        # Run coverage checks
+        check_call_cmd("meson", "configure", "build", "-Db_coverage=true")
+        self.test()
+        # Only build coverage HTML if coverage files were produced
+        for root, dirs, files in os.walk("build"):
+            if any([f.endswith(".gcda") for f in files]):
+                check_call_cmd("ninja", "-C", "build", "coverage-html")
+                break
+        check_call_cmd("meson", "configure", "build", "-Db_coverage=false")
+
         self._maybe_valgrind()
 
         # Run clang-tidy only if the project has a configuration
@@ -1091,15 +1102,6 @@ class Meson(BuildSystem):
         else:
             sys.stderr.write("###### Skipping sanitizers ######\n")
 
-        # Run coverage checks
-        check_call_cmd("meson", "configure", "build", "-Db_coverage=true")
-        self.test()
-        # Only build coverage HTML if coverage files were produced
-        for root, dirs, files in os.walk("build"):
-            if any([f.endswith(".gcda") for f in files]):
-                check_call_cmd("ninja", "-C", "build", "coverage-html")
-                break
-        check_call_cmd("meson", "configure", "build", "-Db_coverage=false")
         run_cppcheck()
 
     def _extra_meson_checks(self):
