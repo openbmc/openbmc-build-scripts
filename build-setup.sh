@@ -21,6 +21,8 @@
 #  ENV_LOCAL_CONF     [optional] The environment variables to inject into the
 #                     build, which will be written into local.conf.
 #                     default is empty.
+#  CONTAINER_ONLY     Set to "true" if you only want to build the docker
+#                     container. The bitbake will not occur in this case.
 #
 # Docker Image Build Variables:
 #  BITBAKE_OPTS       Set to "-c populate_sdk" or whatever other BitBake options
@@ -84,6 +86,7 @@ WORKSPACE=${WORKSPACE:-${HOME}/${RANDOM}${RANDOM}}
 num_cpu=${num_cpu:-$(nproc)}
 UBUNTU_MIRROR=${UBUNTU_MIRROR:-""}
 ENV_LOCAL_CONF=${ENV_LOCAL_CONF:-""}
+container_only=${CONTAINER_ONLY:-false}
 
 # Docker Image Build Variables:
 build_dir=${build_dir:-${WORKSPACE}/build}
@@ -406,6 +409,10 @@ export BUILDKIT_PROGRESS=plain
 
 # Build the Docker image
 docker build --network=host -t "${img_name}" - <<< "${Dockerfile}"
+
+if [[ "$container_only" = "true" ]]; then
+    exit 0
+fi
 
 # If obmc_dir or ssc_dir are ${HOME} or a subdirectory they will not be mounted
 mount_obmc_dir="-v ""${obmc_dir}"":""${obmc_dir}"" "
