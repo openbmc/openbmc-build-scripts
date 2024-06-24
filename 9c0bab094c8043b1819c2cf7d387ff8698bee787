@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d491b5fe_0942097b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1001088
+      },
+      "writtenOn": "2024-06-24T15:05:26Z",
+      "side": 1,
+      "message": "LGTM, I really need this change to be merged, because all bmc downstream repos should generate UT coverage report using upstream script",
+      "revId": "9c0bab094c8043b1819c2cf7d387ff8698bee787",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
