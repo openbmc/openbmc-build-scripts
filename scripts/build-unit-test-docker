@@ -159,10 +159,6 @@ packages = {
         rev="json-c-0.17-20230812",
         build_type="cmake",
     ),
-    "linux-test-project/lcov": PackageDef(
-        rev="v1.16",
-        build_type="make",
-    ),
     "LibVNC/libvncserver": PackageDef(
         rev="LibVNCServer-0.9.14",
         build_type="cmake",
@@ -866,6 +862,7 @@ RUN pip3 install --break-system-packages \
         black \
         codespell \
         flake8 \
+        gcovr \
         gitlint \
         inflection \
         isort \
