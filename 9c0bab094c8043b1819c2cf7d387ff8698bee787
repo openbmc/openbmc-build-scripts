@@ -35,6 +35,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "eb4c1443_7a6664c0",
+        "filename": "scripts/unit-test.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 787,
+      "author": {
+        "id": 1002091
+      },
+      "writtenOn": "2024-07-02T07:26:01Z",
+      "side": 1,
+      "message": "cppcheck is last now",
+      "parentUuid": "59995ae4_bb9ed618",
+      "revId": "9c0bab094c8043b1819c2cf7d387ff8698bee787",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "db6a9deb_740276e7",
