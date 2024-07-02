@@ -124,6 +124,24 @@
       "parentUuid": "76851044_e0f73798",
       "revId": "a35521a3aecc08fcca714ade479440e12f59efaa",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5de7541d_4492e28a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1002091
+      },
+      "writtenOn": "2024-07-02T09:19:45Z",
+      "side": 1,
+      "message": "I tried to suppress errors in mesonbuild/meson repo, unfortunately, this solution does not fit 2 Linux distribution.\n\nI propose an alternative solution here: https://gerrit.openbmc.org/c/openbmc/openbmc-build-scripts/+/72544",
+      "parentUuid": "d356cd82_dc64831e",
+      "revId": "a35521a3aecc08fcca714ade479440e12f59efaa",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
