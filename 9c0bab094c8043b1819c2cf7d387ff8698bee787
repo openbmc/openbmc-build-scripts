@@ -68,6 +68,24 @@
       "message": "Since .clang-tidy is a static analysis, don\u0027t we want that to continue being at the beginning?  I\u0027d think we\u0027d want to run that before code-coverage because critical failures in clang-tidy could be the reasoning for a unit-test failure.",
       "revId": "9c0bab094c8043b1819c2cf7d387ff8698bee787",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7c17aeb7_2d84d82a",
+        "filename": "scripts/unit-test.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 788,
+      "author": {
+        "id": 1002091
+      },
+      "writtenOn": "2024-07-04T05:32:58Z",
+      "side": 1,
+      "message": "With clang 17 we have compiler errors, with clang 18 there is no problem. So we stuck here…\n\nIf the unit tests failed, we wont get to the analyzes anyway.",
+      "parentUuid": "db6a9deb_740276e7",
+      "revId": "9c0bab094c8043b1819c2cf7d387ff8698bee787",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
