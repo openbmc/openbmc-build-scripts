@@ -34,6 +34,9 @@ git clone https://github.com/openbmc/openbmc-test-automation.git \
 
 cd "${ROBOT_CODE_HOME}" || exit
 
+#export PYTHONPATH=${HOME}/git/openbmc-test-automation/lib/
+export PYTHONPATH="${ROBOT_CODE_HOME}"/obmc-robot/lib/
+
 chmod ugo+rw -R "${ROBOT_CODE_HOME}"/*
 
 # Execute the CI tests
