@@ -36,6 +36,11 @@ cd "${ROBOT_CODE_HOME}" || exit
 
 chmod ugo+rw -R "${ROBOT_CODE_HOME}"/*
 
+#export PYTHONPATH=${HOME}/git/openbmc-test-automation/lib/
+export PYTHONPATH="${ROBOT_CODE_HOME}"/obmc-robot/lib/
+
+chmod ugo+rw -R "${ROBOT_CODE_HOME}"/*
+
 # Execute the CI tests
 eval "${ROBOT_TEST_CMD}"
 
