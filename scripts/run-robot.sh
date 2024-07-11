@@ -27,7 +27,8 @@ ROBOT_TEST_CMD="${ROBOT_TEST_CMD:-"python3 -m robot\
     -v SSH_PORT:${SSH_PORT}\
     -v HTTPS_PORT:${HTTPS_PORT}\
     -v REDFISH_SUPPORT_TRANS_STATE:1\
-    --argumentfile ./test_lists/QEMU_CI ./redfish ./ipmi"}"
+    --argumentfile ./test_lists/CT_basic_run ./redfish ./ipmi"}"
+#    --argumentfile ./test_lists/QEMU_CI ./redfish ./ipmi"}"
 
 git clone https://github.com/openbmc/openbmc-test-automation.git \
     "${ROBOT_CODE_HOME}"
