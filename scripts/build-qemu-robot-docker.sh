@@ -110,7 +110,7 @@ RUN apt-get update -qqy \
   && mv /opt/firefox /opt/firefox-112.0.2 \
   && ln -fs /opt/firefox-112.0.2/firefox /usr/bin/firefox
 
-ENV HOME ${HOME}
+ENV HOME=${HOME}
 
 ${PIP_MIRROR_CMD}
 
@@ -120,7 +120,7 @@ RUN pip3 install \
     retrying \
     websocket-client \
     json2yaml \
-    robotframework==7.0 \
+    robotframework==7.0.1 \
     robotframework-requests \
     robotframework-jsonlibrary \
     robotframework-sshlibrary \
