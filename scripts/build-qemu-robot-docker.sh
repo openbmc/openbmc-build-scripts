@@ -90,7 +90,9 @@ RUN apt-get update && apt-get install -yy \
     openssl \
     libxml2-dev \
     libxslt-dev \
+    python3-pexpect \
     python3-pip \
+    python3-sh \
     ipmitool \
     xvfb \
     rustc
