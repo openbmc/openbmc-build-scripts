@@ -110,11 +110,13 @@ RUN apt-get update -qqy \
   && mv /opt/firefox /opt/firefox-112.0.2 \
   && ln -fs /opt/firefox-112.0.2/firefox /usr/bin/firefox
 
-ENV HOME ${HOME}
+ENV HOME=${HOME}
 
 ${PIP_MIRROR_CMD}
 
 RUN pip3 install \
+    pexpect \
+    sh \
     tox \
     requests \
     retrying \
