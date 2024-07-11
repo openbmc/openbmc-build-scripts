@@ -82,6 +82,8 @@ git submodule update --init dtc
 # disable anything that requires us to pull in X
 ./configure \
     --target-list=arm-softmmu \
+    --enable-slirp \
+    --enable-debug \
     --disable-spice \
     --disable-docs \
     --disable-gtk \
