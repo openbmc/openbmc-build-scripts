@@ -115,6 +115,7 @@ ENV HOME ${HOME}
 ${PIP_MIRROR_CMD}
 
 RUN pip3 install \
+    sh \
     tox \
     requests \
     retrying \
