@@ -93,8 +93,14 @@ RUN apt-get update && apt-get install -yy \
     openssl \
     libxml2-dev \
     libxslt-dev \
+    python3-pexpect \
     python3-pip \
+    python3-sh \
     ipmitool \
+    strace \
+    netcat-traditional \
+    gawk \
+    iproute2 \
     xvfb \
     rustc
 
@@ -111,6 +117,8 @@ ENV HOME ${HOME}
 ${PIP_MIRROR_CMD}
 
 RUN pip3 install \
+    sh \
+    pexpect \
     tox \
     requests \
     retrying \
