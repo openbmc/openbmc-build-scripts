@@ -22,6 +22,7 @@
 #   dbus_sys_config_file: Optional, with the default being
 #                         `/usr/share/dbus-1/system.conf`
 #   TEST_ONLY:       Optional, do not run analysis tools
+#   ANALYSES:        Optional, run only the analyses listed
 #   NO_FORMAT_CODE:  Optional, do not run format-code.sh
 #   EXTRA_DOCKER_RUN_ARGS:  Optional, pass arguments to docker run
 #   EXTRA_UNIT_TEST_ARGS:  Optional, pass arguments to unit-test.py
@@ -39,6 +40,7 @@ UNIT_TEST_SCRIPT_DIR="${DOCKER_WORKDIR}/${OBMC_BUILD_SCRIPTS}/scripts"
 UNIT_TEST_PY="unit-test.py"
 DBUS_UNIT_TEST_PY="dbus-unit-test.py"
 TEST_ONLY="${TEST_ONLY:-}"
+ANALYSES=${ANALYSES:-"valgrind,clang-tidy,sanitizers,coverage,cppcheck"}
 DBUS_SYS_CONFIG_FILE=${dbus_sys_config_file:-"/usr/share/dbus-1/system.conf"}
 MAKEFLAGS="${MAKEFLAGS:-""}"
 NO_FORMAT_CODE="${NO_FORMAT_CODE:-}"
@@ -80,7 +82,7 @@ if [ "${INTERACTIVE}" ]; then
     UNIT_TEST="/bin/bash"
 else
     UNIT_TEST="${UNIT_TEST_SCRIPT_DIR}/${UNIT_TEST_PY},-w,${DOCKER_WORKDIR},\
--p,${UNIT_TEST_PKG},-b,$BRANCH,-v${TEST_ONLY:+,-t}${NO_FORMAT_CODE:+,-n}\
+-p,${UNIT_TEST_PKG},-b,$BRANCH,-a,$ANALYSES,-v${TEST_ONLY:+,-t}${NO_FORMAT_CODE:+,-n}\
 ${EXTRA_UNIT_TEST_ARGS}"
 fi
 

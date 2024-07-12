@@ -782,7 +782,7 @@ class CMake(BuildSystem):
         if make_target_exists("test"):
             check_call_cmd("ctest", ".")
 
-    def analyze(self):
+    def run_clang_tidy(self):
         if os.path.isfile(".clang-tidy"):
             with TemporaryDirectory(prefix="build", dir=".") as build_dir:
                 # clang-tidy needs to run on a clang-specific build
@@ -799,9 +799,16 @@ class CMake(BuildSystem):
                     "run-clang-tidy", "-header-filter=.*", "-p", build_dir
                 )
 
-        maybe_make_valgrind()
-        maybe_make_coverage()
-        run_cppcheck()
+    def analyze(self):
+        for analysis in ANALYSES:
+            if analysis == "valgrind":
+                maybe_make_valgrind()
+            if analysis == "clang-tidy":
+                self.run_clang_tidy()
+            if analysis == "coverage":
+                maybe_make_coverage()
+            if analysis == "cppcheck":
+                run_cppcheck()
 
 
 class Meson(BuildSystem):
@@ -1038,9 +1045,7 @@ class Meson(BuildSystem):
         except CalledProcessError:
             raise Exception("Valgrind tests failed")
 
-    def analyze(self):
-        self._maybe_valgrind()
-
+    def run_clang_tidy(self):
         # Run clang-tidy only if the project has a configuration
         if os.path.isfile(".clang-tidy"):
             os.environ["CXX"] = "clang++"
@@ -1059,6 +1064,7 @@ class Meson(BuildSystem):
         else:
             check_call_cmd("ninja", "-C", "build", "scan-build")
 
+    def run_sanitizers(self):
         # Run tests through sanitizers
         # b_lundef is needed if clang++ is CXX since it resolves the
         # asan symbols at runtime only. We don't want to set it earlier
@@ -1091,6 +1097,7 @@ class Meson(BuildSystem):
         else:
             sys.stderr.write("###### Skipping sanitizers ######\n")
 
+    def run_coverage(self):
         # Run coverage checks
         check_call_cmd("meson", "configure", "build", "-Db_coverage=true")
         self.test()
@@ -1100,7 +1107,19 @@ class Meson(BuildSystem):
                 check_call_cmd("ninja", "-C", "build", "coverage-html")
                 break
         check_call_cmd("meson", "configure", "build", "-Db_coverage=false")
-        run_cppcheck()
+
+    def analyze(self):
+        for analysis in ANALYSES:
+            if analysis == "valgrind":
+                self._maybe_valgrind()
+            if analysis == "clang-tidy":
+                self.run_clang_tidy()
+            if analysis == "sanitizers":
+                self.run_sanitizers()
+            if analysis == "coverage":
+                self.run_coverage()
+            if analysis == "cppcheck":
+                run_cppcheck()
 
     def _extra_meson_checks(self):
         with open(os.path.join(self.path, "meson.build"), "rt") as f:
@@ -1305,6 +1324,17 @@ if __name__ == "__main__":
         default=False,
         help="Only run test cases, no other validation",
     )
+    parser.add_argument(
+        "-a",
+        "--analyses",
+        dest="ANALYSES",
+        action="store",
+        nargs='*',
+        required=False,
+        choices=["valgrind", "clang-tidy", "sanitizers", "coverage", "cppcheck"],
+        default=["valgrind", "clang-tidy", "sanitizers", "coverage", "cppcheck"],
+        help="Run only the analyses listed",
+    )
     arg_inttests = parser.add_mutually_exclusive_group()
     arg_inttests.add_argument(
         "--integration-tests",
@@ -1350,6 +1380,7 @@ if __name__ == "__main__":
     WORKSPACE = args.WORKSPACE
     UNIT_TEST_PKG = args.PACKAGE
     TEST_ONLY = args.TEST_ONLY
+    ANALYSES = args.ANALYSES
     INTEGRATION_TEST = args.INTEGRATION_TEST
     BRANCH = args.BRANCH
     FORMAT_CODE = args.FORMAT
