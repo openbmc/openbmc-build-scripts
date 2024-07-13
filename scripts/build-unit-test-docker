@@ -177,7 +177,6 @@ packages = {
     ),
     "open-power/pdbg": PackageDef(build_type="autoconf"),
     "openbmc/gpioplus": PackageDef(
-        depends=["openbmc/stdplus"],
         build_type="meson",
         config_flags=[
             "-Dexamples=false",
@@ -245,7 +244,6 @@ packages = {
     ),
     "openbmc/sdeventplus": PackageDef(
         depends=[
-            "Naios/function2",
             "openbmc/stdplus",
         ],
         build_type="meson",
