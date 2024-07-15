@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e071f63f_b08cea09",
+        "filename": "scripts/unit-test.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 803,
+      "author": {
+        "id": 1000009
+      },
+      "writtenOn": "2024-07-15T03:45:30Z",
+      "side": 1,
+      "message": "This seems a bit of clunky way to achieve what you want.\n\nWhy not break out the coverage report to its own phase so it\u0027s set up correctly?\n\nI have half-baked thoughts about how we could better implement the analyse phase anyway (I think it might be better to ask the build to configure itself for a given type of analysis, upon which it can return an error if it\u0027s not supported, rather than all this imperative stuff we currently have in the `analyze()` implementations.",
+      "revId": "819705115c4287967f118b8eb03903cb8a3f0bf6",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
