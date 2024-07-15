@@ -25,7 +25,7 @@ from git import Repo
 # interpreter is not used directly but this resolves dependency ordering
 # that would be broken if we didn't include it.
 from mesonbuild import interpreter  # noqa: F401
-from mesonbuild import coredata, optinterpreter
+from mesonbuild import optinterpreter, options
 from mesonbuild.mesonlib import OptionKey
 from mesonbuild.mesonlib import version_compare as meson_version_compare
 
@@ -902,9 +902,9 @@ class Meson(BuildSystem):
         opt                 The meson option which we are setting
         val                 The value being converted
         """
-        if isinstance(opts[key], coredata.UserBooleanOption):
+        if isinstance(opts[key], options.UserBooleanOption):
             str_val = self._configure_boolean(val)
-        elif isinstance(opts[key], coredata.UserFeatureOption):
+        elif isinstance(opts[key], options.UserFeatureOption):
             str_val = self._configure_feature(val)
         else:
             raise Exception("Unknown meson option type")
