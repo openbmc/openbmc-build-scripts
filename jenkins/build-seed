@@ -26,6 +26,7 @@ export build_dir="${WORKSPACE}/build"
 SEED_MACHINES=(
     ahe50dc
     bletchley
+    catalina
     e3c246d4i
     gbs
     harma
@@ -34,6 +35,7 @@ SEED_MACHINES=(
     palmetto
     romed8hm3
     romulus
+    ventura
     witherspoon
     yosemite4
     zaius
