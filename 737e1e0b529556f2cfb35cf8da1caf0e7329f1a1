@@ -1,4 +1,793 @@
 {
-  "comments": [],
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bf49a1b9_6301e264",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 5
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2024-07-29T21:59:30Z",
+      "side": 1,
+      "message": "I suspect this is scoped to something... qemu robot testing?",
+      "revId": "737e1e0b529556f2cfb35cf8da1caf0e7329f1a1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c1112ea7_3bf29560",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 5
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2024-07-29T21:59:30Z",
+      "side": 1,
+      "message": "gitlint is complaining about the line length here.",
+      "range": {
+        "startLine": 11,
+        "startChar": 0,
+        "endLine": 11,
+        "endChar": 80
+      },
+      "revId": "737e1e0b529556f2cfb35cf8da1caf0e7329f1a1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a23bffc7_300ee47f",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 5
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2024-07-29T21:59:30Z",
+      "side": 1,
+      "message": "I\u0027m not sure what this means.",
+      "revId": "737e1e0b529556f2cfb35cf8da1caf0e7329f1a1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bf407dd4_8bd9ea9d",
+        "filename": "qemu-build.sh",
+        "patchSetId": 5
+      },
+      "lineNbr": 85,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2024-07-29T21:59:30Z",
+      "side": 1,
+      "message": "It might be good to split this into a separate commit.  SLIRP is useful for people that don\u0027t want to require root access.",
+      "revId": "737e1e0b529556f2cfb35cf8da1caf0e7329f1a1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "16dc15fe_28526a49",
+        "filename": "qemu-build.sh",
+        "patchSetId": 5
+      },
+      "lineNbr": 86,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2024-07-29T21:59:30Z",
+      "side": 1,
+      "message": "What does this accomplish?",
+      "revId": "737e1e0b529556f2cfb35cf8da1caf0e7329f1a1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "707c5808_184c39a2",
+        "filename": "run-qemu-robot-test.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2024-07-29T21:59:30Z",
+      "side": 1,
+      "message": "Fix shebang please.",
+      "revId": "737e1e0b529556f2cfb35cf8da1caf0e7329f1a1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bfcc3fb6_7bcb3db3",
+        "filename": "run-qemu-robot-test.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 79,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2024-07-29T21:59:30Z",
+      "side": 1,
+      "message": "Please use this pattern throughout:\n\n```\nQEMU_LOGIN_TIMER\u003dos.environ.get(\u0027QEMU_LOGIN_TIMER\u0027, 800)\n```",
+      "range": {
+        "startLine": 76,
+        "startChar": 0,
+        "endLine": 79,
+        "endChar": 24
+      },
+      "revId": "737e1e0b529556f2cfb35cf8da1caf0e7329f1a1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8d91d4d2_cbcd389a",
+        "filename": "run-qemu-robot-test.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 115,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2024-07-29T21:59:30Z",
+      "side": 1,
+      "message": "Typo?",
+      "range": {
+        "startLine": 115,
+        "startChar": 4,
+        "endLine": 115,
+        "endChar": 22
+      },
+      "revId": "737e1e0b529556f2cfb35cf8da1caf0e7329f1a1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f0971075_dd2782c9",
+        "filename": "run-qemu-robot-test.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 126,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2024-07-29T21:59:30Z",
+      "side": 1,
+      "message": "int-cast and then comparison with string?",
+      "revId": "737e1e0b529556f2cfb35cf8da1caf0e7329f1a1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ce5e8cd8_a0d285b7",
+        "filename": "run-qemu-robot-test.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 134,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2024-07-29T21:59:30Z",
+      "side": 1,
+      "message": "Not sure how we can default to None and then pass on line 136.  `docker inspect` by itself says `\"docker inspect\" requires at least 1 argument.`",
+      "range": {
+        "startLine": 134,
+        "startChar": 28,
+        "endLine": 134,
+        "endChar": 44
+      },
+      "revId": "737e1e0b529556f2cfb35cf8da1caf0e7329f1a1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9c7cc4c0_4a22e186",
+        "filename": "run-qemu-robot-test.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 145,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2024-07-29T21:59:30Z",
+      "side": 1,
+      "message": "Can we avoid mixing function definitions and global code?\n\nIt is preferable to create a `def main()` with all this content you have as global and then add:\n\n```\nif __name__ \u003d\u003d \"__main__\":\n    main()\n```\n\nYou can see an example in `tools/owners`.",
+      "revId": "737e1e0b529556f2cfb35cf8da1caf0e7329f1a1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "76203f10_f7826587",
+        "filename": "run-qemu-robot-test.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 149,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2024-07-29T21:59:30Z",
+      "side": 1,
+      "message": "It isn\u0027t obvious why this message needs to be passed in?  Can\u0027t we change 139 / 141 to add the container name?  That seems to be the main purpose here.",
+      "range": {
+        "startLine": 149,
+        "startChar": 28,
+        "endLine": 149,
+        "endChar": 83
+      },
+      "revId": "737e1e0b529556f2cfb35cf8da1caf0e7329f1a1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c3835811_f2953215",
+        "filename": "run-qemu-robot-test.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 164,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2024-07-29T21:59:30Z",
+      "side": 1,
+      "message": "Would prefer to not use globals like this.  Should we make a `class Container:` with the container name passed in for the init?  You can then have a `run`, `kill`, `interact`, etc functions.",
+      "range": {
+        "startLine": 164,
+        "startChar": 46,
+        "endLine": 164,
+        "endChar": 62
+      },
+      "revId": "737e1e0b529556f2cfb35cf8da1caf0e7329f1a1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b50f99aa_d61b328c",
+        "filename": "run-qemu-robot-test.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 191,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2024-07-29T21:59:30Z",
+      "side": 1,
+      "message": "```\n\u003e\u003e\u003e import os\n\u003e\u003e\u003e os.uname().machine\n\u0027x86_64\u0027\n```",
+      "revId": "737e1e0b529556f2cfb35cf8da1caf0e7329f1a1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "36dd4d1b_1701aa96",
+        "filename": "run-qemu-robot-test.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 191,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2024-07-29T21:59:30Z",
+      "side": 1,
+      "message": "Is there a reason to use `sh` here but `subprocess.run` elsewhere?  Can we make this consistent?",
+      "revId": "737e1e0b529556f2cfb35cf8da1caf0e7329f1a1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f52eb9cd_3fb5b473",
+        "filename": "run-qemu-robot-test.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 216,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2024-07-29T21:59:30Z",
+      "side": 1,
+      "message": "\"A\"?  Not a very clear variable name.",
+      "range": {
+        "startLine": 216,
+        "startChar": 17,
+        "endLine": 216,
+        "endChar": 18
+      },
+      "revId": "737e1e0b529556f2cfb35cf8da1caf0e7329f1a1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5d0b0dbb_e8c5fe45",
+        "filename": "run-qemu-robot-test.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 218,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2024-07-29T21:59:30Z",
+      "side": 1,
+      "message": "Don\u0027t hardcode paths here (especially because you didn\u0027t on line 173, so this could be a _different_ docker).",
+      "range": {
+        "startLine": 218,
+        "startChar": 25,
+        "endLine": 218,
+        "endChar": 34
+      },
+      "revId": "737e1e0b529556f2cfb35cf8da1caf0e7329f1a1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "186ca80b_ebd8e712",
+        "filename": "run-qemu-robot-test.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 230,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2024-07-29T21:59:30Z",
+      "side": 1,
+      "message": "Unused?",
+      "range": {
+        "startLine": 228,
+        "startChar": 0,
+        "endLine": 230,
+        "endChar": 8
+      },
+      "revId": "737e1e0b529556f2cfb35cf8da1caf0e7329f1a1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "145ee1e3_f3416441",
+        "filename": "run-qemu-robot-test.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 233,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2024-07-29T21:59:30Z",
+      "side": 1,
+      "message": "nit: recipe?",
+      "range": {
+        "startLine": 233,
+        "startChar": 2,
+        "endLine": 233,
+        "endChar": 9
+      },
+      "revId": "737e1e0b529556f2cfb35cf8da1caf0e7329f1a1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8d738bb5_4a38c15a",
+        "filename": "run-qemu-robot-test.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 267,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2024-07-29T21:59:30Z",
+      "side": 1,
+      "message": "?  This seems like you copied it from elsewhere?",
+      "range": {
+        "startLine": 267,
+        "startChar": 38,
+        "endLine": 267,
+        "endChar": 70
+      },
+      "revId": "737e1e0b529556f2cfb35cf8da1caf0e7329f1a1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3b01972d_41043bbc",
+        "filename": "run-qemu-robot-test.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 275,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2024-07-29T21:59:30Z",
+      "side": 1,
+      "message": "?",
+      "revId": "737e1e0b529556f2cfb35cf8da1caf0e7329f1a1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "970332b6_bc1124c2",
+        "filename": "run-qemu-robot-test.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 281,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2024-07-29T21:59:30Z",
+      "side": 1,
+      "message": "Left over from bash?",
+      "revId": "737e1e0b529556f2cfb35cf8da1caf0e7329f1a1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2c2e04ae_d5175447",
+        "filename": "run-qemu-robot-test.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 288,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2024-07-29T21:59:30Z",
+      "side": 1,
+      "message": "Use `shutil.copyfile`?",
+      "revId": "737e1e0b529556f2cfb35cf8da1caf0e7329f1a1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "12cdb9e2_a23de5b1",
+        "filename": "run-qemu-robot-test.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 289,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2024-07-29T21:59:30Z",
+      "side": 1,
+      "message": "Remove.",
+      "revId": "737e1e0b529556f2cfb35cf8da1caf0e7329f1a1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5e65c652_6dc2e134",
+        "filename": "run-qemu-robot-test.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 313,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2024-07-29T21:59:30Z",
+      "side": 1,
+      "message": "Clean up commented out lines throughout.",
+      "revId": "737e1e0b529556f2cfb35cf8da1caf0e7329f1a1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "37b3923f_4de4b42b",
+        "filename": "run-qemu-robot-test.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 330,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2024-07-29T21:59:30Z",
+      "side": 1,
+      "message": "I suspect this is some Meta-specific prompt format?  We need to make sure this works out of the box on the default palmetto/witherspoon/romulus builds.",
+      "range": {
+        "startLine": 329,
+        "startChar": 0,
+        "endLine": 330,
+        "endChar": 66
+      },
+      "revId": "737e1e0b529556f2cfb35cf8da1caf0e7329f1a1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "523f3e42_b3fc1737",
+        "filename": "run-qemu-robot-test.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 344,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2024-07-29T21:59:30Z",
+      "side": 1,
+      "message": "Necessary still?",
+      "range": {
+        "startLine": 343,
+        "startChar": 0,
+        "endLine": 344,
+        "endChar": 64
+      },
+      "revId": "737e1e0b529556f2cfb35cf8da1caf0e7329f1a1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "39fafe0a_5793ffb0",
+        "filename": "run-qemu-robot-test.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 347,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2024-07-29T21:59:30Z",
+      "side": 1,
+      "message": "Please use more verbose variable names throughout.",
+      "range": {
+        "startLine": 347,
+        "startChar": 28,
+        "endLine": 347,
+        "endChar": 30
+      },
+      "revId": "737e1e0b529556f2cfb35cf8da1caf0e7329f1a1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3e6e15f9_f934452b",
+        "filename": "run-qemu-robot-test.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 352,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2024-07-29T21:59:30Z",
+      "side": 1,
+      "message": "How do we run this from automation if we can\u0027t query a user?",
+      "revId": "737e1e0b529556f2cfb35cf8da1caf0e7329f1a1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1b7dfae8_c8dd640c",
+        "filename": "run-qemu-robot-test.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 459,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2024-07-29T21:59:30Z",
+      "side": 1,
+      "message": "os.mkdir",
+      "revId": "737e1e0b529556f2cfb35cf8da1caf0e7329f1a1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f0585099_3e75fd09",
+        "filename": "run-qemu-robot-test.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 463,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2024-07-29T21:59:30Z",
+      "side": 1,
+      "message": "sh.copyfile",
+      "revId": "737e1e0b529556f2cfb35cf8da1caf0e7329f1a1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b5d1460b_dad8b8e9",
+        "filename": "scripts/boot-qemu-test.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2024-07-29T21:59:30Z",
+      "side": 1,
+      "message": "We should probably define a map of MACHINE -\u003e qemu machine overrides, rather than hardcoding yv4 here.",
+      "range": {
+        "startLine": 28,
+        "startChar": 0,
+        "endLine": 32,
+        "endChar": 17
+      },
+      "revId": "737e1e0b529556f2cfb35cf8da1caf0e7329f1a1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1a656aa9_1b074f8b",
+        "filename": "scripts/boot-qemu-test.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 68,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2024-07-29T21:59:30Z",
+      "side": 1,
+      "message": "Use Python tempfile module.",
+      "revId": "737e1e0b529556f2cfb35cf8da1caf0e7329f1a1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "052a8e49_69cf8b9a",
+        "filename": "scripts/boot-qemu-test.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 71,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2024-07-29T21:59:30Z",
+      "side": 1,
+      "message": "Use shutil.copyfile.",
+      "revId": "737e1e0b529556f2cfb35cf8da1caf0e7329f1a1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f123b40b_fbcf72c1",
+        "filename": "scripts/boot-qemu-test.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 79,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2024-07-29T21:59:30Z",
+      "side": 1,
+      "message": "How about this?\n\n```\n\u003e\u003e\u003e import socket\n\u003e\u003e\u003e socket.gethostbyname(socket.gethostname())\n\u0027172.17.0.2\u0027\n```",
+      "range": {
+        "startLine": 75,
+        "startChar": 0,
+        "endLine": 79,
+        "endChar": 36
+      },
+      "revId": "737e1e0b529556f2cfb35cf8da1caf0e7329f1a1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ba3347fd_31e6f8f8",
+        "filename": "scripts/boot-qemu-test.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 92,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2024-07-29T21:59:30Z",
+      "side": 1,
+      "message": "Every machine has a required flash size.  We need to figure out how to do this generically.  Romulus requires a smaller image than 128M.",
+      "range": {
+        "startLine": 92,
+        "startChar": 18,
+        "endLine": 92,
+        "endChar": 24
+      },
+      "revId": "737e1e0b529556f2cfb35cf8da1caf0e7329f1a1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "28324fc2_f9989f80",
+        "filename": "scripts/boot-qemu-test.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 92,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2024-07-29T21:59:30Z",
+      "side": 1,
+      "message": "Use python file truncate method rather than sh.",
+      "revId": "737e1e0b529556f2cfb35cf8da1caf0e7329f1a1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7851a63b_cfeb02b8",
+        "filename": "scripts/boot-qemu-test.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 100,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2024-07-29T21:59:30Z",
+      "side": 1,
+      "message": "Don\u0027t bother with EMMC for now.  I don\u0027t think any systems require it.",
+      "range": {
+        "startLine": 96,
+        "startChar": 0,
+        "endLine": 100,
+        "endChar": 67
+      },
+      "revId": "737e1e0b529556f2cfb35cf8da1caf0e7329f1a1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fdadac3b_073ea457",
+        "filename": "scripts/boot-qemu-test.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 160,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2024-07-29T21:59:30Z",
+      "side": 1,
+      "message": "Can you use `os.unlink` instead of `sh.rm` for this kind of operation?",
+      "revId": "737e1e0b529556f2cfb35cf8da1caf0e7329f1a1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4a9ff611_5d70fff7",
+        "filename": "scripts/build-qemu-robot-docker.sh",
+        "patchSetId": 5
+      },
+      "lineNbr": 125,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2024-07-29T21:59:30Z",
+      "side": 1,
+      "message": "Please put this as a separate commit.",
+      "revId": "737e1e0b529556f2cfb35cf8da1caf0e7329f1a1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ],
   "submitRequirementResults": []
 }

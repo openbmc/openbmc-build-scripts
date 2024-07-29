@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7f06b1a0_36228dcf",
+        "filename": "scripts/boot-qemu-test.exp",
+        "patchSetId": 5
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2024-07-29T21:59:30Z",
+      "side": 0,
+      "message": "Maybe this is the original expect looking for a shell?  I guess this is probably similar to the one you\u0027re using, so maybe it isn\u0027t Meta-specific.",
+      "revId": "618b523164c1d4c143334e0b1e7ff5cf6e90df23",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
