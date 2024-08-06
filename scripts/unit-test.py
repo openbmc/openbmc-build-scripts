@@ -705,7 +705,7 @@ class Autotools(BuildSystem):
         ]
         conf_flags.extend(
             [
-                self._configure_feature("code-coverage", build_for_testing),
+                self._configure_feature("code-coverage", False),
                 self._configure_feature("valgrind", build_for_testing),
             ]
         )
