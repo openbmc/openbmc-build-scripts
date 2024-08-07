@@ -16,6 +16,24 @@
       "message": "Is there some sort of info on why it doesn\u0027t support autotools? Is it doable but will just take more work then you have time for? With OpenBMC moving fully to meson, did you hit this issue somewhere?",
       "revId": "8150fd5d93459033c918a047a83bbbca40706a6e",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "66d4ba99_aa970cc3",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1000397
+      },
+      "writtenOn": "2024-08-07T00:18:27Z",
+      "side": 1,
+      "message": "There is an issue: https://github.com/openbmc/openbmc-build-scripts/issues/37\n\nWhen I was solving the markdown warning problem of the libmctp project, I found that CI failed: https://jenkins.openbmc.org/job/ci-repository/89079/console\n\nAfter verification, I found that lcov was removed in this commit(https://gerrit.openbmc.org/c/openbmc/openbmc-build-scripts/+/72544), so @arj suggested that I disable the code coverage of autotools in the CI script.\n\nWe need to switch autotools to meson next, but it seems that there are still some repos that still use autotools.",
+      "parentUuid": "a6ee8518_1790eb74",
+      "revId": "8150fd5d93459033c918a047a83bbbca40706a6e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
