@@ -34,6 +34,24 @@
       "parentUuid": "a6ee8518_1790eb74",
       "revId": "8150fd5d93459033c918a047a83bbbca40706a6e",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d0b2b58d_76f6ac65",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1000009
+      },
+      "writtenOn": "2024-08-07T00:32:48Z",
+      "side": 1,
+      "message": "Can you please add the details in your response to the commit message?\n\nA further point is that I had a brief look and [autoconf-archive\u0027s `ax_code_coverage` module](https://git.savannah.gnu.org/gitweb/?p\u003dautoconf-archive.git;a\u003dblob_plain;f\u003dm4/ax_code_coverage.m4) doesn\u0027t support `gcovr`.",
+      "parentUuid": "66d4ba99_aa970cc3",
+      "revId": "8150fd5d93459033c918a047a83bbbca40706a6e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
