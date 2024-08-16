@@ -763,10 +763,6 @@ RUN apt-get update && apt-get dist-upgrade -yy && apt-get install -yy \
     autoconf \
     autoconf-archive \
     bison \
-    clang-18 \
-    clang-format-18 \
-    clang-tidy-18 \
-    clang-tools-18 \
     cmake \
     curl \
     dbus \
@@ -775,6 +771,7 @@ RUN apt-get update && apt-get dist-upgrade -yy && apt-get install -yy \
     g++-13 \
     gcc-13 \
     git \
+    gnupg \
     iproute2 \
     iputils-ping \
     libaudit-dev \
@@ -804,6 +801,7 @@ RUN apt-get update && apt-get dist-upgrade -yy && apt-get install -yy \
     liburing-dev \
     libxml2-utils \
     libxml-simple-perl \
+    lsb-release \
     ninja-build \
     npm \
     pkg-config \
@@ -820,6 +818,7 @@ RUN apt-get update && apt-get dist-upgrade -yy && apt-get install -yy \
     rsync \
     shellcheck \
     socat \
+    software-properties-common \
     sudo \
     systemd \
     valgrind \
@@ -834,6 +833,15 @@ RUN update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-13 13 \
   --slave /usr/bin/gcov-tool gcov-tool /usr/bin/gcov-tool-13
 RUN update-alternatives --remove cpp /usr/bin/cpp && \
     update-alternatives --install /usr/bin/cpp cpp /usr/bin/cpp-13 13
+
+# Set up LLVM apt repository.
+RUN bash -c "$(wget -O - https://apt.llvm.org/llvm.sh)" 18
+
+# Install extra clang tools
+RUN apt-get install \
+        clang-18 \
+        clang-format-18 \
+        clang-tidy-18
 
 RUN update-alternatives --install /usr/bin/clang clang /usr/bin/clang-18 1000 \
   --slave /usr/bin/clang++ clang++ /usr/bin/clang++-18 \
