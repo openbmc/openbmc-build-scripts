@@ -130,7 +130,7 @@ packages = {
         ],
     ),
     "google/googletest": PackageDef(
-        rev="v1.14.0",
+        rev="v1.15.2",
         build_type="cmake",
         config_env=["CXXFLAGS=-std=c++20"],
         config_flags=["-DTHREADS_PREFER_PTHREAD_FLAG=ON"],
