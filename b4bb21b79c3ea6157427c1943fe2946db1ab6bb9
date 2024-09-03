@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e3a09ab6_f8be312e",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 20
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2024-09-03T15:52:24Z",
+      "side": 1,
+      "message": "Please title the commit message better.\n\n\"run-qemu-robot-test: convert to Python\"?",
+      "revId": "b4bb21b79c3ea6157427c1943fe2946db1ab6bb9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "cfd2be7a_e80248b4",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 20
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2024-09-03T15:52:24Z",
+      "side": 1,
+      "message": "Marked a bunch of previous review comments as resolved.  I can\u0027t tell for certain they are resolved but it looks like a lot of refactoring took place.",
+      "revId": "b4bb21b79c3ea6157427c1943fe2946db1ab6bb9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
