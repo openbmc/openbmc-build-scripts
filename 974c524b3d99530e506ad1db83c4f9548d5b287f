@@ -16,6 +16,24 @@
       "message": "This was brought in via https://github.com/openbmc/openbmc-build-scripts/commit/6968e83ee77db179b888844725dbefafdbafd733. Can we just delete this now that we have new Ubuntu level which I assume has newer clang? If not, it would seem we\u0027d still need this to not mess up our clang format of repos?",
       "revId": "974c524b3d99530e506ad1db83c4f9548d5b287f",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e9e93506_5bd6a79a",
+        "filename": "scripts/build-unit-test-docker",
+        "patchSetId": 2
+      },
+      "lineNbr": 839,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2024-09-03T21:43:36Z",
+      "side": 1,
+      "message": "I guess I can delete it.  It wouldn\u0027t surprise me if we need it again later in the Oracular release cycle (for clang-19).  I commented it out because it seemed easier than making someone else look it up, but I guess we shouldn\u0027t be leaving in commented-out code.\n\nLet me know which you prefer.",
+      "parentUuid": "b7b1ee0d_e3e2f915",
+      "revId": "974c524b3d99530e506ad1db83c4f9548d5b287f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
