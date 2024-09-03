@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b7b1ee0d_e3e2f915",
+        "filename": "scripts/build-unit-test-docker",
+        "patchSetId": 2
+      },
+      "lineNbr": 839,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2024-09-03T21:04:27Z",
+      "side": 1,
+      "message": "This was brought in via https://github.com/openbmc/openbmc-build-scripts/commit/6968e83ee77db179b888844725dbefafdbafd733. Can we just delete this now that we have new Ubuntu level which I assume has newer clang? If not, it would seem we\u0027d still need this to not mess up our clang format of repos?",
+      "revId": "974c524b3d99530e506ad1db83c4f9548d5b287f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
