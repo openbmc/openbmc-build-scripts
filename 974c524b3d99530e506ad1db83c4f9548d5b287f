@@ -34,6 +34,24 @@
       "parentUuid": "b7b1ee0d_e3e2f915",
       "revId": "974c524b3d99530e506ad1db83c4f9548d5b287f",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "92d32371_21f8725f",
+        "filename": "scripts/build-unit-test-docker",
+        "patchSetId": 2
+      },
+      "lineNbr": 839,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2024-09-04T16:04:26Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "e9e93506_5bd6a79a",
+      "revId": "974c524b3d99530e506ad1db83c4f9548d5b287f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
