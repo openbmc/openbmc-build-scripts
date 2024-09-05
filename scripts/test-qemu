@@ -31,13 +31,13 @@ expect \
     -c 'expect -i $spawn_id eof'
 
 # AST2500
-WITHERSPOON_ARTIFACTS="$(acquire witherspoon)"
-WITHERSPOON_MTD="$(echo "${WITHERSPOON_ARTIFACTS}"/obmc-phosphor-image-witherspoon-*.ubi.mtd)"
+ROMULUS_ARTIFACTS="$(acquire romulus)"
+ROMULUS_MTD="$(echo "${ROMULUS_ARTIFACTS}"/obmc-phosphor-image-romulus*.mtd)"
 # shellcheck disable=SC2016 # 'expect' strings
 expect \
     -c "spawn qemu-system-arm \
-            -M witherspoon-bmc \
-            -drive file=${WITHERSPOON_MTD},if=mtd,format=raw \
+            -M romulus-bmc \
+            -drive file=${ROMULUS_MTD},if=mtd,format=raw \
             -nographic \
             -net nic \
     -net user,hostfwd=:127.0.0.1:2222-:22,hostfwd=:127.0.0.1:2443-:443,hostname=qemu" \
