@@ -151,6 +151,20 @@ function clean_up_file() {
 }
 trap clean_up_file EXIT
 
+function find_codespell_dict_file() {
+    local python_codespell_dict
+
+    python_codespell_dict=$(python3 -c "
+import os.path as op;
+import codespell_lib;codespell_dir = op.dirname(codespell_lib.__file__);
+codespell_file = op.join(codespell_dir, 'data', 'dictionary.txt');
+print(codespell_file if op.isfile(codespell_file) else '', end='')"
+2> /dev/null)
+
+    # Return the path if found, otherwise return empty string
+    echo "$python_codespell_dict"
+}
+
 function do_commit_spelling() {
     # Write the commit message to a temporary file
     git log --format='%B' -1 > "$commit_filename"
@@ -158,12 +172,21 @@ function do_commit_spelling() {
     # Some names or emails appear as false-positive misspellings, remove them
     sed -i "s/Signed-off-by.*//" "$commit_filename"
 
-    # Run the codespell with openbmc specific spellings on the patchset
-    echo -n "openbmc-dictionary - misspelling count >> "
+    # Get the path to the dictionary.txt file
+    local codespell_dict
+    codespell_dict=$(find_codespell_dict_file)
 
-    codespell -D "${CONFIG_PATH}/openbmc-spelling.txt" -d --count "$commit_filename"
+    # Check if the dictionary file was found
+    if [[ -z "$codespell_dict" ]]; then
+        echo "Error: Could not find dictionary.txt file"
+        exit 1
+    fi
 
-    # Run the codespell with generic dictionary on the patchset
+    # Run the codespell with codespell dictionary on the patchset
+    echo -n "codespell-dictionary - misspelling count >> "
+    codespell -D "$codespell_dict" -d --count "$commit_filename"
+
+    # Run the codespell with builtin dictionary on the patchset
     echo -n "generic-dictionary - misspelling count >> "
     codespell --builtin clear,rare,en-GB_to_en-US -d --count "$commit_filename"
 }
