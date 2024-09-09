@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bcb7549e_67e4868a",
+        "filename": "scripts/format-code.sh",
+        "patchSetId": 5
+      },
+      "lineNbr": 163,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2024-09-09T17:01:06Z",
+      "side": 1,
+      "message": "Is there something we can do to get support for this upstream?  It is strange that they have `--builtin` but there is no way to specify this one.",
+      "range": {
+        "startLine": 157,
+        "startChar": 0,
+        "endLine": 163,
+        "endChar": 15
+      },
+      "revId": "ebebcd2d6c2cc861e7bd063fd2fb9aa07141eb76",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
