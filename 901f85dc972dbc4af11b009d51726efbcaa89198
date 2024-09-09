@@ -70,6 +70,24 @@
       "parentUuid": "3655d19d_0c27ed52",
       "revId": "901f85dc972dbc4af11b009d51726efbcaa89198",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9f4a9c1a_ddbb4716",
+        "filename": "config/openbmc-spelling.txt",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2024-09-09T11:20:56Z",
+      "side": 1,
+      "message": "\u003e \u003e The approach we took was, that we periodically pull the dictionary from upstream and use that to check in CI, this will also provide us the flexibility to add openbmc-specific words to it. This commit basically pulled things from the upstream codespell repository.\n\u003e \n\u003e I am fine with that when it is a few Kb.  I don\u0027t want to hold MBs worth of a dictionary, which is already supplied with the tool itself.\n\nAck.\n\n\u003e \u003e Yes, we could use the one that is already shipped with the codespell package, but we will not have the leverage to add words as and when possible without waiting for things to be upstreamed.\n\u003e \n\u003e We can totally add critical non-upstreamed words to an \"openbmc_spelling.txt\".  I have no problem with that.  I just don\u0027t want to duplicate data held elsewhere.  As I pointed out, the script is already trying to use the standardized dictionaries; if we need to add an additional standardized one, that\u0027s fine.  The openbmc_spelling should, to me, only contain words that wouldn\u0027t make sense elsewhere.  The `dubs -\u003e dbus` is an example because an upstream dictionary isn\u0027t likely to hold \"dbus\" and \"dubs\" is a legitimate word in English, but it is a high-probability spelling mistake in our codebase.\n\nI have removed the existing config/openbmc-spelling.txt - we can create one and add the words needed \u0026 add an additional codespell check using that on needed basis ? does that sound okay ?",
+      "parentUuid": "5d2acbe3_7ee6dc32",
+      "revId": "901f85dc972dbc4af11b009d51726efbcaa89198",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
