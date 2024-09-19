@@ -319,7 +319,7 @@ if [[ -n "${http_proxy}" ]]; then
 EOF_GIT
 
   chmod a+x ${WORKSPACE}/bin/git-proxy
-  export PATH=${WORKSPACE}/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:${PATH}
+  export PATH="${WORKSPACE}/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:${PATH}"
 
   lock=${HOME}/build-setup.lock
   flock \${lock} git config --global core.gitProxy ${WORKSPACE}/bin/git-proxy
