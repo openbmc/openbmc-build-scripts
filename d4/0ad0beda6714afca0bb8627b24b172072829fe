@@ -1,0 +1,9 @@
+Verified+1: OpenBMC CI <openbmcbump-ci@yahoo.com>
+Code-Review+2: Patrick Williams <patrick@stwcx.xyz>
+Submitted-by: Johnathan Mantey <johnathanx.mantey@intel.com>
+Submitted-at: Mon, 30 Sep 2024 21:41:14 +0000
+Reviewed-on: https://gerrit.openbmc.org/c/openbmc/openbmc-build-scripts/+/74936
+Comments-Total: 6
+Comments-Unresolved: 1
+Project: openbmc/openbmc-build-scripts
+Branch: refs/heads/master
