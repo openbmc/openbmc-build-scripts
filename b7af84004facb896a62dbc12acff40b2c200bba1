@@ -22,6 +22,30 @@
       },
       "revId": "b7af84004facb896a62dbc12acff40b2c200bba1",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7f360c56_e9605dde",
+        "filename": "scripts/unit-test.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 727,
+      "author": {
+        "id": 1000900
+      },
+      "writtenOn": "2024-09-30T18:11:04Z",
+      "side": 1,
+      "message": "I think ldconfig should just be called without arguments.",
+      "parentUuid": "d633817a_285938e8",
+      "range": {
+        "startLine": 727,
+        "startChar": 60,
+        "endLine": 727,
+        "endChar": 67
+      },
+      "revId": "b7af84004facb896a62dbc12acff40b2c200bba1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
