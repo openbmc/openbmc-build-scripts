@@ -723,6 +723,9 @@ class Autotools(BuildSystem):
 
     def install(self):
         check_call_cmd("sudo", "-n", "--", *(make_parallel + ["install"]))
+        check_call_cmd(
+            "sudo", "-n", "--", "ldconfig", "/usr/local/lib/x86_64-linux-gnu"
+        )
 
     def test(self):
         try:
@@ -783,6 +786,9 @@ class CMake(BuildSystem):
 
     def install(self):
         check_call_cmd("sudo", "cmake", "--install", ".")
+        check_call_cmd(
+            "sudo", "-n", "--", "ldconfig", "/usr/local/lib/x86_64-linux-gnu"
+        )
 
     def test(self):
         if make_target_exists("test"):
@@ -965,6 +971,9 @@ class Meson(BuildSystem):
 
     def install(self):
         check_call_cmd("sudo", "-n", "--", "ninja", "-C", "build", "install")
+        check_call_cmd(
+            "sudo", "-n", "--", "ldconfig", "/usr/local/lib/x86_64-linux-gnu"
+        )
 
     def test(self):
         # It is useful to check various settings of the meson.build file
