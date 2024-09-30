@@ -18,6 +18,23 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1e188955_48972196",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000278
+      },
+      "writtenOn": "2024-09-30T18:42:06Z",
+      "side": 1,
+      "message": "Submitted without explicit architecture path",
+      "revId": "b7af84004facb896a62dbc12acff40b2c200bba1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d633817a_285938e8",
@@ -79,6 +96,30 @@
       "side": 1,
       "message": "Part of the reason for submitting this was to acquire some guidance on same.\nI\u0027ve only just started learning Meson. It\u0027s possible this can be solved better with better Meson recipes.\nThe problem I\u0027m witnessing is:\nThe \"setup\" phase creates symbolic links to a shared lib that does not yet exist.\nThe first build occurs, and the symbolic links get resolved because the generated library appears.\nAt this point the chain of shared libs is complete, and the unit tests pass.\nThen, I believe the scan-build, \"cleans\" the environment, and the built objects are erased.\nThe built objects never get restored.\nThis causes code coverage and valgrind, at a minimum, to fail to operate.\nThe \"install\" places the built objects in the library added in this commit. The shared libraries persist across the lifetime of the CI run.",
       "parentUuid": "d633817a_285938e8",
+      "range": {
+        "startLine": 727,
+        "startChar": 60,
+        "endLine": 727,
+        "endChar": 67
+      },
+      "revId": "b7af84004facb896a62dbc12acff40b2c200bba1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "42e156e1_dd536e9a",
+        "filename": "scripts/unit-test.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 727,
+      "author": {
+        "id": 1000278
+      },
+      "writtenOn": "2024-09-30T18:42:06Z",
+      "side": 1,
+      "message": "The recommendation made by Jonathan does still permit the unit tests to complete. Invoking without arguments should be sufficient to resolve the alternate architecture issue.",
+      "parentUuid": "206526af_526ecb49",
       "range": {
         "startLine": 727,
         "startChar": 60,
