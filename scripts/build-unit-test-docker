@@ -32,7 +32,7 @@ from hashlib import sha256
 # typing.Dict is used for type-hints.
 from typing import Any, Callable, Dict, Iterable, Optional  # noqa: F401
 
-from sh import docker, git, nproc, uname  # type: ignore
+from sh import docker, git, nproc  # type: ignore
 
 try:
     # Python before 3.8 doesn't have TypedDict, so reroute to standard 'dict'.
@@ -722,21 +722,6 @@ if username == "root":
     gid = 0
     uid = 0
 
-# Determine the architecture for Docker.
-arch = uname("-m").strip()
-if arch == "ppc64le":
-    docker_base = "ppc64le/"
-elif arch == "x86_64":
-    docker_base = ""
-elif arch == "aarch64":
-    docker_base = "arm64v8/"
-else:
-    print(
-        f"Unsupported system architecture({arch}) found for docker image",
-        file=sys.stderr,
-    )
-    sys.exit(1)
-
 # Special flags if setting up a deb mirror.
 mirror = ""
 if "ubuntu" in distro and ubuntu_mirror:
@@ -780,7 +765,7 @@ RUN echo "[http]" >> {homedir}/.gitconfig && \
 
 # Create base Dockerfile.
 dockerfile_base = f"""
-FROM {docker_base}{distro}
+FROM {distro}
 
 {mirror}
 
