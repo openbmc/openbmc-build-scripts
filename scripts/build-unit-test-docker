@@ -17,6 +17,9 @@
 #   UBUNTU_MIRROR:    <optional, the URL of a mirror of Ubuntu to override the
 #                     default ones in /etc/apt/sources.list>
 #                     default is empty, and no mirror is used.
+#   DOCKER_REG:       <optional, the URL of a docker registry to utilize
+#                     instead of the default docker hub
+#                     (ex. public.ecr.aws/ubuntu)
 #   http_proxy        The HTTP address of the proxy server to connect to.
 #                     Default: "", proxy is not setup if this is not set
 
@@ -700,6 +703,7 @@ is_automated_ci_build = os.environ.get("BUILD_URL", False)
 distro = os.environ.get("DISTRO", "ubuntu:noble")
 branch = os.environ.get("BRANCH", "master")
 ubuntu_mirror = os.environ.get("UBUNTU_MIRROR")
+docker_reg = os.environ.get("DOCKER_REG", "docker.io")
 http_proxy = os.environ.get("http_proxy")
 
 gerrit_project = os.environ.get("GERRIT_PROJECT")
@@ -765,7 +769,7 @@ RUN echo "[http]" >> {homedir}/.gitconfig && \
 
 # Create base Dockerfile.
 dockerfile_base = f"""
-FROM {distro}
+FROM {docker_reg}/{distro}
 
 {mirror}
 
