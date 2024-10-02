@@ -16,6 +16,23 @@
       "message": "Bypassing CI.  This all passed, but there was a failure because we primed this as the experimental version.",
       "revId": "426606c5eb0ad414128c3ee234ce9d20a42efc16",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4016c52c_884ea617",
+        "filename": "scripts/build-unit-test-docker",
+        "patchSetId": 3
+      },
+      "lineNbr": 431,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2024-10-02T18:24:23Z",
+      "side": 1,
+      "message": "I use gerrit topics to track similar function but don\u0027t necessarily need this feature, and don\u0027t want my gerrit jobs to fail if you find multiple commits with the same topic. Should we write an info log? Should we return False vs. just return in these paths?",
+      "revId": "426606c5eb0ad414128c3ee234ce9d20a42efc16",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
