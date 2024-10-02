@@ -23,13 +23,6 @@ DISTRO=${2:-"ubuntu:jammy"}
 UBUNTU_MIRROR=${UBUNTU_MIRROR:-""}
 PIP_MIRROR=${PIP_MIRROR:-""}
 
-# Determine our architecture, ppc64le or the other one
-if [ "$(uname -m)" == "ppc64le" ]; then
-    DOCKER_BASE="ppc64le/"
-else
-    DOCKER_BASE=""
-fi
-
 MIRROR=""
 if [[ -n "${UBUNTU_MIRROR}" ]]; then
     MIRROR="RUN echo \"deb ${UBUNTU_MIRROR} \$(. /etc/os-release && echo \$VERSION_CODENAME) main restricted universe multiverse\" > /etc/apt/sources.list && \
@@ -52,7 +45,7 @@ fi
 ################################# docker img # #################################
 # Create docker image that can run QEMU and Robot Tests
 Dockerfile=$(cat << EOF
-FROM ${DOCKER_BASE}${DISTRO}
+FROM ${DISTRO}
 
 ${MIRROR}
 
