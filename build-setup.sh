@@ -115,25 +115,6 @@ if [[ -n "${UBUNTU_MIRROR}" ]]; then
         echo \"deb ${UBUNTU_MIRROR} \$(. /etc/os-release && echo \$VERSION_CODENAME)-backports main restricted universe multiverse\" >> /etc/apt/sources.list"
 fi
 
-# Determine the architecture
-ARCH=$(uname -m)
-
-# Determine the prefix of the Dockerfile's base image
-case ${ARCH} in
-    "ppc64le")
-        DOCKER_BASE="ppc64le/"
-        ;;
-    "x86_64")
-        DOCKER_BASE=""
-        ;;
-    "aarch64")
-        DOCKER_BASE="arm64v8/"
-        ;;
-    *)
-        echo "Unsupported system architecture(${ARCH}) found for docker image"
-        exit 1
-esac
-
 # Timestamp for job
 echo "Build started, $(date)"
 
@@ -176,7 +157,7 @@ if [[ "${distro}" == fedora ]];then
     fi
 
     Dockerfile=$(cat << EOF
-  FROM ${DOCKER_BASE}${distro}:${img_tag}
+  FROM ${distro}:${img_tag}
 
   ${PROXY}
 
@@ -230,7 +211,7 @@ elif [[ "${distro}" == ubuntu ]]; then
     fi
 
     Dockerfile=$(cat << EOF
-  FROM ${DOCKER_BASE}${distro}:${img_tag}
+  FROM ${distro}:${img_tag}
 
   ${PROXY}
   ${MIRROR}

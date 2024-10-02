@@ -20,23 +20,6 @@ set -uo pipefail
 DOCKER_IMG_NAME=${DOCKER_IMG_NAME:-"openbmc/ubuntu-rootfs-size"}
 DISTRO=${DISTRO:-"ubuntu:bionic"}
 
-# Determine the architecture
-ARCH=$(uname -m)
-case ${ARCH} in
-    "ppc64le")
-        DOCKER_BASE="ppc64le/"
-        ;;
-    "x86_64")
-        DOCKER_BASE=""
-        ;;
-    "aarch64")
-        DOCKER_BASE="arm64v8/"
-        ;;
-    *)
-        echo "Unsupported system architecture(${ARCH}) found for docker image"
-        exit 1
-esac
-
 PROXY=""
 
 MIRROR=""
@@ -57,7 +40,7 @@ if [[ "${DISTRO}" == "ubuntu"* ]]; then
     fi
 
     Dockerfile=$(cat << EOF
-FROM ${DOCKER_BASE}${DISTRO}
+FROM ${DISTRO}
 
 ${PROXY}
 ${MIRROR}
