@@ -33,6 +33,24 @@
       "message": "I use gerrit topics to track similar function but don\u0027t necessarily need this feature, and don\u0027t want my gerrit jobs to fail if you find multiple commits with the same topic. Should we write an info log? Should we return False vs. just return in these paths?",
       "revId": "426606c5eb0ad414128c3ee234ce9d20a42efc16",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8c823707_9948c213",
+        "filename": "scripts/build-unit-test-docker",
+        "patchSetId": 3
+      },
+      "lineNbr": 431,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2024-10-02T18:41:28Z",
+      "side": 1,
+      "message": "If you use a gerrit topic for multiple commits in the same repository, it\u0027ll still work as it does today.  If you use a gerrit topic across multiple repositories, it\u0027ll only pick up the code in _other_ repositories if there is only one commit in that repository.\n\nTopic A: PSM: 5, PDI: 1\n   - This will use the PDI commit when testing all PSM changes\n\nTopic B: PSM: 1, PDI: 2\n   - This will not use the PDI commit when testing the PSM change.\n\nI\u0027ll fix the returns.",
+      "parentUuid": "4016c52c_884ea617",
+      "revId": "426606c5eb0ad414128c3ee234ce9d20a42efc16",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
