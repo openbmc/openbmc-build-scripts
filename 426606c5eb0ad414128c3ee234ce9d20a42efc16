@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3881e126_24fc1e50",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2024-10-02T16:37:01Z",
+      "side": 1,
+      "message": "Bypassing CI.  This all passed, but there was a failure because we primed this as the experimental version.",
+      "revId": "426606c5eb0ad414128c3ee234ce9d20a42efc16",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
