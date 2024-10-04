@@ -838,6 +838,7 @@ RUN apt-get update && apt-get dist-upgrade -yy && apt-get install -yy \
     libaudit-dev \
     libc6-dbg \
     libc6-dev \
+    libcjson-dev \
     libconfig++-dev \
     libcryptsetup-dev \
     libdbus-1-dev \
