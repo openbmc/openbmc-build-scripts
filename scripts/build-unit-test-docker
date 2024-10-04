@@ -831,6 +831,7 @@ RUN apt-get update && apt-get dist-upgrade -yy && apt-get install -yy \
     g++-13 \
     gcc-13 \
     git \
+    glib-2.0 \
     gnupg \
     iproute2 \
     iputils-ping \
