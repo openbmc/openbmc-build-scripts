@@ -9,6 +9,9 @@
 #   UBUNTU_MIRROR:    [optional] The URL of a mirror of Ubuntu to override the
 #                     default ones in /etc/apt/sources.list
 #                     default is empty, and no mirror is used.
+#   DOCKER_REG:       <optional, the URL of a docker registry to utilize
+#                     instead of the default docker hub
+#                     (ex. public.ecr.aws/ubuntu)
 #   http_proxy:       The HTTP address of the proxy server to connect to.
 #                     Default: "", proxy is not setup if this is not set
 
@@ -19,6 +22,7 @@ set -uo pipefail
 
 DOCKER_IMG_NAME=${DOCKER_IMG_NAME:-"openbmc/ubuntu-rootfs-size"}
 DISTRO=${DISTRO:-"ubuntu:bionic"}
+docker_reg=${DOCKER_REG:-"docker.io"}
 
 PROXY=""
 
@@ -40,7 +44,7 @@ if [[ "${DISTRO}" == "ubuntu"* ]]; then
     fi
 
     Dockerfile=$(cat << EOF
-FROM ${DISTRO}
+FROM ${docker_reg}/${DISTRO}
 
 ${PROXY}
 ${MIRROR}

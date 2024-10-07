@@ -21,6 +21,9 @@
 #                     Default: "", proxy is not setup if this is not set
 #  WORKSPACE          Path of the workspace directory where the build will
 #                     occur, and output artifacts will be produced.
+#  DOCKER_REG:        <optional, the URL of a docker registry to utilize
+#                     instead of the default docker hub
+#                     (ex. public.ecr.aws/ubuntu)
 #
 ###############################################################################
 # Trace bash processing
@@ -33,6 +36,8 @@ if [ -z ${WORKSPACE+x} ]; then
     echo "Please set WORKSPACE variable"
     exit 1
 fi
+
+docker_reg=${DOCKER_REG:-"docker.io"}
 
 # Docker Image Build Variables:
 img_name=qemu-build
@@ -89,7 +94,7 @@ chmod a+x "${WORKSPACE}"/build.sh
 # !!!
 
 Dockerfile=$(cat << EOF
-FROM ubuntu:jammy
+FROM ${docker_reg}/ubuntu:jammy
 
 ${PROXY}
 

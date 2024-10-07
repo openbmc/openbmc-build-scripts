@@ -8,6 +8,9 @@
 #                    default is empty, and no mirror is used.
 #  PIP_MIRROR:       <optional, the URL of a PIP mirror>
 #                    default is empty, and no mirror is used.
+#  DOCKER_REG:       <optional, the URL of a docker registry to utilize
+#                    instead of the default docker hub
+#                    (ex. public.ecr.aws/ubuntu)
 #
 #  Parameters:
 #   parm1:  <optional, the name of the docker image to generate>
@@ -22,6 +25,7 @@ DOCKER_IMG_NAME=${1:-"openbmc/ubuntu-robot-qemu"}
 DISTRO=${2:-"ubuntu:jammy"}
 UBUNTU_MIRROR=${UBUNTU_MIRROR:-""}
 PIP_MIRROR=${PIP_MIRROR:-""}
+docker_reg=${DOCKER_REG:-"docker.io"}
 
 MIRROR=""
 if [[ -n "${UBUNTU_MIRROR}" ]]; then
@@ -45,7 +49,7 @@ fi
 ################################# docker img # #################################
 # Create docker image that can run QEMU and Robot Tests
 Dockerfile=$(cat << EOF
-FROM ${DISTRO}
+FROM ${docker_reg}/${DISTRO}
 
 ${MIRROR}
 

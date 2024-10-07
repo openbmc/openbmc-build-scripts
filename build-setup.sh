@@ -23,6 +23,9 @@
 #                     default is empty.
 #  CONTAINER_ONLY     Set to "true" if you only want to build the docker
 #                     container. The bitbake will not occur in this case.
+#  DOCKER_REG:        <optional, the URL of a docker registry to utilize
+#                     instead of the default docker hub
+#                     (ex. public.ecr.aws/ubuntu or public.ecr.aws/docker/library)
 #
 # Docker Image Build Variables:
 #  BITBAKE_OPTS       Set to "-c populate_sdk" or whatever other BitBake options
@@ -87,6 +90,7 @@ num_cpu=${num_cpu:-$(nproc)}
 UBUNTU_MIRROR=${UBUNTU_MIRROR:-""}
 ENV_LOCAL_CONF=${ENV_LOCAL_CONF:-""}
 container_only=${CONTAINER_ONLY:-false}
+docker_reg=${DOCKER_REG:-"docker.io"}
 
 # Docker Image Build Variables:
 build_dir=${build_dir:-${WORKSPACE}/build}
@@ -157,7 +161,7 @@ if [[ "${distro}" == fedora ]];then
     fi
 
     Dockerfile=$(cat << EOF
-  FROM ${distro}:${img_tag}
+  FROM ${docker_reg}/${distro}:${img_tag}
 
   ${PROXY}
 
@@ -211,7 +215,7 @@ elif [[ "${distro}" == ubuntu ]]; then
     fi
 
     Dockerfile=$(cat << EOF
-  FROM ${distro}:${img_tag}
+  FROM ${docker_reg}/${distro}:${img_tag}
 
   ${PROXY}
   ${MIRROR}
