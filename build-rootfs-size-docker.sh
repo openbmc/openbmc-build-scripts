@@ -10,8 +10,8 @@
 #                     default ones in /etc/apt/sources.list
 #                     default is empty, and no mirror is used.
 #   DOCKER_REG:       <optional, the URL of a docker registry to utilize
-#                     instead of the default docker hub
-#                     (ex. public.ecr.aws/ubuntu)
+#                     instead of our default (public.ecr.aws/ubuntu)
+#                     (ex. docker.io)
 #   http_proxy:       The HTTP address of the proxy server to connect to.
 #                     Default: "", proxy is not setup if this is not set
 
@@ -22,7 +22,7 @@ set -uo pipefail
 
 DOCKER_IMG_NAME=${DOCKER_IMG_NAME:-"openbmc/ubuntu-rootfs-size"}
 DISTRO=${DISTRO:-"ubuntu:bionic"}
-docker_reg=${DOCKER_REG:-"docker.io"}
+docker_reg=${DOCKER_REG:-"public.ecr.aws/ubuntu"}
 
 PROXY=""
 

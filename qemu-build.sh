@@ -22,8 +22,8 @@
 #  WORKSPACE          Path of the workspace directory where the build will
 #                     occur, and output artifacts will be produced.
 #  DOCKER_REG:        <optional, the URL of a docker registry to utilize
-#                     instead of the default docker hub
-#                     (ex. public.ecr.aws/ubuntu)
+#                     instead of our default (public.ecr.aws/ubuntu)
+#                     (ex. docker.io)
 #
 ###############################################################################
 # Trace bash processing
@@ -37,7 +37,7 @@ if [ -z ${WORKSPACE+x} ]; then
     exit 1
 fi
 
-docker_reg=${DOCKER_REG:-"docker.io"}
+docker_reg=${DOCKER_REG:-"public.ecr.aws/ubuntu"}
 
 # Docker Image Build Variables:
 img_name=qemu-build

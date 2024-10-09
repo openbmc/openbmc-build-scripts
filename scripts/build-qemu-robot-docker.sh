@@ -9,9 +9,8 @@
 #  PIP_MIRROR:       <optional, the URL of a PIP mirror>
 #                    default is empty, and no mirror is used.
 #  DOCKER_REG:       <optional, the URL of a docker registry to utilize
-#                    instead of the default docker hub
-#                    (ex. public.ecr.aws/ubuntu)
-#
+#                    instead of our default (public.ecr.aws/ubuntu)
+#                    (ex. docker.io)
 #  Parameters:
 #   parm1:  <optional, the name of the docker image to generate>
 #            default is openbmc/ubuntu-robot-qemu
@@ -25,7 +24,7 @@ DOCKER_IMG_NAME=${1:-"openbmc/ubuntu-robot-qemu"}
 DISTRO=${2:-"ubuntu:jammy"}
 UBUNTU_MIRROR=${UBUNTU_MIRROR:-""}
 PIP_MIRROR=${PIP_MIRROR:-""}
-docker_reg=${DOCKER_REG:-"docker.io"}
+docker_reg=${DOCKER_REG:-"public.ecr.aws/ubuntu"}
 
 MIRROR=""
 if [[ -n "${UBUNTU_MIRROR}" ]]; then
