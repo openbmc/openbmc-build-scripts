@@ -912,7 +912,7 @@ class Meson(BuildSystem):
             raise Exception("Unknown meson option type")
         return "-D{}={}".format(key, str_val)
 
-    def configure(self, build_for_testing):
+    def get_configure_flags(self, build_for_testing):
         self.build_for_testing = build_for_testing
         meson_options = {}
         if os.path.exists("meson.options"):
@@ -952,6 +952,10 @@ class Meson(BuildSystem):
             )
         if MESON_FLAGS.get(self.package) is not None:
             meson_flags.extend(MESON_FLAGS.get(self.package))
+        return meson_flags
+
+    def configure(self, build_for_testing):
+        meson_flags = self.get_configure_flags(build_for_testing)
         try:
             check_call_cmd(
                 "meson", "setup", "--reconfigure", "build", *meson_flags
@@ -1075,13 +1079,15 @@ class Meson(BuildSystem):
         # in the build process to ensure we don't have undefined
         # runtime code.
         if is_sanitize_safe():
-            check_call_cmd(
-                "meson",
-                "configure",
-                "build",
-                "-Db_sanitize=address,undefined",
-                "-Db_lundef=false",
-            )
+            meson_flags = self.get_configure_flags(self.build_for_testing)
+            meson_flags.append("-Db_sanitize=address,undefined")
+            try:
+                check_call_cmd(
+                    "meson", "setup", "--reconfigure", "build", *meson_flags
+                )
+            except Exception:
+                shutil.rmtree("build", ignore_errors=True)
+                check_call_cmd("meson", "setup", "build", *meson_flags)
             check_call_cmd(
                 "meson",
                 "test",
