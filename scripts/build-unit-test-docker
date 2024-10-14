@@ -922,6 +922,7 @@ RUN pip3 install --break-system-packages \
         gcovr \
         gitlint \
         inflection \
+        isoduration \
         isort \
         jsonschema \
         meson==1.3.0 \
