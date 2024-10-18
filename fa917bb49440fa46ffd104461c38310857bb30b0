@@ -22,6 +22,30 @@
       },
       "revId": "fa917bb49440fa46ffd104461c38310857bb30b0",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0456da9e_ebb35a04",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 1001993
+      },
+      "writtenOn": "2024-10-18T05:16:04Z",
+      "side": 1,
+      "message": "We were doing some experiments on implementation as per this [design document](https://gerrit.openbmc.org/c/openbmc/docs/+/71039/4/designs/redundant_bmc_data_synchronization.md#157) where we noticed the limitation with JSON schema in mentioning time periods regarding the `PeriodicTime` field.\n\nI understand that the design document hasn\u0027t been merged yet, but I think the proposed changes are generic and it will be useful to everyone since it allow us to use intervals and validate JSON changes in the repo\u0027s CI by running the `run-ci` script whenever modifications are made",
+      "parentUuid": "f8a01a95_1b06ba92",
+      "range": {
+        "startLine": 16,
+        "startChar": 0,
+        "endLine": 18,
+        "endChar": 6
+      },
+      "revId": "fa917bb49440fa46ffd104461c38310857bb30b0",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
