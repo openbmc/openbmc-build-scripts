@@ -273,6 +273,10 @@ packages = {
             "-Dgtest=enabled",
         ],
     ),
+    "GNOME/libxml2": PackageDef(
+        rev="v2.13.1",
+        build_type="cmake",
+    ),    
 }  # type: Dict[str, PackageDef]
 
 # Define common flags used for builds
