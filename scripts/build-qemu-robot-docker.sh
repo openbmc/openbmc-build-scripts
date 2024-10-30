@@ -160,4 +160,6 @@ fi
 
 # Build above image
 # shellcheck disable=SC2086 # PROXY_ARGS is intentionally word-split.
-docker build ${PROXY_ARGS} -t "${DOCKER_IMG_NAME}" - <<< "${Dockerfile}"
+#docker build ${PROXY_ARGS} -t "${DOCKER_IMG_NAME}" - <<< "${Dockerfile}"
+#docker build --platform linux/amd64,linux/arm64 ${PROXY_ARGS} -t "${DOCKER_IMG_NAME}" - <<< "${Dockerfile}"
+docker buildx build --platform linux/amd64 ${PROXY_ARGS} -t "${DOCKER_IMG_NAME}" - <<< "${Dockerfile}"
