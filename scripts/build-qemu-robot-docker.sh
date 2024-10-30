@@ -21,7 +21,7 @@ set -uo pipefail
 http_proxy=${http_proxy:-}
 
 DOCKER_IMG_NAME=${1:-"openbmc/ubuntu-robot-qemu"}
-DISTRO=${2:-"ubuntu:jammy"}
+DISTRO=${2:-"ubuntu:oracular"}
 UBUNTU_MIRROR=${UBUNTU_MIRROR:-""}
 PIP_MIRROR=${PIP_MIRROR:-""}
 docker_reg=${DOCKER_REG:-"public.ecr.aws/ubuntu"}
@@ -58,9 +58,6 @@ RUN apt-get update && apt-get install -yy \
     debianutils \
     gawk \
     git \
-    python2 \
-    python2-dev \
-    python-setuptools \
     python3 \
     python3-dev \
     python3-setuptools \
@@ -86,7 +83,7 @@ RUN apt-get update && apt-get install -yy \
     libpixman-1-0 \
     libglib2.0-0 \
     sshpass \
-    libasound2 \
+    liboss4-salsa-asound2 \
     libfdt1 \
     libpcre3 \
     libslirp-dev \
@@ -106,11 +103,11 @@ RUN apt-get update -qqy \
   && mv /opt/firefox /opt/firefox-112.0.2 \
   && ln -fs /opt/firefox-112.0.2/firefox /usr/bin/firefox
 
-ENV HOME ${HOME}
+ENV HOME=${HOME}
 
 ${PIP_MIRROR_CMD}
 
-RUN pip3 install \
+RUN pip3 install --break-system-packages \
     tox \
     requests \
     retrying \
@@ -148,6 +145,12 @@ RUN wget https://github.com/mozilla/geckodriver/releases/download/v0.32.2/geckod
         && mv geckodriver /usr/local/bin \
         && chmod a+x /usr/local/bin/geckodriver
 
+# pulled from: https://gerrit.openbmc.org/c/openbmc/openbmc-build-scripts/+/71562
+# Latest Ubuntu added a default user (ubuntu), which takes 1000 UID.
+# If the user calling this build script happens to also have a UID of 1000
+# then the container no longer will work. Delete the new ubuntu user
+# so there is no conflict
+RUN userdel -r ubuntu
 RUN grep -q ${GROUPS[0]} /etc/group || groupadd -g ${GROUPS[0]} ${USER}
 RUN grep -q ${UID} /etc/passwd || useradd -d ${HOME} -l -m -u ${UID} -g ${GROUPS[0]} \
                     ${USER}
