@@ -86,6 +86,7 @@ RUN apt-get update && apt-get install -yy \
     libpixman-1-0 \
     libglib2.0-0 \
     sshpass \
+    openssh-server \
     libasound2 \
     libfdt1 \
     libpcre3 \
@@ -93,8 +94,12 @@ RUN apt-get update && apt-get install -yy \
     openssl \
     libxml2-dev \
     libxslt-dev \
+    python3-pexpect \
     python3-pip \
+    python3-sh \
     ipmitool \
+    strace \
+    netcat \
     xvfb \
     rustc
 
@@ -106,7 +111,7 @@ RUN apt-get update -qqy \
   && mv /opt/firefox /opt/firefox-112.0.2 \
   && ln -fs /opt/firefox-112.0.2/firefox /usr/bin/firefox
 
-ENV HOME ${HOME}
+ENV HOME=${HOME}
 
 ${PIP_MIRROR_CMD}
 
@@ -160,4 +165,4 @@ fi
 
 # Build above image
 # shellcheck disable=SC2086 # PROXY_ARGS is intentionally word-split.
-docker build ${PROXY_ARGS} -t "${DOCKER_IMG_NAME}" - <<< "${Dockerfile}"
+docker buildx build --push --platform linux/amd64,linux/arm64 --tag bhueyhui/openbmc-qemu-docker:experimental - <<< "${Dockerfile}"
