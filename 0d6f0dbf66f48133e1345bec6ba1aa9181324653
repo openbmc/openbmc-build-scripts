@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c0c9570b_0b1643dc",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2024-10-30T19:04:00Z",
+      "side": 1,
+      "message": "There is no Yocto package for isoduration.  Is this needed there?  Or are we only using this in repository-level CI?",
+      "revId": "0d6f0dbf66f48133e1345bec6ba1aa9181324653",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
