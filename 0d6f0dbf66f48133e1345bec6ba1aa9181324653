@@ -16,6 +16,24 @@
       "message": "There is no Yocto package for isoduration.  Is this needed there?  Or are we only using this in repository-level CI?",
       "revId": "0d6f0dbf66f48133e1345bec6ba1aa9181324653",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b58445ac_85bae4bf",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1001993
+      },
+      "writtenOn": "2024-11-04T10:27:14Z",
+      "side": 1,
+      "message": "Yes currently we are consuming this package only at the CI level.Hence no impact even if it doesn\u0027t have yocto package now.",
+      "parentUuid": "c0c9570b_0b1643dc",
+      "revId": "0d6f0dbf66f48133e1345bec6ba1aa9181324653",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
