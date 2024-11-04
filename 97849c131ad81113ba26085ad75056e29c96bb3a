@@ -16,6 +16,24 @@
       "message": "This just becomes a maintenance project going forward. Any chance just upgrading our Ubuntu container fixes what you need here? https://gerrit.openbmc.org/c/openbmc/openbmc-build-scripts/+/74244",
       "revId": "97849c131ad81113ba26085ad75056e29c96bb3a",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bc256678_d0b2f791",
+        "filename": "scripts/build-unit-test-docker",
+        "patchSetId": 3
+      },
+      "lineNbr": 276,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2024-11-04T18:52:15Z",
+      "side": 1,
+      "message": "Some more context on what is going on would be good.  Our current Yocto point-in-time is only using 2.12.6, so don\u0027t know why we\u0027d want to pull in 2.13.1 in CI anyhow.",
+      "parentUuid": "f5d99f52_0bbb1046",
+      "revId": "97849c131ad81113ba26085ad75056e29c96bb3a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
