@@ -72,6 +72,7 @@ GERRIT_CI_GROUPS=( \
         gagar-in/ci-authorized \
         google/ci-authorized \
         hcl/ci-authorized \
+        hp/ci-authorized \
         hpe/ci-authorized \
         ibm/ci-authorized \
         iei/ci-authorized \
