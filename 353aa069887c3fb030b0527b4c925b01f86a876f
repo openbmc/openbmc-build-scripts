@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "58d81f71_bc68c7d1",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2024-12-02T20:55:15Z",
+      "side": 1,
+      "message": "Not a huge fan of building the libpldm tests but good commit message description on why it\u0027s the best path.",
+      "revId": "353aa069887c3fb030b0527b4c925b01f86a876f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
