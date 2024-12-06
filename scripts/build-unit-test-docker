@@ -229,7 +229,7 @@ packages = {
     ),
     "openbmc/libpldm": PackageDef(
         build_type="meson",
-        config_flags=["-Dabi=deprecated,stable", "--wrap-mode=default"],
+        config_flags=["-Dabi=deprecated,stable", "-Dtests=false"],
     ),
     "openbmc/sdbusplus": PackageDef(
         depends=[
