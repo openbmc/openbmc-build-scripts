@@ -234,7 +234,7 @@ elif [[ "${distro}" == ubuntu ]]; then
       git \
       iputils-ping \
       libdata-dumper-simple-perl \
-      liblz4-tool \
+      lz4 \
       libsdl1.2-dev \
       libthread-queue-any-perl \
       locales \
