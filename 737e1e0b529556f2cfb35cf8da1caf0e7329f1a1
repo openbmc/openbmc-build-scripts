@@ -816,6 +816,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "285c9210_539bfc86",
+        "filename": "run-qemu-robot-test.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 164,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2024-12-10T21:59:55Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8c1d4947_940fad32",
+      "range": {
+        "startLine": 164,
+        "startChar": 46,
+        "endLine": 164,
+        "endChar": 62
+      },
+      "revId": "737e1e0b529556f2cfb35cf8da1caf0e7329f1a1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b50f99aa_d61b328c",
@@ -1525,6 +1549,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "85df28f8_b72c4ebb",
+        "filename": "run-qemu-robot-test.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 289,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2024-12-10T21:59:55Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b67dbc0e_4beadd7e",
+      "revId": "737e1e0b529556f2cfb35cf8da1caf0e7329f1a1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5e65c652_6dc2e134",
@@ -1639,6 +1681,30 @@
       "side": 1,
       "message": "Acknowledged\n\nYes, I\u0027ll have to test out a more extensive rule",
       "parentUuid": "37b3923f_4de4b42b",
+      "range": {
+        "startLine": 329,
+        "startChar": 0,
+        "endLine": 330,
+        "endChar": 66
+      },
+      "revId": "737e1e0b529556f2cfb35cf8da1caf0e7329f1a1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1cfb68bb_253dd519",
+        "filename": "run-qemu-robot-test.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 330,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2024-12-10T21:59:55Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7a424ad9_a93acb32",
       "range": {
         "startLine": 329,
         "startChar": 0,
@@ -1840,6 +1906,24 @@
       "side": 1,
       "message": "This is strictly for interactive debugging on local machines. Global variables control when this is interactive or not so this code is ignored if that\u0027s disabled.",
       "parentUuid": "3e6e15f9_f934452b",
+      "revId": "737e1e0b529556f2cfb35cf8da1caf0e7329f1a1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "70f09553_5f0de597",
+        "filename": "run-qemu-robot-test.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 352,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2024-12-10T21:59:55Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b01cc78f_3ae9da6d",
       "revId": "737e1e0b529556f2cfb35cf8da1caf0e7329f1a1",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },

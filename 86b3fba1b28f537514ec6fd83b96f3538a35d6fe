@@ -1,0 +1,541 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1d62e8b7_76eda080",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 62
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2024-12-10T21:59:55Z",
+      "side": 1,
+      "message": "run-qemu-robot-test: convert to Python from bash",
+      "revId": "86b3fba1b28f537514ec6fd83b96f3538a35d6fe",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "58fc775e_b70bbfdf",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 62
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2024-12-10T21:59:55Z",
+      "side": 1,
+      "message": "Only completed review to this point.  Will continue later.",
+      "revId": "86b3fba1b28f537514ec6fd83b96f3538a35d6fe",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7130e528_33c7a663",
+        "filename": "run-qemu-robot-test.py",
+        "patchSetId": 62
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2024-12-10T21:59:55Z",
+      "side": 1,
+      "message": "Would prefer if the file name dropped the \".py\".  We probably should move this under scripts like most of the rest of them (we\u0027ve been slowly moving them there).",
+      "revId": "86b3fba1b28f537514ec6fd83b96f3538a35d6fe",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "29e4afb3_5686d535",
+        "filename": "run-qemu-robot-test.py",
+        "patchSetId": 62
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2024-12-10T21:59:55Z",
+      "side": 1,
+      "message": "What do we do to make this not WIP?  Don\u0027t think this will end up getting merged (especially since it deletes the old script) in this state.",
+      "range": {
+        "startLine": 5,
+        "startChar": 33,
+        "endLine": 5,
+        "endChar": 62
+      },
+      "revId": "86b3fba1b28f537514ec6fd83b96f3538a35d6fe",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e80f1933_74668c5d",
+        "filename": "run-qemu-robot-test.py",
+        "patchSetId": 62
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2024-12-10T21:59:55Z",
+      "side": 1,
+      "message": "\"Environment variables\"?  Not formal parameters.",
+      "range": {
+        "startLine": 9,
+        "startChar": 2,
+        "endLine": 9,
+        "endChar": 31
+      },
+      "revId": "86b3fba1b28f537514ec6fd83b96f3538a35d6fe",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4b4c0695_b81a42c7",
+        "filename": "run-qemu-robot-test.py",
+        "patchSetId": 62
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2024-12-10T21:59:55Z",
+      "side": 1,
+      "message": "What does \"and valid\" mean?",
+      "revId": "86b3fba1b28f537514ec6fd83b96f3538a35d6fe",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3811c3f5_7d6c2c3c",
+        "filename": "run-qemu-robot-test.py",
+        "patchSetId": 62
+      },
+      "lineNbr": 54,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2024-12-10T21:59:55Z",
+      "side": 1,
+      "message": "Document these?",
+      "range": {
+        "startLine": 53,
+        "startChar": 0,
+        "endLine": 54,
+        "endChar": 28
+      },
+      "revId": "86b3fba1b28f537514ec6fd83b96f3538a35d6fe",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5ec28ef0_f4b8861e",
+        "filename": "run-qemu-robot-test.py",
+        "patchSetId": 62
+      },
+      "lineNbr": 69,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2024-12-10T21:59:55Z",
+      "side": 1,
+      "message": "nit: `exit_on_fail`?",
+      "range": {
+        "startLine": 69,
+        "startChar": 36,
+        "endLine": 69,
+        "endChar": 47
+      },
+      "revId": "86b3fba1b28f537514ec6fd83b96f3538a35d6fe",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cf56eb09_52091649",
+        "filename": "run-qemu-robot-test.py",
+        "patchSetId": 62
+      },
+      "lineNbr": 72,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2024-12-10T21:59:55Z",
+      "side": 1,
+      "message": "New versions of Python have `subprocess.run` return a CompletedProcess object.  Do we want to get the `.stdout` from this?\n\nSince `.stdout` is bytes and not a string, you also might need `.decode(\"utf-8\")`?",
+      "range": {
+        "startLine": 72,
+        "startChar": 10,
+        "endLine": 72,
+        "endChar": 25
+      },
+      "revId": "86b3fba1b28f537514ec6fd83b96f3538a35d6fe",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6f1e4f3b_34e359ce",
+        "filename": "run-qemu-robot-test.py",
+        "patchSetId": 62
+      },
+      "lineNbr": 74,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2024-12-10T21:59:55Z",
+      "side": 1,
+      "message": "The function documentation on line 70 says \"and return JSON contents\".  Do we want it to call `json.loads` on the results?",
+      "range": {
+        "startLine": 72,
+        "startChar": 0,
+        "endLine": 74,
+        "endChar": 5
+      },
+      "revId": "86b3fba1b28f537514ec6fd83b96f3538a35d6fe",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a61d5234_c69c54dc",
+        "filename": "run-qemu-robot-test.py",
+        "patchSetId": 62
+      },
+      "lineNbr": 84,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2024-12-10T21:59:55Z",
+      "side": 1,
+      "message": "Go ahead and make this one long line (unless for some reason `black` messed it up).  That way we can copy/paste this easier.",
+      "revId": "86b3fba1b28f537514ec6fd83b96f3538a35d6fe",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1c55d0e1_57ccf4b8",
+        "filename": "run-qemu-robot-test.py",
+        "patchSetId": 62
+      },
+      "lineNbr": 86,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2024-12-10T21:59:55Z",
+      "side": 1,
+      "message": "This seems like a lot of work for `__file__`.  I realize there are extra cases covered by this code, but do we realistically have to worry about any of those cases?",
+      "revId": "86b3fba1b28f537514ec6fd83b96f3538a35d6fe",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "145e8e10_5d13d419",
+        "filename": "run-qemu-robot-test.py",
+        "patchSetId": 62
+      },
+      "lineNbr": 98,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2024-12-10T21:59:55Z",
+      "side": 1,
+      "message": "Can we keep some consistent naming style on globals.  `HOSTBINPERSIST` ?",
+      "range": {
+        "startLine": 98,
+        "startChar": 0,
+        "endLine": 98,
+        "endChar": 14
+      },
+      "revId": "86b3fba1b28f537514ec6fd83b96f3538a35d6fe",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b3a3a3c7_8485c508",
+        "filename": "run-qemu-robot-test.py",
+        "patchSetId": 62
+      },
+      "lineNbr": 116,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2024-12-10T21:59:55Z",
+      "side": 1,
+      "message": "Why is `ret` a global??",
+      "revId": "86b3fba1b28f537514ec6fd83b96f3538a35d6fe",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a61a3dd1_880c8f53",
+        "filename": "run-qemu-robot-test.py",
+        "patchSetId": 62
+      },
+      "lineNbr": 117,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2024-12-10T21:59:55Z",
+      "side": 1,
+      "message": "What is this for?",
+      "revId": "86b3fba1b28f537514ec6fd83b96f3538a35d6fe",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "36969db9_0c1b38d2",
+        "filename": "run-qemu-robot-test.py",
+        "patchSetId": 62
+      },
+      "lineNbr": 119,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2024-12-10T21:59:55Z",
+      "side": 1,
+      "message": "Why not do this on line 113?",
+      "revId": "86b3fba1b28f537514ec6fd83b96f3538a35d6fe",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fdcdc4c2_08b274bd",
+        "filename": "run-qemu-robot-test.py",
+        "patchSetId": 62
+      },
+      "lineNbr": 121,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2024-12-10T21:59:55Z",
+      "side": 1,
+      "message": "Why?",
+      "revId": "86b3fba1b28f537514ec6fd83b96f3538a35d6fe",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0041402c_32bb48ce",
+        "filename": "run-qemu-robot-test.py",
+        "patchSetId": 62
+      },
+      "lineNbr": 122,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2024-12-10T21:59:55Z",
+      "side": 1,
+      "message": "Why not do this on line 112?",
+      "revId": "86b3fba1b28f537514ec6fd83b96f3538a35d6fe",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3f9f67ee_08db9aca",
+        "filename": "run-qemu-robot-test.py",
+        "patchSetId": 62
+      },
+      "lineNbr": 144,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2024-12-10T21:59:55Z",
+      "side": 1,
+      "message": "Simplify to:\n\n```\nproxy_args \u003d env_proxy_build_args(os.enviro.get(\"PROXY\", []))\n```\n\nMake `env_proxy_build_args` handle if it is an array (no processing) vs string (processing).",
+      "range": {
+        "startLine": 140,
+        "startChar": 0,
+        "endLine": 144,
+        "endChar": 44
+      },
+      "revId": "86b3fba1b28f537514ec6fd83b96f3538a35d6fe",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e490f456_1300922b",
+        "filename": "run-qemu-robot-test.py",
+        "patchSetId": 62
+      },
+      "lineNbr": 146,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2024-12-10T21:59:55Z",
+      "side": 1,
+      "message": "Why not do this at the point of definition?",
+      "revId": "86b3fba1b28f537514ec6fd83b96f3538a35d6fe",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a8cc4f46_32da1c0a",
+        "filename": "run-qemu-robot-test.py",
+        "patchSetId": 62
+      },
+      "lineNbr": 155,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2024-12-10T21:59:55Z",
+      "side": 1,
+      "message": "Simplify.\n\n```\nDOCKER_IMG_NAME \u003d os.environ.get(\"DOCKER_IMG_NAME\", \"openbmc/ubuntu-robot-qemu\")\n```\n\nThere shouldn\u0027t be a reason to use `\"False\"`; you can just pass `False`.  You don\u0027t need to do string comparisons.",
+      "range": {
+        "startLine": 150,
+        "startChar": 0,
+        "endLine": 155,
+        "endChar": 49
+      },
+      "revId": "86b3fba1b28f537514ec6fd83b96f3538a35d6fe",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b922da01_dcfca9ed",
+        "filename": "run-qemu-robot-test.py",
+        "patchSetId": 62
+      },
+      "lineNbr": 161,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2024-12-10T21:59:55Z",
+      "side": 1,
+      "message": "`None`",
+      "range": {
+        "startLine": 161,
+        "startChar": 58,
+        "endLine": 161,
+        "endChar": 65
+      },
+      "revId": "86b3fba1b28f537514ec6fd83b96f3538a35d6fe",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dfc7673d_2b956892",
+        "filename": "run-qemu-robot-test.py",
+        "patchSetId": 62
+      },
+      "lineNbr": 162,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2024-12-10T21:59:55Z",
+      "side": 1,
+      "message": "`if not UPSTREAM_WORKSPACE`",
+      "revId": "86b3fba1b28f537514ec6fd83b96f3538a35d6fe",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0552a91c_5157b1b7",
+        "filename": "run-qemu-robot-test.py",
+        "patchSetId": 62
+      },
+      "lineNbr": 170,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2024-12-10T21:59:55Z",
+      "side": 1,
+      "message": "Use `False` not `\"False\"` throughout here.  Fix this pattern throughout.",
+      "range": {
+        "startLine": 170,
+        "startChar": 37,
+        "endLine": 170,
+        "endChar": 45
+      },
+      "revId": "86b3fba1b28f537514ec6fd83b96f3538a35d6fe",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b3110f40_e14ec137",
+        "filename": "run-qemu-robot-test.py",
+        "patchSetId": 62
+      },
+      "lineNbr": 177,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2024-12-10T21:59:55Z",
+      "side": 1,
+      "message": "This is an undocumented environment variable that uses a totally different style.",
+      "range": {
+        "startLine": 177,
+        "startChar": 18,
+        "endLine": 177,
+        "endChar": 34
+      },
+      "revId": "86b3fba1b28f537514ec6fd83b96f3538a35d6fe",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "58ad44e5_91361ec3",
+        "filename": "run-qemu-robot-test.py",
+        "patchSetId": 62
+      },
+      "lineNbr": 194,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2024-12-10T21:59:55Z",
+      "side": 1,
+      "message": "I\u0027d rather not have callers to `docker_inspect_check` know that this is a CompletedProcess.  Can you return None on failure and `ret.stdout.decode(\"utf-8\")` on success?",
+      "revId": "86b3fba1b28f537514ec6fd83b96f3538a35d6fe",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8c1c7576_7e32217c",
+        "filename": "run-qemu-robot-test.py",
+        "patchSetId": 62
+      },
+      "lineNbr": 621,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2024-12-10T21:59:55Z",
+      "side": 1,
+      "message": "This isn\u0027t obvious why a specified docker image needs to be pulled but a non-specified one needs to be built?",
+      "range": {
+        "startLine": 618,
+        "startChar": 0,
+        "endLine": 621,
+        "endChar": 27
+      },
+      "revId": "86b3fba1b28f537514ec6fd83b96f3538a35d6fe",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
