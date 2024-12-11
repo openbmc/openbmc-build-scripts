@@ -54,6 +54,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "29a3487d_a35b1027",
+        "filename": "scripts/build-unit-test-docker",
+        "patchSetId": 1
+      },
+      "lineNbr": 47,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2024-12-11T22:15:49Z",
+      "side": 1,
+      "message": "Ahh, I take that back, there\u0027s a .bashrc setup on the system:\ndocker ()\n{\n    podman $@\n}\n\nSo there is no link from docker to podman. So you\u0027re right. The only thing this commit gets us is if a user can\u0027t install that link on their system. I just created the link in my $HOME and set my $PATH to it and it worked without this commit.\n\nSo...now that we got that figured out. I think it\u0027s still a worthwhile change. This proves that Red Hat does not install that link by default so it would be nice if this script just worked out of the box without needing the docker link.",
+      "parentUuid": "0775ce32_988ba99c",
+      "revId": "8591f88e71724d598cc780e5db6735ca6f655465",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7b050068_afcdb94b",
