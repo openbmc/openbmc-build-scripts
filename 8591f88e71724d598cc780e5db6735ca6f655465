@@ -36,6 +36,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0775ce32_988ba99c",
+        "filename": "scripts/build-unit-test-docker",
+        "patchSetId": 1
+      },
+      "lineNbr": 47,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2024-12-11T20:56:19Z",
+      "side": 1,
+      "message": "Hmm. This is strange, but I guess the change is fine. \n\nThere isn\u0027t such a thing as \"the docker sh package\". sh works against anything it can find in the shell. \"from sh import foo\" should pass whenever \"foo\" is a valid executable. I wonder if, for some reason, it fails on symlinks.",
+      "parentUuid": "f0ca13c3_3697df36",
+      "revId": "8591f88e71724d598cc780e5db6735ca6f655465",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7b050068_afcdb94b",
