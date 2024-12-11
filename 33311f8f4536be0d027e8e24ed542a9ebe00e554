@@ -1,0 +1,444 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "58d907aa_3a633e03",
+        "filename": "run-qemu-robot-test.py",
+        "patchSetId": 63
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2024-12-11T17:13:08Z",
+      "side": 1,
+      "message": "It seems like you copied this from the old script but it seems like `k8s` never worked?  Should we just remove this?",
+      "range": {
+        "startLine": 32,
+        "startChar": 0,
+        "endLine": 37,
+        "endChar": 31
+      },
+      "revId": "33311f8f4536be0d027e8e24ed542a9ebe00e554",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b6672361_b045ec5d",
+        "filename": "run-qemu-robot-test.py",
+        "patchSetId": 63
+      },
+      "lineNbr": 211,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2024-12-11T17:13:08Z",
+      "side": 1,
+      "message": "`interact \u003d bool(os.environ.get(\"INTERACT\", False))` ?",
+      "range": {
+        "startLine": 206,
+        "startChar": 0,
+        "endLine": 211,
+        "endChar": 20
+      },
+      "revId": "33311f8f4536be0d027e8e24ed542a9ebe00e554",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "aecd37d4_33631ca7",
+        "filename": "run-qemu-robot-test.py",
+        "patchSetId": 63
+      },
+      "lineNbr": 259,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2024-12-11T17:13:08Z",
+      "side": 1,
+      "message": "It seems like `docker_build_qemu` and `docker_pull_qemu_image` are equivalent except `pull` can also pull.  But any argument that wouldn\u0027t pull to `docker_pull_qemu_image` does the same behavior as `docker_build_qemu`, so why have two functions?",
+      "revId": "33311f8f4536be0d027e8e24ed542a9ebe00e554",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8c30e49d_24cf6cec",
+        "filename": "run-qemu-robot-test.py",
+        "patchSetId": 63
+      },
+      "lineNbr": 265,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2024-12-11T17:13:08Z",
+      "side": 1,
+      "message": "Could probably come up with a better variable name than \"default\".",
+      "range": {
+        "startLine": 265,
+        "startChar": 4,
+        "endLine": 265,
+        "endChar": 11
+      },
+      "revId": "33311f8f4536be0d027e8e24ed542a9ebe00e554",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "55e8ddbc_e2557463",
+        "filename": "run-qemu-robot-test.py",
+        "patchSetId": 63
+      },
+      "lineNbr": 272,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2024-12-11T17:13:08Z",
+      "side": 1,
+      "message": "I don\u0027t think this behavior is clearly documented anywhere.",
+      "range": {
+        "startLine": 267,
+        "startChar": 0,
+        "endLine": 272,
+        "endChar": 37
+      },
+      "revId": "33311f8f4536be0d027e8e24ed542a9ebe00e554",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c198423f_ab1e492f",
+        "filename": "run-qemu-robot-test.py",
+        "patchSetId": 63
+      },
+      "lineNbr": 307,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2024-12-11T17:13:08Z",
+      "side": 1,
+      "message": "To me it would be good to at least order the functions nearby each other.  We have a docker function and then a pexpect and then another docker and then a qemu and then some more pexepct and then some more docker...",
+      "revId": "33311f8f4536be0d027e8e24ed542a9ebe00e554",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a12e7628_bbefc536",
+        "filename": "run-qemu-robot-test.py",
+        "patchSetId": 63
+      },
+      "lineNbr": 373,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2024-12-11T17:13:08Z",
+      "side": 1,
+      "message": "I think 128M here is dependent on the flash image size in the system, or can we always use a bigger image than the flash size?",
+      "revId": "33311f8f4536be0d027e8e24ed542a9ebe00e554",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "69d59f50_3caf79fd",
+        "filename": "run-qemu-robot-test.py",
+        "patchSetId": 63
+      },
+      "lineNbr": 375,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2024-12-11T17:13:08Z",
+      "side": 1,
+      "message": "This isn\u0027t going to work generally.",
+      "revId": "33311f8f4536be0d027e8e24ed542a9ebe00e554",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "88e68e12_8b071a29",
+        "filename": "run-qemu-robot-test.py",
+        "patchSetId": 63
+      },
+      "lineNbr": 388,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2024-12-11T17:13:08Z",
+      "side": 1,
+      "message": "What\u0027s with the commented out stuff here?",
+      "revId": "33311f8f4536be0d027e8e24ed542a9ebe00e554",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "84c4e58d_92e61115",
+        "filename": "run-qemu-robot-test.py",
+        "patchSetId": 63
+      },
+      "lineNbr": 396,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2024-12-11T17:13:08Z",
+      "side": 1,
+      "message": "Are we able to eliminate this?\n\nhttps://pexpect.readthedocs.io/en/stable/api/pexpect.html#pexpect.ExceptionPexpect",
+      "range": {
+        "startLine": 396,
+        "startChar": 28,
+        "endLine": 396,
+        "endChar": 58
+      },
+      "revId": "33311f8f4536be0d027e8e24ed542a9ebe00e554",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0c8b980f_8ec4b668",
+        "filename": "run-qemu-robot-test.py",
+        "patchSetId": 63
+      },
+      "lineNbr": 411,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2024-12-11T17:13:08Z",
+      "side": 1,
+      "message": "https://pexpect.readthedocs.io/en/stable/api/pexpect.html#pexpect.ExceptionPexpect",
+      "range": {
+        "startLine": 411,
+        "startChar": 28,
+        "endLine": 411,
+        "endChar": 58
+      },
+      "revId": "33311f8f4536be0d027e8e24ed542a9ebe00e554",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8ee5b6cc_5443398a",
+        "filename": "run-qemu-robot-test.py",
+        "patchSetId": 63
+      },
+      "lineNbr": 426,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2024-12-11T17:13:08Z",
+      "side": 1,
+      "message": "What are these extra `emsg` sets for.  Seems like only on line 437 do we use this?",
+      "revId": "33311f8f4536be0d027e8e24ed542a9ebe00e554",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e7fba882_2e210f46",
+        "filename": "run-qemu-robot-test.py",
+        "patchSetId": 63
+      },
+      "lineNbr": 467,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2024-12-11T17:13:08Z",
+      "side": 1,
+      "message": "Does this pattern match for the default romulus build also?  Or is there some different prompt between Yv4 and Romulus?",
+      "range": {
+        "startLine": 466,
+        "startChar": 0,
+        "endLine": 467,
+        "endChar": 71
+      },
+      "revId": "33311f8f4536be0d027e8e24ed542a9ebe00e554",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "87c309d4_3a5f2491",
+        "filename": "run-qemu-robot-test.py",
+        "patchSetId": 63
+      },
+      "lineNbr": 471,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2024-12-11T17:13:08Z",
+      "side": 1,
+      "message": "https://pexpect.readthedocs.io/en/stable/api/pexpect.html#pexpect.ExceptionPexpect",
+      "range": {
+        "startLine": 471,
+        "startChar": 28,
+        "endLine": 471,
+        "endChar": 58
+      },
+      "revId": "33311f8f4536be0d027e8e24ed542a9ebe00e554",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "192759d5_af075ab1",
+        "filename": "run-qemu-robot-test.py",
+        "patchSetId": 63
+      },
+      "lineNbr": 488,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2024-12-11T17:13:08Z",
+      "side": 1,
+      "message": "Intentional?",
+      "range": {
+        "startLine": 482,
+        "startChar": 0,
+        "endLine": 488,
+        "endChar": 18
+      },
+      "revId": "33311f8f4536be0d027e8e24ed542a9ebe00e554",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9187fa62_88977b6c",
+        "filename": "run-qemu-robot-test.py",
+        "patchSetId": 63
+      },
+      "lineNbr": 501,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2024-12-11T17:13:08Z",
+      "side": 1,
+      "message": "What is the TODO?",
+      "revId": "33311f8f4536be0d027e8e24ed542a9ebe00e554",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e8ad080d_05ffb949",
+        "filename": "run-qemu-robot-test.py",
+        "patchSetId": 63
+      },
+      "lineNbr": 511,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2024-12-11T17:13:08Z",
+      "side": 1,
+      "message": "What is the TODO?",
+      "revId": "33311f8f4536be0d027e8e24ed542a9ebe00e554",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f24abe19_1c633bf6",
+        "filename": "run-qemu-robot-test.py",
+        "patchSetId": 63
+      },
+      "lineNbr": 572,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2024-12-11T17:13:08Z",
+      "side": 1,
+      "message": "Are we expecting robot and QEMU to be ran in the same docker container?",
+      "revId": "33311f8f4536be0d027e8e24ed542a9ebe00e554",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "74c6b7b0_34709e5d",
+        "filename": "run-qemu-robot-test.py",
+        "patchSetId": 63
+      },
+      "lineNbr": 640,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2024-12-11T17:13:08Z",
+      "side": 1,
+      "message": "Is there some `exit` or something we need here in order to not continue?  I see the \"else\" which implies a fall-thru.",
+      "revId": "33311f8f4536be0d027e8e24ed542a9ebe00e554",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "de9ee771_4e7b1fdb",
+        "filename": "run-qemu-robot-test.py",
+        "patchSetId": 63
+      },
+      "lineNbr": 675,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2024-12-11T17:13:08Z",
+      "side": 1,
+      "message": "Why use shell semantics instead?  Not clear why one is better than the other.\n\nThis goes for the rest of the `sh` calls also.",
+      "range": {
+        "startLine": 674,
+        "startChar": 0,
+        "endLine": 675,
+        "endChar": 35
+      },
+      "revId": "33311f8f4536be0d027e8e24ed542a9ebe00e554",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "894d9ce4_981fcc95",
+        "filename": "run-qemu-robot-test.py",
+        "patchSetId": 63
+      },
+      "lineNbr": 722,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2024-12-11T17:13:08Z",
+      "side": 1,
+      "message": "This is slightly scary to me. 😄",
+      "revId": "33311f8f4536be0d027e8e24ed542a9ebe00e554",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a65ecbfe_e066f05f",
+        "filename": "scripts/run-robot.sh",
+        "patchSetId": 63
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2024-12-11T17:13:08Z",
+      "side": 1,
+      "message": "Any idea what\u0027s going on here?",
+      "range": {
+        "startLine": 36,
+        "startChar": 0,
+        "endLine": 38,
+        "endChar": 54
+      },
+      "revId": "33311f8f4536be0d027e8e24ed542a9ebe00e554",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
