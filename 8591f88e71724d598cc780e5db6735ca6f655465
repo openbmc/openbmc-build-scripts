@@ -18,6 +18,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f0ca13c3_3697df36",
+        "filename": "scripts/build-unit-test-docker",
+        "patchSetId": 1
+      },
+      "lineNbr": 47,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2024-12-11T20:53:22Z",
+      "side": 1,
+      "message": "Yeah, it makes a link from docker to the podman executable but it doesn\u0027t have the docker sh package, so the import was failing.",
+      "parentUuid": "d7e0e22b_e14cd3d7",
+      "revId": "8591f88e71724d598cc780e5db6735ca6f655465",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7b050068_afcdb94b",
@@ -31,6 +49,24 @@
       "writtenOn": "2024-12-11T20:38:37Z",
       "side": 1,
       "message": "One thing I\u0027ve noticed is now docker gives warnings for `docker build` and wants us to use `docker buildx`.  Any idea if this is supported on:\n\n1. the older version of Docker we have on some Jenkins executors\n2. podman",
+      "revId": "8591f88e71724d598cc780e5db6735ca6f655465",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ece064ec_23d2b5b9",
+        "filename": "scripts/build-unit-test-docker",
+        "patchSetId": 1
+      },
+      "lineNbr": 691,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2024-12-11T20:53:22Z",
+      "side": 1,
+      "message": "Yeah, I\u0027ve been seeing that too. Not sure, but I\u0027ve got it on the TODO list to look into.",
+      "parentUuid": "7b050068_afcdb94b",
       "revId": "8591f88e71724d598cc780e5db6735ca6f655465",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
