@@ -16,6 +16,24 @@
       "message": "I assume it also builds with the current Ubuntu Noble?",
       "revId": "c75b543172ecb7435c1ca44f9d860dcd80a09fe4",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4c6fa402_fbbd6595",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2024-12-11T17:03:17Z",
+      "side": 1,
+      "message": "Yep, just verified it works there too.",
+      "parentUuid": "490327d2_081708eb",
+      "revId": "c75b543172ecb7435c1ca44f9d860dcd80a09fe4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
