@@ -35,7 +35,19 @@ from hashlib import sha256
 # typing.Dict is used for type-hints.
 from typing import Any, Callable, Dict, Iterable, Optional  # noqa: F401
 
-from sh import docker, git, nproc  # type: ignore
+from sh import git, nproc  # type: ignore
+
+try:
+    # System may have docker or it may have podman, try docker first
+    from sh import docker
+    container = docker
+except ImportError:
+    try:
+        from sh import podman
+        container = podman
+    except Exception:
+        print ("No docker or podman found on system")
+        exit(1)
 
 try:
     # Python before 3.8 doesn't have TypedDict, so reroute to standard 'dict'.
@@ -661,7 +673,7 @@ class Docker:
 
         # If we're not forcing builds, check if it already exists and skip.
         if not force_build:
-            if docker.image.ls(tag, "--format", '"{{.Repository}}:{{.Tag}}"'):
+            if container.image.ls(tag, "--format", '"{{.Repository}}:{{.Tag}}"'):
                 print(
                     f"Image {tag} already exists.  Skipping.", file=sys.stderr
                 )
@@ -676,7 +688,7 @@ class Docker:
         #   Other unusual flags:
         #       --no-cache: Bypass the Docker cache if 'force_build'.
         #       --force-rm: Clean up Docker processes if they fail.
-        docker.build(
+        container.build(
             proxy_args,
             "--network=host",
             "--force-rm",
