@@ -86,15 +86,15 @@ class PackageDef(TypedDict, total=False):
 # Packages to include in image.
 packages = {
     "boost": PackageDef(
-        rev="1.84.0",
+        rev="1.86.0",
         url=(
-            lambda pkg, rev: f"https://github.com/boostorg/{pkg}/releases/download/{pkg}-{rev}/{pkg}-{rev}.tar.gz"
+            lambda pkg, rev: f"https://github.com/boostorg/{pkg}/releases/download/{pkg}-{rev}/{pkg}-{rev}-cmake.tar.gz"
         ),
         build_type="custom",
         build_steps=[
             (
                 "./bootstrap.sh"
-                f" --prefix={prefix} --with-libraries=context,coroutine,url"
+                f" --prefix={prefix} --with-libraries=atomic,context,coroutine,filesystem,process,url"
             ),
             "./b2",
             f"./b2 install --prefix={prefix} valgrind=on",
