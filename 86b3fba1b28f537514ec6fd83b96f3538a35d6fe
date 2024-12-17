@@ -20,6 +20,24 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "1aa61fee_6d18f451",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 62
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1002079
+      },
+      "writtenOn": "2024-12-17T18:22:17Z",
+      "side": 1,
+      "message": "Had to rename the title to fit\n\nDone",
+      "parentUuid": "1d62e8b7_76eda080",
+      "revId": "86b3fba1b28f537514ec6fd83b96f3538a35d6fe",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "58fc775e_b70bbfdf",
         "filename": "/PATCHSET_LEVEL",
         "patchSetId": 62
@@ -77,6 +95,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "9542ee5d_ff1c3402",
+        "filename": "run-qemu-robot-test.py",
+        "patchSetId": 62
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 1002079
+      },
+      "writtenOn": "2024-12-17T18:22:17Z",
+      "side": 1,
+      "message": "This isn\u0027t my comment and I\u0027m unsure of how to address this was a block that was copied out from the original Bash script",
+      "parentUuid": "29e4afb3_5686d535",
+      "range": {
+        "startLine": 5,
+        "startChar": 33,
+        "endLine": 5,
+        "endChar": 62
+      },
+      "revId": "86b3fba1b28f537514ec6fd83b96f3538a35d6fe",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "e80f1933_74668c5d",
         "filename": "run-qemu-robot-test.py",
         "patchSetId": 62
@@ -88,6 +130,30 @@
       "writtenOn": "2024-12-10T21:59:55Z",
       "side": 1,
       "message": "\"Environment variables\"?  Not formal parameters.",
+      "range": {
+        "startLine": 9,
+        "startChar": 2,
+        "endLine": 9,
+        "endChar": 31
+      },
+      "revId": "86b3fba1b28f537514ec6fd83b96f3538a35d6fe",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7fc8caaa_fd7d2bdc",
+        "filename": "run-qemu-robot-test.py",
+        "patchSetId": 62
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1002079
+      },
+      "writtenOn": "2024-12-17T18:22:17Z",
+      "side": 1,
+      "message": "Also copied from the original Bash script so I just copied the header and am using their env variable conventions so that my script is a drop-in replacement",
+      "parentUuid": "e80f1933_74668c5d",
       "range": {
         "startLine": 9,
         "startChar": 2,
@@ -115,6 +181,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b34ada72_5b55efde",
+        "filename": "run-qemu-robot-test.py",
+        "patchSetId": 62
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 1002079
+      },
+      "writtenOn": "2024-12-17T18:22:17Z",
+      "side": 1,
+      "message": "Mean it checks the variable value to see if that corresponds to a hash in docker/podman. Make this message clearer ?\n\nUpdate: message was updated with more details",
+      "parentUuid": "4b4c0695_b81a42c7",
+      "revId": "86b3fba1b28f537514ec6fd83b96f3538a35d6fe",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3811c3f5_7d6c2c3c",
@@ -128,6 +212,30 @@
       "writtenOn": "2024-12-10T21:59:55Z",
       "side": 1,
       "message": "Document these?",
+      "range": {
+        "startLine": 53,
+        "startChar": 0,
+        "endLine": 54,
+        "endChar": 28
+      },
+      "revId": "86b3fba1b28f537514ec6fd83b96f3538a35d6fe",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "aa10fb76_5b5a2b03",
+        "filename": "run-qemu-robot-test.py",
+        "patchSetId": 62
+      },
+      "lineNbr": 54,
+      "author": {
+        "id": 1002079
+      },
+      "writtenOn": "2024-12-17T18:22:17Z",
+      "side": 1,
+      "message": "Yes, I\u0027ll do so. It\u0027s ready to be pushed.\n\nUpdate: it has been pushed.",
+      "parentUuid": "3811c3f5_7d6c2c3c",
       "range": {
         "startLine": 53,
         "startChar": 0,
@@ -161,6 +269,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "633db137_12e34a91",
+        "filename": "run-qemu-robot-test.py",
+        "patchSetId": 62
+      },
+      "lineNbr": 69,
+      "author": {
+        "id": 1002079
+      },
+      "writtenOn": "2024-12-17T18:22:17Z",
+      "side": 1,
+      "message": "Script fails if the one of the request container or networking modes cannot meet its requirements. It\u0027s not a recoverable error. If there\u0027s persistent container specified and the hash value set can\u0027t be verified as existing at runtime then the entire scipt needs to fail and report it.\n\nChange the name of it ? Ok, done.",
+      "parentUuid": "5ec28ef0_f4b8861e",
+      "range": {
+        "startLine": 69,
+        "startChar": 36,
+        "endLine": 69,
+        "endChar": 47
+      },
+      "revId": "86b3fba1b28f537514ec6fd83b96f3538a35d6fe",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "cf56eb09_52091649",
@@ -184,6 +316,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "3b5518a7_a3190bf0",
+        "filename": "run-qemu-robot-test.py",
+        "patchSetId": 62
+      },
+      "lineNbr": 72,
+      "author": {
+        "id": 1002079
+      },
+      "writtenOn": "2024-12-17T18:22:17Z",
+      "side": 1,
+      "message": "\".stdout\" isn\u0027t needed here, just the return value of the command to see if the container exists. We exit fatally when the conditions requested in the script aren\u0027t satified. I can make it return utf-8 if you think that\u0027s best.\n\n\nResolved after rewrite. It\u0027s returning the .decode(\"utf-8\") or a None",
+      "parentUuid": "cf56eb09_52091649",
+      "range": {
+        "startLine": 72,
+        "startChar": 10,
+        "endLine": 72,
+        "endChar": 25
+      },
+      "revId": "86b3fba1b28f537514ec6fd83b96f3538a35d6fe",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6f1e4f3b_34e359ce",
@@ -197,6 +353,30 @@
       "writtenOn": "2024-12-10T21:59:55Z",
       "side": 1,
       "message": "The function documentation on line 70 says \"and return JSON contents\".  Do we want it to call `json.loads` on the results?",
+      "range": {
+        "startLine": 72,
+        "startChar": 0,
+        "endLine": 74,
+        "endChar": 5
+      },
+      "revId": "86b3fba1b28f537514ec6fd83b96f3538a35d6fe",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "37ea52de_7b67eac6",
+        "filename": "run-qemu-robot-test.py",
+        "patchSetId": 62
+      },
+      "lineNbr": 74,
+      "author": {
+        "id": 1002079
+      },
+      "writtenOn": "2024-12-17T18:22:17Z",
+      "side": 1,
+      "message": "I do this to get at [\"NetworkSettings\"])[\"IPAddress\"] if there\u0027s a simper way, I\u0027m open to using that instead\n\nWill rework all of this since we have multiple comments about this",
+      "parentUuid": "6f1e4f3b_34e359ce",
       "range": {
         "startLine": 72,
         "startChar": 0,
@@ -242,6 +422,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "24715546_871fe0eb",
+        "filename": "run-qemu-robot-test.py",
+        "patchSetId": 62
+      },
+      "lineNbr": 84,
+      "author": {
+        "id": 1002079
+      },
+      "writtenOn": "2024-12-17T18:22:17Z",
+      "side": 1,
+      "message": "ok",
+      "parentUuid": "a61d5234_c69c54dc",
+      "revId": "86b3fba1b28f537514ec6fd83b96f3538a35d6fe",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "1c55d0e1_57ccf4b8",
@@ -255,6 +453,24 @@
       "writtenOn": "2024-12-10T21:59:55Z",
       "side": 1,
       "message": "This seems like a lot of work for `__file__`.  I realize there are extra cases covered by this code, but do we realistically have to worry about any of those cases?",
+      "revId": "86b3fba1b28f537514ec6fd83b96f3538a35d6fe",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "eec19e1d_5fa6867d",
+        "filename": "run-qemu-robot-test.py",
+        "patchSetId": 62
+      },
+      "lineNbr": 86,
+      "author": {
+        "id": 1002079
+      },
+      "writtenOn": "2024-12-17T18:22:17Z",
+      "side": 1,
+      "message": "No, but I copied it without modifying it so that my time was spent elsewhere otherwise there\u0027s no reason for the above note and where I grabbed it. What should I do here ?\n\nI think keep it as it is",
+      "parentUuid": "1c55d0e1_57ccf4b8",
       "revId": "86b3fba1b28f537514ec6fd83b96f3538a35d6fe",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -306,6 +522,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "470a6ad9_806844e3",
+        "filename": "run-qemu-robot-test.py",
+        "patchSetId": 62
+      },
+      "lineNbr": 98,
+      "author": {
+        "id": 1002079
+      },
+      "writtenOn": "2024-12-17T18:22:17Z",
+      "side": 1,
+      "message": "yes, changed.",
+      "parentUuid": "145e8e10_5d13d419",
+      "range": {
+        "startLine": 98,
+        "startChar": 0,
+        "endLine": 98,
+        "endChar": 14
+      },
+      "revId": "86b3fba1b28f537514ec6fd83b96f3538a35d6fe",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b3a3a3c7_8485c508",
@@ -336,6 +576,24 @@
       "writtenOn": "2024-12-11T20:43:31Z",
       "side": 1,
       "message": "Done",
+      "parentUuid": "b3a3a3c7_8485c508",
+      "revId": "86b3fba1b28f537514ec6fd83b96f3538a35d6fe",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "330a2778_bc484566",
+        "filename": "run-qemu-robot-test.py",
+        "patchSetId": 62
+      },
+      "lineNbr": 116,
+      "author": {
+        "id": 1002079
+      },
+      "writtenOn": "2024-12-17T18:22:17Z",
+      "side": 1,
+      "message": "it\u0027s a leftover, removed",
       "parentUuid": "b3a3a3c7_8485c508",
       "revId": "86b3fba1b28f537514ec6fd83b96f3538a35d6fe",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
@@ -376,6 +634,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7eee72e1_abf8126b",
+        "filename": "run-qemu-robot-test.py",
+        "patchSetId": 62
+      },
+      "lineNbr": 117,
+      "author": {
+        "id": 1002079
+      },
+      "writtenOn": "2024-12-17T18:22:17Z",
+      "side": 1,
+      "message": "So that the conditionals operate on something like a boolean instead of having to check a string for whether or not it\u0027s valid. I can change that if you want. I test against the boolean to see if the valid is set and use the contents of the env variable later on",
+      "parentUuid": "a61a3dd1_880c8f53",
+      "revId": "86b3fba1b28f537514ec6fd83b96f3538a35d6fe",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "36969db9_0c1b38d2",
@@ -389,6 +665,24 @@
       "writtenOn": "2024-12-10T21:59:55Z",
       "side": 1,
       "message": "Why not do this on line 113?",
+      "revId": "86b3fba1b28f537514ec6fd83b96f3538a35d6fe",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ce614105_d8e5a35c",
+        "filename": "run-qemu-robot-test.py",
+        "patchSetId": 62
+      },
+      "lineNbr": 119,
+      "author": {
+        "id": 1002079
+      },
+      "writtenOn": "2024-12-17T18:22:17Z",
+      "side": 1,
+      "message": "leftovers, removed",
+      "parentUuid": "36969db9_0c1b38d2",
       "revId": "86b3fba1b28f537514ec6fd83b96f3538a35d6fe",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -412,6 +706,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "9e5b0061_37f5ca00",
+        "filename": "run-qemu-robot-test.py",
+        "patchSetId": 62
+      },
+      "lineNbr": 121,
+      "author": {
+        "id": 1002079
+      },
+      "writtenOn": "2024-12-17T18:22:17Z",
+      "side": 1,
+      "message": "It\u0027s a hack to get past this point in the script as I copied it directly from Bash. I\u0027m only running one test at a time so this work on my private machine but needs to be changed to the old Bash semantic",
+      "parentUuid": "fdcdc4c2_08b274bd",
+      "revId": "86b3fba1b28f537514ec6fd83b96f3538a35d6fe",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "0041402c_32bb48ce",
         "filename": "run-qemu-robot-test.py",
         "patchSetId": 62
@@ -423,6 +735,24 @@
       "writtenOn": "2024-12-10T21:59:55Z",
       "side": 1,
       "message": "Why not do this on line 112?",
+      "revId": "86b3fba1b28f537514ec6fd83b96f3538a35d6fe",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "56e9534e_2f9e8132",
+        "filename": "run-qemu-robot-test.py",
+        "patchSetId": 62
+      },
+      "lineNbr": 122,
+      "author": {
+        "id": 1002079
+      },
+      "writtenOn": "2024-12-17T18:22:17Z",
+      "side": 1,
+      "message": "leftovers, removed",
+      "parentUuid": "0041402c_32bb48ce",
       "revId": "86b3fba1b28f537514ec6fd83b96f3538a35d6fe",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -450,6 +780,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "06f925ef_1c695a75",
+        "filename": "run-qemu-robot-test.py",
+        "patchSetId": 62
+      },
+      "lineNbr": 144,
+      "author": {
+        "id": 1002079
+      },
+      "writtenOn": "2024-12-17T18:22:17Z",
+      "side": 1,
+      "message": "I thought I no longer needed it but it\u0027s required for machines behind a firewall. Will refactor it\n\n\nUpdate: refactored and pushed.",
+      "parentUuid": "3f9f67ee_08db9aca",
+      "range": {
+        "startLine": 140,
+        "startChar": 0,
+        "endLine": 144,
+        "endChar": 44
+      },
+      "revId": "86b3fba1b28f537514ec6fd83b96f3538a35d6fe",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e490f456_1300922b",
@@ -463,6 +817,24 @@
       "writtenOn": "2024-12-10T21:59:55Z",
       "side": 1,
       "message": "Why not do this at the point of definition?",
+      "revId": "86b3fba1b28f537514ec6fd83b96f3538a35d6fe",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e4f59af0_be1b743c",
+        "filename": "run-qemu-robot-test.py",
+        "patchSetId": 62
+      },
+      "lineNbr": 146,
+      "author": {
+        "id": 1002079
+      },
+      "writtenOn": "2024-12-17T18:22:17Z",
+      "side": 1,
+      "message": "Is this is the definition of which container binary I use. The default is Docker vs podman. This is the place where I define which binary to use.",
+      "parentUuid": "e490f456_1300922b",
       "revId": "86b3fba1b28f537514ec6fd83b96f3538a35d6fe",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -503,6 +875,30 @@
       "writtenOn": "2024-12-11T20:43:31Z",
       "side": 1,
       "message": "Done",
+      "parentUuid": "a8cc4f46_32da1c0a",
+      "range": {
+        "startLine": 150,
+        "startChar": 0,
+        "endLine": 155,
+        "endChar": 49
+      },
+      "revId": "86b3fba1b28f537514ec6fd83b96f3538a35d6fe",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8d737fc8_22bbf07e",
+        "filename": "run-qemu-robot-test.py",
+        "patchSetId": 62
+      },
+      "lineNbr": 155,
+      "author": {
+        "id": 1002079
+      },
+      "writtenOn": "2024-12-17T18:22:17Z",
+      "side": 1,
+      "message": "I\u0027ll change that to be more conventional and then compare strings. I used a boolean to simplify code I later on",
       "parentUuid": "a8cc4f46_32da1c0a",
       "range": {
         "startLine": 150,
@@ -561,6 +957,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6c317fc4_15ec5b95",
+        "filename": "run-qemu-robot-test.py",
+        "patchSetId": 62
+      },
+      "lineNbr": 161,
+      "author": {
+        "id": 1002079
+      },
+      "writtenOn": "2024-12-17T18:22:17Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b922da01_dcfca9ed",
+      "range": {
+        "startLine": 161,
+        "startChar": 58,
+        "endLine": 161,
+        "endChar": 65
+      },
+      "revId": "86b3fba1b28f537514ec6fd83b96f3538a35d6fe",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "dfc7673d_2b956892",
@@ -589,6 +1009,24 @@
         "id": 1000000
       },
       "writtenOn": "2024-12-11T20:43:31Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "dfc7673d_2b956892",
+      "revId": "86b3fba1b28f537514ec6fd83b96f3538a35d6fe",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "724bb1ab_6e93398d",
+        "filename": "run-qemu-robot-test.py",
+        "patchSetId": 62
+      },
+      "lineNbr": 162,
+      "author": {
+        "id": 1002079
+      },
+      "writtenOn": "2024-12-17T18:22:17Z",
       "side": 1,
       "message": "Done",
       "parentUuid": "dfc7673d_2b956892",
@@ -632,6 +1070,30 @@
       "writtenOn": "2024-12-11T20:43:31Z",
       "side": 1,
       "message": "Done",
+      "parentUuid": "0552a91c_5157b1b7",
+      "range": {
+        "startLine": 170,
+        "startChar": 37,
+        "endLine": 170,
+        "endChar": 45
+      },
+      "revId": "86b3fba1b28f537514ec6fd83b96f3538a35d6fe",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2f649e6a_9803337b",
+        "filename": "run-qemu-robot-test.py",
+        "patchSetId": 62
+      },
+      "lineNbr": 170,
+      "author": {
+        "id": 1002079
+      },
+      "writtenOn": "2024-12-17T18:22:17Z",
+      "side": 1,
+      "message": "Got it. I thought I was only able to pass string in the default value. I now know that I can pass other Python objects.",
       "parentUuid": "0552a91c_5157b1b7",
       "range": {
         "startLine": 170,
@@ -690,6 +1152,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "37dacfb3_53788986",
+        "filename": "run-qemu-robot-test.py",
+        "patchSetId": 62
+      },
+      "lineNbr": 177,
+      "author": {
+        "id": 1002079
+      },
+      "writtenOn": "2024-12-17T18:22:17Z",
+      "side": 1,
+      "message": "Capitalized and it\u0027s documented now.",
+      "parentUuid": "b3110f40_e14ec137",
+      "range": {
+        "startLine": 177,
+        "startChar": 18,
+        "endLine": 177,
+        "endChar": 34
+      },
+      "revId": "86b3fba1b28f537514ec6fd83b96f3538a35d6fe",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "58ad44e5_91361ec3",
@@ -707,6 +1193,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e3bbb563_e653ad30",
+        "filename": "run-qemu-robot-test.py",
+        "patchSetId": 62
+      },
+      "lineNbr": 194,
+      "author": {
+        "id": 1002079
+      },
+      "writtenOn": "2024-12-17T18:22:17Z",
+      "side": 1,
+      "message": "yes, I\u0027ll do that when I remove that \"False\" pattern in the environment variable code. I need both the return value and the string output in later code. Should I change this to one or the other ?\n\nFollow up, I thought about it and I\u0027m going to change it next",
+      "parentUuid": "58ad44e5_91361ec3",
+      "revId": "86b3fba1b28f537514ec6fd83b96f3538a35d6fe",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8c1c7576_7e32217c",
@@ -720,6 +1224,30 @@
       "writtenOn": "2024-12-10T21:59:55Z",
       "side": 1,
       "message": "This isn\u0027t obvious why a specified docker image needs to be pulled but a non-specified one needs to be built?",
+      "range": {
+        "startLine": 618,
+        "startChar": 0,
+        "endLine": 621,
+        "endChar": 27
+      },
+      "revId": "86b3fba1b28f537514ec6fd83b96f3538a35d6fe",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "dc35cd0c_e3576e5c",
+        "filename": "run-qemu-robot-test.py",
+        "patchSetId": 62
+      },
+      "lineNbr": 621,
+      "author": {
+        "id": 1002079
+      },
+      "writtenOn": "2024-12-17T18:22:17Z",
+      "side": 1,
+      "message": "You\u0027re correct. I simplified it and will push the update shortly\n\nUpdated: I\u0027ll let you resolve the comment",
+      "parentUuid": "8c1c7576_7e32217c",
       "range": {
         "startLine": 618,
         "startChar": 0,

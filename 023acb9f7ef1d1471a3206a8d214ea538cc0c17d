@@ -24,6 +24,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "83213e7c_6f397494",
+        "filename": "run-qemu-robot-test.py",
+        "patchSetId": 64
+      },
+      "lineNbr": 85,
+      "author": {
+        "id": 1002079
+      },
+      "writtenOn": "2024-12-17T18:22:17Z",
+      "side": 1,
+      "message": "We don\u0027t if we just return None for later conditional checks. I\u0027ll remove it.\n\nGot it. I\u0027ll return None on failure. Give me a bit as tidy up other stuff ahead this.\n\nThere\u0027s multiple comments on this and I\u0027ll resolve all except one",
+      "parentUuid": "13ecd313_d8e21525",
+      "range": {
+        "startLine": 85,
+        "startChar": 20,
+        "endLine": 85,
+        "endChar": 59
+      },
+      "revId": "023acb9f7ef1d1471a3206a8d214ea538cc0c17d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5d90810f_240a855a",
@@ -37,6 +61,30 @@
       "writtenOn": "2024-12-11T20:43:31Z",
       "side": 1,
       "message": "note that you\u0027re returning `None` on failure now, so you can\u0027t check `returncode` anymore.",
+      "range": {
+        "startLine": 181,
+        "startChar": 7,
+        "endLine": 181,
+        "endChar": 27
+      },
+      "revId": "023acb9f7ef1d1471a3206a8d214ea538cc0c17d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bb876cab_7131839d",
+        "filename": "run-qemu-robot-test.py",
+        "patchSetId": 64
+      },
+      "lineNbr": 181,
+      "author": {
+        "id": 1002079
+      },
+      "writtenOn": "2024-12-17T18:22:17Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "5d90810f_240a855a",
       "range": {
         "startLine": 181,
         "startChar": 7,

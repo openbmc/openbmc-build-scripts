@@ -2140,6 +2140,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "93d305b5_953f10ac",
+        "filename": "scripts/boot-qemu-test.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 68,
+      "author": {
+        "id": 1002079
+      },
+      "writtenOn": "2024-12-17T18:22:17Z",
+      "side": 1,
+      "message": "I need to use the shell semantic for temp file generation instead not what is provided in the module",
+      "parentUuid": "e4df71aa_aaef4136",
+      "revId": "737e1e0b529556f2cfb35cf8da1caf0e7329f1a1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "052a8e49_69cf8b9a",
@@ -2388,6 +2406,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c720051b_72774728",
+        "filename": "scripts/boot-qemu-test.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 92,
+      "author": {
+        "id": 1002079
+      },
+      "writtenOn": "2024-12-17T18:22:17Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "534a1dd7_d075bb99",
+      "revId": "737e1e0b529556f2cfb35cf8da1caf0e7329f1a1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7851a63b_cfeb02b8",
@@ -2449,6 +2485,30 @@
       "side": 1,
       "message": "Acknowledged\n\nThere\u0027s also a env variable name issue I just resolved with that by deleting all of that stuff",
       "parentUuid": "7851a63b_cfeb02b8",
+      "range": {
+        "startLine": 96,
+        "startChar": 0,
+        "endLine": 100,
+        "endChar": 67
+      },
+      "revId": "737e1e0b529556f2cfb35cf8da1caf0e7329f1a1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2f2676a9_eab937ee",
+        "filename": "scripts/boot-qemu-test.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 100,
+      "author": {
+        "id": 1002079
+      },
+      "writtenOn": "2024-12-17T18:22:17Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ca6a26ac_8560cac8",
       "range": {
         "startLine": 96,
         "startChar": 0,
@@ -2561,6 +2621,24 @@
       "side": 1,
       "message": "Acknowledged. Let me remove it. It should have been removed before",
       "parentUuid": "4a9ff611_5d70fff7",
+      "revId": "737e1e0b529556f2cfb35cf8da1caf0e7329f1a1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e4a29168_70f7eef3",
+        "filename": "scripts/build-qemu-robot-docker.sh",
+        "patchSetId": 5
+      },
+      "lineNbr": 125,
+      "author": {
+        "id": 1002079
+      },
+      "writtenOn": "2024-12-17T18:22:17Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b561d0b1_dafa5dc4",
       "revId": "737e1e0b529556f2cfb35cf8da1caf0e7329f1a1",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
