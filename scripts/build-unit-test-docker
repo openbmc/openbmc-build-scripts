@@ -903,21 +903,21 @@ RUN update-alternatives --remove cpp /usr/bin/cpp && \
     update-alternatives --install /usr/bin/cpp cpp /usr/bin/cpp-14 14
 
 # Set up LLVM apt repository.
-RUN bash -c "$(wget -O - https://apt.llvm.org/llvm.sh)" 18
+RUN bash -c "$(wget -O - https://apt.llvm.org/llvm.sh)" 19
 
 # Install extra clang tools
-RUN apt-get install \
-        clang-18 \
-        clang-format-18 \
-        clang-tidy-18
+RUN apt-get install -y \
+        clang-19 \
+        clang-format-19 \
+        clang-tidy-19
 
-RUN update-alternatives --install /usr/bin/clang clang /usr/bin/clang-18 1000 \
-  --slave /usr/bin/clang++ clang++ /usr/bin/clang++-18 \
-  --slave /usr/bin/clang-tidy clang-tidy /usr/bin/clang-tidy-18 \
-  --slave /usr/bin/clang-format clang-format /usr/bin/clang-format-18 \
+RUN update-alternatives --install /usr/bin/clang clang /usr/bin/clang-19 1000 \
+  --slave /usr/bin/clang++ clang++ /usr/bin/clang++-19 \
+  --slave /usr/bin/clang-tidy clang-tidy /usr/bin/clang-tidy-19 \
+  --slave /usr/bin/clang-format clang-format /usr/bin/clang-format-19 \
   --slave /usr/bin/run-clang-tidy run-clang-tidy.py \
-        /usr/bin/run-clang-tidy-18 \
-  --slave /usr/bin/scan-build scan-build /usr/bin/scan-build-18
+        /usr/bin/run-clang-tidy-19 \
+  --slave /usr/bin/scan-build scan-build /usr/bin/scan-build-19
 
 """
 
