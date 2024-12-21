@@ -846,6 +846,7 @@ RUN apt-get update && apt-get dist-upgrade -yy && apt-get install -yy \
     libcjson-dev \
     libconfig++-dev \
     libcryptsetup-dev \
+    libcurl4-gnutls-dev \
     libdbus-1-dev \
     libevdev-dev \
     libgpiod-dev \
