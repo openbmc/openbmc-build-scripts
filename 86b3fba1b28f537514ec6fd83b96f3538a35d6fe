@@ -72,6 +72,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "1ba03406_c832a05b",
+        "filename": "run-qemu-robot-test.py",
+        "patchSetId": 62
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1002303
+      },
+      "writtenOn": "2024-12-30T21:52:09Z",
+      "side": 1,
+      "message": "reminder that we haven\u0027t made this change",
+      "parentUuid": "7130e528_33c7a663",
+      "revId": "86b3fba1b28f537514ec6fd83b96f3538a35d6fe",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "29e4afb3_5686d535",
         "filename": "run-qemu-robot-test.py",
         "patchSetId": 62
@@ -718,6 +736,24 @@
       "side": 1,
       "message": "It\u0027s a hack to get past this point in the script as I copied it directly from Bash. I\u0027m only running one test at a time so this work on my private machine but needs to be changed to the old Bash semantic",
       "parentUuid": "fdcdc4c2_08b274bd",
+      "revId": "86b3fba1b28f537514ec6fd83b96f3538a35d6fe",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "14492d68_a9fccfd0",
+        "filename": "run-qemu-robot-test.py",
+        "patchSetId": 62
+      },
+      "lineNbr": 121,
+      "author": {
+        "id": 1002303
+      },
+      "writtenOn": "2024-12-30T21:52:09Z",
+      "side": 1,
+      "message": "I believe this is reference to the `RANDOM \u003d \"blah\"` line. It looks like we still need that. Can we document why?",
+      "parentUuid": "9e5b0061_37f5ca00",
       "revId": "86b3fba1b28f537514ec6fd83b96f3538a35d6fe",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },

@@ -1,0 +1,276 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "90fb94c4_35ad8372",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 94
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1002303
+      },
+      "writtenOn": "2024-12-30T21:52:09Z",
+      "side": 1,
+      "message": "I think we have some unresolved comments and a few small cleanup items. Also, is there we can see if this runs in jenkins successfully?",
+      "revId": "8027b6329521b334d8a5f8dd6cfce630d58e97cd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2a1982e2_ddab3047",
+        "filename": "run-qemu-robot-test.py",
+        "patchSetId": 94
+      },
+      "lineNbr": 65,
+      "author": {
+        "id": 1002303
+      },
+      "writtenOn": "2024-12-30T21:52:09Z",
+      "side": 1,
+      "message": "Can we include documentation for other environment variables used like SSH_PORT?",
+      "revId": "8027b6329521b334d8a5f8dd6cfce630d58e97cd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "80d4cc2a_d423d157",
+        "filename": "run-qemu-robot-test.py",
+        "patchSetId": 94
+      },
+      "lineNbr": 87,
+      "author": {
+        "id": 1002303
+      },
+      "writtenOn": "2024-12-30T21:52:09Z",
+      "side": 1,
+      "message": "Do we need a print here in the good case?",
+      "revId": "8027b6329521b334d8a5f8dd6cfce630d58e97cd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4a15afb9_fdf88a06",
+        "filename": "run-qemu-robot-test.py",
+        "patchSetId": 94
+      },
+      "lineNbr": 150,
+      "author": {
+        "id": 1002303
+      },
+      "writtenOn": "2024-12-30T21:52:09Z",
+      "side": 1,
+      "message": "What is the long-term plan for this?",
+      "revId": "8027b6329521b334d8a5f8dd6cfce630d58e97cd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3ceafd2e_058a0966",
+        "filename": "run-qemu-robot-test.py",
+        "patchSetId": 94
+      },
+      "lineNbr": 163,
+      "author": {
+        "id": 1002303
+      },
+      "writtenOn": "2024-12-30T21:52:09Z",
+      "side": 1,
+      "message": "nit: let\u0027s clean up the print",
+      "revId": "8027b6329521b334d8a5f8dd6cfce630d58e97cd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bb93c8f1_567fc1a5",
+        "filename": "run-qemu-robot-test.py",
+        "patchSetId": 94
+      },
+      "lineNbr": 235,
+      "author": {
+        "id": 1002303
+      },
+      "writtenOn": "2024-12-30T21:52:09Z",
+      "side": 1,
+      "message": "I know this is new functionality compared to the old version but I had a run where this wasn\u0027t there. Can we add a test to make sure this is present?",
+      "revId": "8027b6329521b334d8a5f8dd6cfce630d58e97cd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a7fa7123_8eb00b69",
+        "filename": "run-qemu-robot-test.py",
+        "patchSetId": 94
+      },
+      "lineNbr": 308,
+      "author": {
+        "id": 1002303
+      },
+      "writtenOn": "2024-12-30T21:52:09Z",
+      "side": 1,
+      "message": "If this is only a podman workaround, should we not do this if we are running with docker?",
+      "revId": "8027b6329521b334d8a5f8dd6cfce630d58e97cd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8fa7062f_9fa163f1",
+        "filename": "run-qemu-robot-test.py",
+        "patchSetId": 94
+      },
+      "lineNbr": 469,
+      "author": {
+        "id": 1002303
+      },
+      "writtenOn": "2024-12-30T21:52:09Z",
+      "side": 1,
+      "message": "Is there something requiring this file limit?",
+      "revId": "8027b6329521b334d8a5f8dd6cfce630d58e97cd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f0b60f5f_107ad39b",
+        "filename": "run-qemu-robot-test.py",
+        "patchSetId": 94
+      },
+      "lineNbr": 594,
+      "author": {
+        "id": 1002303
+      },
+      "writtenOn": "2024-12-30T21:52:09Z",
+      "side": 1,
+      "message": "Nit: it would be nice to make these local variables",
+      "revId": "8027b6329521b334d8a5f8dd6cfce630d58e97cd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3509775a_11d709c4",
+        "filename": "run-qemu-robot-test.py",
+        "patchSetId": 94
+      },
+      "lineNbr": 609,
+      "author": {
+        "id": 1002303
+      },
+      "writtenOn": "2024-12-30T21:52:09Z",
+      "side": 1,
+      "message": "Is this tied to the `new:robot` that is used above? If so, can we make the connection between the two more clear?",
+      "revId": "8027b6329521b334d8a5f8dd6cfce630d58e97cd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "20697cf2_d4083b27",
+        "filename": "scripts/boot-qemu-test.py",
+        "patchSetId": 94
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 1002303
+      },
+      "writtenOn": "2024-12-30T21:52:09Z",
+      "side": 1,
+      "message": "Is this the externally visible list?\nAnd is this defined elsewhere? Can we share/re-use it? Said another way, how do we ensure this stays up to date?",
+      "revId": "8027b6329521b334d8a5f8dd6cfce630d58e97cd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d94dfb33_47bebfca",
+        "filename": "scripts/boot-qemu-test.py",
+        "patchSetId": 94
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 1002303
+      },
+      "writtenOn": "2024-12-30T21:52:09Z",
+      "side": 1,
+      "message": "Locally, I had to change this to \"*-{MACHINE}-*.*.mtd\". Is yours specific to a version?",
+      "revId": "8027b6329521b334d8a5f8dd6cfce630d58e97cd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8b7f55eb_e8e305a6",
+        "filename": "scripts/boot-qemu-test.py",
+        "patchSetId": 94
+      },
+      "lineNbr": 144,
+      "author": {
+        "id": 1002303
+      },
+      "writtenOn": "2024-12-30T21:52:09Z",
+      "side": 1,
+      "message": "Can we add a comment explaining the difference here?",
+      "revId": "8027b6329521b334d8a5f8dd6cfce630d58e97cd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a611cd8d_98f6f68a",
+        "filename": "scripts/boot-qemu-test.py",
+        "patchSetId": 94
+      },
+      "lineNbr": 208,
+      "author": {
+        "id": 1002303
+      },
+      "writtenOn": "2024-12-30T21:52:09Z",
+      "side": 1,
+      "message": "This just takes control of the process as long as there isn\u0027t a failure? What\u0027s the long-term idea?",
+      "revId": "8027b6329521b334d8a5f8dd6cfce630d58e97cd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ba02b541_ee75f219",
+        "filename": "scripts/run-robot.sh",
+        "patchSetId": 94
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 1002303
+      },
+      "writtenOn": "2024-12-30T21:52:09Z",
+      "side": 1,
+      "message": "We don\u0027t want this to be checked in, right?",
+      "revId": "8027b6329521b334d8a5f8dd6cfce630d58e97cd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c7693609_43045003",
+        "filename": "scripts/run-robot.sh",
+        "patchSetId": 94
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 1002303
+      },
+      "writtenOn": "2024-12-30T21:52:09Z",
+      "side": 1,
+      "message": "Once this is committed, we don\u0027t need to add new scripts at runtime, right?",
+      "revId": "8027b6329521b334d8a5f8dd6cfce630d58e97cd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
