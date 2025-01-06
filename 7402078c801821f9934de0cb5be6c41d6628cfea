@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "66d45e69_e99d01fa",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2025-01-06T19:43:59Z",
+      "side": 1,
+      "message": "Do you have example of this?  Is there pending code?  The commit message is kind of weak here.  [I know the answers but I\u0027d like you to add them to the commit message better]\n\nGenerally we don\u0027t add stuff to the container that isn\u0027t for openbmc itself.  If _you_ had a need for libcurl, you could add it downstream (though ideally someone would come up with a better way to add a few packages downstream through a config file rather than a fork/patch).  I think you need to point to a design document or something of how this is planned to be consumed.",
+      "range": {
+        "startLine": 9,
+        "startChar": 0,
+        "endLine": 13,
+        "endChar": 51
+      },
+      "revId": "7402078c801821f9934de0cb5be6c41d6628cfea",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "03f2fea9_cf1a1f14",
+        "filename": "scripts/build-unit-test-docker",
+        "patchSetId": 3
+      },
+      "lineNbr": 849,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2025-01-06T19:43:59Z",
+      "side": 1,
+      "message": "Why gnutls and not openssl?  We generally use openssl in the BMC and explicitly disable gnutls.  You adding gnutls here seems strange.",
+      "range": {
+        "startLine": 849,
+        "startChar": 13,
+        "endLine": 849,
+        "endChar": 19
+      },
+      "revId": "7402078c801821f9934de0cb5be6c41d6628cfea",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
