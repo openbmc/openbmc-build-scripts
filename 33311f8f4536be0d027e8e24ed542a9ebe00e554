@@ -50,6 +50,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "3f60f017_b231756e",
+        "filename": "run-qemu-robot-test.py",
+        "patchSetId": 63
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2025-01-06T16:27:36Z",
+      "side": 1,
+      "message": "Yeah, k8s can be removed. That support has been removed.",
+      "parentUuid": "d611aa0a_da6222a5",
+      "range": {
+        "startLine": 32,
+        "startChar": 0,
+        "endLine": 37,
+        "endChar": 31
+      },
+      "revId": "33311f8f4536be0d027e8e24ed542a9ebe00e554",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "b6672361_b045ec5d",
         "filename": "run-qemu-robot-test.py",
         "patchSetId": 63

@@ -1,0 +1,72 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7747b2d0_5c5c6861",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 96
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2025-01-06T16:27:36Z",
+      "side": 1,
+      "message": "We removed 370 lines and added 948 with this commit. Not sure we really simplified things but I will agree that python is going to be more robust. I\u0027m fine if we get the remaining comments addressed. I can cherry pick this into the jenkins job for a bit to make sure all works as expected before merging.",
+      "revId": "d56f167373929801a236117383a52f8007c6b63c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "40abdbbe_43311e57",
+        "filename": "run-qemu-robot-test.py",
+        "patchSetId": 96
+      },
+      "lineNbr": 220,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2025-01-06T16:27:36Z",
+      "side": 1,
+      "message": "No longer needed (docker/podman now handle this under the covers).",
+      "revId": "d56f167373929801a236117383a52f8007c6b63c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5782784c_b805dda2",
+        "filename": "run-qemu-robot-test.py",
+        "patchSetId": 96
+      },
+      "lineNbr": 328,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2025-01-06T16:27:36Z",
+      "side": 1,
+      "message": "TODO still needed here?",
+      "revId": "d56f167373929801a236117383a52f8007c6b63c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5471599f_27c77168",
+        "filename": "run-qemu-robot-test.py",
+        "patchSetId": 96
+      },
+      "lineNbr": 619,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2025-01-06T16:27:36Z",
+      "side": 1,
+      "message": "This can be removed with LAUNCH env variable removal",
+      "revId": "d56f167373929801a236117383a52f8007c6b63c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
