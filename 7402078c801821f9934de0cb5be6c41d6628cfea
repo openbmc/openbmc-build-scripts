@@ -24,6 +24,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "72741a83_6523a7a8",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2025-01-07T16:28:50Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "66d45e69_e99d01fa",
+      "range": {
+        "startLine": 9,
+        "startChar": 0,
+        "endLine": 13,
+        "endChar": 51
+      },
+      "revId": "7402078c801821f9934de0cb5be6c41d6628cfea",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "03f2fea9_cf1a1f14",
@@ -37,6 +61,30 @@
       "writtenOn": "2025-01-06T19:43:59Z",
       "side": 1,
       "message": "Why gnutls and not openssl?  We generally use openssl in the BMC and explicitly disable gnutls.  You adding gnutls here seems strange.",
+      "range": {
+        "startLine": 849,
+        "startChar": 13,
+        "endLine": 849,
+        "endChar": 19
+      },
+      "revId": "7402078c801821f9934de0cb5be6c41d6628cfea",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bfdb1136_337c92f3",
+        "filename": "scripts/build-unit-test-docker",
+        "patchSetId": 3
+      },
+      "lineNbr": 849,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2025-01-07T16:28:50Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "03f2fea9_cf1a1f14",
       "range": {
         "startLine": 849,
         "startChar": 13,
