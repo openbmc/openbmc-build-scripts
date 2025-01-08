@@ -1,0 +1,10 @@
+Code-Review+1: Patrick Williams <patrick@stwcx.xyz>
+Code-Review+2: Andrew Geissler <geissonator@yahoo.com>
+Verified+1: OpenBMC CI <openbmcbump-ci@yahoo.com>
+Code-Review+1: Zhikui Ren <zhikui.ren@intel.com>
+Submitted-by: Ewelina Walkusz <ewelinax.walkusz@intel.com>
+Submitted-at: Wed, 08 Jan 2025 08:00:25 +0000
+Reviewed-on: https://gerrit.openbmc.org/c/openbmc/openbmc-build-scripts/+/73851
+Comments-Total: 3
+Project: openbmc/openbmc-build-scripts
+Branch: refs/heads/master
