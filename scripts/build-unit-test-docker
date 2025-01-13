@@ -218,7 +218,6 @@ packages = {
         config_flags=[
             "-Dlibonly=true",
             "-Dtests=disabled",
-            f"-Dyamldir={prefix}/share/phosphor-dbus-yaml/yaml",
         ],
     ),
     "openbmc/phosphor-objmgr": PackageDef(
