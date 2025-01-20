@@ -64,6 +64,11 @@ def launch_session_dbus(dbus_dir, dbus_config_file):
     os.environ["DBUS_SESSION_BUS_ADDRESS"] = out[0].decode("utf-8")
     os.environ["DBUS_STARTER_BUS_TYPE"] = "session"
 
+    # Also start the system bus so that `new_system()` APIs could be
+    # called.
+    command = ["sudo", "dbus-daemon", "--system"]
+    check_output(command).splitlines()
+
 
 def dbus_cleanup(dbus_dir):
     """
