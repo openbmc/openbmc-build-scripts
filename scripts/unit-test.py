@@ -26,7 +26,7 @@ from git import Repo
 # that would be broken if we didn't include it.
 from mesonbuild import interpreter  # noqa: F401
 from mesonbuild import optinterpreter, options
-from mesonbuild.mesonlib import OptionKey
+from mesonbuild.options import OptionKey, OptionStore
 from mesonbuild.mesonlib import version_compare as meson_version_compare
 
 
@@ -854,7 +854,8 @@ class Meson(BuildSystem):
         Parameters:
         options_file        The file containing options
         """
-        oi = optinterpreter.OptionInterpreter("")
+        store = OptionStore()
+        oi = optinterpreter.OptionInterpreter(store, "")
         oi.process(options_file)
         return oi.options
 
