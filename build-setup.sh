@@ -39,7 +39,7 @@
 #                     need to also update DOCKER_REG to a supported fedora reg.
 #                     Default: "ubuntu"
 #  img_name           The name given to the target build's docker image.
-#                     Default: "openbmc/${distro}:${imgtag}-${target}-${ARCH}"
+#                     Default: "openbmc/${distro}:${imgtag}-${target}"
 #  img_tag            The base docker image distro tag:
 #                     ubuntu: latest|16.04|14.04|trusty|xenial
 #                     fedora: 23|24|25
@@ -387,7 +387,7 @@ EOF_SCRIPT
 chmod a+x "${WORKSPACE}/build.sh"
 
 # Give the Docker image a name based on the distro,tag,arch,and target
-img_name=${img_name:-openbmc/${distro}:${img_tag}-${target}-${ARCH}}
+img_name=${img_name:-openbmc/${distro}:${img_tag}-${target}}
 
 # Ensure appropriate docker build output to see progress and identify
 # any issues
