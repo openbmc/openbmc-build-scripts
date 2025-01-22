@@ -1103,7 +1103,14 @@ class Meson(BuildSystem):
             #                '-Db_sanitize=memory')
             # check_call_cmd('meson', 'test', '-C', 'build'
             #                '--logbase', 'testlog-msan')
-            check_call_cmd("meson", "configure", "build", "-Db_sanitize=none")
+            meson_flags.remove("-Db_sanitize=address,undefined")
+            try:
+                check_call_cmd(
+                    "meson", "setup", "--reconfigure", "build", *meson_flags
+                )
+            except Exception:
+                shutil.rmtree("build", ignore_errors=True)
+                check_call_cmd("meson", "setup", "build", *meson_flags)
         else:
             sys.stderr.write("###### Skipping sanitizers ######\n")
 
