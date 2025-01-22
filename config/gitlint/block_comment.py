@@ -48,6 +48,10 @@ class BodyMaxLineLengthWithExceptions(CommitRule):
             if line.startswith("Signed-off-by:"):
                 continue
 
+            # allow Fixes
+            if line.startswith("Fixes:"):
+                continue
+
             max_length = self.options["line-length"].value
             if len(line) > max_length:
                 return [
