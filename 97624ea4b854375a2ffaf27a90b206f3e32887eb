@@ -16,6 +16,23 @@
       "message": "Noticed that libpldm was requiring a git-lint exception, so added this.",
       "revId": "97624ea4b854375a2ffaf27a90b206f3e32887eb",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "42a2b3de_bdbb0a70",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1001129
+      },
+      "writtenOn": "2025-01-23T01:05:48Z",
+      "side": 1,
+      "message": "Thanks for that",
+      "revId": "97624ea4b854375a2ffaf27a90b206f3e32887eb",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
