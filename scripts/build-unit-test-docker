@@ -770,10 +770,10 @@ if http_proxy:
     proxy_cmd = f"""
 RUN echo "[http]" >> {homedir}/.gitconfig && \
     echo "proxy = {http_proxy}" >> {homedir}/.gitconfig
-RUN cat > {homedir}/.wgetrc <<EOF_WGETRC
-    https_proxy = {http_proxy}
-    http_proxy = {http_proxy}
-    use_proxy = on
+COPY <<EOF_WGETRC {homedir}/.wgetrc
+https_proxy = {http_proxy}
+http_proxy = {http_proxy}
+use_proxy = on
 EOF_WGETRC
 """
     proxy_keyserver = f"--keyserver-options http-proxy={http_proxy}"
