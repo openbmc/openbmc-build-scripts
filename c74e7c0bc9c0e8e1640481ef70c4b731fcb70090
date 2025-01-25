@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "28ccce66_7de5924e",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2025-01-25T16:26:32Z",
+      "side": 1,
+      "message": "Please add this to commit message so issue is auto resolved when this merges:\nResolves openbmc/openbmc-build-scripts#42",
+      "revId": "c74e7c0bc9c0e8e1640481ef70c4b731fcb70090",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
