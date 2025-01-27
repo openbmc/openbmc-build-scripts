@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e4924d4f_22d077f0",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2025-01-27T17:31:16Z",
+      "side": 1,
+      "message": "No... these daemons are broken.  They shouldn\u0027t be explicitly asking for the system bus.\n\nI\u0027d rather fail the CI on these rather than hide it.",
+      "range": {
+        "startLine": 8,
+        "startChar": 0,
+        "endLine": 11,
+        "endChar": 47
+      },
+      "revId": "baf201a3e4e7203ca18b6eb7ee7d29e646c852bf",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
