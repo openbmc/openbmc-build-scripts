@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c94548d8_811c28b5",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1001634
+      },
+      "writtenOn": "2025-01-27T16:49:55Z",
+      "side": 1,
+      "message": "I tried this patch for my obmc-console issue but it did not fix it. Do we need separate patch for that? ```7/18 obmc-console / test-ringbuffer-simple-poll                          OK              0.06s\n 8/18 obmc-console / test-client-escape                                   FAIL            0.18s   killed by signal 6 SIGABRT\n\u003e\u003e\u003e MESON_TEST_ITERATION\u003d1 ASAN_OPTIONS\u003dhalt_on_error\u003d1:abort_on_error\u003d1:print_summary\u003d1 MALLOC_PERTURB_\u003d101 LD_LIBRARY_PATH\u003d/home/ninad/dev/console_ci/obmc-console/build/subprojects/iniparser-4.2.1 MSAN_OPTIONS\u003dhalt_on_error\u003d1:abort_on_error\u003d1:print_summary\u003d1:print_stacktrace\u003d1 UBSAN_OPTIONS\u003dhalt_on_error\u003d1:abort_on_error\u003d1:print_summary\u003d1:print_stacktrace\u003d1 /home/ninad/dev/console_ci/obmc-console/build/test/test-client-escape\n――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――― ✀  ――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――\nstderr:\n\u003d\u003d466\u003d\u003dASan runtime does not come first in initial library list; you should either link runtime to your application or manually preload it with LD_PRELOAD.\n―――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――\n```",
+      "revId": "52c3aec3fae38765fe9a56270c93c6f11303b974",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
