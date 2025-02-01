@@ -35,6 +35,7 @@ LINTERS_ALL=( \
         flake8 \
         isort \
         markdownlint \
+        meson \
         prettier \
         shellcheck \
     )
@@ -257,6 +258,12 @@ function do_markdownlint() {
     # We disable line-length because prettier should handle prose wrap for us.
 }
 
+LINTER_REQUIRE+=([meson]="meson;meson.build")
+LINTER_TYPES+=([meson]="meson")
+function do_meson() {
+    meson format -i "$@"
+}
+
 LINTER_REQUIRE+=([prettier]="prettier;.prettierrc.yaml;${CONFIG_PATH}/prettierrc.yaml")
 LINTER_IGNORE+=([prettier]=".prettierignore")
 LINTER_TYPES+=([prettier]="json;markdown;yaml")
@@ -297,6 +304,7 @@ function get_file_type()
             # Special files.
         .git/COMMIT_EDITMSG) echo "commit" && return ;;
         meson.build) echo "meson" && return ;;
+        meson.options) echo "meson" && return ;;
     esac
 
     case "$(file "$1")" in
