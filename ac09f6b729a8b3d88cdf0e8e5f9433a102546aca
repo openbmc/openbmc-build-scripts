@@ -16,6 +16,24 @@
       "message": "I\u0027m not sure the motivation on this commit but there is also this pending:\n\nhttps://gerrit.openbmc.org/c/openbmc/openbmc-build-scripts/+/72699",
       "revId": "ac09f6b729a8b3d88cdf0e8e5f9433a102546aca",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1d541432_ec82edfb",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1002359
+      },
+      "writtenOn": "2025-02-04T13:35:22Z",
+      "side": 1,
+      "message": "Hi Patrick,\n\nThanks for your review. My patch addresses the same issue mentioned in commit 72699. I took that issue as a starting point and have implemented changes that directly address the problem outlined there.\n\nIf you have any suggestions on further improvements or if there are any overlapping areas with the existing work in 72699, please let me know. I\u0027m happy to coordinate and make adjustments as needed.",
+      "parentUuid": "04af65b2_4e49e76e",
+      "revId": "ac09f6b729a8b3d88cdf0e8e5f9433a102546aca",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
