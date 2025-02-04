@@ -373,7 +373,10 @@ def build_dep_tree(name, pkgdir, dep_added, head, branch, dep_tree=None):
 
 
 def run_cppcheck():
-    if not os.path.exists(os.path.join("build", "compile_commands.json")):
+    if (
+        not os.path.exists(os.path.join("build", "compile_commands.json"))
+        or "NO_CPPCHECK" in os.environ
+    ):
         return None
 
     with TemporaryDirectory() as cpp_dir:
