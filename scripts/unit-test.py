@@ -373,7 +373,10 @@ def build_dep_tree(name, pkgdir, dep_added, head, branch, dep_tree=None):
 
 
 def run_cppcheck():
-    if not os.path.exists(os.path.join("build", "compile_commands.json")):
+    if (
+        not os.path.exists(os.path.join("build", "compile_commands.json"))
+        or NO_CPPCHECK
+    ):
         return None
 
     with TemporaryDirectory() as cpp_dir:
@@ -1329,6 +1332,14 @@ if __name__ == "__main__":
         default=False,
         help="Only run test cases, no other validation",
     )
+    parser.add_argument(
+        "--no-cppcheck",
+        dest="NO_CPPCHECK",
+        action="store_true",
+        required=False,
+        default=False,
+        help="Do not run cppcheck",
+    )
     arg_inttests = parser.add_mutually_exclusive_group()
     arg_inttests.add_argument(
         "--integration-tests",
@@ -1374,6 +1385,7 @@ if __name__ == "__main__":
     WORKSPACE = args.WORKSPACE
     UNIT_TEST_PKG = args.PACKAGE
     TEST_ONLY = args.TEST_ONLY
+    NO_CPPCHECK = args.NO_CPPCHECK
     INTEGRATION_TEST = args.INTEGRATION_TEST
     BRANCH = args.BRANCH
     FORMAT_CODE = args.FORMAT
