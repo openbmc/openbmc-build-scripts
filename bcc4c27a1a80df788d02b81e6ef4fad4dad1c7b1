@@ -16,6 +16,24 @@
       "message": "why?   (as in discord #infrastructure)",
       "revId": "bcc4c27a1a80df788d02b81e6ef4fad4dad1c7b1",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a5bfbf7c_0c27809f",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1002091
+      },
+      "writtenOn": "2025-02-05T07:44:21Z",
+      "side": 1,
+      "message": "I added justification in the commit message",
+      "parentUuid": "12d8c91c_8791c2d8",
+      "revId": "bcc4c27a1a80df788d02b81e6ef4fad4dad1c7b1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
