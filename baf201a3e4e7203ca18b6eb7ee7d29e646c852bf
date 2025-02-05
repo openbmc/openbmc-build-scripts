@@ -22,6 +22,30 @@
       },
       "revId": "baf201a3e4e7203ca18b6eb7ee7d29e646c852bf",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e76184f6_ad24d173",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1000044
+      },
+      "writtenOn": "2025-02-05T05:59:14Z",
+      "side": 1,
+      "message": "Why do you think the daemons are broken? What is the expected usage of the APIs?",
+      "parentUuid": "e4924d4f_22d077f0",
+      "range": {
+        "startLine": 8,
+        "startChar": 0,
+        "endLine": 11,
+        "endChar": 47
+      },
+      "revId": "baf201a3e4e7203ca18b6eb7ee7d29e646c852bf",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
