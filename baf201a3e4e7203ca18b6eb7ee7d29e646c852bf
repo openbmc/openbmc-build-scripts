@@ -46,6 +46,30 @@
       },
       "revId": "baf201a3e4e7203ca18b6eb7ee7d29e646c852bf",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9d1a1080_eabbdc17",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2025-02-05T12:59:45Z",
+      "side": 1,
+      "message": "A daemon asking for the system bus explicitly is almost always wrong.  It should be asking for the default bus.  This allows both running on the BMC correctly _and_ running in unit test correctly.",
+      "parentUuid": "e76184f6_ad24d173",
+      "range": {
+        "startLine": 8,
+        "startChar": 0,
+        "endLine": 11,
+        "endChar": 47
+      },
+      "revId": "baf201a3e4e7203ca18b6eb7ee7d29e646c852bf",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
