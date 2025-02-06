@@ -70,6 +70,30 @@
       },
       "revId": "baf201a3e4e7203ca18b6eb7ee7d29e646c852bf",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b7f9dc36_00fbb4fe",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1000044
+      },
+      "writtenOn": "2025-02-06T05:58:19Z",
+      "side": 1,
+      "message": "The problematic daemon is phosphor-pid-control, which uses a few `new_system()` calls. E.g. the main.cpp creates 3 buses:\n* `modeControlBus`\n* `hostBus`\n* `passiveBus`\n\nhttps://github.com/openbmc/phosphor-pid-control/blob/master/main.cpp#L85-L89\n\nWhat is your suggestion on such cases?",
+      "parentUuid": "9d1a1080_eabbdc17",
+      "range": {
+        "startLine": 8,
+        "startChar": 0,
+        "endLine": 11,
+        "endChar": 47
+      },
+      "revId": "baf201a3e4e7203ca18b6eb7ee7d29e646c852bf",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
