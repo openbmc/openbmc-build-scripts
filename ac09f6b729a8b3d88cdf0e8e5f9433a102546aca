@@ -34,6 +34,24 @@
       "parentUuid": "04af65b2_4e49e76e",
       "revId": "ac09f6b729a8b3d88cdf0e8e5f9433a102546aca",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e9e6d6e5_c5429fb9",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2025-02-06T22:17:38Z",
+      "side": 1,
+      "message": "We\u0027ve spent a significant amount of time reviewing 72699 and it looks like you just took a piece of it and submitted it separately? If anything, it would be great if you helped address the remaining issues in 72699 so we can get that in.\n\nBut note, you\u0027ll need to submit a CLA before any code can be accepted from you.\nhttps://github.com/openbmc/docs/blob/master/CONTRIBUTING.md",
+      "parentUuid": "1d541432_ec82edfb",
+      "revId": "ac09f6b729a8b3d88cdf0e8e5f9433a102546aca",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
