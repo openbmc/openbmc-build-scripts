@@ -95,6 +95,7 @@ GERRIT_CI_GROUPS=( \
         quanta/ci-authorized \
         quic/ci-authorized \
         rcs/ci-authorized \
+        sipearl/ci-authorized \
         supermicro/ci-authorized \
         tencent/ci-authorized \
         triple-crown/ci-authorized \
