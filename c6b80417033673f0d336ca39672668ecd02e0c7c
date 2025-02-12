@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "acee411d_7f748dca",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1002359
+      },
+      "writtenOn": "2025-02-12T07:18:24Z",
+      "side": 1,
+      "message": "Thanks Andrew Geissler, as you have mentioned i have submitted the CLA license and got the approval as well.\n\nAnd for my understanding i saw there were around 18 unresolved issues in the comments related to the run-qemu-robot-test.py file so i started from there. Sorry if this is not a valid approach, it will be good if you can let me know how to find the current unresolved or remaining issues that needs to solved so that i can start from there.",
+      "revId": "c6b80417033673f0d336ca39672668ecd02e0c7c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
