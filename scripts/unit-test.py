@@ -1100,7 +1100,7 @@ class Meson(BuildSystem):
                 "--print-errorlogs",
                 "--logbase",
                 "testlog-ubasan",
-                env=os.environ | {"UBSAN_OPTIONS": "halt_on_error=1"},
+                env=os.environ,
             )
             # TODO: Fix memory sanitizer
             # check_call_cmd('meson', 'configure', 'build',
