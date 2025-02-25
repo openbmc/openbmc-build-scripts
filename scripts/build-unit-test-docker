@@ -859,6 +859,7 @@ RUN apt-get update && apt-get dist-upgrade -yy && apt-get install -yy \
     libjson-perl \
     libldap2-dev \
     libmimetic-dev \
+    libmpfr-dev \
     libnl-3-dev \
     libnl-genl-3-dev \
     libpam0g-dev \
