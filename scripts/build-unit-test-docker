@@ -108,7 +108,7 @@ packages = {
         build_steps=[
             (
                 "./bootstrap.sh"
-                f" --prefix={prefix} --with-libraries=atomic,context,coroutine,filesystem,process,url"
+                f" --prefix={prefix} --with-libraries=atomic,context,coroutine,filesystem,iostreams,process,program_options,regex,system,url"
             ),
             "./b2",
             f"./b2 install --prefix={prefix} valgrind=on",
