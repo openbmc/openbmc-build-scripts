@@ -124,7 +124,7 @@ fi
 echo "Build started, $(date)"
 
 # If the obmc_dir directory doesn't exist clone it in
-if [ ! -d "${obmc_dir}" ]; then
+if [ ! -d "${obmc_dir}" ] && [ "${container_only}" = false ]; then
     echo "Clone in openbmc master to ${obmc_dir}"
     git clone https://github.com/openbmc/openbmc "${obmc_dir}"
 fi
