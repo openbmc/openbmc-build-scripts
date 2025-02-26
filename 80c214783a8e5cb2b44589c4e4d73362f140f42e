@@ -70,6 +70,30 @@
       },
       "revId": "80c214783a8e5cb2b44589c4e4d73362f140f42e",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "308b8368_438ba957",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1002091
+      },
+      "writtenOn": "2025-02-26T09:41:40Z",
+      "side": 1,
+      "message": "I completely understand. On the main branch, there is new option `AVRO_USE_BOOST`\nhttps://github.com/apache/avro/blob/bc4896e7010531133f2f5ac429419fc74f472877/lang/c%2B%2B/CMakeLists.txt#L61\nas a part of [AVRO-4095 Remove boost dependency from non-test files](https://issues.apache.org/jira/browse/AVRO-4095) \nI tested rev. [bc4896e](https://github.com/apache/avro/commit/bc4896e7010531133f2f5ac429419fc74f472877) today, and it works fine.\nTherefore, we should wait for the new release and do not add new boost modules.",
+      "parentUuid": "81fb2a72_fc2d8188",
+      "range": {
+        "startLine": 9,
+        "startChar": 0,
+        "endLine": 10,
+        "endChar": 66
+      },
+      "revId": "80c214783a8e5cb2b44589c4e4d73362f140f42e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
