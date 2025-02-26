@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dcaec54d_8dbb579b",
+        "filename": "scripts/unit-test.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 1103,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2025-02-26T21:16:46Z",
+      "side": 0,
+      "message": "But why are we now dropping halt_on_error?  Do you need something more complete to merge halt_on_error with any outstanding variable settings?",
+      "range": {
+        "startLine": 1103,
+        "startChar": 51,
+        "endLine": 1103,
+        "endChar": 68
+      },
+      "revId": "d8e150a50c3daed8530bfc0846afb3c94f25bb2b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
