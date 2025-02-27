@@ -22,6 +22,30 @@
       },
       "revId": "d8e150a50c3daed8530bfc0846afb3c94f25bb2b",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "058838eb_f512d4db",
+        "filename": "scripts/unit-test.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 1103,
+      "author": {
+        "id": 1002091
+      },
+      "writtenOn": "2025-02-27T08:05:28Z",
+      "side": 0,
+      "message": "But we are not dropping it. It\u0027s a meson build-in option to halt on error. If we have this line in our script, we have less info than without it (`UBSAN_OPTIONS\u003dhalt_on_error\u003d1` from script overrides `UBSAN_OPTION\u003dhalt_on_error\u003d1:abort_on_error\u003d1:print_summary\u003d1:print_stacktrace\u003d1` from meson). Additionally there can be some false-positives that we will want to suppress via suppression file and this is not possible now.",
+      "parentUuid": "dcaec54d_8dbb579b",
+      "range": {
+        "startLine": 1103,
+        "startChar": 51,
+        "endLine": 1103,
+        "endChar": 68
+      },
+      "revId": "d8e150a50c3daed8530bfc0846afb3c94f25bb2b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
