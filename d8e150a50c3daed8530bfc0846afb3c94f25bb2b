@@ -46,6 +46,30 @@
       },
       "revId": "d8e150a50c3daed8530bfc0846afb3c94f25bb2b",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d0432c0f_84fe3099",
+        "filename": "scripts/unit-test.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 1103,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2025-02-27T16:58:08Z",
+      "side": 0,
+      "message": "\u003e in our script, we have less info than without it (UBSAN_OPTIONS\u003dhalt_on_error\u003d1 from script overrides UBSAN_OPTION\u003dhalt_on_error\u003d1:abort_on_error\u003d1:print_summary\u003d1:print_stacktrace\u003d1 from meson). \n\nGot it.  You already added this to the commit message as well.  Just took a bit for it to sync in to my mind.  Thank you.\n\nShould we drop this whole line then?  Isn\u0027t `env\u003dos.environ` implied?",
+      "parentUuid": "058838eb_f512d4db",
+      "range": {
+        "startLine": 1103,
+        "startChar": 51,
+        "endLine": 1103,
+        "endChar": 68
+      },
+      "revId": "d8e150a50c3daed8530bfc0846afb3c94f25bb2b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
