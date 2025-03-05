@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "08e6d275_5de83440",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2025-03-05T01:53:48Z",
+      "side": 1,
+      "message": "This one for me is getting a bit close to the \u0027too much complexity for something that should be very rarely happen\" type scenario. When I start seeing exceptions coded in and such it just seems like it may be more work to dealing with people asking about fails vs. what we have now. But up to you.",
+      "revId": "bcc9a312e9b83b01ddb52b7778b81218af0ea169",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
