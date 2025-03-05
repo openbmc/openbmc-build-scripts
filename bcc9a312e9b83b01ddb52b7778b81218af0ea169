@@ -16,6 +16,24 @@
       "message": "This one for me is getting a bit close to the \u0027too much complexity for something that should be very rarely happen\" type scenario. When I start seeing exceptions coded in and such it just seems like it may be more work to dealing with people asking about fails vs. what we have now. But up to you.",
       "revId": "bcc9a312e9b83b01ddb52b7778b81218af0ea169",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "11df6da9_bec7dc3f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2025-03-05T12:40:46Z",
+      "side": 1,
+      "message": "I wrote it because I see it happen all the time... and I keep seeing commits allowed in by other maintainers with a S-o-b that doesn\u0027t match anything in a CLA.\n\nThe only exception and only person I\u0027ve ever heard of that legally has just one name is Anthony here.  It wouldn\u0027t surprise me if we get people in the future that use a few non-ASCII characters as their full name though.  I think it should be a fairly low-lift one time change to add a new exception if needed, vs having our S-o-b not legally valid.",
+      "parentUuid": "08e6d275_5de83440",
+      "revId": "bcc9a312e9b83b01ddb52b7778b81218af0ea169",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
