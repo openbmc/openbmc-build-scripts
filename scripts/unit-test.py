@@ -1107,7 +1107,12 @@ class Meson(BuildSystem):
             #                '-Db_sanitize=memory')
             # check_call_cmd('meson', 'test', '-C', 'build'
             #                '--logbase', 'testlog-msan')
-            meson_flags.remove("-Db_sanitize=address,undefined")
+            meson_flags = [
+                s.replace(
+                    "-Db_sanitize=address,undefined", "-Db_sanitize=none"
+                )
+                for s in meson_flags
+            ]
             try:
                 check_call_cmd(
                     "meson", "setup", "--reconfigure", "build", *meson_flags
