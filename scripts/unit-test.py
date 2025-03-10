@@ -1061,6 +1061,7 @@ class Meson(BuildSystem):
 
         # Run clang-tidy only if the project has a configuration
         if os.path.isfile(".clang-tidy"):
+            os.environ["CC"] = "clang"
             os.environ["CXX"] = "clang++"
             with TemporaryDirectory(prefix="build", dir=".") as build_dir:
                 check_call_cmd("meson", "setup", build_dir)
