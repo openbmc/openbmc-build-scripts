@@ -164,7 +164,7 @@ packages = {
         ],
     ),
     "nlohmann/json": PackageDef(
-        rev="v3.11.2",
+        rev="v3.11.3",
         build_type="cmake",
         config_flags=["-DJSON_BuildTests=OFF"],
         custom_post_install=[
