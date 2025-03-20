@@ -16,6 +16,23 @@
       "message": "ERROR:root:GET on /redfish/v1/ caused InvalidSchema exception; building HTTP 600 response\nERROR:root:GET on /redfish/v1/ caused InvalidSchema exception; building HTTP 600 response\nERROR:root:GET on /redfish/v1/ caused InvalidSchema exception; building HTTP 600 response\nERROR:root:POST on /redfish/v1/SessionService/Sessions/Members caused InvalidSchema exception; building HTTP 600 response\nERROR:root:POST on /redfish/v1/SessionService/Sessions caused InvalidSchema exception; building HTTP 600 response\nERROR:root:POST on /redfish/v1/SessionService/Sessions caused InvalidSchema exception; building HTTP 600 response\nERROR:root:GET on /redfish/v1/odata did not return valid JSON; assuming an empty object\nERROR:root:GET on /redfish/v1/odata did not return valid JSON; assuming an empty object\nERROR:root:GET on /redfish/v1/ did not return valid JSON; assuming an empty object\nSummary - PASS: 61, WARN: 1, FAIL: 42, NOT_TESTED: 60\nReport output:\nreports/RedfishProtocolValidationReport_03_20_2025_142756.tsv\nreports/RedfishProtocolValidationReport_03_20_2025_142756.html\n\n\nlooks like this validator seems to show bunch of non complaince error",
       "revId": "58f905ba9ee53afa53b0ecbeef945621cbf1f424",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f67a2341_0f317e25",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000018
+      },
+      "writtenOn": "2025-03-20T14:30:11Z",
+      "side": 1,
+      "message": "ERROR:root:GET on /redfish/v1/ caused InvalidSchema exception; building HTTP 600 response\nERROR:root:GET on /redfish/v1/ caused InvalidSchema exception; building HTTP 600 response\nERROR:root:GET on /redfish/v1/ caused InvalidSchema exception; building HTTP 600 response\nERROR:root:POST on /redfish/v1/SessionService/Sessions/Members caused InvalidSchema exception; building HTTP 600 response\nERROR:root:POST on /redfish/v1/SessionService/Sessions caused InvalidSchema exception; building HTTP 600 response\nERROR:root:POST on /redfish/v1/SessionService/Sessions caused InvalidSchema exception; building HTTP 600 response\nERROR:root:GET on /redfish/v1/odata did not return valid JSON; assuming an empty object\nERROR:root:GET on /redfish/v1/odata did not return valid JSON; assuming an empty object\nERROR:root:GET on /redfish/v1/ did not return valid JSON; assuming an empty object\nSummary - PASS: 61, WARN: 1, FAIL: 42, NOT_TESTED: 60\nReport output:\nreports/RedfishProtocolValidationReport_03_20_2025_142756.tsv\nreports/RedfishProtocolValidationReport_03_20_2025_142756.html\n\n\nlooks like this validator seems to show bunch of non complaince error",
+      "revId": "58f905ba9ee53afa53b0ecbeef945621cbf1f424",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
