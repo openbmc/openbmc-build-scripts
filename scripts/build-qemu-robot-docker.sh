@@ -138,7 +138,8 @@ RUN pip3 install --break-system-packages \
     colorama==0.4.6 \
     pyasn1==0.6.1 \
     pyasn1_modules==0.4.1 \
-    sseclient-py==1.8.0
+    sseclient-py==1.8.0 \
+    pyotp
 
 RUN wget https://github.com/mozilla/geckodriver/releases/download/v0.32.2/geckodriver-v0.32.2-linux64.tar.gz \
         && tar xvzf geckodriver-*.tar.gz \
