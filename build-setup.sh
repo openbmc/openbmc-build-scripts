@@ -26,6 +26,7 @@
 #  DOCKER_REG:        <optional, the URL of a docker registry to utilize
 #                     instead of our default (public.ecr.aws/ubuntu)
 #                     (ex. docker.io or public.ecr.aws/docker/library)
+#  EXTRA_DOCKER_RUN_ARGS: Optional, pass arguments to docker run
 #
 # Docker Image Build Variables:
 #  BITBAKE_OPTS       Set to "-c populate_sdk" or whatever other BitBake options
@@ -428,6 +429,7 @@ docker run \
     -e WORKSPACE="${WORKSPACE}" \
     -w "${HOME}" \
     -v "${HOME}:${HOME}" \
+    ${EXTRA_DOCKER_RUN_ARGS:-} \
     ${mount_obmc_dir} \
     ${mount_ssc_dir} \
     ${mount_workspace_dir} \
