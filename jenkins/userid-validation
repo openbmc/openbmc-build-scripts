@@ -104,7 +104,6 @@ GERRIT_CI_GROUPS=( \
         vaisala/ci-authorized \
         wistron/ci-authorized \
         wiwynn/ci-authorized \
-        yadro/ci-authorized \
     )
 
 rm -f "$WORKSPACE/users.txt"
