@@ -95,7 +95,7 @@ GERRIT_CI_GROUPS=( \
         plexus/ci-authorized \
         quanta/ci-authorized \
         quic/ci-authorized \
-        rcs/ci-authorized \
+        raptorcs/ci-authorized \
         sipearl/ci-authorized \
         supermicro/ci-authorized \
         tencent/ci-authorized \
