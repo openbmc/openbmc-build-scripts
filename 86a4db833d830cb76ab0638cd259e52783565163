@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "cdf0d7f9_90ab06b6",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 109
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1002079
+      },
+      "writtenOn": "2025-04-10T00:29:21Z",
+      "side": 1,
+      "message": "I followed up on all comments and want another review in case I missed things. Thank you",
+      "revId": "86a4db833d830cb76ab0638cd259e52783565163",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}

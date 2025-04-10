@@ -52,6 +52,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1548e3ea_ae8244c6",
+        "filename": "run-qemu-robot-test.py",
+        "patchSetId": 94
+      },
+      "lineNbr": 65,
+      "author": {
+        "id": 1002079
+      },
+      "writtenOn": "2025-04-10T00:29:21Z",
+      "side": 1,
+      "message": "It\u0027s part of the Robot tests so that understanding is implicit but I can document that if needed. It\u0027s pulled from the environment variables. What do you think ?\n\n(done)",
+      "parentUuid": "2a1982e2_ddab3047",
+      "revId": "8027b6329521b334d8a5f8dd6cfce630d58e97cd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "80d4cc2a_d423d157",
@@ -65,6 +83,24 @@
       "writtenOn": "2024-12-30T21:52:09Z",
       "side": 1,
       "message": "Do we need a print here in the good case?",
+      "revId": "8027b6329521b334d8a5f8dd6cfce630d58e97cd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0ad49b89_63e57844",
+        "filename": "run-qemu-robot-test.py",
+        "patchSetId": 94
+      },
+      "lineNbr": 87,
+      "author": {
+        "id": 1002079
+      },
+      "writtenOn": "2025-04-10T00:29:21Z",
+      "side": 1,
+      "message": "There\u0027s a lot of debugging code in it. Eventually it needs to be silenced and I\u0027d like suggestions here on how to go about doing it.\n\nIt\u0027s removed.",
+      "parentUuid": "80d4cc2a_d423d157",
       "revId": "8027b6329521b334d8a5f8dd6cfce630d58e97cd",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -86,6 +122,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8e56f7b1_9eeec536",
+        "filename": "run-qemu-robot-test.py",
+        "patchSetId": 94
+      },
+      "lineNbr": 150,
+      "author": {
+        "id": 1002079
+      },
+      "writtenOn": "2025-04-10T00:29:21Z",
+      "side": 1,
+      "message": "Fix it, remove it. I left it there because it was minor and didn\u0027t interfere with core testing.",
+      "parentUuid": "4a15afb9_fdf88a06",
+      "revId": "8027b6329521b334d8a5f8dd6cfce630d58e97cd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3ceafd2e_058a0966",
@@ -99,6 +153,24 @@
       "writtenOn": "2024-12-30T21:52:09Z",
       "side": 1,
       "message": "nit: let\u0027s clean up the print",
+      "revId": "8027b6329521b334d8a5f8dd6cfce630d58e97cd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1ee20f91_b2b2bccd",
+        "filename": "run-qemu-robot-test.py",
+        "patchSetId": 94
+      },
+      "lineNbr": 163,
+      "author": {
+        "id": 1002079
+      },
+      "writtenOn": "2025-04-10T00:29:21Z",
+      "side": 1,
+      "message": "I\u0027ll remove it.",
+      "parentUuid": "3ceafd2e_058a0966",
       "revId": "8027b6329521b334d8a5f8dd6cfce630d58e97cd",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -120,6 +192,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "eb0ce2db_1883f3dd",
+        "filename": "run-qemu-robot-test.py",
+        "patchSetId": 94
+      },
+      "lineNbr": 235,
+      "author": {
+        "id": 1002079
+      },
+      "writtenOn": "2025-04-10T00:29:21Z",
+      "side": 1,
+      "message": "Yes we can. I just followed what the original bash scripts did without additional logic",
+      "parentUuid": "bb93c8f1_567fc1a5",
+      "revId": "8027b6329521b334d8a5f8dd6cfce630d58e97cd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a7fa7123_8eb00b69",
@@ -133,6 +223,24 @@
       "writtenOn": "2024-12-30T21:52:09Z",
       "side": 1,
       "message": "If this is only a podman workaround, should we not do this if we are running with docker?",
+      "revId": "8027b6329521b334d8a5f8dd6cfce630d58e97cd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "28a56f08_07ef5434",
+        "filename": "run-qemu-robot-test.py",
+        "patchSetId": 94
+      },
+      "lineNbr": 308,
+      "author": {
+        "id": 1002079
+      },
+      "writtenOn": "2025-04-10T00:29:21Z",
+      "side": 1,
+      "message": "Docker and podman handle this differently but we can use the same sequence for both if needed. What do you think should be done here ? I just did a simple remap and was done with it.",
+      "parentUuid": "a7fa7123_8eb00b69",
       "revId": "8027b6329521b334d8a5f8dd6cfce630d58e97cd",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -154,6 +262,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f1af290d_275d3982",
+        "filename": "run-qemu-robot-test.py",
+        "patchSetId": 94
+      },
+      "lineNbr": 469,
+      "author": {
+        "id": 1002079
+      },
+      "writtenOn": "2025-04-10T00:29:21Z",
+      "side": 1,
+      "message": "Removed.",
+      "parentUuid": "8fa7062f_9fa163f1",
+      "revId": "8027b6329521b334d8a5f8dd6cfce630d58e97cd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f0b60f5f_107ad39b",
@@ -167,6 +293,24 @@
       "writtenOn": "2024-12-30T21:52:09Z",
       "side": 1,
       "message": "Nit: it would be nice to make these local variables",
+      "revId": "8027b6329521b334d8a5f8dd6cfce630d58e97cd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bfb4fc72_84cce7ab",
+        "filename": "run-qemu-robot-test.py",
+        "patchSetId": 94
+      },
+      "lineNbr": 594,
+      "author": {
+        "id": 1002079
+      },
+      "writtenOn": "2025-04-10T00:29:21Z",
+      "side": 1,
+      "message": "They\u0027re from the shell environment and there\u0027s no way of getting around it",
+      "parentUuid": "f0b60f5f_107ad39b",
       "revId": "8027b6329521b334d8a5f8dd6cfce630d58e97cd",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -188,6 +332,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "38cbadc5_dc0ced47",
+        "filename": "run-qemu-robot-test.py",
+        "patchSetId": 94
+      },
+      "lineNbr": 609,
+      "author": {
+        "id": 1002079
+      },
+      "writtenOn": "2025-04-10T00:29:21Z",
+      "side": 1,
+      "message": "Yes this a podman convention. I can comment it more if you want",
+      "parentUuid": "3509775a_11d709c4",
+      "revId": "8027b6329521b334d8a5f8dd6cfce630d58e97cd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "20697cf2_d4083b27",
@@ -201,6 +363,24 @@
       "writtenOn": "2024-12-30T21:52:09Z",
       "side": 1,
       "message": "Is this the externally visible list?\nAnd is this defined elsewhere? Can we share/re-use it? Said another way, how do we ensure this stays up to date?",
+      "revId": "8027b6329521b334d8a5f8dd6cfce630d58e97cd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c844694e_71a6eca5",
+        "filename": "scripts/boot-qemu-test.py",
+        "patchSetId": 94
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 1002079
+      },
+      "writtenOn": "2025-04-10T00:29:21Z",
+      "side": 1,
+      "message": "It\u0027s defined and extendable there if needed. What should be done here ?\n\nWe manually update this quirks table. Shouldn\u0027t change very much unless machine is changed and requires an emulation model change.",
+      "parentUuid": "20697cf2_d4083b27",
       "revId": "8027b6329521b334d8a5f8dd6cfce630d58e97cd",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -222,6 +402,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a9622edf_b64124ca",
+        "filename": "scripts/boot-qemu-test.py",
+        "patchSetId": 94
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 1002079
+      },
+      "writtenOn": "2025-04-10T00:29:21Z",
+      "side": 1,
+      "message": "I didn\u0027t have problems with it but I can investigate it further. The pattern is both for the normal and static file names",
+      "parentUuid": "d94dfb33_47bebfca",
+      "revId": "8027b6329521b334d8a5f8dd6cfce630d58e97cd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8b7f55eb_e8e305a6",
@@ -235,6 +433,24 @@
       "writtenOn": "2024-12-30T21:52:09Z",
       "side": 1,
       "message": "Can we add a comment explaining the difference here?",
+      "revId": "8027b6329521b334d8a5f8dd6cfce630d58e97cd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "76a1efdb_150d7da5",
+        "filename": "scripts/boot-qemu-test.py",
+        "patchSetId": 94
+      },
+      "lineNbr": 144,
+      "author": {
+        "id": 1002079
+      },
+      "writtenOn": "2025-04-10T00:29:21Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8b7f55eb_e8e305a6",
       "revId": "8027b6329521b334d8a5f8dd6cfce630d58e97cd",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -256,6 +472,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "41e5af67_08617884",
+        "filename": "scripts/boot-qemu-test.py",
+        "patchSetId": 94
+      },
+      "lineNbr": 208,
+      "author": {
+        "id": 1002079
+      },
+      "writtenOn": "2025-04-10T00:29:21Z",
+      "side": 1,
+      "message": "That\u0027s the launching semantic of this script. It\u0027s managed by a parent script. Clean up etc is managed from there.",
+      "parentUuid": "a611cd8d_98f6f68a",
+      "revId": "8027b6329521b334d8a5f8dd6cfce630d58e97cd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ba02b541_ee75f219",
@@ -273,6 +507,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f6d10ce2_8a4ea103",
+        "filename": "scripts/run-robot.sh",
+        "patchSetId": 94
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 1002079
+      },
+      "writtenOn": "2025-04-10T00:29:21Z",
+      "side": 1,
+      "message": "Correct, removed now",
+      "parentUuid": "ba02b541_ee75f219",
+      "revId": "8027b6329521b334d8a5f8dd6cfce630d58e97cd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c7693609_43045003",
@@ -286,6 +538,24 @@
       "writtenOn": "2024-12-30T21:52:09Z",
       "side": 1,
       "message": "Once this is committed, we don\u0027t need to add new scripts at runtime, right?",
+      "revId": "8027b6329521b334d8a5f8dd6cfce630d58e97cd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "607a4380_434d6462",
+        "filename": "scripts/run-robot.sh",
+        "patchSetId": 94
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 1002079
+      },
+      "writtenOn": "2025-04-10T00:29:21Z",
+      "side": 1,
+      "message": "removed now. Thanks for catching it.",
+      "parentUuid": "c7693609_43045003",
       "revId": "8027b6329521b334d8a5f8dd6cfce630d58e97cd",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }

@@ -72,6 +72,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f7250e0f_e1c4c950",
+        "filename": "run-qemu-robot-test.py",
+        "patchSetId": 63
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 1002079
+      },
+      "writtenOn": "2025-04-10T00:29:21Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "3f60f017_b231756e",
+      "range": {
+        "startLine": 32,
+        "startChar": 0,
+        "endLine": 37,
+        "endChar": 31
+      },
+      "revId": "33311f8f4536be0d027e8e24ed542a9ebe00e554",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b6672361_b045ec5d",
@@ -389,6 +413,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2279affd_8bfc575e",
+        "filename": "run-qemu-robot-test.py",
+        "patchSetId": 63
+      },
+      "lineNbr": 375,
+      "author": {
+        "id": 1002079
+      },
+      "writtenOn": "2025-04-10T00:29:21Z",
+      "side": 1,
+      "message": "I removed the truncate",
+      "parentUuid": "389faed1_81984e57",
+      "revId": "33311f8f4536be0d027e8e24ed542a9ebe00e554",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "88e68e12_8b071a29",
@@ -661,6 +703,30 @@
       "side": 1,
       "message": "Can we remove the lint exception with \n`except (EOF, Timeout, ExceptionPexpect) as e`",
       "parentUuid": "a762e787_2e9b94a0",
+      "range": {
+        "startLine": 471,
+        "startChar": 28,
+        "endLine": 471,
+        "endChar": 58
+      },
+      "revId": "33311f8f4536be0d027e8e24ed542a9ebe00e554",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1556d6d5_2b98067f",
+        "filename": "run-qemu-robot-test.py",
+        "patchSetId": 63
+      },
+      "lineNbr": 471,
+      "author": {
+        "id": 1002079
+      },
+      "writtenOn": "2025-04-10T00:29:21Z",
+      "side": 1,
+      "message": "I\u0027m open to suggestions. Replace it with what ? Got it.",
+      "parentUuid": "bfd595e7_bff654c0",
       "range": {
         "startLine": 471,
         "startChar": 28,
