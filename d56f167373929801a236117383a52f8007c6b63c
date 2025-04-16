@@ -106,6 +106,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "3fc92ca3_fd1861a0",
+        "filename": "run-qemu-robot-test.py",
+        "patchSetId": 96
+      },
+      "lineNbr": 328,
+      "author": {
+        "id": 1002079
+      },
+      "writtenOn": "2025-04-16T01:14:40Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5782784c_b805dda2",
+      "revId": "d56f167373929801a236117383a52f8007c6b63c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5471599f_27c77168",
@@ -136,6 +154,24 @@
       "writtenOn": "2025-04-10T00:29:21Z",
       "side": 1,
       "message": "Got it",
+      "parentUuid": "5471599f_27c77168",
+      "revId": "d56f167373929801a236117383a52f8007c6b63c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "dccaf55d_fcd80989",
+        "filename": "run-qemu-robot-test.py",
+        "patchSetId": 96
+      },
+      "lineNbr": 619,
+      "author": {
+        "id": 1002079
+      },
+      "writtenOn": "2025-04-16T01:14:40Z",
+      "side": 1,
+      "message": "Done",
       "parentUuid": "5471599f_27c77168",
       "revId": "d56f167373929801a236117383a52f8007c6b63c",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"

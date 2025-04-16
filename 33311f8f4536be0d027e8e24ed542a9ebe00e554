@@ -96,6 +96,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ffc7078c_a900a196",
+        "filename": "run-qemu-robot-test.py",
+        "patchSetId": 63
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 1002079
+      },
+      "writtenOn": "2025-04-16T01:14:40Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3f60f017_b231756e",
+      "range": {
+        "startLine": 32,
+        "startChar": 0,
+        "endLine": 37,
+        "endChar": 31
+      },
+      "revId": "33311f8f4536be0d027e8e24ed542a9ebe00e554",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b6672361_b045ec5d",
@@ -433,6 +457,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "58ce6f81_43aeec08",
+        "filename": "run-qemu-robot-test.py",
+        "patchSetId": 63
+      },
+      "lineNbr": 375,
+      "author": {
+        "id": 1002079
+      },
+      "writtenOn": "2025-04-16T01:14:40Z",
+      "side": 1,
+      "message": "I\u0027m open to suggestions here. It might be the case that this is a \"quirks\" section where it\u0027s freely modified on a model basis.",
+      "parentUuid": "389faed1_81984e57",
+      "revId": "33311f8f4536be0d027e8e24ed542a9ebe00e554",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "88e68e12_8b071a29",
         "filename": "run-qemu-robot-test.py",
         "patchSetId": 63
@@ -726,6 +768,30 @@
       "writtenOn": "2025-04-10T00:29:21Z",
       "side": 1,
       "message": "I\u0027m open to suggestions. Replace it with what ? Got it.",
+      "parentUuid": "bfd595e7_bff654c0",
+      "range": {
+        "startLine": 471,
+        "startChar": 28,
+        "endLine": 471,
+        "endChar": 58
+      },
+      "revId": "33311f8f4536be0d027e8e24ed542a9ebe00e554",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7b60b84c_96bc4ddf",
+        "filename": "run-qemu-robot-test.py",
+        "patchSetId": 63
+      },
+      "lineNbr": 471,
+      "author": {
+        "id": 1002079
+      },
+      "writtenOn": "2025-04-16T01:14:40Z",
+      "side": 1,
+      "message": "Done",
       "parentUuid": "bfd595e7_bff654c0",
       "range": {
         "startLine": 471,

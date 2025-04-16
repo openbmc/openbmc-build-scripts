@@ -106,6 +106,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b52357a2_22067a5c",
+        "filename": "run-qemu-robot-test.py",
+        "patchSetId": 62
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1002079
+      },
+      "writtenOn": "2025-04-16T01:14:40Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1ba03406_c832a05b",
+      "revId": "86b3fba1b28f537514ec6fd83b96f3538a35d6fe",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "29e4afb3_5686d535",
@@ -190,6 +208,30 @@
       "writtenOn": "2025-04-10T00:29:21Z",
       "side": 1,
       "message": "Acknowledged",
+      "parentUuid": "2649e426_a02e5229",
+      "range": {
+        "startLine": 5,
+        "startChar": 33,
+        "endLine": 5,
+        "endChar": 62
+      },
+      "revId": "86b3fba1b28f537514ec6fd83b96f3538a35d6fe",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4f4868b8_b18e6d97",
+        "filename": "run-qemu-robot-test.py",
+        "patchSetId": 62
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 1002079
+      },
+      "writtenOn": "2025-04-16T01:14:40Z",
+      "side": 1,
+      "message": "Done",
       "parentUuid": "2649e426_a02e5229",
       "range": {
         "startLine": 5,
@@ -837,6 +879,24 @@
       "writtenOn": "2025-04-10T00:29:21Z",
       "side": 1,
       "message": "It\u0027s just unfinished and some of that stuff is broken but minor. I need to address that simply before merging and then you folks can take it over",
+      "parentUuid": "14492d68_a9fccfd0",
+      "revId": "86b3fba1b28f537514ec6fd83b96f3538a35d6fe",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "17538b40_68c1c1d3",
+        "filename": "run-qemu-robot-test.py",
+        "patchSetId": 62
+      },
+      "lineNbr": 121,
+      "author": {
+        "id": 1002079
+      },
+      "writtenOn": "2025-04-16T01:14:40Z",
+      "side": 1,
+      "message": "Done",
       "parentUuid": "14492d68_a9fccfd0",
       "revId": "86b3fba1b28f537514ec6fd83b96f3538a35d6fe",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"

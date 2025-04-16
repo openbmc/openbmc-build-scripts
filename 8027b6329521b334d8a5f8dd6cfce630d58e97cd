@@ -70,6 +70,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9d4071fc_04ba12e9",
+        "filename": "run-qemu-robot-test.py",
+        "patchSetId": 94
+      },
+      "lineNbr": 65,
+      "author": {
+        "id": 1002079
+      },
+      "writtenOn": "2025-04-16T01:14:40Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2a1982e2_ddab3047",
+      "revId": "8027b6329521b334d8a5f8dd6cfce630d58e97cd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "80d4cc2a_d423d157",
@@ -100,6 +118,24 @@
       "writtenOn": "2025-04-10T00:29:21Z",
       "side": 1,
       "message": "There\u0027s a lot of debugging code in it. Eventually it needs to be silenced and I\u0027d like suggestions here on how to go about doing it.\n\nIt\u0027s removed.",
+      "parentUuid": "80d4cc2a_d423d157",
+      "revId": "8027b6329521b334d8a5f8dd6cfce630d58e97cd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c6624e5d_d1fa6288",
+        "filename": "run-qemu-robot-test.py",
+        "patchSetId": 94
+      },
+      "lineNbr": 87,
+      "author": {
+        "id": 1002079
+      },
+      "writtenOn": "2025-04-16T01:14:40Z",
+      "side": 1,
+      "message": "Done",
       "parentUuid": "80d4cc2a_d423d157",
       "revId": "8027b6329521b334d8a5f8dd6cfce630d58e97cd",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
@@ -140,6 +176,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c63d149f_f6440656",
+        "filename": "run-qemu-robot-test.py",
+        "patchSetId": 94
+      },
+      "lineNbr": 150,
+      "author": {
+        "id": 1002079
+      },
+      "writtenOn": "2025-04-16T01:14:40Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4a15afb9_fdf88a06",
+      "revId": "8027b6329521b334d8a5f8dd6cfce630d58e97cd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3ceafd2e_058a0966",
@@ -170,6 +224,24 @@
       "writtenOn": "2025-04-10T00:29:21Z",
       "side": 1,
       "message": "I\u0027ll remove it.",
+      "parentUuid": "3ceafd2e_058a0966",
+      "revId": "8027b6329521b334d8a5f8dd6cfce630d58e97cd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9545d513_fd8da6ce",
+        "filename": "run-qemu-robot-test.py",
+        "patchSetId": 94
+      },
+      "lineNbr": 163,
+      "author": {
+        "id": 1002079
+      },
+      "writtenOn": "2025-04-16T01:14:40Z",
+      "side": 1,
+      "message": "Done",
       "parentUuid": "3ceafd2e_058a0966",
       "revId": "8027b6329521b334d8a5f8dd6cfce630d58e97cd",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
@@ -212,6 +284,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "dbdf64a8_1c45e308",
+        "filename": "run-qemu-robot-test.py",
+        "patchSetId": 94
+      },
+      "lineNbr": 235,
+      "author": {
+        "id": 1002079
+      },
+      "writtenOn": "2025-04-16T01:14:40Z",
+      "side": 1,
+      "message": "There was discussion with Andrew about it. Default value is incorrect and I\u0027m unsure what to do here",
+      "parentUuid": "bb93c8f1_567fc1a5",
+      "revId": "8027b6329521b334d8a5f8dd6cfce630d58e97cd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "a7fa7123_8eb00b69",
         "filename": "run-qemu-robot-test.py",
         "patchSetId": 94
@@ -240,6 +330,24 @@
       "writtenOn": "2025-04-10T00:29:21Z",
       "side": 1,
       "message": "Docker and podman handle this differently but we can use the same sequence for both if needed. What do you think should be done here ? I just did a simple remap and was done with it.",
+      "parentUuid": "a7fa7123_8eb00b69",
+      "revId": "8027b6329521b334d8a5f8dd6cfce630d58e97cd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6ffa0ee0_7130211a",
+        "filename": "run-qemu-robot-test.py",
+        "patchSetId": 94
+      },
+      "lineNbr": 308,
+      "author": {
+        "id": 1002079
+      },
+      "writtenOn": "2025-04-16T01:14:40Z",
+      "side": 1,
+      "message": "Done",
       "parentUuid": "a7fa7123_8eb00b69",
       "revId": "8027b6329521b334d8a5f8dd6cfce630d58e97cd",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
@@ -275,6 +383,24 @@
       "writtenOn": "2025-04-10T00:29:21Z",
       "side": 1,
       "message": "Removed.",
+      "parentUuid": "8fa7062f_9fa163f1",
+      "revId": "8027b6329521b334d8a5f8dd6cfce630d58e97cd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9dd11fef_49fb649f",
+        "filename": "run-qemu-robot-test.py",
+        "patchSetId": 94
+      },
+      "lineNbr": 469,
+      "author": {
+        "id": 1002079
+      },
+      "writtenOn": "2025-04-16T01:14:40Z",
+      "side": 1,
+      "message": "removed",
       "parentUuid": "8fa7062f_9fa163f1",
       "revId": "8027b6329521b334d8a5f8dd6cfce630d58e97cd",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
@@ -317,6 +443,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "a90d3a05_c681de58",
+        "filename": "run-qemu-robot-test.py",
+        "patchSetId": 94
+      },
+      "lineNbr": 594,
+      "author": {
+        "id": 1002079
+      },
+      "writtenOn": "2025-04-16T01:14:40Z",
+      "side": 1,
+      "message": "It\u0027s hard to do converted originally from one big script. I don\u0027t know if passing variables will make it cleaner or uglier and I\u0027m open to suggestions",
+      "parentUuid": "f0b60f5f_107ad39b",
+      "revId": "8027b6329521b334d8a5f8dd6cfce630d58e97cd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "3509775a_11d709c4",
         "filename": "run-qemu-robot-test.py",
         "patchSetId": 94
@@ -345,6 +489,24 @@
       "writtenOn": "2025-04-10T00:29:21Z",
       "side": 1,
       "message": "Yes this a podman convention. I can comment it more if you want",
+      "parentUuid": "3509775a_11d709c4",
+      "revId": "8027b6329521b334d8a5f8dd6cfce630d58e97cd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ae06ea16_8ed5a782",
+        "filename": "run-qemu-robot-test.py",
+        "patchSetId": 94
+      },
+      "lineNbr": 609,
+      "author": {
+        "id": 1002079
+      },
+      "writtenOn": "2025-04-16T01:14:40Z",
+      "side": 1,
+      "message": "I added comments to it. It\u0027s specific to Rodman",
       "parentUuid": "3509775a_11d709c4",
       "revId": "8027b6329521b334d8a5f8dd6cfce630d58e97cd",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
@@ -387,6 +549,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "2b732a68_79e031b9",
+        "filename": "scripts/boot-qemu-test.py",
+        "patchSetId": 94
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 1002079
+      },
+      "writtenOn": "2025-04-16T01:14:40Z",
+      "side": 1,
+      "message": "I simplified it to a quirks section that can be modified at will. I can break it out into another file but that seems to be heavy weight. What do you think ?",
+      "parentUuid": "20697cf2_d4083b27",
+      "revId": "8027b6329521b334d8a5f8dd6cfce630d58e97cd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "d94dfb33_47bebfca",
         "filename": "scripts/boot-qemu-test.py",
         "patchSetId": 94
@@ -420,6 +600,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "3cc45b6d_f6dff80d",
+        "filename": "scripts/boot-qemu-test.py",
+        "patchSetId": 94
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 1002079
+      },
+      "writtenOn": "2025-04-16T01:14:40Z",
+      "side": 1,
+      "message": "I added a comment to clarify the two file name types present in the directory.",
+      "parentUuid": "d94dfb33_47bebfca",
+      "revId": "8027b6329521b334d8a5f8dd6cfce630d58e97cd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8b7f55eb_e8e305a6",
@@ -448,6 +646,24 @@
         "id": 1002079
       },
       "writtenOn": "2025-04-10T00:29:21Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8b7f55eb_e8e305a6",
+      "revId": "8027b6329521b334d8a5f8dd6cfce630d58e97cd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d835893b_3c89a830",
+        "filename": "scripts/boot-qemu-test.py",
+        "patchSetId": 94
+      },
+      "lineNbr": 144,
+      "author": {
+        "id": 1002079
+      },
+      "writtenOn": "2025-04-16T01:14:40Z",
       "side": 1,
       "message": "Done",
       "parentUuid": "8b7f55eb_e8e305a6",
@@ -490,6 +706,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ed3445b4_3fef195c",
+        "filename": "scripts/boot-qemu-test.py",
+        "patchSetId": 94
+      },
+      "lineNbr": 208,
+      "author": {
+        "id": 1002079
+      },
+      "writtenOn": "2025-04-16T01:14:40Z",
+      "side": 1,
+      "message": "Yes, that\u0027s the basic workings of the script. Runs a qemu process and subjects it to testing. Kills it as appropriate depending on the debug environment, Jenkins or user executed.",
+      "parentUuid": "a611cd8d_98f6f68a",
+      "revId": "8027b6329521b334d8a5f8dd6cfce630d58e97cd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ba02b541_ee75f219",
@@ -525,6 +759,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1c082864_4d36f37f",
+        "filename": "scripts/run-robot.sh",
+        "patchSetId": 94
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 1002079
+      },
+      "writtenOn": "2025-04-16T01:14:40Z",
+      "side": 1,
+      "message": "Correct. Thank you",
+      "parentUuid": "ba02b541_ee75f219",
+      "revId": "8027b6329521b334d8a5f8dd6cfce630d58e97cd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c7693609_43045003",
@@ -555,6 +807,24 @@
       "writtenOn": "2025-04-10T00:29:21Z",
       "side": 1,
       "message": "removed now. Thanks for catching it.",
+      "parentUuid": "c7693609_43045003",
+      "revId": "8027b6329521b334d8a5f8dd6cfce630d58e97cd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1e3a5944_a09ff8e2",
+        "filename": "scripts/run-robot.sh",
+        "patchSetId": 94
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 1002079
+      },
+      "writtenOn": "2025-04-16T01:14:40Z",
+      "side": 1,
+      "message": "That was a mistake and removed now",
       "parentUuid": "c7693609_43045003",
       "revId": "8027b6329521b334d8a5f8dd6cfce630d58e97cd",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
