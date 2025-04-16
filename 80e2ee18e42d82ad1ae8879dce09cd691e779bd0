@@ -85,6 +85,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "1938b3c2_aa2f917e",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 29
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1000009
+      },
+      "writtenOn": "2025-04-16T23:25:57Z",
+      "side": 1,
+      "message": "Can you please put the details of the problems you hit in the commit message itself?\n\nRegardless, why are you running qemu in the docker container? It seems odd on the surface.",
+      "parentUuid": "cf0dc3d6_ea079652",
+      "revId": "80e2ee18e42d82ad1ae8879dce09cd691e779bd0",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "9d48d4e6_3212e535",
         "filename": "/COMMIT_MSG",
         "patchSetId": 29
@@ -114,6 +132,24 @@
       "side": 1,
       "message": "I\u0027ve done only basic testing with the qemu scripts. What else should I attempt to test ?",
       "parentUuid": "9d48d4e6_3212e535",
+      "revId": "80e2ee18e42d82ad1ae8879dce09cd691e779bd0",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f1dd60e4_7d105da6",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 29
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1000009
+      },
+      "writtenOn": "2025-04-16T23:25:57Z",
+      "side": 1,
+      "message": "As a note, you were asked to list the testing you\u0027ve done, not test more.\n\nWhat qemu scripts are you referring to?",
+      "parentUuid": "82ba9055_45c6a0b3",
       "revId": "80e2ee18e42d82ad1ae8879dce09cd691e779bd0",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
