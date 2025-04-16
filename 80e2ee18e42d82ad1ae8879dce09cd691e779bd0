@@ -24,6 +24,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c2129fad_dc816a5b",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 29
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1002079
+      },
+      "writtenOn": "2025-04-16T22:34:03Z",
+      "side": 1,
+      "message": "Yike. Will do",
+      "parentUuid": "82dd9833_2c67494e",
+      "range": {
+        "startLine": 9,
+        "startChar": 4,
+        "endLine": 9,
+        "endChar": 9
+      },
+      "revId": "80e2ee18e42d82ad1ae8879dce09cd691e779bd0",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4c57112e_335387e4",
@@ -37,6 +61,24 @@
       "writtenOn": "2025-04-11T13:25:54Z",
       "side": 1,
       "message": "Could you put some more details on the issue you\u0027re seeing? Our CI is running ok as-is.",
+      "revId": "80e2ee18e42d82ad1ae8879dce09cd691e779bd0",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cf0dc3d6_ea079652",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 29
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1002079
+      },
+      "writtenOn": "2025-04-16T22:34:03Z",
+      "side": 1,
+      "message": "I\u0027ll have to verify Monday but my memory of the issue is with running qemu inside a Docker container and it\u0027s complaining about the glibc versioning being too old and fails to run. This is with a Romulus image.\n\n\nUpdate:\n./tmp/sysroots-components/aarch64/qemu-system-native/usr/bin/qemu-system-aarch64: /lib/aarch64-linux-gnu/libslirp.so.0: version `SLIRP_4.7\u0027 not found (required by ./tmp/sysroots-components/aarch64/qemu-system-native/usr/bin/qemu-system-aarch64)\n./tmp/sysroots-components/aarch64/qemu-system-native/usr/bin/qemu-system-aarch64: /lib/aarch64-linux-gnu/libc.so.6: version `GLIBC_2.38\u0027 not found (required by ./tmp/sysroots-components/aarch64/qemu-system-native/usr/bin/qemu-system-aarch64)\n\n\nIs what I\u0027m seeing running the qemu scripts for testing.",
+      "parentUuid": "4c57112e_335387e4",
       "revId": "80e2ee18e42d82ad1ae8879dce09cd691e779bd0",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -58,6 +100,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "82ba9055_45c6a0b3",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 29
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1002079
+      },
+      "writtenOn": "2025-04-16T22:34:03Z",
+      "side": 1,
+      "message": "I\u0027ve done only basic testing with the qemu scripts. What else should I attempt to test ?",
+      "parentUuid": "9d48d4e6_3212e535",
+      "revId": "80e2ee18e42d82ad1ae8879dce09cd691e779bd0",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "b2d1f6b5_23a41fc8",
@@ -71,6 +131,24 @@
       "writtenOn": "2025-04-10T01:52:19Z",
       "side": 1,
       "message": "Rebase, move to a newer Ubuntu distribution (Oracular) for a newer glibc",
+      "revId": "80e2ee18e42d82ad1ae8879dce09cd691e779bd0",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5ee5906c_3880cca8",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 29
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1002079
+      },
+      "writtenOn": "2025-04-16T22:34:03Z",
+      "side": 1,
+      "message": "Still having problems with the CI bits. Let me look more",
+      "parentUuid": "b2d1f6b5_23a41fc8",
       "revId": "80e2ee18e42d82ad1ae8879dce09cd691e779bd0",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
