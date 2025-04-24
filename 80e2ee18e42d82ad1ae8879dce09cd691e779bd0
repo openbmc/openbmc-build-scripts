@@ -121,6 +121,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "6acd0fd5_8301358e",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 29
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1002079
+      },
+      "writtenOn": "2025-04-24T16:59:27Z",
+      "side": 1,
+      "message": "I\u0027ll edit the message now",
+      "parentUuid": "e167c1e7_e1d9e9b7",
+      "revId": "80e2ee18e42d82ad1ae8879dce09cd691e779bd0",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "9d48d4e6_3212e535",
         "filename": "/COMMIT_MSG",
         "patchSetId": 29
