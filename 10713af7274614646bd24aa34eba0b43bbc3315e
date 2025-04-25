@@ -33,6 +33,23 @@
       "message": "I wrote a little test script to run this locally. First I made sure it worked with the existing code and all robot tests passed. I then pulled this PR in and it fails with this:\n\nOBMC_QEMU_DOCKER\u003dd76d0d557648c4de19307a7bec8e944aa1a30567f13c79c091b307d2b6fd2cc5 before\nmain: non-interactive\npexpect_child_send_expect:\n\nMACHINE \u003d MODEL \u003d romulus\n./tmp/deploy/images/romulus/\ndlist \u003d []\nHOME \u003d /tmp/openbmc/build\nflash image not found in: ./tmp/deploy/images/romulus/\ngot EOF expectedly\n\n\nI verified the flash image was in the same location as when it was working with the existing code. I looked around a bit but nothing super obvious. Maybe the new python code is not looking in the current $PWD when it looks for it?",
       "revId": "10713af7274614646bd24aa34eba0b43bbc3315e",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "91711831_fdee759e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 113
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2025-04-25T17:52:21Z",
+      "side": 1,
+      "message": "Here\u0027s the test script. You\u0027ll need to update the git pull with your gerrit info (and can comment it out to see it working with existing code).\n\nThis script is basically what our Jenkins CI job does up at https://jenkins.openbmc.org/job/CI-MISC/job/run-ci-in-qemu/\n\nhttps://gist.github.com/geissonator/e1478778fec43d2594dad295e28b13b5",
+      "revId": "10713af7274614646bd24aa34eba0b43bbc3315e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
