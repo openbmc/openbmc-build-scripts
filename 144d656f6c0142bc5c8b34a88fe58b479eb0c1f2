@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "293cae5b_8bb62593",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 37
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2025-04-25T18:01:06Z",
+      "side": 1,
+      "message": "I tried this locally and ran into the same issue documented in https://gerrit.openbmc.org/c/openbmc/openbmc-build-scripts/+/71562. We\u0027ll need that workaround here as well.",
+      "revId": "144d656f6c0142bc5c8b34a88fe58b479eb0c1f2",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
