@@ -50,6 +50,24 @@
       "message": "Here\u0027s the test script. You\u0027ll need to update the git pull with your gerrit info (and can comment it out to see it working with existing code).\n\nThis script is basically what our Jenkins CI job does up at https://jenkins.openbmc.org/job/CI-MISC/job/run-ci-in-qemu/\n\nhttps://gist.github.com/geissonator/e1478778fec43d2594dad295e28b13b5",
       "revId": "10713af7274614646bd24aa34eba0b43bbc3315e",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9fe3be99_d5e9971a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 113
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1002079
+      },
+      "writtenOn": "2025-04-28T23:17:21Z",
+      "side": 1,
+      "message": "What do you mean by that ?",
+      "parentUuid": "91711831_fdee759e",
+      "revId": "10713af7274614646bd24aa34eba0b43bbc3315e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
