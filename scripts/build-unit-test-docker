@@ -100,7 +100,7 @@ class PackageDef(TypedDict, total=False):
 # Packages to include in image.
 packages = {
     "boost": PackageDef(
-        rev="1.86.0",
+        rev="1.87.0",
         url=(
             lambda pkg, rev: f"https://github.com/boostorg/{pkg}/releases/download/{pkg}-{rev}/{pkg}-{rev}-cmake.tar.gz"
         ),
