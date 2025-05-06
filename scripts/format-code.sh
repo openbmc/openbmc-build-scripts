@@ -424,6 +424,7 @@ for op in "${LINTERS_AVAILABLE[@]}"; do
         echo -e "    ${BLUE}Running $op${NORMAL}"
         if ! "do_$op" "${LINTER_FILES[@]}" ; then
             LINTERS_FAILED+=([$op]=1)
+            echo -e "    ${RED}$op - FAILED${NORMAL}"
         fi
     else
         echo -e "    ${YELLOW}${op}:${NORMAL} all applicable files are on ignore-lists"
@@ -432,9 +433,6 @@ done
 
 # Check for failing linters.
 if [ 0 -ne ${#LINTERS_FAILED[@]} ]; then
-    for op in "${!LINTERS_FAILED[@]}"; do
-        echo -e "$op: ${RED}FAILED${NORMAL}"
-    done
     exit 1
 fi
 
