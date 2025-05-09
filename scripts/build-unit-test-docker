@@ -836,6 +836,7 @@ RUN apt-get update && apt-get dist-upgrade -yy && apt-get install -yy \
     curl \
     dbus \
     device-tree-compiler \
+    doxygen \
     flex \
     g++-14 \
     gcc-14 \
