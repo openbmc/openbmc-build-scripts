@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "87433e87_7be15f19",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 38
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1002079
+      },
+      "writtenOn": "2025-05-12T08:24:04Z",
+      "side": 1,
+      "message": "Added ubuntu user removal as that conflicts with mid 1000 creation",
+      "revId": "b1317916618bd0732c2a96a58505dab5df3e4503",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
