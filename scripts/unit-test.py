@@ -372,35 +372,6 @@ def build_dep_tree(name, pkgdir, dep_added, head, branch, dep_tree=None):
     return dep_added
 
 
-def run_cppcheck():
-    if (
-        not os.path.exists(os.path.join("build", "compile_commands.json"))
-        or NO_CPPCHECK
-    ):
-        return None
-
-    with TemporaryDirectory() as cpp_dir:
-        # http://cppcheck.sourceforge.net/manual.pdf
-        try:
-            check_call_cmd(
-                "cppcheck",
-                "-j",
-                str(multiprocessing.cpu_count()),
-                "--enable=style,performance,portability,missingInclude",
-                "--inline-suppr",
-                "--suppress=useStlAlgorithm",
-                "--suppress=unusedStructMember",
-                "--suppress=postfixOperator",
-                "--suppress=unreadVariable",
-                "--suppress=knownConditionTrueFalse",
-                "--library=googletest",
-                "--project=build/compile_commands.json",
-                f"--cppcheck-build-dir={cpp_dir}",
-            )
-        except subprocess.CalledProcessError:
-            print("cppcheck found errors")
-
-
 def is_valgrind_safe():
     """
     Returns whether it is safe to run valgrind on our platform
@@ -743,9 +714,6 @@ class Autotools(BuildSystem):
                 check_call_cmd("cat", os.path.join(root, "test-suite.log"))
             raise Exception("Unit tests failed")
 
-    def analyze(self):
-        run_cppcheck()
-
 
 class CMake(BuildSystem):
     def __init__(self, package=None, path=None):
@@ -812,7 +780,6 @@ class CMake(BuildSystem):
 
         maybe_make_valgrind()
         maybe_make_coverage()
-        run_cppcheck()
 
 
 class Meson(BuildSystem):
@@ -1132,7 +1099,6 @@ class Meson(BuildSystem):
                 check_call_cmd("ninja", "-C", "build", "coverage-html")
                 break
         check_call_cmd("meson", "configure", "build", "-Db_coverage=false")
-        run_cppcheck()
 
     def _extra_meson_checks(self):
         with open(os.path.join(self.path, "meson.build"), "rt") as f:
@@ -1337,14 +1303,6 @@ if __name__ == "__main__":
         default=False,
         help="Only run test cases, no other validation",
     )
-    parser.add_argument(
-        "--no-cppcheck",
-        dest="NO_CPPCHECK",
-        action="store_true",
-        required=False,
-        default=False,
-        help="Do not run cppcheck",
-    )
     arg_inttests = parser.add_mutually_exclusive_group()
     arg_inttests.add_argument(
         "--integration-tests",
@@ -1390,7 +1348,6 @@ if __name__ == "__main__":
     WORKSPACE = args.WORKSPACE
     UNIT_TEST_PKG = args.PACKAGE
     TEST_ONLY = args.TEST_ONLY
-    NO_CPPCHECK = args.NO_CPPCHECK
     INTEGRATION_TEST = args.INTEGRATION_TEST
     BRANCH = args.BRANCH
     FORMAT_CODE = args.FORMAT
