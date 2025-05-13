@@ -22,6 +22,30 @@
       },
       "revId": "b3eec9923afe32993e6fff5ae83e1b24b66b127d",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7ee24648_43e4a62e",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2025-05-13T12:58:32Z",
+      "side": 1,
+      "message": "I am not sure where this discussion was ?\n\nAnd as far as I am aware @thu@os.amperecomputing.com implemented the CPER handler in pldm for ampere systems. And I do remember that we talked about the dumps \u0026 the event logs \u0026 both were discussed with the community (`Ed` was also involved in the discussions on discord).\n\nThis is how the flow is : pldm stack gets a event of type CPER from remote endpoint, in response to that pldm stack would call `CreateDump` \u0026 creates a `fault log` entry, which would be pulled by the redfish clients using the fault log redfish attachment. \n\nAnd Ampere also had this requirement for IPMI OEM SEL, where they want to send some fields in the CPER records to log a SEL, hence they were using the libcper in pldm (under oem-ampere).\n\nNone of the mentioned above items seems too much weird to me, so I allowed it. We can definitely revisit this if pldm is doing something odd when rest of the community is doing something else.",
+      "parentUuid": "96b67a44_9e835ad1",
+      "range": {
+        "startLine": 9,
+        "startChar": 0,
+        "endLine": 12,
+        "endChar": 12
+      },
+      "revId": "b3eec9923afe32993e6fff5ae83e1b24b66b127d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
