@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1908f9f5_453c28d2",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 40
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2025-05-13T11:09:13Z",
+      "side": 1,
+      "message": "nit: add prefix here (ie `build-qemu-robot-docker:`",
+      "revId": "c3927b28c608b1600149f678ed5b1fb7a63d8700",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
