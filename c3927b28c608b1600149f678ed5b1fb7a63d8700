@@ -16,6 +16,23 @@
       "message": "nit: add prefix here (ie `build-qemu-robot-docker:`",
       "revId": "c3927b28c608b1600149f678ed5b1fb7a63d8700",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e7c90bfc_09f383f5",
+        "filename": "scripts/build-qemu-robot-docker.sh",
+        "patchSetId": 40
+      },
+      "lineNbr": 94,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2025-05-13T13:06:23Z",
+      "side": 1,
+      "message": "It seems like we added some unrelated packages to this update? pexpect, sh, strace, netcat, iproute2? Why were these needed as a part of this commit?",
+      "revId": "c3927b28c608b1600149f678ed5b1fb7a63d8700",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
