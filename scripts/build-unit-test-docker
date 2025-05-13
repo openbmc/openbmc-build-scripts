@@ -248,6 +248,15 @@ packages = {
             "-Dabi-compliance-check=false",
         ],
     ),
+    "openbmc/libcper": PackageDef(
+        build_type="meson",
+        config_flags=[
+            "-Dfuzz=disabled",
+            "-Dtests=disabled",
+            "-Dutility=disabled",
+            "-Doutput-all-properties=disabled",
+        ],
+    ),
     "openbmc/sdbusplus": PackageDef(
         depends=[
             "nlohmann/json",
