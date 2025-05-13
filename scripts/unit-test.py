@@ -841,7 +841,7 @@ class Meson(BuildSystem):
                 continue
             with open(os.path.join(root, "meson.build"), "rt") as f:
                 build_contents = f.read()
-            pattern = r"dependency\('([^']*)'.*?\),?\n"
+            pattern = r"dependency\('([^']*)'.*?\),?"
             for match in re.finditer(pattern, build_contents):
                 group = match.group(1)
                 maybe_dep = DEPENDENCIES["PKG_CHECK_MODULES"].get(group)
