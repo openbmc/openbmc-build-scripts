@@ -46,6 +46,30 @@
       },
       "revId": "b3eec9923afe32993e6fff5ae83e1b24b66b127d",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "768dfa1d_be10ea8a",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2025-05-14T13:09:53Z",
+      "side": 1,
+      "message": "\u003e I am not sure where this discussion was ?\n\nThere have been discussions in both discord and in docs, as I said.  There\u0027s even a TOF issue pending: https://github.com/openbmc/technical-oversight-forum/issues/24\n\nThere is also related PDI interfaces for CPER events proposed and getting feedback: https://gerrit.openbmc.org/c/openbmc/phosphor-dbus-interfaces/+/78683\n\n\u003e This is how the flow is : pldm stack gets a event of type CPER from remote endpoint, in response to that pldm stack would call CreateDump \u0026 creates a fault log entry, which would be pulled by the redfish clients using the fault log redfish attachment.\n\nSo you\u0027ve now come up with a cross-repository design flow with no design document?  Is Jayanth, maintainer of phosphor-debug-collector and one of the drivers of this crash dump support, involved in this design decision?\n\n\u003e And Ampere also had this requirement for IPMI OEM SEL, where they want to send some fields in the CPER records to log a SEL, hence they were using the libcper in pldm (under oem-ampere).\n\nYes, this is one of the problems with CPER.  Some people want to treat it as a \"crashdump\" and some people want to treat it as an \"event\".  You even see that in your own repository that there are two different approaches!  This is exactly why we need to come to discussion and consensus before we have repositories doing random things.",
+      "parentUuid": "7ee24648_43e4a62e",
+      "range": {
+        "startLine": 9,
+        "startChar": 0,
+        "endLine": 12,
+        "endChar": 12
+      },
+      "revId": "b3eec9923afe32993e6fff5ae83e1b24b66b127d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
