@@ -36,6 +36,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "83ea4af7_e7277917",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 40
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1002079
+      },
+      "writtenOn": "2025-05-14T19:50:16Z",
+      "side": 1,
+      "message": "Thank you. I\u0027ll make the changes now",
+      "parentUuid": "fbde3203_8c5d94e1",
+      "revId": "c3927b28c608b1600149f678ed5b1fb7a63d8700",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e7c90bfc_09f383f5",
@@ -67,6 +85,24 @@
       "side": 1,
       "message": "I added it as a part of container debugging and I’ll remove it. python3-pexpect is needed for my python updates of the qemu test code.",
       "parentUuid": "e7c90bfc_09f383f5",
+      "revId": "c3927b28c608b1600149f678ed5b1fb7a63d8700",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c053f5d5_495bac17",
+        "filename": "scripts/build-qemu-robot-docker.sh",
+        "patchSetId": 40
+      },
+      "lineNbr": 94,
+      "author": {
+        "id": 1002079
+      },
+      "writtenOn": "2025-05-14T19:50:16Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6022487b_216a07a5",
       "revId": "c3927b28c608b1600149f678ed5b1fb7a63d8700",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
