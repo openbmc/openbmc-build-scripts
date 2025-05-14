@@ -950,6 +950,7 @@ RUN pip3 install --break-system-packages \
         isort \
         jsonschema \
         meson==1.7.0 \
+        referencing \
         requests
 
 RUN npm install -g \
