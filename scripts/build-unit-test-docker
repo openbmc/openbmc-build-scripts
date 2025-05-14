@@ -886,6 +886,7 @@ RUN apt-get update && apt-get dist-upgrade -yy && apt-get install -yy \
     python3-mako \
     python3-pip \
     python3-protobuf \
+    python3-referencing \
     python3-setuptools \
     python3-socks \
     python3-yaml \
