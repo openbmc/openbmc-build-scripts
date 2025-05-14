@@ -16,6 +16,23 @@
       "message": "Please mark outstanding review comments as resolved, if they are resolved.  Right now there are 5 unresolved comments.",
       "revId": "dcf93ac33bdeb1995aee38af5c6c9f6731701cc4",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "835d2943_1be17b4e",
+        "filename": "scripts/build-qemu-robot-docker.sh",
+        "patchSetId": 42
+      },
+      "lineNbr": 86,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2025-05-14T16:48:10Z",
+      "side": 1,
+      "message": "why was openssh-server added? Please explain in the commit message why needed.",
+      "revId": "dcf93ac33bdeb1995aee38af5c6c9f6731701cc4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
