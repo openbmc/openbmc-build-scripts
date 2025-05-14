@@ -20,6 +20,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "fbde3203_8c5d94e1",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 40
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2025-05-14T12:56:05Z",
+      "side": 1,
+      "message": "something like this is what I meant: `build-qemu-robot-docker: switch to ubuntu oracular`.  When the title comes across my email, I want to easily know if this is something I care about.  Same for other reviews.",
+      "parentUuid": "1908f9f5_453c28d2",
+      "revId": "c3927b28c608b1600149f678ed5b1fb7a63d8700",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "e7c90bfc_09f383f5",
         "filename": "scripts/build-qemu-robot-docker.sh",
         "patchSetId": 40

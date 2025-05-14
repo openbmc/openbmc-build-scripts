@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8a701289_245a5a97",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 42
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2025-05-14T12:56:05Z",
+      "side": 1,
+      "message": "Please mark outstanding review comments as resolved, if they are resolved.  Right now there are 5 unresolved comments.",
+      "revId": "dcf93ac33bdeb1995aee38af5c6c9f6731701cc4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
