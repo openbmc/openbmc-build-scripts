@@ -94,6 +94,30 @@
       },
       "revId": "b3eec9923afe32993e6fff5ae83e1b24b66b127d",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ec61079a_c9b2c63f",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2025-05-15T10:52:21Z",
+      "side": 1,
+      "message": "\u003e At this moment, Ampere, Arm and AMD is using Dump.Faultlog to carry CPER Data to user thru Redfish and the log data is in hex bytes format.\n\n\u003e It seems Meta has different thought and want to log CPER data in decoded json format.\n\nI don\u0027t know what Arm is doing because they are not participating in the community here, for the most part.  Nvidia is seeming to use the Redfish log path, which is why Meta has been going that direction.  Redfish has explicit handling for CPER; don\u0027t we want to use that?\n\nThis is the part where we need consensus on the upstream implementation and why I\u0027m annoyed that the people working on PLDM just made decisions without even mentioning they were making decisions.  At least everyone else has been discussing in much broader places (ie. discord and docs).",
+      "parentUuid": "88a782f4_dbd62a20",
+      "range": {
+        "startLine": 9,
+        "startChar": 0,
+        "endLine": 12,
+        "endChar": 12
+      },
+      "revId": "b3eec9923afe32993e6fff5ae83e1b24b66b127d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
