@@ -70,6 +70,30 @@
       },
       "revId": "b3eec9923afe32993e6fff5ae83e1b24b66b127d",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "88a782f4_dbd62a20",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1000945
+      },
+      "writtenOn": "2025-05-15T09:34:02Z",
+      "side": 1,
+      "message": "Hi Patrick,\n\nThe current implementation of platform-mc code to handle PLDM CPER event is based on UEFI CPER spec, PLDM CPER event class.\nAs section `16.17 eventData format for CPEREvent` of DSP0248 V1.3.0, PLDM CPER event class includes CPER data (format 0: A chunk of CPER formatted data including record header, section descriptions and one or more sections, as described in UEFI Specification appendix N – Common Platform Error Record).\nThe `CPER data` is different between GUIID (OEM and CPER Source), Notify type. That why in the common PLDM code as platform-mc, we decide to just log those data to a unique file name which can be downloaded thru redfish. The download file then can be decoded to CPER record data use libCPER which already support different GUIID, Notify type from different OEM (ARM, AMPERE, ADM, UEFI...)\n\nThe way we log that file is also common use CreateDump method in Dump.Create D-Bus interface https://github.com/openbmc/phosphor-dbus-interfaces/blob/master/yaml/xyz/openbmc_project/Dump/Create.interface.yaml\nIn the current design of OpenBMC,`Dump.Create` D-Bus interface is only hosted by `phosphor-debug-collector` but it does not mean that CPER data will be logged by `phosphor-debug-collector`.\n\nAbout the AMD RAS design doc and them TOF, look at the high level flow, they also log CPER to Dump.faultLog https://gerrit.openbmc.org/c/openbmc/docs/+/68440/20/designs/oem/amd/amd-bmc-ras.md#145\nAt this moment, Ampere, Arm and AMD is using Dump.Faultlog to carry CPER Data to user thru Redfish and the log data is in hex bytes format.\n\nIt seems Meta has different thought and want to log CPER data in decoded json format.",
+      "parentUuid": "768dfa1d_be10ea8a",
+      "range": {
+        "startLine": 9,
+        "startChar": 0,
+        "endLine": 12,
+        "endChar": 12
+      },
+      "revId": "b3eec9923afe32993e6fff5ae83e1b24b66b127d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
