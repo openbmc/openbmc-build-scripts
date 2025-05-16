@@ -86,6 +86,7 @@ GERRIT_CI_GROUPS=( \
         microsoft/ci-authorized \
         mitac/ci-authorized \
         multicoreware/ci-authorized \
+        napatech/ci-authorized \
         nineelements/ci-authorized \
         nuvoton/ci-authorized \
         nvidia/ci-authorized \
