@@ -16,6 +16,24 @@
       "message": "what keyword should we put in `find in page` browser when scrolling this Jenkins output?\n\nit looks like this dilutes the string`failed`.\n\ncan we easily identify which linters failed vs were just chatty?   Maybe grow a string each time the current command fails?",
       "revId": "2f5d53b61953ab3fd78e274f4e46051ea926b5ca",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1d30a9da_c32fa2c9",
+        "filename": "scripts/format-code.sh",
+        "patchSetId": 7
+      },
+      "lineNbr": 437,
+      "author": {
+        "id": 1000238
+      },
+      "writtenOn": "2025-05-22T20:12:34Z",
+      "side": 1,
+      "message": "There would be 2 \"failed\" strings for each lint failure and that message does call out the specific lint failure. See the example in the commit message:\n\nSo with the last change searching for failed would show these two:\n-: UC2 Multiple Change-Ids found in commit message body: \"[\u0027Change-Id: Ic2bca9f55227f9e052255e28c68ae01bef2f4885\u0027, \u0027Change-Id: Ic2bca9f55227f9e052255e28c68ae01bef2f4885\u0027]\"\n    commit_gitlint - FAILED\n...\ncommit_gitlint: FAILED (see prior failure)",
+      "parentUuid": "4b18817c_5d82889b",
+      "revId": "2f5d53b61953ab3fd78e274f4e46051ea926b5ca",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
