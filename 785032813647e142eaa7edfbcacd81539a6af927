@@ -34,6 +34,24 @@
       "parentUuid": "bb9f2e36_3bb8a6fd",
       "revId": "785032813647e142eaa7edfbcacd81539a6af927",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "31d3f63e_0b6f284e",
+        "filename": "scripts/format-code.sh",
+        "patchSetId": 3
+      },
+      "lineNbr": 434,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2025-05-22T15:11:04Z",
+      "side": 0,
+      "message": "\u003e I suppose I could change the 2nd message to be something like \"See prior failure of: commit_gitlint\". If you look at my example in the commit message there are only 16 lines between the actual failure and the FAILED message.\n\nThis is probably a good direction.  This particular change only has 16 lines, but whenever there is a bunch of prettier and/or markdownlint (JSON, YAML, MD), those tools are a lot chattier and we see a pretty big length.\n\nSee docs, phosphor-logging, and entity-manager as examples.",
+      "parentUuid": "6f70689b_db450077",
+      "revId": "785032813647e142eaa7edfbcacd81539a6af927",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
