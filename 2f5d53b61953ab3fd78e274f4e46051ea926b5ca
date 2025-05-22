@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4b18817c_5d82889b",
+        "filename": "scripts/format-code.sh",
+        "patchSetId": 7
+      },
+      "lineNbr": 437,
+      "author": {
+        "id": 1000021
+      },
+      "writtenOn": "2025-05-22T20:02:26Z",
+      "side": 1,
+      "message": "what keyword should we put in `find in page` browser when scrolling this Jenkins output?\n\nit looks like this dilutes the string`failed`.\n\ncan we easily identify which linters failed vs were just chatty?   Maybe grow a string each time the current command fails?",
+      "revId": "2f5d53b61953ab3fd78e274f4e46051ea926b5ca",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
