@@ -16,6 +16,24 @@
       "message": "A helpful tool for simplifying clang-tidy setup across projects.\n \nFew nice-to-have future improvements that could enhance the robustness and user experience of the tool:\n\nValidation of Check Names\nThe tool accepts invalid or misspelled check names without any validation. Incorporating a validation step (possibly against a known list of clang-tidy checks based on openBMC supported version ?) would prevent misconfigurations and improve reliability.\nIs there any restriction on adding new checks that aren\u0027t part of the OpenBMC-approved checklist, or is this left to the maintainer\u0027s discretion?\n\nMissing --repo Option\nIf the --repo argument is omitted, the tool still proceeds without throwing an error. providing error message would help here.\n\nDuplicate Check Handling\nCurrently, if the same check is added multiple times using the enable command. Functionally option is working as expected . no duplicate entry creates.",
       "revId": "4a8756bdd5a7c3cf298c2625e0b0db7c5785a984",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f30b30dd_de66868a",
+        "filename": "tools/config-clang-tidy",
+        "patchSetId": 3
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2025-05-27T13:39:18Z",
+      "side": 1,
+      "message": "Thanks for taking a look.\n\n\u003e Missing --repo Option\n\nThe default becomes `.`.  This is intentional.\n\n\u003e Duplicate Check Handling\n\nDone.\n\n\u003e Validation of Check Names\n\nWe can have further discussion on how to handle this.  I don\u0027t have a great answer right now other than maybe eventually doing a comparison against the one in docs as part of CI and flagging repositories with extra checks.  Right now there are so many extra checks that we can\u0027t do this.",
+      "parentUuid": "07d6a061_5c867736",
+      "revId": "4a8756bdd5a7c3cf298c2625e0b0db7c5785a984",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
