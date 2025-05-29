@@ -22,6 +22,30 @@
       },
       "revId": "4e651a9a4bd1541af1affe075cd5710f05576de0",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "03290bd6_28463306",
+        "filename": "scripts/unit-test.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 844,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2025-05-29T18:47:19Z",
+      "side": 1,
+      "message": "Part of me wonders how much this is even worth doing.  We already have subproject-wrap support and/or we install the dependencies into the docker container.  I don\u0027t really recall what all this code is doing, but is it actually still confirming anything useful?",
+      "parentUuid": "7ab3c5f7_d5764ed2",
+      "range": {
+        "startLine": 844,
+        "startChar": 12,
+        "endLine": 844,
+        "endChar": 53
+      },
+      "revId": "4e651a9a4bd1541af1affe075cd5710f05576de0",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ],
   "submitRequirementResults": []
