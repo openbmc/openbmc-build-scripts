@@ -189,7 +189,8 @@ def load_config(path: str) -> Tuple[str, Dict[str, Any]]:
         return (path, {})
 
     with open(path, "r") as f:
-        return (path, yaml.safe_load(f))
+        data = "\n".join([x for x in f.readlines() if not x.startswith("#")])
+        return (path, yaml.safe_load(data))
 
 
 def format_yaml_output(data: Dict[str, Any]) -> str:
