@@ -29,6 +29,11 @@ def main() -> None:
     )
     parser_merge.set_defaults(func=subcmd_merge)
 
+    parser_format = subparsers.add_parser(
+        "format", help="Format a clang-tidy config"
+    )
+    parser_format.set_defaults(func=subcmd_merge)
+
     parser_enable = subparsers.add_parser(
         "enable", help="Enable a rule in a reference clang-tidy config"
     )
@@ -50,7 +55,9 @@ def main() -> None:
 
 def subcmd_merge(args: argparse.Namespace) -> None:
     repo_path, repo_config = load_config(args.repo)
-    ref_path, ref_config = load_config(args.reference)
+    _, ref_config = (
+        load_config(args.reference) if "reference" in args else ("", {})
+    )
 
     result = {}
 
