@@ -1,0 +1,9 @@
+Code-Review+1: Jayanth Othayoth <ojayanth@gmail.com>
+Code-Review+2: Patrick Williams <patrick@stwcx.xyz>
+Verified+1: OpenBMC CI <openbmcbump-ci@yahoo.com>
+Submitted-by: Patrick Williams <patrick@stwcx.xyz>
+Submitted-at: Fri, 30 May 2025 11:14:04 +0000
+Reviewed-on: https://gerrit.openbmc.org/c/openbmc/openbmc-build-scripts/+/80527
+Comments-Total: 4
+Project: openbmc/openbmc-build-scripts
+Branch: refs/heads/master
