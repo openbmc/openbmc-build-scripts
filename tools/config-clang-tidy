@@ -145,7 +145,11 @@ class Key_Checks:
             return result
         for item in s.split():
             item = item.replace(",", "")
-            if "-*" in item:
+            # Ignore global wildcard because we handle that specifically.
+            if item.startswith("-*"):
+                continue
+            # Drop category wildcard disables since we already use a global wildcard.
+            if item.startswith("-") and "*" in item:
                 continue
             if item.startswith("-"):
                 result[item[1:]] = False
