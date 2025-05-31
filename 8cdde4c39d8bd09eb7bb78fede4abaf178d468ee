@@ -16,6 +16,63 @@
       "message": "With a regex change to match globbing *mtd files and rebase",
       "revId": "8cdde4c39d8bd09eb7bb78fede4abaf178d468ee",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c31d2554_32c78198",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 122
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2025-05-31T15:22:37Z",
+      "side": 1,
+      "message": "Getting there, I verified this now passes my test script! Just a few minor comments.",
+      "revId": "8cdde4c39d8bd09eb7bb78fede4abaf178d468ee",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "23d2214e_6d37b78c",
+        "filename": "scripts/boot-qemu-test.py",
+        "patchSetId": 122
+      },
+      "lineNbr": 56,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2025-05-31T15:22:37Z",
+      "side": 1,
+      "message": "Lets remove commented code (multiple lines in here)",
+      "revId": "8cdde4c39d8bd09eb7bb78fede4abaf178d468ee",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1274c844_dee75de6",
+        "filename": "scripts/boot-qemu-test.py",
+        "patchSetId": 122
+      },
+      "lineNbr": 77,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2025-05-31T15:22:37Z",
+      "side": 1,
+      "message": "\"in2\"?",
+      "range": {
+        "startLine": 77,
+        "startChar": 37,
+        "endLine": 77,
+        "endChar": 40
+      },
+      "revId": "8cdde4c39d8bd09eb7bb78fede4abaf178d468ee",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
