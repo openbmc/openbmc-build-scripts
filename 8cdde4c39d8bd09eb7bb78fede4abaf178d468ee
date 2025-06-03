@@ -52,6 +52,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8ba2836b_cb55b7aa",
+        "filename": "scripts/boot-qemu-test.py",
+        "patchSetId": 122
+      },
+      "lineNbr": 56,
+      "author": {
+        "id": 1002079
+      },
+      "writtenOn": "2025-06-03T07:24:26Z",
+      "side": 1,
+      "message": "Ok",
+      "parentUuid": "23d2214e_6d37b78c",
+      "revId": "8cdde4c39d8bd09eb7bb78fede4abaf178d468ee",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "1274c844_dee75de6",
@@ -65,6 +83,30 @@
       "writtenOn": "2025-05-31T15:22:37Z",
       "side": 1,
       "message": "\"in2\"?",
+      "range": {
+        "startLine": 77,
+        "startChar": 37,
+        "endLine": 77,
+        "endChar": 40
+      },
+      "revId": "8cdde4c39d8bd09eb7bb78fede4abaf178d468ee",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e0419dc4_12868760",
+        "filename": "scripts/boot-qemu-test.py",
+        "patchSetId": 122
+      },
+      "lineNbr": 77,
+      "author": {
+        "id": 1002079
+      },
+      "writtenOn": "2025-06-03T07:24:26Z",
+      "side": 1,
+      "message": "There\u0027s a lot of leftover debug code. Should I remove it all or leave some of it behind for debugging ? What\u0027s the best practice here ?\n\nI\u0027ll remove the \"2\"",
+      "parentUuid": "1274c844_dee75de6",
       "range": {
         "startLine": 77,
         "startChar": 37,
