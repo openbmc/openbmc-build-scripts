@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "69270f4e_6a431cea",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 124
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2025-06-06T00:54:16Z",
+      "side": 1,
+      "message": "Please resolve all open comments. If the original commenter has not responded to your proposed resolution then go with what you think best and resolve it.",
+      "revId": "84004925930678d469f81278a01cc74d492abac8",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "74c995c4_ab30e35f",
+        "filename": "scripts/boot-qemu-test.py",
+        "patchSetId": 124
+      },
+      "lineNbr": 61,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2025-06-06T00:54:16Z",
+      "side": 1,
+      "message": "Please remove all debug print statements that are commented out in this file",
+      "revId": "84004925930678d469f81278a01cc74d492abac8",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
