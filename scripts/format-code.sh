@@ -31,6 +31,7 @@ LINTERS_ALL=( \
         beautysh_sh \
         black \
         clang_format \
+        clang_tidy \
         eslint \
         flake8 \
         isort \
@@ -110,6 +111,8 @@ export CLANG_FORMAT="clang-format"
 
 # Path to default config files for linters.
 CONFIG_PATH="$(git -C "$(dirname "${BASH_SOURCE[0]}")" rev-parse --show-toplevel)/config"
+TOOLS_PATH="$(git -C "$(dirname "${BASH_SOURCE[0]}")" rev-parse --show-toplevel)/tools"
+
 
 # Find repository root for `pwd` or $1.
 if [ -z "$1" ]; then
@@ -285,6 +288,12 @@ function do_clang_format() {
     "${CLANG_FORMAT}" -i "$@"
 }
 
+LINTER_REQUIRE+=([clang_tidy]="true")
+LINTER_TYPES+=([clang_tidy]="clang-tidy-config")
+function do_clang_tidy() {
+    "${TOOLS_PATH}/config-clang-tidy" format
+}
+
 function get_file_type()
 {
     case "$(basename "$1")" in
@@ -303,6 +312,8 @@ function get_file_type()
 
             # Special files.
         .git/COMMIT_EDITMSG) echo "commit" && return ;;
+        .clang-format) echo "clang-format-config" && return ;;
+        .clang-tidy) echo "clang-tidy-config" && return ;;
         meson.build) echo "meson" && return ;;
         meson.options) echo "meson" && return ;;
     esac
