@@ -300,6 +300,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d9936eee_99bc908b",
+        "filename": "run-qemu-robot-test.py",
+        "patchSetId": 94
+      },
+      "lineNbr": 235,
+      "author": {
+        "id": 1002079
+      },
+      "writtenOn": "2025-06-10T21:39:40Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "dbdf64a8_1c45e308",
+      "revId": "8027b6329521b334d8a5f8dd6cfce630d58e97cd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a7fa7123_8eb00b69",
@@ -459,6 +477,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7e79dc93_dde17488",
+        "filename": "run-qemu-robot-test.py",
+        "patchSetId": 94
+      },
+      "lineNbr": 594,
+      "author": {
+        "id": 1002079
+      },
+      "writtenOn": "2025-06-10T21:39:40Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "a90d3a05_c681de58",
+      "revId": "8027b6329521b334d8a5f8dd6cfce630d58e97cd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3509775a_11d709c4",
@@ -561,6 +597,24 @@
       "side": 1,
       "message": "I simplified it to a quirks section that can be modified at will. I can break it out into another file but that seems to be heavy weight. What do you think ?",
       "parentUuid": "20697cf2_d4083b27",
+      "revId": "8027b6329521b334d8a5f8dd6cfce630d58e97cd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "73a3e724_73cf1daa",
+        "filename": "scripts/boot-qemu-test.py",
+        "patchSetId": 94
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 1002079
+      },
+      "writtenOn": "2025-06-10T21:39:40Z",
+      "side": 1,
+      "message": "I added a comment as this should be edited as needed for the whatever vendor setup you have",
+      "parentUuid": "2b732a68_79e031b9",
       "revId": "8027b6329521b334d8a5f8dd6cfce630d58e97cd",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
