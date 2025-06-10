@@ -5,4 +5,4 @@ MD013:
 MD024:
     siblings_only: true
 MD033:
-    allowed_elements: ["br"]
+    allowed_elements: ["br", "sub", "sup"]
