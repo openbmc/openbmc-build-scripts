@@ -22,5 +22,5 @@ These are the top level scripts launched by the
 | latest-unit-test-coverage         | scripts/get_unit_test_report.py |            |
 | release-tag                       | build-setup.sh                  |            |
 
-[1] Script located
-[here](https://github.com/openbmc/openbmc/blob/master/poky/scripts/sstate-cache-management.sh).
+[1] Script located in
+[openbmc repository](https://github.com/openbmc/openbmc/blob/master/poky/scripts/sstate-cache-management.sh).
