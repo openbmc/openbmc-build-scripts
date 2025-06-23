@@ -16,6 +16,91 @@
       "message": "Final comment resolved",
       "revId": "f8d01b630d183093040d98a7edd0cea1b34a2259",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "81b4ab1e_2c930162",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 127
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2025-06-23T19:38:03Z",
+      "side": 1,
+      "message": "Verified my test script passed and the robot tests all completed! Would still just like things to be a bit cleaner in the code (get rid of unneeded debug statements, commented out code, and anything that was added for debug/test).",
+      "revId": "f8d01b630d183093040d98a7edd0cea1b34a2259",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a8b62243_e83a1743",
+        "filename": "run-qemu-robot-test",
+        "patchSetId": 127
+      },
+      "lineNbr": 487,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2025-06-23T19:38:03Z",
+      "side": 1,
+      "message": "Can we get rid of this code path now since it was just for testing?",
+      "revId": "f8d01b630d183093040d98a7edd0cea1b34a2259",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "52e86ff4_599427f1",
+        "filename": "run-qemu-robot-test",
+        "patchSetId": 127
+      },
+      "lineNbr": 653,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2025-06-23T19:38:03Z",
+      "side": 1,
+      "message": "Commented out code, lets go through this file and delete anything like this",
+      "revId": "f8d01b630d183093040d98a7edd0cea1b34a2259",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9e652b06_89e0c041",
+        "filename": "run-qemu-robot-test",
+        "patchSetId": 127
+      },
+      "lineNbr": 658,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2025-06-23T19:38:03Z",
+      "side": 1,
+      "message": "This ssh failed in my testing (although the robot test went onto run fine)\n```\nOBMC_QEMU_DOCKER\u003d5eb12b3599bdfacb9b789228aa4e6f0c9e80e6c0694cb0dc65cb116c4888fd83, IPAddress\u003d172.17.0.2\nssh: connect to host 172.17.0.2 port 2222: Connection refused\nmain:\nRobot Test started, 2025-06-23 14:13:38\n```",
+      "revId": "f8d01b630d183093040d98a7edd0cea1b34a2259",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7ec385ad_0946db4c",
+        "filename": "run-qemu-robot-test",
+        "patchSetId": 127
+      },
+      "lineNbr": 662,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2025-06-23T19:38:03Z",
+      "side": 1,
+      "message": "More debug type stuff that should be deleted",
+      "revId": "f8d01b630d183093040d98a7edd0cea1b34a2259",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
