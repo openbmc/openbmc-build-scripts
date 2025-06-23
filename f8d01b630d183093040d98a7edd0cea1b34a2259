@@ -54,6 +54,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "4afb2e0d_34b6bd1d",
+        "filename": "run-qemu-robot-test",
+        "patchSetId": 127
+      },
+      "lineNbr": 487,
+      "author": {
+        "id": 1002079
+      },
+      "writtenOn": "2025-06-23T22:26:03Z",
+      "side": 1,
+      "message": "It\u0027s used for testing now but useful for different dev cases like from running from a command line, restarting the tests without create another qemu container than can take up to 10-20 minutes on yosemite4. Meta hasn\u0027t internally decided if they\u0027re starting the qemu bits standalone or from inside a container yet. That\u0027s why this code is useful.\n\nWhat should be done here ?",
+      "parentUuid": "a8b62243_e83a1743",
+      "revId": "f8d01b630d183093040d98a7edd0cea1b34a2259",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "52e86ff4_599427f1",
         "filename": "run-qemu-robot-test",
         "patchSetId": 127
@@ -65,6 +83,24 @@
       "writtenOn": "2025-06-23T19:38:03Z",
       "side": 1,
       "message": "Commented out code, lets go through this file and delete anything like this",
+      "revId": "f8d01b630d183093040d98a7edd0cea1b34a2259",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "68c26755_b4a7531e",
+        "filename": "run-qemu-robot-test",
+        "patchSetId": 127
+      },
+      "lineNbr": 653,
+      "author": {
+        "id": 1002079
+      },
+      "writtenOn": "2025-06-23T22:26:03Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "52e86ff4_599427f1",
       "revId": "f8d01b630d183093040d98a7edd0cea1b34a2259",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -86,6 +122,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "cad180a1_4d078494",
+        "filename": "run-qemu-robot-test",
+        "patchSetId": 127
+      },
+      "lineNbr": 658,
+      "author": {
+        "id": 1002079
+      },
+      "writtenOn": "2025-06-23T22:26:03Z",
+      "side": 1,
+      "message": "removed",
+      "parentUuid": "9e652b06_89e0c041",
+      "revId": "f8d01b630d183093040d98a7edd0cea1b34a2259",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7ec385ad_0946db4c",
@@ -99,6 +153,24 @@
       "writtenOn": "2025-06-23T19:38:03Z",
       "side": 1,
       "message": "More debug type stuff that should be deleted",
+      "revId": "f8d01b630d183093040d98a7edd0cea1b34a2259",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "014cf5d6_bfe2a182",
+        "filename": "run-qemu-robot-test",
+        "patchSetId": 127
+      },
+      "lineNbr": 662,
+      "author": {
+        "id": 1002079
+      },
+      "writtenOn": "2025-06-23T22:26:03Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7ec385ad_0946db4c",
       "revId": "f8d01b630d183093040d98a7edd0cea1b34a2259",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
