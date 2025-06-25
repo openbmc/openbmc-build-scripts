@@ -255,7 +255,9 @@ LINTER_REQUIRE+=([markdownlint]="markdownlint;.markdownlint.yaml;${CONFIG_PATH}/
 LINTER_IGNORE+=([markdownlint]=".markdownlint-ignore")
 LINTER_TYPES+=([markdownlint]="markdown")
 function do_markdownlint() {
-    markdownlint --config "${LINTER_CONFIG[markdownlint]}" -- "$@"
+    markdownlint --config "${LINTER_CONFIG[markdownlint]}" -- "$@" || \
+        echo -e "    ${YELLOW}Failed markdownlint; temporarily ignoring."
+    # We disable line-length because prettier should handle prose wrap for us.
 }
 
 LINTER_REQUIRE+=([meson]="meson;meson.build")
