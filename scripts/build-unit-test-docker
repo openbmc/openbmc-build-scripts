@@ -802,7 +802,7 @@ ENV PYTHONPATH "/usr/local/lib/python3.10/site-packages/"
 # an error like: "Release: The following signatures were invalid:"
 # Insert a bogus echo that we can change here when we get this error to force
 # the update.
-RUN echo "ubuntu keyserver rev as of 2021-04-21"
+RUN echo "ubuntu keyserver rev as of 2025-06-25"
 
 # We need the keys to be imported for dbgsym repos
 # New releases have a package, older ones fall back to manual fetching
