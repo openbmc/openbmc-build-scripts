@@ -196,12 +196,18 @@ function do_commit_spelling() {
     echo -n "generic-dictionary - misspelling count >> "
     codespell --builtin clear,rare,en-GB_to_en-US -d --count "$commit_filename"
 }
+function do_version_commit_spelling() {
+    echo codespell: "$(codespell --version)"
+}
 
 LINTER_REQUIRE+=([commit_gitlint]="gitlint")
 LINTER_TYPES+=([commit_gitlint]="commit")
 function do_commit_gitlint() {
     gitlint --extra-path "${CONFIG_PATH}/gitlint/" \
         --config "${CONFIG_PATH}/.gitlint"
+}
+function do_version_commit_gitlint() {
+    gitlint --version | awk '{ print $3 }'
 }
 
 # We need different function style for bash/zsh vs plain sh, so beautysh is
@@ -213,17 +219,26 @@ LINTER_TYPES+=([beautysh]="bash;zsh")
 function do_beautysh() {
     beautysh --force-function-style fnpar "$@"
 }
+function do_version_beautysh() {
+    beautysh --version
+}
 LINTER_REQUIRE+=([beautysh_sh]="beautysh")
 LINTER_IGNORE+=([beautysh_sh]=".beautysh-ignore")
 LINTER_TYPES+=([beautysh_sh]="sh")
 function do_beautysh_sh() {
     beautysh --force-function-style paronly "$@"
 }
+function do_version_beautysh_sh() {
+    beautysh --version
+}
 
 LINTER_REQUIRE+=([black]="black")
 LINTER_TYPES+=([black]="python")
 function do_black() {
     black -l 79 "$@"
+}
+function do_version_black() {
+    black --version | head -n1
 }
 
 LINTER_REQUIRE+=([eslint]="eslint;.eslintrc.json;${CONFIG_PATH}/eslint-global-config.json")
@@ -235,6 +250,9 @@ function do_eslint() {
         --resolve-plugins-relative-to /usr/local/lib/node_modules \
         --no-error-on-unmatched-pattern "$@"
 }
+function do_version_eslint() {
+    eslint --version
+}
 
 LINTER_REQUIRE+=([flake8]="flake8")
 LINTER_IGNORE+=([flake8]=".flake8-ignore")
@@ -244,11 +262,17 @@ function do_flake8() {
     # We disable E203 and E501 because 'black' is handling these and they
     # disagree on best practices.
 }
+function do_version_flake8() {
+    flake8 --version
+}
 
 LINTER_REQUIRE+=([isort]="isort")
 LINTER_TYPES+=([isort]="python")
 function do_isort() {
     isort --profile black "$@"
+}
+function do_version_isort() {
+    isort --version-number
 }
 
 LINTER_REQUIRE+=([markdownlint]="markdownlint;.markdownlint.yaml;${CONFIG_PATH}/markdownlint.yaml")
@@ -257,11 +281,17 @@ LINTER_TYPES+=([markdownlint]="markdown")
 function do_markdownlint() {
     markdownlint --config "${LINTER_CONFIG[markdownlint]}" -- "$@"
 }
+function do_version_markdownlint() {
+    markdownlint --version
+}
 
 LINTER_REQUIRE+=([meson]="meson;meson.build")
 LINTER_TYPES+=([meson]="meson")
 function do_meson() {
     meson format -i "$@"
+}
+function do_version_meson() {
+    meson --version
 }
 
 LINTER_REQUIRE+=([prettier]="prettier;.prettierrc.yaml;${CONFIG_PATH}/prettierrc.yaml")
@@ -270,12 +300,18 @@ LINTER_TYPES+=([prettier]="json;markdown;yaml")
 function do_prettier() {
     prettier --config "${LINTER_CONFIG[prettier]}" --write "$@"
 }
+function do_version_prettier() {
+    prettier --version
+}
 
 LINTER_REQUIRE+=([shellcheck]="shellcheck")
 LINTER_IGNORE+=([shellcheck]=".shellcheck-ignore")
 LINTER_TYPES+=([shellcheck]="bash;sh")
 function do_shellcheck() {
     shellcheck --color=never -x "$@"
+}
+function do_version_shellcheck() {
+    shellcheck --version | awk '/^version/ { print $2 }'
 }
 
 LINTER_REQUIRE+=([clang_format]="clang-format;.clang-format")
@@ -284,11 +320,17 @@ LINTER_TYPES+=([clang_format]="c;cpp")
 function do_clang_format() {
     "${CLANG_FORMAT}" -i "$@"
 }
+function do_version_clang_format() {
+    "${CLANG_FORMAT}" --version
+}
 
 LINTER_REQUIRE+=([clang_tidy]="true")
 LINTER_TYPES+=([clang_tidy]="clang-tidy-config")
 function do_clang_tidy() {
     "${TOOLS_PATH}/config-clang-tidy" format
+}
+function do_version_clang_tidy() {
+    echo openbmc-build-scripts: "$(git rev-parse HEAD)"
 }
 
 function get_file_type()
@@ -429,7 +471,7 @@ for op in "${LINTERS_AVAILABLE[@]}"; do
 
     # Call the linter now with all the files.
     if [ 0 -ne ${#LINTER_FILES[@]} ]; then
-        echo -e "    ${BLUE}Running $op${NORMAL}"
+        echo -e "    ${BLUE}Running $op${NORMAL} ($(do_version_"$op"))"
         if ! "do_$op" "${LINTER_FILES[@]}" ; then
             LINTERS_FAILED+=([$op]=1)
             echo -e "    ${RED}$op - FAILED${NORMAL}"
