@@ -70,6 +70,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f3281ece_ba667147",
+        "filename": "run-qemu-robot-test",
+        "patchSetId": 127
+      },
+      "lineNbr": 487,
+      "author": {
+        "id": 1002079
+      },
+      "writtenOn": "2025-06-27T23:32:32Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "4afb2e0d_34b6bd1d",
+      "revId": "f8d01b630d183093040d98a7edd0cea1b34a2259",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "52e86ff4_599427f1",
