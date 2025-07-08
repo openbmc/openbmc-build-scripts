@@ -95,6 +95,7 @@ GERRIT_CI_GROUPS=( \
         pcpartner/ci-authorized \
         phytium/ci-authorized \
         plexus/ci-authorized \
+        qualcomm/ci-authorized \
         quanta/ci-authorized \
         quic/ci-authorized \
         raptorcs/ci-authorized \
