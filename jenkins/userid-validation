@@ -62,6 +62,7 @@ GERRIT_CI_GROUPS=( \
         bytedance/ci-authorized \
         celestica/ci-authorized \
         code-construct/ci-authorized \
+        coreweave/ci-authorized \
         cornelis/ci-authorized \
         dell/ci-authorized \
         depo/ci-authorized \
