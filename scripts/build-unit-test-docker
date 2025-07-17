@@ -66,6 +66,27 @@ except Exception:
 prefix = "/usr/local"
 proc_count = nproc().strip()
 
+# Architecture mapping for libspdm
+arch_mapping = {
+    "x86_64": "x64",
+    "i586": "ia32",
+    "i686": "ia32",
+    "arm": "arm",
+    "aarch64": "aarch64",
+    "arm64": "aarch64",
+    "riscv32": "riscv32",
+    "riscv64": "riscv64",
+    "ppc64le": "ppc64le",
+}
+
+
+def get_libspdm_arch():
+    """Get the libspdm architecture based on the current system architecture."""
+    import platform
+
+    machine = platform.machine()
+    return arch_mapping.get(machine, "x64")  # Default to x64 if unknown
+
 
 class PackageDef(TypedDict, total=False):
     """Package Definition for packages dictionary."""
@@ -122,6 +143,22 @@ packages = {
     "danmar/cppcheck": PackageDef(
         rev="2.12.1",
         build_type="cmake",
+    ),
+    "DMTF/libspdm": PackageDef(
+        rev="3.6.0",
+        url=lambda pkg, rev: f"https://github.com/DMTF/libspdm/archive/{rev}.tar.gz",
+        build_type="cmake",
+        config_flags=[
+            f"-DARCH={get_libspdm_arch()}",
+            "-DTOOLCHAIN=GCC",
+            "-DTARGET=Release",
+            "-DCRYPTO=openssl",
+            "-DBUILD_LINUX_SHARED_LIB=ON",
+            "-DENABLE_BINARY_BUILD=1",
+            "-DDISABLE_TESTS=1",
+            f"-DCOMPILED_LIBCRYPTO_PATH={prefix}/lib",
+            f"-DCOMPILED_LIBSSL_PATH={prefix}/lib",
+        ],
     ),
     "CLIUtils/CLI11": PackageDef(
         rev="v2.3.2",
