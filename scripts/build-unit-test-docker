@@ -123,6 +123,40 @@ packages = {
         rev="2.12.1",
         build_type="cmake",
     ),
+    "DMTF/libspdm": PackageDef(
+        rev="3.6.0",
+        url=lambda pkg, rev: f"https://github.com/DMTF/libspdm/archive/{rev}.tar.gz",
+        build_type="custom",
+        build_steps=[
+            "mkdir builddir",
+            "cd builddir",
+            (
+                "cmake "
+                "-DARCH=aarch64 "
+                "-DTOOLCHAIN=GCC "
+                "-DTARGET=Release "
+                "-DDEBUG=OFF "
+                "-DCRYPTO=openssl "
+                "-DBUILD_LINUX_SHARED_LIB=ON "
+                "-DENABLE_BINARY_BUILD=1 "
+                "-DDISABLE_TESTS=1 "
+                "-DDISABLE_EDDSA=1 "
+                "-DENABLE_APP=OFF "
+                "-DENABLE_COVERAGE=OFF "
+                "-DENABLE_FUZZING=OFF "
+                "-DENABLE_LIBSPDM_TEST=OFF "
+                "-DCOMPILED_LIBCRYPTO_PATH={prefix}/lib/ "
+                "-DCOMPILED_LIBSSL_PATH={prefix}/include/ "
+                ".."
+            ),
+            "cmake --build . --target all",
+            f"mkdir -p {prefix}/lib {prefix}/include/libspdm",
+            f"cp -r ../include/* {prefix}/include/libspdm",
+            f"cp lib/*.a {prefix}/lib/",
+            f"cp lib/*.so* {prefix}/lib/",
+            "cd ..",
+        ],
+    ),
     "CLIUtils/CLI11": PackageDef(
         rev="v2.3.2",
         build_type="cmake",
