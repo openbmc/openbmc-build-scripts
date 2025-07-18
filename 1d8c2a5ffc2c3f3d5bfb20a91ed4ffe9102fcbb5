@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "0bf801b0_145ecf88",
+        "filename": "scripts/build-unit-test-docker",
+        "patchSetId": 1
+      },
+      "lineNbr": 129,
+      "author": {
+        "id": 1000022
+      },
+      "writtenOn": "2025-07-18T10:11:28Z",
+      "side": 1,
+      "message": "Yes, I tried that but was not working before - giving some ninja install issues - hence moved to custom, I trired again and it worked.",
+      "parentUuid": "4d70300d_ba06c603",
+      "range": {
+        "startLine": 129,
+        "startChar": 20,
+        "endLine": 129,
+        "endChar": 27
+      },
+      "revId": "1d8c2a5ffc2c3f3d5bfb20a91ed4ffe9102fcbb5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "71d01bee_689a00b0",
         "filename": "scripts/build-unit-test-docker",
         "patchSetId": 1
@@ -37,6 +61,30 @@
       "writtenOn": "2025-07-18T01:28:52Z",
       "side": 1,
       "message": "should not really need these. CMake support -S and -B options to capture the source as well as build directories.\n\n```\n  -S \u003cpath-to-source\u003e          \u003d Explicitly specify a source directory.\n  -B \u003cpath-to-build\u003e           \u003d Explicitly specify a build directory.\n```\n\nso you can actually do \n\n```\ncmake -S . -B build \u003coptions\u003e\n```",
+      "range": {
+        "startLine": 131,
+        "startChar": 0,
+        "endLine": 132,
+        "endChar": 26
+      },
+      "revId": "1d8c2a5ffc2c3f3d5bfb20a91ed4ffe9102fcbb5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "83693875_e1321a7b",
+        "filename": "scripts/build-unit-test-docker",
+        "patchSetId": 1
+      },
+      "lineNbr": 132,
+      "author": {
+        "id": 1000022
+      },
+      "writtenOn": "2025-07-18T10:11:28Z",
+      "side": 1,
+      "message": "If we are using the build type as cmake we don\u0027t need to pass this and we don\u0027t need the above highlighted steps.",
+      "parentUuid": "71d01bee_689a00b0",
       "range": {
         "startLine": 131,
         "startChar": 0,
@@ -72,6 +120,53 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "103c23f9_2b52cffa",
+        "filename": "scripts/build-unit-test-docker",
+        "patchSetId": 1
+      },
+      "lineNbr": 135,
+      "author": {
+        "id": 1000022
+      },
+      "writtenOn": "2025-07-18T10:11:28Z",
+      "side": 1,
+      "message": "I have added the script to get the arch dynamically from the machine.",
+      "parentUuid": "9b469a35_cf9a11df",
+      "range": {
+        "startLine": 135,
+        "startChar": 16,
+        "endLine": 135,
+        "endChar": 33
+      },
+      "revId": "1d8c2a5ffc2c3f3d5bfb20a91ed4ffe9102fcbb5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e11f0a79_8c110e99",
+        "filename": "scripts/build-unit-test-docker",
+        "patchSetId": 1
+      },
+      "lineNbr": 136,
+      "author": {
+        "id": 1000022
+      },
+      "writtenOn": "2025-07-18T10:11:28Z",
+      "side": 1,
+      "message": "Also, If I give the DTOOLCHAIN\u003dNONE, It doesn\u0027t work, It asks for the libopenssl lib.\nDMTF/libspdm: /usr/bin/ld: cannot find -lopenssllib: No such file or directory\n\nopenssllib is supplied through the os_stub inside libspdm but it should not be having any dependency while it builds libspdm_crypto.so\n\nDMTF/libspdm: : \u0026\u0026 /usr/bin/cc -fPIC -Os   -shared -Wl,-soname,libspdm_crypto.so -o lib/libspdm_crypto.so .......-lopenssllib  lib/libcryptlib_openssl.a \u0026\u0026",
+      "range": {
+        "startLine": 136,
+        "startChar": 16,
+        "endLine": 136,
+        "endChar": 34
+      },
+      "revId": "1d8c2a5ffc2c3f3d5bfb20a91ed4ffe9102fcbb5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "2d02d020_88fb7454",
         "filename": "scripts/build-unit-test-docker",
         "patchSetId": 1
@@ -83,6 +178,30 @@
       "writtenOn": "2025-07-18T01:28:52Z",
       "side": 1,
       "message": "cannot seem to figure out if this was a configurable option, can you please point where this is defined ?",
+      "range": {
+        "startLine": 143,
+        "startChar": 14,
+        "endLine": 143,
+        "endChar": 36
+      },
+      "revId": "1d8c2a5ffc2c3f3d5bfb20a91ed4ffe9102fcbb5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0f192f71_4ae54c99",
+        "filename": "scripts/build-unit-test-docker",
+        "patchSetId": 1
+      },
+      "lineNbr": 143,
+      "author": {
+        "id": 1000022
+      },
+      "writtenOn": "2025-07-18T10:11:28Z",
+      "side": 1,
+      "message": "I got it from here https://github.com/openbmc/openbmc/blob/master/meta-openembedded/meta-oe/recipes-support/libspdm/libspdm_3.6.0.bb\n\nBut when I read the Cmakelist inside libspdm 3.6.0, I find this which suggest that if binary build is enabled then they disabling the EDDSA\n\n    # Disable EDDSA when binary builds are enabled. EDDSA may be enabled in the future.\n    add_definitions(-DLIBSPDM_EDDSA_ED25519_SUPPORT\u003d0)\n    add_definitions(-DLIBSPDM_EDDSA_ED448_SUPPORT\u003d0)\n\n    message(\"ENABLE_BINARY_BUILD\u003d1\")\n    message(\"COMPILED_LIBCRYPTO_PATH\u003d${COMPILED_LIBCRYPTO_PATH}\")\n    message(\"COMPILED_LIBSSL_PATH\u003d${COMPILED_LIBSSL_PATH}\")\n    message(\"Disabling EDDSA support due to ENABLE_BINARY_BUILD\u003d1\")\n\n\nHence removing it.",
+      "parentUuid": "2d02d020_88fb7454",
       "range": {
         "startLine": 143,
         "startChar": 14,
@@ -118,6 +237,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "40e1132e_3b5f48d9",
+        "filename": "scripts/build-unit-test-docker",
+        "patchSetId": 1
+      },
+      "lineNbr": 144,
+      "author": {
+        "id": 1000022
+      },
+      "writtenOn": "2025-07-18T10:11:28Z",
+      "side": 1,
+      "message": "Agree it is not required and not sure how did I get this, even following three is also not required.",
+      "parentUuid": "b8312aaa_65a94a4c",
+      "range": {
+        "startLine": 144,
+        "startChar": 16,
+        "endLine": 144,
+        "endChar": 34
+      },
+      "revId": "1d8c2a5ffc2c3f3d5bfb20a91ed4ffe9102fcbb5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "03da7903_13781a8e",
         "filename": "scripts/build-unit-test-docker",
         "patchSetId": 1
@@ -141,6 +284,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "e582eddd_f7e0d245",
+        "filename": "scripts/build-unit-test-docker",
+        "patchSetId": 1
+      },
+      "lineNbr": 152,
+      "author": {
+        "id": 1000022
+      },
+      "writtenOn": "2025-07-18T10:11:28Z",
+      "side": 1,
+      "message": "Nopes, These are the necessary options.",
+      "parentUuid": "03da7903_13781a8e",
+      "range": {
+        "startLine": 152,
+        "startChar": 12,
+        "endLine": 152,
+        "endChar": 43
+      },
+      "revId": "1d8c2a5ffc2c3f3d5bfb20a91ed4ffe9102fcbb5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "298c0ee9_27c98a01",
         "filename": "scripts/build-unit-test-docker",
         "patchSetId": 1
@@ -152,6 +319,30 @@
       "writtenOn": "2025-07-18T01:28:52Z",
       "side": 1,
       "message": "why do we need all of this ? by default if we define build_type as cmake, it would automatically build \u0026 install things \n```\n def _cmd_build_cmake(self) -\u003e str:\n        options \u003d \" \".join(self.pkg_def.get(\"config_flags\", []))\n        env \u003d \" \".join(self.pkg_def.get(\"config_env\", []))\n        result \u003d \"mkdir builddir \u0026\u0026 cd builddir \u0026\u0026 \"\n        result +\u003d f\"{env} cmake {cmake_flags} {options} .. \u0026\u0026 \"\n        result +\u003d \"cmake --build . --target all \u0026\u0026 \"\n        result +\u003d \"cmake --build . --target install \u0026\u0026 \"\n        result +\u003d \"cd ..\"\n```\n\nLook at the cmake support at https://github.com/openbmc/openbmc-build-scripts/blob/master/scripts/build-unit-test-docker#L626",
+      "range": {
+        "startLine": 153,
+        "startChar": 11,
+        "endLine": 157,
+        "endChar": 20
+      },
+      "revId": "1d8c2a5ffc2c3f3d5bfb20a91ed4ffe9102fcbb5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6c2d0264_49e94391",
+        "filename": "scripts/build-unit-test-docker",
+        "patchSetId": 1
+      },
+      "lineNbr": 157,
+      "author": {
+        "id": 1000022
+      },
+      "writtenOn": "2025-07-18T10:11:28Z",
+      "side": 1,
+      "message": "I responded above.",
+      "parentUuid": "298c0ee9_27c98a01",
       "range": {
         "startLine": 153,
         "startChar": 11,
