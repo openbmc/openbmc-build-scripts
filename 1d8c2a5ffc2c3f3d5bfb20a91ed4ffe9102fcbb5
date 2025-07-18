@@ -1,0 +1,165 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4d70300d_ba06c603",
+        "filename": "scripts/build-unit-test-docker",
+        "patchSetId": 1
+      },
+      "lineNbr": 129,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2025-07-18T01:28:52Z",
+      "side": 1,
+      "message": "why `custom` ? libspdm uses `cmake` build system right ?",
+      "range": {
+        "startLine": 129,
+        "startChar": 20,
+        "endLine": 129,
+        "endChar": 27
+      },
+      "revId": "1d8c2a5ffc2c3f3d5bfb20a91ed4ffe9102fcbb5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "71d01bee_689a00b0",
+        "filename": "scripts/build-unit-test-docker",
+        "patchSetId": 1
+      },
+      "lineNbr": 132,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2025-07-18T01:28:52Z",
+      "side": 1,
+      "message": "should not really need these. CMake support -S and -B options to capture the source as well as build directories.\n\n```\n  -S \u003cpath-to-source\u003e          \u003d Explicitly specify a source directory.\n  -B \u003cpath-to-build\u003e           \u003d Explicitly specify a build directory.\n```\n\nso you can actually do \n\n```\ncmake -S . -B build \u003coptions\u003e\n```",
+      "range": {
+        "startLine": 131,
+        "startChar": 0,
+        "endLine": 132,
+        "endChar": 26
+      },
+      "revId": "1d8c2a5ffc2c3f3d5bfb20a91ed4ffe9102fcbb5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9b469a35_cf9a11df",
+        "filename": "scripts/build-unit-test-docker",
+        "patchSetId": 1
+      },
+      "lineNbr": 135,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2025-07-18T01:28:52Z",
+      "side": 1,
+      "message": "it\u0027s weird that we need to provide the ARCH even for native builds, ARCH probably is meant for cross compilation.\n\nBut this would break, if the docker is run on x86 servers. So at least we should pick the arch from `uname -m` rather than hard-coding this.\n\nPushed https://github.com/DMTF/libspdm/pull/3148 to add auto-detection of ARCH in libspdm. please feel free to leave a review if you are convinced.",
+      "range": {
+        "startLine": 135,
+        "startChar": 16,
+        "endLine": 135,
+        "endChar": 33
+      },
+      "revId": "1d8c2a5ffc2c3f3d5bfb20a91ed4ffe9102fcbb5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2d02d020_88fb7454",
+        "filename": "scripts/build-unit-test-docker",
+        "patchSetId": 1
+      },
+      "lineNbr": 143,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2025-07-18T01:28:52Z",
+      "side": 1,
+      "message": "cannot seem to figure out if this was a configurable option, can you please point where this is defined ?",
+      "range": {
+        "startLine": 143,
+        "startChar": 14,
+        "endLine": 143,
+        "endChar": 36
+      },
+      "revId": "1d8c2a5ffc2c3f3d5bfb20a91ed4ffe9102fcbb5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b8312aaa_65a94a4c",
+        "filename": "scripts/build-unit-test-docker",
+        "patchSetId": 1
+      },
+      "lineNbr": 144,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2025-07-18T01:28:52Z",
+      "side": 1,
+      "message": "this as well, not sure where this is defined, can you give pointers ?",
+      "range": {
+        "startLine": 144,
+        "startChar": 16,
+        "endLine": 144,
+        "endChar": 34
+      },
+      "revId": "1d8c2a5ffc2c3f3d5bfb20a91ed4ffe9102fcbb5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "03da7903_13781a8e",
+        "filename": "scripts/build-unit-test-docker",
+        "patchSetId": 1
+      },
+      "lineNbr": 152,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2025-07-18T01:28:52Z",
+      "side": 1,
+      "message": "wouldn\u0027t this automatically happen when we defined the `build_type` as `cmake` ?",
+      "range": {
+        "startLine": 152,
+        "startChar": 12,
+        "endLine": 152,
+        "endChar": 43
+      },
+      "revId": "1d8c2a5ffc2c3f3d5bfb20a91ed4ffe9102fcbb5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "298c0ee9_27c98a01",
+        "filename": "scripts/build-unit-test-docker",
+        "patchSetId": 1
+      },
+      "lineNbr": 157,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2025-07-18T01:28:52Z",
+      "side": 1,
+      "message": "why do we need all of this ? by default if we define build_type as cmake, it would automatically build \u0026 install things \n```\n def _cmd_build_cmake(self) -\u003e str:\n        options \u003d \" \".join(self.pkg_def.get(\"config_flags\", []))\n        env \u003d \" \".join(self.pkg_def.get(\"config_env\", []))\n        result \u003d \"mkdir builddir \u0026\u0026 cd builddir \u0026\u0026 \"\n        result +\u003d f\"{env} cmake {cmake_flags} {options} .. \u0026\u0026 \"\n        result +\u003d \"cmake --build . --target all \u0026\u0026 \"\n        result +\u003d \"cmake --build . --target install \u0026\u0026 \"\n        result +\u003d \"cd ..\"\n```\n\nLook at the cmake support at https://github.com/openbmc/openbmc-build-scripts/blob/master/scripts/build-unit-test-docker#L626",
+      "range": {
+        "startLine": 153,
+        "startChar": 11,
+        "endLine": 157,
+        "endChar": 20
+      },
+      "revId": "1d8c2a5ffc2c3f3d5bfb20a91ed4ffe9102fcbb5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
