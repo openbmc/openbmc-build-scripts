@@ -1,6 +1,23 @@
 {
   "comments": [
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "2f1a4d35_75df70c4",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2025-07-21T23:07:28Z",
+      "side": 1,
+      "message": "I\u0027m not sure this is needed anymore?  Meson will use subproject builds, even in CI, if it can\u0027t find the dependency.  If we add the right subproject wrap file are we good to go?",
+      "revId": "95228efab8ebce01b6d5d160824d5bf2a91038ec",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "55b8e0fe_da51f383",
