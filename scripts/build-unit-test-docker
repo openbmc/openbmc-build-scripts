@@ -949,7 +949,7 @@ RUN pip3 install --break-system-packages \
         isoduration \
         isort \
         jsonschema \
-        meson==1.7.0 \
+        meson==1.8.2 \
         referencing \
         requests
 
