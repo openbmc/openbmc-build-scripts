@@ -857,7 +857,7 @@ class Meson(BuildSystem):
         Parameters:
         options_file        The file containing options
         """
-        store = OptionStore()
+        store = OptionStore(is_cross=False)
         oi = optinterpreter.OptionInterpreter(store, "")
         oi.process(options_file)
         return oi.options
