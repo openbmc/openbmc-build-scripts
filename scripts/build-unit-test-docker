@@ -35,7 +35,7 @@ from hashlib import sha256
 # typing.Dict is used for type-hints.
 from typing import Any, Callable, Dict, Iterable, Optional  # noqa: F401
 
-from sh import git, nproc  # type: ignore
+#from sh import git, nproc  # type: ignore
 
 try:
     # System may have docker or it may have podman, try docker first
