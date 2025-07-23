@@ -838,8 +838,8 @@ RUN apt-get update && apt-get dist-upgrade -yy && apt-get install -yy \
     device-tree-compiler \
     doxygen \
     flex \
-    g++-14 \
-    gcc-14 \
+    g++-15 \
+    gcc-15 \
     git \
     glib-2.0 \
     gnupg \
@@ -901,13 +901,13 @@ RUN apt-get update && apt-get dist-upgrade -yy && apt-get install -yy \
     wget \
     xxd
 
-RUN update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-14 14 \
-  --slave /usr/bin/g++ g++ /usr/bin/g++-14 \
-  --slave /usr/bin/gcov gcov /usr/bin/gcov-14 \
-  --slave /usr/bin/gcov-dump gcov-dump /usr/bin/gcov-dump-14 \
-  --slave /usr/bin/gcov-tool gcov-tool /usr/bin/gcov-tool-14
+RUN update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-15 15 \
+  --slave /usr/bin/g++ g++ /usr/bin/g++-15 \
+  --slave /usr/bin/gcov gcov /usr/bin/gcov-15 \
+  --slave /usr/bin/gcov-dump gcov-dump /usr/bin/gcov-dump-15 \
+  --slave /usr/bin/gcov-tool gcov-tool /usr/bin/gcov-tool-15
 RUN update-alternatives --remove cpp /usr/bin/cpp && \
-    update-alternatives --install /usr/bin/cpp cpp /usr/bin/cpp-14 14
+    update-alternatives --install /usr/bin/cpp cpp /usr/bin/cpp-15 15
 
 # Set up LLVM apt repository.
 RUN bash -c "$(wget -O - https://apt.llvm.org/llvm.sh)" -- 20
