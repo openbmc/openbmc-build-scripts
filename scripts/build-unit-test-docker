@@ -100,7 +100,7 @@ class PackageDef(TypedDict, total=False):
 # Packages to include in image.
 packages = {
     "boost": PackageDef(
-        rev="1.87.0",
+        rev="1.88.0",
         url=(
             lambda pkg, rev: f"https://github.com/boostorg/{pkg}/releases/download/{pkg}-{rev}/{pkg}-{rev}-cmake.tar.gz"
         ),
@@ -133,7 +133,7 @@ packages = {
         ],
     ),
     "fmtlib/fmt": PackageDef(
-        rev="10.1.1",
+        rev="11.2.0",
         build_type="cmake",
         config_flags=[
             "-DFMT_DOC=OFF",
@@ -149,13 +149,13 @@ packages = {
         ],
     ),
     "google/googletest": PackageDef(
-        rev="v1.15.2",
+        rev="v1.16.0",
         build_type="cmake",
         config_env=["CXXFLAGS=-std=c++20"],
         config_flags=["-DTHREADS_PREFER_PTHREAD_FLAG=ON"],
     ),
     "nghttp2/nghttp2": PackageDef(
-        rev="v1.61.0",
+        rev="v1.65.0",
         build_type="cmake",
         config_env=["CXXFLAGS=-std=c++20"],
         config_flags=[
@@ -164,7 +164,7 @@ packages = {
         ],
     ),
     "nlohmann/json": PackageDef(
-        rev="v3.11.3",
+        rev="v3.12.0",
         build_type="cmake",
         config_flags=["-DJSON_BuildTests=OFF"],
         custom_post_install=[
@@ -175,7 +175,7 @@ packages = {
         ],
     ),
     "json-c/json-c": PackageDef(
-        rev="json-c-0.17-20230812",
+        rev="json-c-0.18-20240915",
         build_type="cmake",
     ),
     "LibVNC/libvncserver": PackageDef(
@@ -183,11 +183,11 @@ packages = {
         build_type="cmake",
     ),
     "leethomason/tinyxml2": PackageDef(
-        rev="9.0.0",
+        rev="11.0.0",
         build_type="cmake",
     ),
     "tristanpenman/valijson": PackageDef(
-        rev="v1.0.1",
+        rev="v1.0.5",
         build_type="cmake",
         config_flags=[
             "-Dvalijson_BUILD_TESTS=0",
