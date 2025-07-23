@@ -715,7 +715,7 @@ docker_image_name = os.environ.get(
 )
 force_build = os.environ.get("FORCE_DOCKER_BUILD")
 is_automated_ci_build = os.environ.get("BUILD_URL", False)
-distro = os.environ.get("DISTRO", "ubuntu:oracular")
+distro = os.environ.get("DISTRO", "ubuntu:plucky")
 branch = os.environ.get("BRANCH", "master")
 ubuntu_mirror = os.environ.get("UBUNTU_MIRROR")
 docker_reg = os.environ.get("DOCKER_REG", "public.ecr.aws/ubuntu")
