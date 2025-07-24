@@ -1180,7 +1180,15 @@ class Meson(BuildSystem):
             ):
                 raise Exception(
                     "dep.get_variable() with positional argument requires "
-                    + "meson_Version: '>=0.58'"
+                    + "meson_version: '>=0.58'"
+                )
+
+        if "relative_to(" in build_contents:
+            if not meson_version or not meson_version_compare(
+                meson_version, ">=1.3.0"
+            ):
+                raise Exception(
+                    "fs.relative_to() requires meson_version: '>=1.3.0'"
                 )
 
 
