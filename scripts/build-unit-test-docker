@@ -838,8 +838,6 @@ RUN apt-get update && apt-get dist-upgrade -yy && apt-get install -yy \
     device-tree-compiler \
     doxygen \
     flex \
-    g++-15 \
-    gcc-15 \
     git \
     glib-2.0 \
     gnupg \
@@ -900,6 +898,14 @@ RUN apt-get update && apt-get dist-upgrade -yy && apt-get install -yy \
     vim \
     wget \
     xxd
+
+# Add the ubuntu-toolchain-r repository for later versions of GCC and install.
+RUN add-apt-repository ppa:ubuntu-toolchain-r/ppa && \
+    apt-get update && \
+    apt-get install -y \
+        gcc-15 \
+        g++15 \
+        libstdc++-15-dev
 
 RUN update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-15 15 \
   --slave /usr/bin/g++ g++ /usr/bin/g++-15 \
