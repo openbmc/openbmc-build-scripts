@@ -1066,6 +1066,8 @@ class Meson(BuildSystem):
             # std::forward_like which results in a bunch of compile errors.
             # Adding -fno-builtin-std-forward_like causes them to go away.
             os.environ["CXX"] = "clang++ -fno-builtin-std-forward_like"
+            os.environ["CC_LD"] = "lld"
+            os.environ["CXX_LD"] = "lld"
             with TemporaryDirectory(prefix="build", dir=".") as build_dir:
                 check_call_cmd("meson", "setup", build_dir)
                 if not os.path.isfile(".openbmc-no-clang"):
