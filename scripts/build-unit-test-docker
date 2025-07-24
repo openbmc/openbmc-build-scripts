@@ -194,6 +194,13 @@ packages = {
             "-Dvalijson_INSTALL_HEADERS=1",
         ],
     ),
+    "libgpiod": PackageDef(
+        rev="1.6.5",
+        url=(
+            lambda pkg, rev: f"https://git.kernel.org/pub/scm/libs/{pkg}/{pkg}.git/snapshot/{pkg}-{rev}.tar.gz"
+        ),
+        build_type="autogen",
+    ),
     "open-power/pdbg": PackageDef(build_type="autoconf"),
     "openbmc/gpioplus": PackageDef(
         build_type="meson",
@@ -595,6 +602,8 @@ FROM {docker_base_img_name}
         build_type = self.pkg_def["build_type"]
         if build_type == "autoconf":
             result += self._cmd_build_autoconf()
+        elif build_type == "autogen":
+            result += self._cmd_build_autogen()
         elif build_type == "cmake":
             result += self._cmd_build_cmake()
         elif build_type == "custom":
@@ -621,6 +630,13 @@ FROM {docker_base_img_name}
         result = "./bootstrap.sh && "
         result += f"{env} ./configure {configure_flags} {options} && "
         result += f"make -j{proc_count} && make install"
+        return result
+
+    def _cmd_build_autogen(self) -> str:
+        options = " ".join(self.pkg_def.get("config_flags", []))
+        env = " ".join(self.pkg_def.get("config_env", []))
+        result = f"{env} ./autogen.sh {configure_flags} {options} && "
+        result += "make && make install"
         return result
 
     def _cmd_build_cmake(self) -> str:
@@ -854,7 +870,6 @@ RUN apt-get update && apt-get dist-upgrade -yy && apt-get install -yy \
     libcurl4-openssl-dev \
     libdbus-1-dev \
     libevdev-dev \
-    libgpiod-dev \
     libi2c-dev \
     libjpeg-dev \
     libjson-perl \
