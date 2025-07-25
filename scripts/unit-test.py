@@ -1062,10 +1062,11 @@ class Meson(BuildSystem):
         # Run clang-tidy only if the project has a configuration
         if os.path.isfile(".clang-tidy"):
             os.environ["CC"] = "clang"
+            os.environ["CXX"] = "clang++"
             # Clang-20 currently has some issue with libstdcpp's
             # std::forward_like which results in a bunch of compile errors.
             # Adding -fno-builtin-std-forward_like causes them to go away.
-            os.environ["CXX"] = "clang++ -fno-builtin-std-forward_like"
+            os.environ["CXXFLAGS"] = "-fno-builtin-std-forward_like"
             os.environ["CC_LD"] = "lld"
             os.environ["CXX_LD"] = "lld"
             with TemporaryDirectory(prefix="build", dir=".") as build_dir:
