@@ -1061,22 +1061,37 @@ class Meson(BuildSystem):
 
         # Run clang-tidy only if the project has a configuration
         if os.path.isfile(".clang-tidy"):
-            os.environ["CC"] = "clang"
+            clang_env = os.environ.copy()
+            clang_env["CC"] = "clang"
             # Clang-20 currently has some issue with libstdcpp's
             # std::forward_like which results in a bunch of compile errors.
             # Adding -fno-builtin-std-forward_like causes them to go away.
-            os.environ["CXX"] = "clang++ -fno-builtin-std-forward_like"
-            os.environ["CC_LD"] = "lld"
-            os.environ["CXX_LD"] = "lld"
+            clang_env["CXX"] = "clang++"
+            clang_env["CXXFLAGS"] = "-fno-builtin-std-forward_like"
+            clang_env["CC_LD"] = "lld"
+            clang_env["CXX_LD"] = "lld"
             with TemporaryDirectory(prefix="build", dir=".") as build_dir:
-                check_call_cmd("meson", "setup", build_dir)
+                check_call_cmd("meson", "setup", build_dir, env=clang_env)
                 if not os.path.isfile(".openbmc-no-clang"):
-                    check_call_cmd("meson", "compile", "-C", build_dir)
+                    check_call_cmd(
+                        "meson", "compile", "-C", build_dir, env=clang_env
+                    )
                 try:
-                    check_call_cmd("ninja", "-C", build_dir, "clang-tidy-fix")
+                    check_call_cmd(
+                        "ninja",
+                        "-C",
+                        build_dir,
+                        "clang-tidy-fix",
+                        env=clang_env,
+                    )
                 except subprocess.CalledProcessError:
                     check_call_cmd(
-                        "git", "-C", CODE_SCAN_DIR, "--no-pager", "diff"
+                        "git",
+                        "-C",
+                        CODE_SCAN_DIR,
+                        "--no-pager",
+                        "diff",
+                        env=clang_env,
                     )
                     raise
         # Run the basic clang static analyzer otherwise
