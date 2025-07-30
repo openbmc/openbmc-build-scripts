@@ -24,21 +24,19 @@ fi
 export build_dir="${WORKSPACE}/build"
 
 SEED_MACHINES=(
-    ahe50dc
     bletchley
     catalina
     e3c246d4i
+    evb-npcm845
     gbs
     harma
     minerva
     p10bmc
     palmetto
-    romed8hm3
     romulus
     ventura
     witherspoon
     yosemite4
-    zaius
 )
 
 for m in "${SEED_MACHINES[@]}"; do
