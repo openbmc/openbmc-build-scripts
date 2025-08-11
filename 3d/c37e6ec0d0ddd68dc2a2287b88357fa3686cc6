@@ -1,0 +1,10 @@
+Code-Review+2: Patrick Williams <patrick@stwcx.xyz>
+Code-Review+1: Chinmay Shripad Hegde <hosmanechinmay@gmail.com>
+Verified+1: OpenBMC CI <openbmcbump-ci@yahoo.com>
+Code-Review+1: ManojKiran Eda <manojkiran.eda@gmail.com>
+Submitted-by: Patrick Williams <patrick@stwcx.xyz>
+Submitted-at: Mon, 11 Aug 2025 15:53:45 +0000
+Reviewed-on: https://gerrit.openbmc.org/c/openbmc/openbmc-build-scripts/+/82100
+Comments-Total: 36
+Project: openbmc/openbmc-build-scripts
+Branch: refs/heads/master
