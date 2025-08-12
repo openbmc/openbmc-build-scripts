@@ -1077,13 +1077,19 @@ class Meson(BuildSystem):
                         "meson", "compile", "-C", build_dir, env=clang_env
                     )
                 try:
-                    check_call_cmd(
-                        "ninja",
-                        "-C",
-                        build_dir,
-                        "clang-tidy-fix",
-                        env=clang_env,
-                    )
+                    # Allow the user to configure run-clang-tidy.py
+                    if os.environ.get("USE_RUN_CLANG_TIDY") is None:
+                        check_call_cmd(
+                            "ninja",
+                            "-C",
+                            build_dir,
+                            "clang-tidy-fix",
+                            env=clang_env,
+                        )
+                    else:
+                        check_call_cmd(
+                            "run-clang-tidy", "-header-filter=.*", "-p", build_dir
+                        )
                 except subprocess.CalledProcessError:
                     check_call_cmd(
                         "git",
