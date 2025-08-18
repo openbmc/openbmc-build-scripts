@@ -108,6 +108,11 @@ def subcmd_disable(args: argparse.Namespace) -> None:
             repo_config["Checks"], args.check, args.drop
         )
 
+    if "CheckOptions" in repo_config:
+        repo_config["CheckOptions"] = Key_CheckOptions.disable(
+            repo_config["CheckOptions"], args.check, args.drop
+        )
+
     with open(repo_path, "w") as f:
         f.write(format_yaml_output(repo_config))
 
@@ -179,17 +184,38 @@ class Key_CheckOptions:
     def merge(
         repo: List[Dict[str, str]], ref: List[Dict[str, str]]
     ) -> List[Dict[str, str]]:
-        unrolled_repo: Dict[str, str] = {}
-        for item in repo or []:
-            unrolled_repo[item["key"]] = item["value"]
+        unrolled_repo = Key_CheckOptions._unroll(repo)
         for item in ref or []:
             if item["key"] in unrolled_repo:
                 continue
             unrolled_repo[item["key"]] = item["value"]
 
-        return [
-            {"key": k, "value": v} for k, v in sorted(unrolled_repo.items())
-        ]
+        return Key_CheckOptions._roll(unrolled_repo)
+
+    @staticmethod
+    def disable(
+        repo: List[Dict[str, str]], option: str, drop: bool
+    ) -> List[Dict[str, str]]:
+        if not drop:
+            return repo
+
+        unrolled_repo = Key_CheckOptions._unroll(repo)
+
+        if option in unrolled_repo:
+            unrolled_repo.pop(option, None)
+
+        return Key_CheckOptions._roll(unrolled_repo)
+
+    @staticmethod
+    def _unroll(repo: List[Dict[str, str]]) -> Dict[str, str]:
+        unrolled_repo: Dict[str, str] = {}
+        for item in repo or []:
+            unrolled_repo[item["key"]] = item["value"]
+        return unrolled_repo
+
+    @staticmethod
+    def _roll(data: Dict[str, str]) -> List[Dict[str, str]]:
+        return [{"key": k, "value": v} for k, v in sorted(data.items())]
 
 
 def load_config(path: str) -> Tuple[str, Dict[str, Any]]:
