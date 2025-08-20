@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "417dbf07_d6836960",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2025-08-20T10:09:06Z",
+      "side": 1,
+      "message": "This is done on purpose. I need to know why you think this is an appropriate change (in your commit message).",
+      "revId": "43fcdbf7c4a765aac1b495c012e67dd93862dec3",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
