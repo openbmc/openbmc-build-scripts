@@ -343,7 +343,7 @@ cmake_flags = " ".join(
 )
 meson_flags = " ".join(
     [
-        "--wrap-mode=nodownload",
+        "--wrap-mode=default",
         f"-Dprefix={prefix}",
     ]
 )
