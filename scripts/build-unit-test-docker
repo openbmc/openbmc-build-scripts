@@ -293,7 +293,7 @@ packages = {
         build_type="meson",
         custom_post_dl=[
             "cd tools",
-            f"./setup.py install --root=/ --prefix={prefix}",
+            "python3 -m pip install --root-user-action ignore .",
             "cd ..",
         ],
         config_flags=[
