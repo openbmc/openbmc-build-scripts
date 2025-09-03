@@ -959,23 +959,23 @@ RUN update-alternatives --remove cpp /usr/bin/cpp && \
     update-alternatives --install /usr/bin/cpp cpp /usr/bin/cpp-15 15
 
 # Set up LLVM apt repository.
-RUN bash -c "$(wget -O - https://apt.llvm.org/llvm.sh)" -- 20
+RUN bash -c "$(wget -O - https://apt.llvm.org/llvm.sh)" -- 21
 
 # Install extra clang tools
 RUN apt-get install -y \
-        clang-20 \
-        clang-format-20 \
-        clang-tidy-20 \
-        lld-20
+        clang-21 \
+        clang-format-21 \
+        clang-tidy-21 \
+        lld-21
 
-RUN update-alternatives --install /usr/bin/clang clang /usr/bin/clang-20 1000 \
-  --slave /usr/bin/clang++ clang++ /usr/bin/clang++-20 \
-  --slave /usr/bin/clang-tidy clang-tidy /usr/bin/clang-tidy-20 \
-  --slave /usr/bin/clang-format clang-format /usr/bin/clang-format-20 \
+RUN update-alternatives --install /usr/bin/clang clang /usr/bin/clang-21 1000 \
+  --slave /usr/bin/clang++ clang++ /usr/bin/clang++-21 \
+  --slave /usr/bin/clang-tidy clang-tidy /usr/bin/clang-tidy-21 \
+  --slave /usr/bin/clang-format clang-format /usr/bin/clang-format-21 \
   --slave /usr/bin/run-clang-tidy run-clang-tidy.py \
-        /usr/bin/run-clang-tidy-20 \
-  --slave /usr/bin/scan-build scan-build /usr/bin/scan-build-20 \
-  --slave /usr/bin/lld lld /usr/bin/lld-20
+        /usr/bin/run-clang-tidy-21 \
+  --slave /usr/bin/scan-build scan-build /usr/bin/scan-build-21 \
+  --slave /usr/bin/lld lld /usr/bin/lld-21
 
 """
 
