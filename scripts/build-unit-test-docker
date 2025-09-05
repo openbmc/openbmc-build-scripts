@@ -901,6 +901,7 @@ RUN apt-get update && apt-get dist-upgrade -yy && apt-get install -yy \
     libcurl4-openssl-dev \
     libdbus-1-dev \
     libevdev-dev \
+    libgoogle-glog-dev \
     libi2c-dev \
     libjpeg-dev \
     libjson-perl \
