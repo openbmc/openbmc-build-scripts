@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "deabae0c_e19d9393",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2025-09-05T02:05:43Z",
+      "side": 1,
+      "message": "I don\u0027t know what rackmon is but openbmc explicitly does not use glog.  You\u0027ll need to do this in a downstream version.\n\nAssuming you\u0027re using meson, you could probably add a wrap file for glog and then you\u0027d not need it installed into the docker image anyhow; meson will download it and install it beside your build directory automatically.\n\nWe\u0027ve had a few other companies ask to be able to add otherwise unused libraries.  If you\u0027d like to you could add an optional file that the script can look for for additional dockerfile directives to add into the base install.",
+      "range": {
+        "startLine": 9,
+        "startChar": 38,
+        "endLine": 9,
+        "endChar": 64
+      },
+      "revId": "cde91786028caf10fdd4eb745d891c3336a8e1c0",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
