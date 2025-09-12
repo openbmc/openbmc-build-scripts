@@ -85,8 +85,8 @@ else
     cp "${DEFAULT_IMAGE_LOC}/${MACHINE}/${DRIVE}" "${TMP_DRIVE_PATH}"
 fi
 
-# Obtain IP from /etc/hosts if IP is not valid set to localhost
-IP=$(awk 'END{print $1}' /etc/hosts)
+# Obtain IP from `hostname -I`
+IP=$(hostname -I | awk '{print $1}')
 if [[ "$IP" != *.*.*.* ]]; then
     IP=127.0.0.1
 fi
