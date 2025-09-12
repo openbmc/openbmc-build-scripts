@@ -471,10 +471,13 @@ FROM {docker_base_img_name}
         if gerrit_project == self.package and gerrit_rev:
             return False
 
+        # URL escape any spaces.  Gerrit uses pluses.
+        gerrit_topic_escape = urllib.parse.quote_plus(gerrit_topic)
+
         try:
             commits = json.loads(
                 urllib.request.urlopen(
-                    f"https://gerrit.openbmc.org/changes/?q=status:open+project:{self.package}+topic:{gerrit_topic}"
+                    f'https://gerrit.openbmc.org/changes/?q=status:open+project:{self.package}+topic:"{gerrit_topic_escape}"'
                 )
                 .read()
                 .splitlines()[-1]
