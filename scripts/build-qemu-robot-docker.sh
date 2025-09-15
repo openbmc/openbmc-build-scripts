@@ -21,7 +21,7 @@ set -uo pipefail
 http_proxy=${http_proxy:-}
 
 DOCKER_IMG_NAME=${1:-"openbmc/ubuntu-robot-qemu"}
-DISTRO=${2:-"ubuntu:oracular"}
+DISTRO=${2:-"ubuntu:plucky"}
 UBUNTU_MIRROR=${UBUNTU_MIRROR:-""}
 PIP_MIRROR=${PIP_MIRROR:-""}
 docker_reg=${DOCKER_REG:-"public.ecr.aws/ubuntu"}
