@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a6183905_f0291b10",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2025-09-23T17:09:23Z",
+      "side": 1,
+      "message": "I\u0027m slightly hesitant to put this in but I\u0027m not sure what is the best approach here.\n\nThere are two different `hostname` implementations: one used on debian-based distributions (like Ubuntu) and one that comes from the net-tools package.  The net-tools one doesn\u0027t actually implement the `-I` and only has `-i`.\n\nSince we\u0027re doing `awk` anyhow can we just use the `-i` one?",
+      "revId": "d200508d73cc3a562a1a3dae4bf25fea877bee01",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
