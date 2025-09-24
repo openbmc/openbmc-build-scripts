@@ -16,6 +16,24 @@
       "message": "I\u0027m slightly hesitant to put this in but I\u0027m not sure what is the best approach here.\n\nThere are two different `hostname` implementations: one used on debian-based distributions (like Ubuntu) and one that comes from the net-tools package.  The net-tools one doesn\u0027t actually implement the `-I` and only has `-i`.\n\nSince we\u0027re doing `awk` anyhow can we just use the `-i` one?",
       "revId": "d200508d73cc3a562a1a3dae4bf25fea877bee01",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a4a11983_f1a0912e",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 1000044
+      },
+      "writtenOn": "2025-09-24T07:02:21Z",
+      "side": 1,
+      "message": "1. The command is executed in the container built by `scripts/build-qemu-robot-docker.sh`, and it supports ubuntu only.\n2. I checked ubuntu/centos/fedora, and all of them are using the `hostname` package, and they all work as expected in this case.\n\nSo I think the current code works as expected.",
+      "parentUuid": "a6183905_f0291b10",
+      "revId": "d200508d73cc3a562a1a3dae4bf25fea877bee01",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
