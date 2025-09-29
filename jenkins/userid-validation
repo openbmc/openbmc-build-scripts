@@ -99,6 +99,7 @@ GERRIT_CI_GROUPS=( \
         quanta/ci-authorized \
         quic/ci-authorized \
         raptorcs/ci-authorized \
+        scaleway/ci-authorized \
         sipearl/ci-authorized \
         supermicro/ci-authorized \
         tencent/ci-authorized \
