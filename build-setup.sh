@@ -355,11 +355,11 @@ BB_NUMBER_THREADS = "$num_cpu"
 PARALLEL_MAKE = "-j$num_cpu"
 INHERIT += "rm_work"
 BB_GENERATE_MIRROR_TARBALLS = "1"
-DL_DIR="${ssc_dir}/bitbake_downloads"
-SSTATE_DIR="${ssc_dir}/bitbake_sharedstatecache"
+DL_DIR = "${ssc_dir}/bitbake_downloads"
+SSTATE_DIR = "${ssc_dir}/bitbake_sharedstatecache"
 USER_CLASSES += "buildstats"
 INHERIT:remove = "uninative"
-TMPDIR="${build_dir}"
+TMPDIR = "${build_dir}"
 ${ENV_LOCAL_CONF}
 EOF_CONF
 
