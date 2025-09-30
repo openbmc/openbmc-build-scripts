@@ -12,7 +12,7 @@
 # When building locally set WORKSPACE to be the directory above the qemu
 # checkout:
 #   git clone https://github.com/qemu/qemu
-#   WORKSPACE=$PWD/qemu ~/openbmc-build-scripts/qemu-build.sh
+#   WORKSPACE=$PWD ~/openbmc-build-scripts/qemu-build.sh
 #
 ###############################################################################
 #
@@ -117,11 +117,6 @@ RUN apt-get update && apt-get install -yy --no-install-recommends \
     python3-venv \
     python3-yaml \
     iputils-ping
-
-RUN grep -q ${GROUPS[0]} /etc/group || groupadd -g ${GROUPS[0]} ${USER}
-RUN grep -q ${UID} /etc/passwd || useradd -d ${HOME} -m -u ${UID} -g ${GROUPS[0]} ${USER}
-USER ${USER}
-ENV HOME ${HOME}
 EOF
 )
 
@@ -131,10 +126,10 @@ if ! docker build -t ${img_name} - <<< "${Dockerfile}" ; then
 fi
 
 docker run \
+    --userns host \
+    --user "$UID:${GROUPS[0]}" \
     --rm=true \
     -e WORKSPACE="${WORKSPACE}" \
-    -w "${HOME}" \
-    --user="${USER}" \
-    -v "${HOME}":"${HOME}" \
+    -v "${WORKSPACE}":"${WORKSPACE}" \
     -t ${img_name} \
     "${WORKSPACE}"/build.sh
