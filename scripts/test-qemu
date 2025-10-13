@@ -3,7 +3,7 @@
 set -eu
 set -x
 
-ARTIFACT_DIR=$(mktemp -d)
+ARTIFACT_DIR=$(mktemp -d -p /var/tmp)
 
 trap 'rm -rf ${ARTIFACT_DIR}' EXIT
 
