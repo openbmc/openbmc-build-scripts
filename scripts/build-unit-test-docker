@@ -959,7 +959,7 @@ RUN update-alternatives --remove cpp /usr/bin/cpp && \
     update-alternatives --install /usr/bin/cpp cpp /usr/bin/cpp-15 15
 
 # Set up LLVM apt repository.
-RUN bash -c "$(wget -O - https://apt.llvm.org/llvm.sh)" -- 21
+RUN bash -c "$(wget -O - https://apt.llvm.org/llvm.sh)" -- 21 -m https://apt.llvm.org
 
 # Install extra clang tools
 RUN apt-get install -y \
