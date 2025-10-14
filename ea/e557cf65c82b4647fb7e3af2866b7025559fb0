@@ -1,0 +1,8 @@
+Code-Review+2: Patrick Williams <patrick@stwcx.xyz>
+Verified+1: OpenBMC CI <openbmcbump-ci@yahoo.com>
+Code-Review+1: Ramesh Iyyar <rameshi1@in.ibm.com>
+Submitted-by: Patrick Williams <patrick@stwcx.xyz>
+Submitted-at: Tue, 14 Oct 2025 19:24:21 +0000
+Reviewed-on: https://gerrit.openbmc.org/c/openbmc/openbmc-build-scripts/+/84395
+Project: openbmc/openbmc-build-scripts
+Branch: refs/heads/master
