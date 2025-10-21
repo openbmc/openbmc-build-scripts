@@ -1,0 +1,10 @@
+Verified+1: OpenBMC CI <openbmcbump-ci@yahoo.com>
+Code-Review+1: Michal Orzel <michalx.orzel@intel.com>
+Code-Review+1: Ewelina Walkusz <ewelinax.walkusz@intel.com>
+Code-Review+2: Patrick Williams <patrick@stwcx.xyz>
+Submitted-by: Patrick Williams <patrick@stwcx.xyz>
+Submitted-at: Tue, 21 Oct 2025 16:43:56 +0000
+Reviewed-on: https://gerrit.openbmc.org/c/openbmc/openbmc-build-scripts/+/82248
+Comments-Total: 4
+Project: openbmc/openbmc-build-scripts
+Branch: refs/heads/master
