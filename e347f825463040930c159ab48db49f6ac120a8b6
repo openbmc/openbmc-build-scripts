@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f3393113_d5d545d7",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1002091
+      },
+      "writtenOn": "2025-10-21T06:41:28Z",
+      "side": 1,
+      "message": "With gcc 15.0.1 there is this problem:\n\nWhen GoogleMock tries to compare a std::function containing std::expected\u003cbool, boost::system::error_code\u003e with nullptr, it triggers the std::expected operator\u003d\u003d template resolution, which creates a circular constraint dependency.\nmore: https://github.com/google/googletest/issues/4759\n\nThis is fixed in gcc 15.2.0",
+      "revId": "e347f825463040930c159ab48db49f6ac120a8b6",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
