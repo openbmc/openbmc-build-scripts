@@ -15,6 +15,7 @@ import platform
 import re
 import shutil
 import subprocess
+import tempfile
 import sys
 from subprocess import CalledProcessError, check_call
 from tempfile import TemporaryDirectory
@@ -405,40 +406,35 @@ def is_valgrind_safe():
     """
     Returns whether it is safe to run valgrind on our platform
     """
-    src = "unit-test-vg.c"
-    exe = "./unit-test-vg"
-    with open(src, "w") as h:
-        h.write("#include <errno.h>\n")
-        h.write("#include <stdio.h>\n")
-        h.write("#include <stdlib.h>\n")
-        h.write("#include <string.h>\n")
-        h.write("int main() {\n")
-        h.write("char *heap_str = malloc(16);\n")
-        h.write('strcpy(heap_str, "RandString");\n')
-        h.write('int res = strcmp("RandString", heap_str);\n')
-        h.write("free(heap_str);\n")
-        h.write("char errstr[64];\n")
-        h.write("strerror_r(EINVAL, errstr, sizeof(errstr));\n")
-        h.write('printf("%s\\n", errstr);\n')
-        h.write("return res;\n")
-        h.write("}\n")
-    try:
-        with open(os.devnull, "w") as devnull:
-            check_call(
-                ["gcc", "-O2", "-o", exe, src], stdout=devnull, stderr=devnull
-            )
+    with tempfile.TemporaryDirectory() as temp:
+        src = os.path.join(temp, "unit-test-vg.c")
+        exe = os.path.join(temp, "unit-test-vg")
+        with open(src, "w") as h:
+            h.write("#include <errno.h>\n")
+            h.write("#include <stdio.h>\n")
+            h.write("#include <stdlib.h>\n")
+            h.write("#include <string.h>\n")
+            h.write("int main() {\n")
+            h.write("char *heap_str = malloc(16);\n")
+            h.write('strcpy(heap_str, "RandString");\n')
+            h.write('int res = strcmp("RandString", heap_str);\n')
+            h.write("free(heap_str);\n")
+            h.write("char errstr[64];\n")
+            h.write("strerror_r(EINVAL, errstr, sizeof(errstr));\n")
+            h.write('printf("%s\\n", errstr);\n')
+            h.write("return res;\n")
+            h.write("}\n")
+        check_call(["gcc", "-O2", "-o", exe, src])
+        try:
             check_call(
                 ["valgrind", "--error-exitcode=99", exe],
-                stdout=devnull,
-                stderr=devnull,
+                stdout=subprocess.DEVNULL,
+                stderr=subprocess.DEVNULL,
             )
+        except CalledProcessError:
+            sys.stderr.write("###### Platform is not valgrind safe ######\n")
+            return False
         return True
-    except Exception:
-        sys.stderr.write("###### Platform is not valgrind safe ######\n")
-        return False
-    finally:
-        os.remove(src)
-        os.remove(exe)
 
 
 def is_sanitize_safe():
