@@ -13,6 +13,7 @@ import multiprocessing
 import os
 import platform
 import re
+import resource
 import shutil
 import subprocess
 import sys
@@ -401,6 +402,8 @@ def run_cppcheck():
         except subprocess.CalledProcessError:
             print("cppcheck found errors")
 
+def valgrind_rlimit_nofile(soft=2048, hard=4096):
+    resource.setrlimit(resource.RLIMIT_NOFILE, (soft, hard))
 
 def is_valgrind_safe():
     """
@@ -434,6 +437,7 @@ def is_valgrind_safe():
                 ["valgrind", "--error-exitcode=99", exe],
                 stdout=subprocess.DEVNULL,
                 stderr=subprocess.DEVNULL,
+                preexec_fn=valgrind_rlimit_nofile,
             )
         except CalledProcessError:
             sys.stderr.write("###### Platform is not valgrind safe ######\n")
@@ -499,7 +503,7 @@ def maybe_make_valgrind():
 
     try:
         cmd = make_parallel + ["check-valgrind"]
-        check_call_cmd(*cmd)
+        check_call_cmd(*cmd, preexec_fn=valgrind_rlimit_nofile)
     except CalledProcessError:
         for root, _, files in os.walk(os.getcwd()):
             for f in files:
@@ -1040,6 +1044,7 @@ class Meson(BuildSystem):
                     "--print-errorlogs",
                     "--setup",
                     "{}:valgrind".format(self.package),
+                    preexec_fn=valgrind_rlimit_nofile
                 )
             else:
                 check_call_cmd(
@@ -1052,6 +1057,7 @@ class Meson(BuildSystem):
                     "--print-errorlogs",
                     "--wrapper",
                     "valgrind --error-exitcode=1",
+                    preexec_fn=valgrind_rlimit_nofile
                 )
         except CalledProcessError:
             raise Exception("Valgrind tests failed")
