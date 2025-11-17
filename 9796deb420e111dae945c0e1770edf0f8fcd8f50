@@ -41,6 +41,23 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1b85a5a1_95bd7ebe",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1002303
+      },
+      "writtenOn": "2025-11-17T23:36:49Z",
+      "side": 1,
+      "message": "I\u0027ll abandon this change for the better fix: https://gerrit.openbmc.org/c/openbmc/openbmc-build-scripts/+/85354",
+      "revId": "9796deb420e111dae945c0e1770edf0f8fcd8f50",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6a31ff41_667df903",
@@ -54,6 +71,24 @@
       "writtenOn": "2025-11-17T22:09:43Z",
       "side": 1,
       "message": "It seems like, based on the changes you\u0027re making, that something broke in the packaging such that `apt-update` is broken.  Should we just increment this date here to force a full rebuild?",
+      "revId": "9796deb420e111dae945c0e1770edf0f8fcd8f50",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "03f19b1e_3c961236",
+        "filename": "scripts/build-unit-test-docker",
+        "patchSetId": 2
+      },
+      "lineNbr": 855,
+      "author": {
+        "id": 1002303
+      },
+      "writtenOn": "2025-11-17T23:36:49Z",
+      "side": 1,
+      "message": "I was so sure you were wrong but alas https://gerrit.openbmc.org/c/openbmc/openbmc-build-scripts/+/85354 builds. I\u0027ll abandon this. Thanks for the suggestion.",
+      "parentUuid": "6a31ff41_667df903",
       "revId": "9796deb420e111dae945c0e1770edf0f8fcd8f50",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
