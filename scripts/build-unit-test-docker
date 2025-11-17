@@ -992,7 +992,7 @@ if is_automated_ci_build:
 # Run an arbitrary command to pollute the docker cache regularly force us
 # to re-run `apt-get update` daily.
 RUN echo {Docker.timestamp()}
-RUN apt-get update && apt-get dist-upgrade -yy
+RUN apt-get update && apt-get dist-upgrade --force-overwrite -yy
 
 """
 
