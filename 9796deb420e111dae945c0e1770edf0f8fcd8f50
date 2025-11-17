@@ -1,6 +1,29 @@
 {
   "comments": [
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "973d5670_f77a4c64",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2025-11-17T22:09:43Z",
+      "side": 1,
+      "message": "This isn\u0027t going to be a \"permalink\" so it\u0027s going to be hard to know what this fixed in a few days.  Can you give a better story here of why we are doing it?",
+      "range": {
+        "startLine": 9,
+        "startChar": 0,
+        "endLine": 10,
+        "endChar": 60
+      },
+      "revId": "9796deb420e111dae945c0e1770edf0f8fcd8f50",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "079fe039_9092dbd1",
@@ -14,6 +37,23 @@
       "writtenOn": "2025-11-17T18:16:03Z",
       "side": 1,
       "message": "https://askubuntu.com/questions/176121/dpkg-error-trying-to-overwrite-file-which-is-also-in\n\nmentions another possible solution.\n\nhttps://linux.die.net/man/8/dpkg-divert\n\nMaybe that would work too. Depends on if we want to make a catch-all or a temporary workaround for this specific case.\n\nI don\u0027t have much of a preference.",
+      "revId": "9796deb420e111dae945c0e1770edf0f8fcd8f50",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6a31ff41_667df903",
+        "filename": "scripts/build-unit-test-docker",
+        "patchSetId": 2
+      },
+      "lineNbr": 855,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2025-11-17T22:09:43Z",
+      "side": 1,
+      "message": "It seems like, based on the changes you\u0027re making, that something broke in the packaging such that `apt-update` is broken.  Should we just increment this date here to force a full rebuild?",
       "revId": "9796deb420e111dae945c0e1770edf0f8fcd8f50",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
