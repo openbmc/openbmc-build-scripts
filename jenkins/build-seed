@@ -24,7 +24,9 @@ fi
 export build_dir="${WORKSPACE}/build"
 
 SEED_MACHINES=(
+    anacapa
     bletchley
+    bletchley15
     catalina
     e3c246d4i
     evb-npcm845
@@ -34,9 +36,12 @@ SEED_MACHINES=(
     minerva
     p10bmc
     romulus
+    santabarbara
     ventura
+    ventura2
     witherspoon
     yosemite4
+    yosemite5
 )
 
 for m in "${SEED_MACHINES[@]}"; do
