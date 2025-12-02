@@ -16,6 +16,24 @@
       "message": "My general comment here is that the point of openbmc-ci (in my opinion) is to get as much broad coverage of the OpenBMC code base as possible. If some of these new systems are just bringing in all the same packages as existing systems (with a few dts tweaks) then it\u0027s not really a great use of our CI resources. With that said, FB donates the most compute nodes and bitbake caches similar things really well so I\u0027m fine with this commit.",
       "revId": "6db439ee9370d1d09ae1f9fb14ad786ccbff292f",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d2515bd3_baac4c68",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2025-12-02T19:57:18Z",
+      "side": 1,
+      "message": "\u003e My general comment here is that the point of openbmc-ci (in my opinion) is to get as much broad coverage of the OpenBMC code base as possible.\n\nI just wanted to give some perspective on why we are doing what we\u0027re doing...\n\nAs we see it there are two elements to CI:\n\n1. Providing signal to developers in the community that the contributions they are making are working correctly. (This is covered by what you said)\n\n2. Providing signal to downstream system integrators that the contributions from upstream are likely of similar quality to the \"last know good\" commits.\n\nAt Meta we push on our developers and ODMs to have an \"upstream first\" policy; we want as few downstream patches as possible for our platforms.  Every day, our developers are contributing changes for pre-production server platforms as we are developing that platform and every day we\u0027re pulling in those changes from upstream into our internal build processes to make \"release candidate\" images for our pre-production DC deployments and manufacturing lines.\n\nObviously we have internal build automation that will build images for each platform and perform some sort of testing on it.  But since our contributions are going upstream first, it\u0027s better to have some amount of sanity upstream as well.  Otherwise, if we try to import upstream and it is busted, we\u0027ve now have to delay picking up that new content until it is fixed.  It ends up that a simple compile failure on one platform type delays all platforms (of at least a day).\n\nRight now we\u0027re contributing the horsepower to compile-test all the platforms that we use (either in production or pre-production).  Internally we\u0027re doing a bunch of work to enable openbmc-test-automation and we\u0027re planning on pushing some of that enablement into upstream as well starting next year.  One example is that we built a QEMU model for \"Catalina\" (which we contributed to QEMU) and we\u0027d like to enable the same QEMU-based Robot testing that is done for Romulus on our platforms, starting with Catalina.\n\nAs this matures we may be able to add similar signal to what the \"IBM Jenkins\" does where we run some candiate code internally on functional hardware and give signal from openbmc-test-automation suites.",
+      "parentUuid": "d339f96e_e732957d",
+      "revId": "6db439ee9370d1d09ae1f9fb14ad786ccbff292f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
