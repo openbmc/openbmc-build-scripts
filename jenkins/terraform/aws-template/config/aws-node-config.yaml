@@ -1,0 +1,94 @@
+#cloud-config
+packages:
+    - build-essential
+    - chrpath
+    - cpio
+    - default-jre-headless
+    - diffstat
+    - docker.io
+    - fail2ban
+    - gawk
+    - git
+    - htop
+    - kitty-terminfo
+    - locales
+    - openjdk-17-jdk-headless
+    - python3
+    - python3-requests
+    - python3-sh
+    - socat
+    - subversion
+    - sysstat
+    - unzip
+    - vim
+    - xz-utils
+    - zsh
+users:
+    - name: openbmc
+      groups: docker, systemd-journal
+      shell: /bin/zsh
+      sudo: ALL=(ALL) NOPASSWD:ALL
+      ssh_authorized_keys:
+          - ssh-ed25519
+            AAAAC3NzaC1lZDI1NTE5AAAAIGJ/InU0oKBAtnnsqAah9uupgHY46boO2ba/GRmxsCX9
+            andrewg@IBM-PW05FM02
+          - ssh-ed25519
+            AAAAC3NzaC1lZDI1NTE5AAAAIPFLYUWLkirzBlw1LkhcVRCd+z+CFurE/lSSnt2XfNod
+            williamspatrick@gmail.com
+          - ecdsa-sha2-nistp256
+            AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBE96goBKyOXfowXC7Ee5lVuIGW2Itw6wa9t9o2QlyKrt8Y0Uza91vUuDrNnbv14MPhWVVCMcOpO5lg6hhXZBIiQ=
+            patrickw3@patrickw3-mbp
+
+write_files:
+    - path: /etc/systemd/system/jenkins-agent.service
+      encoding: b64
+      content: ${base64encode(jenkins_service)}
+    - path: /usr/bin/jenkins-agent
+      permissions: '0755'
+      encoding: b64
+      content: ${base64encode(jenkins_script)}
+
+runcmd:
+    # Remove dash as sh.
+    - echo "dash dash/sh boolean false" | debconf-set-selections
+    - DEBIAN_FRONTEND=noninteractive dpkg-reconfigure dash
+    # Set en_US.UTF-8 locale.
+    - locale-gen en_US.UTF-8
+    - localectl set-locale en_US.UTF8
+  
+    # Mount large EBS re-usable volume as /data0 with btrfs.
+    - sh -c 'while ! ls /dev/nvme[1-9]n* 1>/dev/null 2>&1; do sleep 10; done'
+    - sh -c 'blkid /dev/nvme[1-9]n* || mkfs.ext4 -L data0 /dev/nvme[1-9]n*'
+    - mkdir /data0
+    - sh -c 'echo "LABEL=data0 /data0 ext4 defaults 0 0" >> /etc/fstab'
+    - mount /data0
+  
+    # Move Docker content to /data0.
+    - systemctl stop docker
+    - rm -rf /var/lib/docker
+    - mkdir /data0/docker
+    - ln -s /data0/docker /var/lib/docker
+    - systemctl start docker
+  
+    # Install Patrick's awesome zsh config. This is optional
+    - curl -L https://raw.githubusercontent.com/williamspatrick/dotfiles/master/files/20_all/.zshrc > /home/openbmc/.zshrc
+    - chown openbmc:openbmc /home/openbmc/.zshrc
+    - chmod 755 /home/openbmc/.zshrc
+  
+    # Update sysctl settings.
+    - echo "fs.inotify.max_user_watches=32768" >> /etc/sysctl.conf
+    - sysctl -p
+  
+    # Start Jenkins
+    - mkdir /data0/jenkins
+    - chown openbmc:openbmc /data0/jenkins
+    - systemctl daemon-reload
+    - systemctl enable jenkins-agent.service
+    - systemctl start jenkins-agent.service &
+  
+  
+    # Enable and start fail2ban
+    - cp /etc/fail2ban/jail.conf /etc/fail2ban/jail.local
+    - sed -i 's/backend = auto/backend = systemd/' /etc/fail2ban/jail.local
+    - systemctl enable fail2ban.service
+    - systemctl start fail2ban.service &
