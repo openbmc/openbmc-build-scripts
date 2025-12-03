@@ -1,0 +1,48 @@
+#!/bin/bash
+
+set -e
+
+export ROOTDIR="/data0/jenkins"
+export ssc_dir="${ROOTDIR}"
+
+JENKINS_URL="https://jenkins.openbmc.org"
+
+# Set up git-config so basic git commit operations pass.
+git config --global user.name "Jenkins Node"
+git config --global user.email "jenkins@node.com"
+
+# Run Jenkins seed script.
+if [ ! -f "${ROOTDIR}/seed-complete" ]; then
+    export WORKSPACE="${ROOTDIR}/seed"
+    mkdir -p "${WORKSPACE}" && cd "${WORKSPACE}"
+
+    # Clone or fetch.
+    if [ -d openbmc-build-scripts ]; then
+        git -C openbmc-build-scripts fetch
+        git -C openbmc-build-scripts rebase
+    else
+        git clone https://github.com/openbmc/openbmc-build-scripts
+    fi
+
+    # Run build-seed.
+    if ./openbmc-build-scripts/jenkins/build-seed \
+        >> ${WORKSPACE}/build.log 2>&1;
+    then
+        echo "Seed successful"
+        touch ${ROOTDIR}/seed-complete
+    else
+        echo "Seed unsuccessful; launch Jenkins anyhow."
+    fi
+
+    # We don't want the WORKSPACE to be polluting the Jenkins agent itself.
+    unset WORKSPACE
+fi
+
+# Download Jenkins agent.
+wget --no-clobber "${JENKINS_URL}/jnlpJars/agent.jar" -P "${ROOTDIR}"
+
+# Start it.
+java -jar "${ROOTDIR}/agent.jar" \
+    -jnlpUrl "${JENKINS_URL}/computer/${JENKINS_HOST}/slave-agent.jnlp" \
+    -secret "${JENKINS_SECRET}" \
+    -workDir "${ROOTDIR}"
