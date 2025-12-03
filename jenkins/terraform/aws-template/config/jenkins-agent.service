@@ -1,0 +1,15 @@
+[Unit]
+Description=Start the Jenkins Agent
+After=cloud-init.target
+Wants=cloud-init.target
+
+[Service]
+ExecStart=/usr/bin/jenkins-agent
+Environment="JENKINS_HOST=${jenkins_host}"
+Environment="JENKINS_SECRET=${jenkins_secret}"
+User=openbmc
+Restart=always
+RestartSec=30s
+
+[Install]
+WantedBy=default.target
