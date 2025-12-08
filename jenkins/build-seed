@@ -28,6 +28,7 @@ SEED_MACHINES=(
     bletchley
     bletchley15
     catalina
+    clemente
     e3c246d4i
     evb-npcm845
     gb200nvl-obmc
