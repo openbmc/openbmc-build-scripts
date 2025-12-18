@@ -1013,7 +1013,7 @@ RUN pip3 install --break-system-packages \
         requests
 
 RUN npm install -g \
-        eslint@v8.56.0 eslint-plugin-json@v3.1.0 \
+        eslint@latest eslint-plugin-json@latest \
         markdownlint-cli@latest \
         prettier@latest
 """

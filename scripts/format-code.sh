@@ -241,13 +241,12 @@ function do_version_black() {
     black --version | head -n1
 }
 
-LINTER_REQUIRE+=([eslint]="eslint;.eslintrc.json;${CONFIG_PATH}/eslint-global-config.json")
+LINTER_REQUIRE+=([eslint]="eslint;eslint.config.js;${CONFIG_PATH}/eslint.config.js")
 LINTER_IGNORE+=([eslint]=".eslintignore")
 LINTER_TYPES+=([eslint]="json")
 function do_eslint() {
-    eslint --no-eslintrc -c "${LINTER_CONFIG[eslint]}" \
+    eslint --no-config-lookup -c "${LINTER_CONFIG[eslint]}" \
         --ext .json --format=stylish \
-        --resolve-plugins-relative-to /usr/local/lib/node_modules \
         --no-error-on-unmatched-pattern "$@"
 }
 function do_version_eslint() {
