@@ -1012,6 +1012,7 @@ RUN pip3 install --break-system-packages \
         referencing \
         requests
 
+ENV NODE_PATH="/usr/local/lib/node_modules"
 RUN npm install -g \
         eslint@latest eslint-plugin-json@latest \
         markdownlint-cli@latest \
