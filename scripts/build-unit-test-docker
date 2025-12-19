@@ -232,6 +232,10 @@ packages = {
         build_type="autogen",
         config_flags=["--enable-bindings-cxx"],
     ),
+    "NVIDIA/stdexec": PackageDef(
+        rev="36a92fd776c835abd4dc5e62d43cf040c20a9add",
+        build_type="meson",
+    ),
     "open-power/pdbg": PackageDef(build_type="autoconf"),
     "openbmc/gpioplus": PackageDef(
         build_type="meson",
@@ -288,6 +292,7 @@ packages = {
     ),
     "openbmc/sdbusplus": PackageDef(
         depends=[
+            "NVIDIA/stdexec",
             "nlohmann/json",
         ],
         build_type="meson",
