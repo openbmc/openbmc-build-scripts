@@ -23,6 +23,7 @@ from tempfile import TemporaryDirectory
 from urllib.parse import urljoin
 
 from git import Repo
+from git.exc import GitCommandError
 
 # interpreter is not used directly but this resolves dependency ordering
 # that would be broken if we didn't include it.
@@ -259,7 +260,7 @@ def clone_pkg(pkg, branch):
         # first try the branch
         clone = Repo.clone_from(pkg_repo, pkg_dir, branch=branch)
         repo_inst = clone.working_dir
-    except Exception:
+    except GitCommandError:
         printline("Input branch not found, default to master")
         clone = Repo.clone_from(pkg_repo, pkg_dir, branch="master")
         repo_inst = clone.working_dir
