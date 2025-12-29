@@ -472,7 +472,7 @@ def is_sanitize_safe():
             )
             check_call([exe], stdout=devnull, stderr=devnull)
 
-        # TODO - Sanitizer not working on ppc64le
+        # TODO: Sanitizer not working on ppc64le
         # https://github.com/openbmc/openbmc-build-scripts/issues/31
         if platform.processor() == "ppc64le":
             sys.stderr.write("###### ppc64le is not sanitize safe ######\n")
