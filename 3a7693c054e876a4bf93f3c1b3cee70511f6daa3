@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6eb7e10c_3aca6d68",
+        "filename": "scripts/unit-test.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 1133,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2025-12-29T18:45:12Z",
+      "side": 0,
+      "message": "@geissonator@yahoo.com\n\ngit-blame shows this commit:\n\n```\ncommit cd9578b262fcce6f1e4e3f76fa05fa5f56100123\nAuthor: Andrew Geissler \u003cgeissonator@yahoo.com\u003e\nDate:   Tue May 4 10:18:01 2021 -0500\n\n    ci-ppc64le: disable sanitizer test\n\n    The latest Ubuntu docker container on ppc64le has caused the sanitizer\n    tests to start failing within the PLDM repository. Until we can figure\n    this out, disable these tests on ppc64le machines.\n\n    See openbmc/openbmc-build-scripts#31 for details\n```\n\nDid this ever get resolved?",
+      "revId": "3a7693c054e876a4bf93f3c1b3cee70511f6daa3",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
