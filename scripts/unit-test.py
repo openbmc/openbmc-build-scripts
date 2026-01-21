@@ -673,7 +673,7 @@ class Autotools(BuildSystem):
             stderr=subprocess.PIPE,
         )
         document = contents.encode("utf-8")
-        (stdout, stderr) = autoconf_process.communicate(input=document)
+        stdout, stderr = autoconf_process.communicate(input=document)
         if not stdout:
             print(stderr)
             raise Exception("Failed to run autoconf for parsing dependencies")
