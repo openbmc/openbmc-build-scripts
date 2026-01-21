@@ -59,6 +59,7 @@ GERRIT_CI_GROUPS=( \
         arm/ci-authorized \
         aspeed/ci-authorized \
         asus/ci-authorized \
+        axiado/ci-authorized \
         bytedance/ci-authorized \
         celestica/ci-authorized \
         code-construct/ci-authorized \
