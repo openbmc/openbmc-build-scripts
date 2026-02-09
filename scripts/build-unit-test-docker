@@ -1019,7 +1019,7 @@ RUN pip3 install --break-system-packages \
 
 ENV NODE_PATH="/usr/local/lib/node_modules"
 RUN npm install -g \
-        eslint@latest eslint-plugin-json@latest \
+        eslint@latest @eslint/json@latest \
         markdownlint-cli@latest \
         prettier@latest
 """
