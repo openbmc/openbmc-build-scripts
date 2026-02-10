@@ -929,7 +929,6 @@ RUN apt-get update && apt-get dist-upgrade -yy && apt-get install -yy \
     libxml-simple-perl \
     lsb-release \
     ninja-build \
-    npm \
     pkg-config \
     protobuf-compiler \
     python3 \
@@ -990,6 +989,13 @@ RUN update-alternatives --install /usr/bin/clang clang /usr/bin/clang-21 1000 \
   --slave /usr/bin/scan-build scan-build /usr/bin/scan-build-21 \
   --slave /usr/bin/lld lld /usr/bin/lld-21
 
+# Install later versions of nodejs.
+RUN curl -fsSL https://deb.nodesource.com/gpgkey/nodesource.gpg.key | \
+        gpg --dearmor -o /usr/share/keyrings/nodesource.gpg
+RUN echo "deb [signed-by=/usr/share/keyrings/nodesource.gpg] https://deb.nodesource.com/node_24.x nodistro main" | \
+        tee /etc/apt/sources.list.d/nodesource.list
+RUN apt-get update && apt-get install -y nodejs
+
 """
 
 if is_automated_ci_build:
@@ -1017,9 +1023,10 @@ RUN pip3 install --break-system-packages \
         referencing \
         requests
 
-ENV NODE_PATH="/usr/local/lib/node_modules"
+ENV NODE_PATH="/usr/lib/node_modules"
 RUN npm install -g \
-        eslint@latest @eslint/json@latest \
+        eslint@latest eslint-config@latest \
+        @eslint/json@latest \
         markdownlint-cli@latest \
         prettier@latest
 """
