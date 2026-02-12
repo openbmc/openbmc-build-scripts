@@ -18,8 +18,7 @@ function acquire() {
 PALMETTO_ARTIFACTS="$(acquire palmetto)"
 PALMETTO_MTD="$(echo "${PALMETTO_ARTIFACTS}"/obmc-phosphor-image-palmetto-*.static.mtd)"
 # shellcheck disable=SC2016 # 'expect' strings
-expect \
-    -c "spawn qemu-system-arm \
+expect -c "spawn qemu-system-arm \
             -M palmetto-bmc \
             -drive file=${PALMETTO_MTD},if=mtd,format=raw \
             -nographic \
@@ -34,8 +33,7 @@ expect \
 ROMULUS_ARTIFACTS="$(acquire romulus)"
 ROMULUS_MTD="$(echo "${ROMULUS_ARTIFACTS}"/obmc-phosphor-image-romulus*.mtd)"
 # shellcheck disable=SC2016 # 'expect' strings
-expect \
-    -c "spawn qemu-system-arm \
+expect -c "spawn qemu-system-arm \
             -M romulus-bmc \
             -drive file=${ROMULUS_MTD},if=mtd,format=raw \
             -nographic \
@@ -63,8 +61,7 @@ xz --decompress --stdout --keep "$P10BMC_WIC_XZ" | dd of="$P10BMC_MMC" conv=notr
 truncate -s 16G "$P10BMC_MMC"
 
 # shellcheck disable=SC2016 # 'expect' strings
-expect \
-    -c "spawn qemu-system-arm -M rainier-bmc \
+expect -c "spawn qemu-system-arm -M rainier-bmc \
             -drive file=${P10BMC_MMC},if=sd,format=raw,index=2 \
             -net nic \
             -net user,hostfwd=:127.0.0.1:2222-:22,hostfwd=:127.0.0.1:2443-:443,hostname=qemu \
