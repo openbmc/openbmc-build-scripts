@@ -1009,7 +1009,7 @@ RUN apt-get update && apt-get dist-upgrade -yy
 
 dockerfile_base += """
 RUN pip3 install --break-system-packages \
-        beautysh==6.2.1 \
+        beautysh \
         black \
         codespell \
         flake8 \
