@@ -957,7 +957,9 @@ RUN add-apt-repository ppa:ubuntu-toolchain-r/ppa && \
     apt-get update && \
     apt-get install -y \
         gcc-15 \
+        gcc-15-x86-64-linux-gnu \
         g++-15 \
+        g++-15-x86-64-linux-gnu \
         libstdc++-15-dev
 
 RUN update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-15 15 \
@@ -967,6 +969,9 @@ RUN update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-15 15 \
   --slave /usr/bin/gcov-tool gcov-tool /usr/bin/gcov-tool-15
 RUN update-alternatives --remove cpp /usr/bin/cpp && \
     update-alternatives --install /usr/bin/cpp cpp /usr/bin/cpp-15 15
+RUN update-alternatives --install /usr/bin/x86_64-linux-gnu-gcc x86_64-linux-gnu-gcc /usr/bin/x86_64-linux-gnu-gcc-15 15 \
+  --slave /usr/bin/x86_64-linux-gnu-g++ x86_64-linux-gnu-g++ /usr/bin/x86_64-linux-gnu-g++-15 \
+  --slave /usr/bin/x86_64-linux-gnu-cpp x86_64-linux-gnu-cpp /usr/bin/x86_64-linux-gnu-cpp-15
 
 # Set up LLVM apt repository.
 RUN bash -c "$(wget -O - https://apt.llvm.org/llvm.sh)" -- 21 -m https://apt.llvm.org
