@@ -492,7 +492,7 @@ FROM {docker_base_img_name}
                 return False
             if len(commits) > 1:
                 print(
-                    f"{self.package} has more than 1 commit under {gerrit_topic}; using lastest upstream: {len(commits)}",
+                    f"{self.package} has more than 1 commit under {gerrit_topic}; using latest upstream: {len(commits)}",
                     file=sys.stderr,
                 )
                 return False
