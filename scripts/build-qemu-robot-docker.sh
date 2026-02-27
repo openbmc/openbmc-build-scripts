@@ -124,6 +124,7 @@ RUN pip3 install --break-system-packages \
     lxml \
     jsonschema \
     redfishtool \
+    redfish_service_validator \
     redfish_utilities \
     robotframework-httplibrary \
     robotframework-seleniumlibrary==6.0.0 \
