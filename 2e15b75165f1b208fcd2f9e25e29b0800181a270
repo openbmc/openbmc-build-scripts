@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "351ba734_51044a30",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2026-03-04T17:24:10Z",
+      "side": 1,
+      "message": "Currently the way we do redfish validation work is we build these containers and then clone openbmc-test-automation and tell it we want to run redfish validation and the specific version of the redfish validator we want to run. The openbmc-test-automation code then clones in redfish validator and checks out the appropriate tag. bmcweb and BMC code in general has some pretty hard requirements on versions.\n\nSo with all that said, I don\u0027t \"think\" having a version of redfish validator in the container already installed will hurt anything but I\u0027m not sure how well the latest version that happens to come in via apt install will work against openbmc code.\n\nI\u0027ll add on George to see if he has any concerns with this interfering with openbmc-test-automation.",
+      "revId": "2e15b75165f1b208fcd2f9e25e29b0800181a270",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
