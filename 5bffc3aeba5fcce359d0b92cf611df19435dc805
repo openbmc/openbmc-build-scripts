@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2f4712cf_39f08980",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1000153
+      },
+      "writtenOn": "2026-03-11T18:56:45Z",
+      "side": 1,
+      "message": "Can you elaborate on this?  It\u0027s fine if this is installed, but I don\u0027t see how you can run service validator in a unit test without having the full system available, unless maybe you\u0027re only testing the services bmcweb holds internally?\n\n@amithash@meta.com We don\u0027t need to go back and forth on this review, it\u0027s fine, but I\u0027m curious what you\u0027re working on if you want to talk about it in discord.",
+      "revId": "5bffc3aeba5fcce359d0b92cf611df19435dc805",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
