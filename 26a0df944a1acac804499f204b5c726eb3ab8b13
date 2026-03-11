@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "42cfe801_067884a4",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2026-03-11T21:33:57Z",
+      "side": 1,
+      "message": "This was originally done with the first addition of this (I87278597876b6e2b0a59e297cde020631491b5fd).  Looking at the history, I think it was done because the default dictionaries don\u0027t actually fix misspellings that may be misspellings of the GB spelling, so for consistency we just said \"do everything in US spelling\".  I\u0027m not super hung up on doing it since it\u0027s pretty much only @andrew@codeconstruct.com.au that uses GB spellings.",
+      "revId": "26a0df944a1acac804499f204b5c726eb3ab8b13",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
