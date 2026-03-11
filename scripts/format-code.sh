@@ -25,6 +25,7 @@ function display_help()
 }
 
 LINTERS_ALL=( \
+        ast_grep \
         commit_gitlint \
         commit_spelling \
         beautysh \
@@ -208,6 +209,15 @@ function do_commit_gitlint() {
 }
 function do_version_commit_gitlint() {
     gitlint --version | awk '{ print $3 }'
+}
+
+LINTER_REQUIRE+=([ast_grep]="ast-grep;.astgrep/sgconfig.yml")
+LINTER_TYPES+=([ast_grep]="c;cpp")
+function do_ast_grep() {
+    ast-grep scan --config .astgrep/sgconfig.yml --error "$@"
+}
+function do_version_ast_grep() {
+    ast-grep --version
 }
 
 # We need different function style for bash/zsh vs plain sh, so beautysh is
