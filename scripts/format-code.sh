@@ -194,7 +194,7 @@ function do_commit_spelling() {
 
     # Run the codespell with builtin dictionary on the patchset
     echo -n "generic-dictionary - misspelling count >> "
-    codespell --builtin clear,rare,en-GB_to_en-US -d --count "$commit_filename"
+    codespell --builtin clear,rare -d --count "$commit_filename"
 }
 function do_version_commit_spelling() {
     echo codespell: "$(codespell --version)"
