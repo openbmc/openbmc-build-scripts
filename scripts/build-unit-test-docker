@@ -123,6 +123,27 @@ packages = {
         rev="2.12.1",
         build_type="cmake",
     ),
+    "opengrep/opengrep": PackageDef(
+        rev="v1.16.4",
+        build_type="custom",
+        custom_post_dl=[
+            # Release tarball does not contain req'd submodules, need to recursively clone
+            "find . -mindepth 1 -delete",
+            "git clone --recursive --depth 1 --branch v1.16.4 "
+            "https://github.com/opengrep/opengrep.git .",
+        ],
+        build_steps=[
+            "export OPAMYES=1"
+            " && opam init --disable-sandboxing --bare"
+            " && opam switch create 5.3.0"
+            " && eval $(opam env)"
+            f" && make -j{proc_count} install-deps-for-semgrep-core"
+            f" && make -j{proc_count} minimal-build"
+            f" && cp libs/ocaml-tree-sitter-core/tree-sitter/lib/libtree-sitter.* {prefix}/lib/"
+            " && cp bin/opengrep-core cli/src/semgrep/bin/"
+            " && pip3 install --break-system-packages ./cli",
+        ],
+    ),
     "DMTF/libspdm": PackageDef(
         rev="3.7.0",
         url=lambda pkg, rev: f"https://github.com/DMTF/libspdm/archive/{rev}.tar.gz",
@@ -906,6 +927,7 @@ RUN apt-get update && apt-get dist-upgrade -yy && apt-get install -yy \
     libcryptsetup-dev \
     libcurl4-openssl-dev \
     libdbus-1-dev \
+    libev-dev \
     libevdev-dev \
     libi2c-dev \
     libjpeg-dev \
@@ -928,7 +950,9 @@ RUN apt-get update && apt-get dist-upgrade -yy && apt-get install -yy \
     libxml2-utils \
     libxml-simple-perl \
     lsb-release \
+    libpcre3-dev \
     ninja-build \
+    opam \
     pkg-config \
     protobuf-compiler \
     python3 \

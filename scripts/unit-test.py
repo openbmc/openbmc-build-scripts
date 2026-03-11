@@ -375,6 +375,31 @@ def build_dep_tree(name, pkgdir, dep_added, head, branch, dep_tree=None):
     return dep_added
 
 
+def run_opengrep():
+    rules_dir = ".opengrep/rules"
+    if not os.path.isdir(rules_dir) or NO_OPENGREP:
+        return
+
+    rule_files = [
+        os.path.join(rules_dir, f)
+        for f in sorted(os.listdir(rules_dir))
+        if f.endswith((".yml", ".yaml"))
+    ]
+    if not rule_files:
+        return
+
+    for rule_file in rule_files:
+        check_call_cmd(
+            "opengrep",
+            "scan",
+            "--error",
+            "--no-rewrite-rule-ids",
+            "--config",
+            rule_file,
+            ".",
+        )
+
+
 def run_cppcheck():
     if (
         not os.path.exists(os.path.join("build", "compile_commands.json"))
@@ -752,6 +777,7 @@ class Autotools(BuildSystem):
 
     def analyze(self):
         run_cppcheck()
+        run_opengrep()
 
 
 class CMake(BuildSystem):
@@ -820,6 +846,7 @@ class CMake(BuildSystem):
         maybe_make_valgrind()
         maybe_make_coverage()
         run_cppcheck()
+        run_opengrep()
 
 
 class Meson(BuildSystem):
@@ -1157,6 +1184,7 @@ class Meson(BuildSystem):
                 break
         check_call_cmd("meson", "configure", "build", "-Db_coverage=false")
         run_cppcheck()
+        run_opengrep()
 
     def _extra_meson_checks(self):
         with open(os.path.join(self.path, "meson.build"), "rt") as f:
@@ -1377,6 +1405,14 @@ if __name__ == "__main__":
         default=False,
         help="Do not run cppcheck",
     )
+    parser.add_argument(
+        "--no-opengrep",
+        dest="NO_OPENGREP",
+        action="store_true",
+        required=False,
+        default=False,
+        help="Do not run opengrep",
+    )
     arg_inttests = parser.add_mutually_exclusive_group()
     arg_inttests.add_argument(
         "--integration-tests",
@@ -1423,6 +1459,7 @@ if __name__ == "__main__":
     UNIT_TEST_PKG = args.PACKAGE
     TEST_ONLY = args.TEST_ONLY
     NO_CPPCHECK = args.NO_CPPCHECK
+    NO_OPENGREP = args.NO_OPENGREP
     INTEGRATION_TEST = args.INTEGRATION_TEST
     BRANCH = args.BRANCH
     FORMAT_CODE = args.FORMAT
