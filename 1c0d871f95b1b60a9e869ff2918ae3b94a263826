@@ -50,6 +50,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "80c4caf2_632efb11",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1000153
+      },
+      "writtenOn": "2026-03-12T19:03:44Z",
+      "side": 1,
+      "message": "ast-grep isn\u0027t integrated in build-scripts, so while we could make a comparison, why with that one specifically?  I\u0027ve used both before, and both could probably do it, opengrep is the one Davy chose (not sure of his reasons).",
+      "parentUuid": "f0104391_8a488024",
+      "range": {
+        "startLine": 9,
+        "startChar": 0,
+        "endLine": 9,
+        "endChar": 23
+      },
+      "revId": "1c0d871f95b1b60a9e869ff2918ae3b94a263826",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "fe49d659_26664e18",
         "filename": "/COMMIT_MSG",
         "patchSetId": 2
@@ -97,6 +121,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "b2deecb6_72308111",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1000153
+      },
+      "writtenOn": "2026-03-12T19:03:44Z",
+      "side": 1,
+      "message": "(Full disclosure, I asked Davy to push for better integration of this with the project, and was aware of it before the review because it came up in a security context)\n\nThere\u0027s some codification of the bmcweb coding rules attached to the same topic as this review that found some post-auth crash bugs.  Ultimately, as a maintainer think something like this would help reviews move faster.  At last scan, it found ~10 violations that got missed in code review/other static analysis.\n\n\u003e wouldn\u0027t we want project-level rules? \n\nMaybe someday?  I can\u0027t think of a rule that we would apply universally using ast grepping, but certainly could be possible.",
+      "parentUuid": "fe49d659_26664e18",
+      "range": {
+        "startLine": 10,
+        "startChar": 8,
+        "endLine": 12,
+        "endChar": 22
+      },
+      "revId": "1c0d871f95b1b60a9e869ff2918ae3b94a263826",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "afaadb04_1b223a73",
         "filename": "/COMMIT_MSG",
         "patchSetId": 2
@@ -131,6 +179,30 @@
       "writtenOn": "2026-03-12T19:01:20Z",
       "side": 1,
       "message": "You\u0027re right, `format-code.sh` is a better place to add it. I will make that change and submit a new patchset.",
+      "parentUuid": "afaadb04_1b223a73",
+      "range": {
+        "startLine": 20,
+        "startChar": 32,
+        "endLine": 20,
+        "endChar": 44
+      },
+      "revId": "1c0d871f95b1b60a9e869ff2918ae3b94a263826",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4c276450_3f09a237",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 1000153
+      },
+      "writtenOn": "2026-03-12T19:03:44Z",
+      "side": 1,
+      "message": "Because it\u0027s not a code formatter was my thought when asked offhand.  I may have steered Davy the wrong way here.  @Davy, sorry, Patrick is probably right now looking at it.",
       "parentUuid": "afaadb04_1b223a73",
       "range": {
         "startLine": 20,
