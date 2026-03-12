@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f0104391_8a488024",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2026-03-12T18:31:52Z",
+      "side": 1,
+      "message": "What is the advantage of opengrep over ast-grep?  Is there a reason we should choose opengrep?",
+      "range": {
+        "startLine": 9,
+        "startChar": 0,
+        "endLine": 9,
+        "endChar": 23
+      },
+      "revId": "1c0d871f95b1b60a9e869ff2918ae3b94a263826",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fe49d659_26664e18",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2026-03-12T18:31:52Z",
+      "side": 1,
+      "message": "Do we have a sample of things we\u0027re expecting to implement?  Are there bugs you\u0027ve been able to find in the openbmc source already that aren\u0027t something that would have been caught with clang-tidy?  Can you add a reference?\n\nIf we find this useful across the project, wouldn\u0027t we want project-level rules?  I\u0027m surprised we\u0027d want repository-specific rules.",
+      "range": {
+        "startLine": 10,
+        "startChar": 8,
+        "endLine": 12,
+        "endChar": 22
+      },
+      "revId": "1c0d871f95b1b60a9e869ff2918ae3b94a263826",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "afaadb04_1b223a73",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2026-03-12T18:31:52Z",
+      "side": 1,
+      "message": "What is the rationale for adding as another step in unit-test.py instead of adding as a linter/formatter in `scripts/format-code.sh`?  We already have infrastructure there for doing things like adding step-specific ignore files, adding common project-level configuration, etc.",
+      "range": {
+        "startLine": 20,
+        "startChar": 32,
+        "endLine": 20,
+        "endChar": 44
+      },
+      "revId": "1c0d871f95b1b60a9e869ff2918ae3b94a263826",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
