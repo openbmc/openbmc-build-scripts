@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "b86a43ea_a2e8e4e1",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1002898
+      },
+      "writtenOn": "2026-03-12T19:01:20Z",
+      "side": 1,
+      "message": "opengrep is more mature. There are lots of rules already out there that have been created by the community which developers could build off of. That being said, ast-grep is supposed to be faster and building it from source seems much more straightforward than building opengrep. If those aspects of ast-grep are more preferable, it shouldn\u0027t be too difficult to port the bmcweb rules to ast-grep.",
+      "parentUuid": "f0104391_8a488024",
+      "range": {
+        "startLine": 9,
+        "startChar": 0,
+        "endLine": 9,
+        "endChar": 23
+      },
+      "revId": "1c0d871f95b1b60a9e869ff2918ae3b94a263826",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "fe49d659_26664e18",
         "filename": "/COMMIT_MSG",
         "patchSetId": 2
@@ -49,6 +73,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "5360088c_e70922a4",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1002898
+      },
+      "writtenOn": "2026-03-12T19:01:20Z",
+      "side": 1,
+      "message": "Yes, there is another commit under review for bmcweb under this topic: https://gerrit.openbmc.org/q/topic:%22opengrep-ci%22\n\nThere you will find rules that are specific to the issues described in docs/COMMON_ERRORS.md. Some of those rules could probably become project-level rules, but others are specific to bmcweb.",
+      "parentUuid": "fe49d659_26664e18",
+      "range": {
+        "startLine": 10,
+        "startChar": 8,
+        "endLine": 12,
+        "endChar": 22
+      },
+      "revId": "1c0d871f95b1b60a9e869ff2918ae3b94a263826",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "afaadb04_1b223a73",
         "filename": "/COMMIT_MSG",
         "patchSetId": 2
@@ -60,6 +108,30 @@
       "writtenOn": "2026-03-12T18:31:52Z",
       "side": 1,
       "message": "What is the rationale for adding as another step in unit-test.py instead of adding as a linter/formatter in `scripts/format-code.sh`?  We already have infrastructure there for doing things like adding step-specific ignore files, adding common project-level configuration, etc.",
+      "range": {
+        "startLine": 20,
+        "startChar": 32,
+        "endLine": 20,
+        "endChar": 44
+      },
+      "revId": "1c0d871f95b1b60a9e869ff2918ae3b94a263826",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fee621a4_bb0db727",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 1002898
+      },
+      "writtenOn": "2026-03-12T19:01:20Z",
+      "side": 1,
+      "message": "You\u0027re right, `format-code.sh` is a better place to add it. I will make that change and submit a new patchset.",
+      "parentUuid": "afaadb04_1b223a73",
       "range": {
         "startLine": 20,
         "startChar": 32,
