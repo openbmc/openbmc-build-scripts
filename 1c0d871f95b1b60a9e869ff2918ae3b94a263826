@@ -120,6 +120,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0511d478_d625ca50",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1000153
+      },
+      "writtenOn": "2026-03-13T15:24:16Z",
+      "side": 1,
+      "message": "Rock on.",
+      "parentUuid": "23b29b8a_e476ae74",
+      "range": {
+        "startLine": 9,
+        "startChar": 0,
+        "endLine": 9,
+        "endChar": 23
+      },
+      "revId": "1c0d871f95b1b60a9e869ff2918ae3b94a263826",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "fe49d659_26664e18",
@@ -252,6 +276,30 @@
       "side": 1,
       "message": "Because it\u0027s not a code formatter was my thought when asked offhand.  I may have steered Davy the wrong way here.  @Davy, sorry, Patrick is probably right now looking at it.",
       "parentUuid": "afaadb04_1b223a73",
+      "range": {
+        "startLine": 20,
+        "startChar": 32,
+        "endLine": 20,
+        "endChar": 44
+      },
+      "revId": "1c0d871f95b1b60a9e869ff2918ae3b94a263826",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c7beebb6_b310070d",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 1000153
+      },
+      "writtenOn": "2026-03-13T15:24:16Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4c276450_3f09a237",
       "range": {
         "startLine": 20,
         "startChar": 32,
