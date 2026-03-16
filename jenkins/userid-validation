@@ -62,6 +62,7 @@ GERRIT_CI_GROUPS=( \
         axiado/ci-authorized \
         bytedance/ci-authorized \
         celestica/ci-authorized \
+        cloudflare/ci-authorized \
         code-construct/ci-authorized \
         coreweave/ci-authorized \
         cornelis/ci-authorized \
