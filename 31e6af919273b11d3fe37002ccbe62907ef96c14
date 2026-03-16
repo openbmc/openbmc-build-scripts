@@ -34,6 +34,24 @@
       "parentUuid": "1693f4e4_4abd4670",
       "revId": "31e6af919273b11d3fe37002ccbe62907ef96c14",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b9887bd8_416efe9b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1001712
+      },
+      "writtenOn": "2026-03-16T22:12:23Z",
+      "side": 1,
+      "message": "Do you want to enable it for every repo?\n\nIf you are doing it for security purpose then ipmi + bmcweb (redfish) would be most critical so i can imagine the focus would be on those repos and their dependencies.\n\nIs it possible to enable it only for some repos which are being enabled and then roll it out over time?",
+      "parentUuid": "1693f4e4_4abd4670",
+      "revId": "31e6af919273b11d3fe37002ccbe62907ef96c14",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
