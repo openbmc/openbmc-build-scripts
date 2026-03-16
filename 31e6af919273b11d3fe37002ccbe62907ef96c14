@@ -16,6 +16,24 @@
       "message": "We\u0027re currently working to make cppcheck more useful to meet our static code security scan requirement.\nLater, we also intend to push upstream.\nSo, I vote to keep cppcheck.",
       "revId": "31e6af919273b11d3fe37002ccbe62907ef96c14",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "af9203c4_7b2da048",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000153
+      },
+      "writtenOn": "2026-03-16T21:50:31Z",
+      "side": 1,
+      "message": "\u003e Later, we also intend to push upstream.\n\nCould we remove for now, and when it\u0027s useful, we add it back?\n\nFWIW, I\u0027ve worked at several companies that have static code security scanning requirements.  cpplint did not meet the minimums so I\u0027m worried about being stuck forever seeing warnings.  If we can make it useful, I\u0027m happy to have it back later if that\u0027s ok?\n\nThose minimums is why for some of the repos I maintain I run coverity separately once a month: https://scan.coverity.com/projects/openbmc-bmcweb?tab\u003doverview\n\nThis isn\u0027t an advertisement for coverity.  I run several scanners, and really any that have good open source policies are welcome, this is just one that some companies use so it\u0027s good to be able to diff upstream and downstream.",
+      "parentUuid": "1693f4e4_4abd4670",
+      "revId": "31e6af919273b11d3fe37002ccbe62907ef96c14",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
