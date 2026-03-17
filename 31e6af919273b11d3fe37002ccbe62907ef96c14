@@ -70,6 +70,24 @@
       "parentUuid": "b9887bd8_416efe9b",
       "revId": "31e6af919273b11d3fe37002ccbe62907ef96c14",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d6d52cac_c65f7ea2",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1001604
+      },
+      "writtenOn": "2026-03-17T10:33:16Z",
+      "side": 1,
+      "message": "\u003eCould we remove for now, and when it\u0027s useful, we add it back?\nI\u0027m good with this.\n\nNot only for cppcheck, we are also exploring whether some other tools/options may be compliant with our approved requirements.\n\nThanks for the link.",
+      "parentUuid": "af9203c4_7b2da048",
+      "revId": "31e6af919273b11d3fe37002ccbe62907ef96c14",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
