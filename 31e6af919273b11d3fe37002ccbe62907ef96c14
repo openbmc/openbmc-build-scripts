@@ -52,6 +52,24 @@
       "parentUuid": "1693f4e4_4abd4670",
       "revId": "31e6af919273b11d3fe37002ccbe62907ef96c14",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fdcc26fa_f2b0baa9",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000153
+      },
+      "writtenOn": "2026-03-17T03:43:35Z",
+      "side": 1,
+      "message": "\u003e Do you want to enable it for every repo?\n\nI\u0027m happy to have this discussion but cpplint has had these warnings for years at this point and no action that I can see, so I\u0027d prefer we have this discussion on another patch, ideally the one Myung is referring to where they\u0027re working on making it useful.\n\n2 years ago, I tried to make a way for repos to opt in:\nhttps://gerrit.openbmc.org/c/openbmc/openbmc-build-scripts/+/60863\n\nAnd there was no input.  If someone wants to fix this and puts forward real effort, this 44 lines of patch won\u0027t be a huge impetiment.  I will personally revert this patch if someone puts forward that level of effort, but for now, I don\u0027t see it.  On bmcweb, cppcheck warnings are about 40% of the logging output, and as a maintainer get in the way of triaging real failures.\n\nI would like to see this patch merge.",
+      "parentUuid": "b9887bd8_416efe9b",
+      "revId": "31e6af919273b11d3fe37002ccbe62907ef96c14",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
