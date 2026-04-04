@@ -35,7 +35,7 @@ from hashlib import sha256
 # typing.Dict is used for type-hints.
 from typing import Any, Callable, Dict, Iterable, Optional  # noqa: F401
 
-from sh import git, nproc  # type: ignore
+from sh import git  # type: ignore
 
 try:
     # System may have docker or it may have podman, try docker first
@@ -64,7 +64,10 @@ except Exception:
 
 # Declare some variables used in package definitions.
 prefix = "/usr/local"
-proc_count = nproc().strip()
+try:
+    proc_count = len(os.sched_getaffinity(0))
+except AttributeError:
+    proc_count = os.cpu_count() or 1
 
 
 class PackageDef(TypedDict, total=False):
