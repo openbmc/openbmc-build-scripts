@@ -11,7 +11,8 @@ set -e
 function display_help()
 {
     echo "usage: format-code.sh [-h | --help] [--no-diff] [--list-tools]"
-    echo "                      [--disable <tool>] [--enable <tool>] [<path>]"
+    echo "                      [--disable <tool>] [--enable <tool>]"
+    echo "                      [--no-secondary] [<path>]"
     echo
     echo "Format and lint a repository."
     echo
@@ -45,7 +46,7 @@ LINTERS_DISABLED=()
 LINTERS_ENABLED=()
 declare -A LINTERS_FAILED=()
 
-eval set -- "$(getopt -o 'h' --long 'help,list-tools,no-diff,disable:,enable:,allow-missing' -n 'format-code.sh' -- "$@")"
+eval set -- "$(getopt -o 'h' --long 'help,list-tools,no-diff,disable:,enable:,allow-missing,no-secondary' -n 'format-code.sh' -- "$@")"
 while true; do
     case "$1" in
         '-h'|'--help')
@@ -77,6 +78,11 @@ while true; do
 
         '--allow-missing')
             ALLOW_MISSING=yes
+            shift
+            ;;
+
+        '--no-secondary')
+            OPTION_NO_SECONDARY=1
             shift
             ;;
 
@@ -511,12 +517,14 @@ fi
 
 # Sometimes your situation is terrible enough that you need the flexibility.
 # For example, phosphor-mboxd.
-for formatter in "format-code.sh" "format-code"; do
-    if [[ -x "${formatter}" ]]; then
-        echo -e "    ${BLUE}Calling secondary formatter:${NORMAL} ${formatter}"
-        "./${formatter}"
-        if [ -z "$OPTION_NO_DIFF" ]; then
-            git --no-pager diff --exit-code
+if [ -z "$OPTION_NO_SECONDARY" ]; then
+    for formatter in "format-code.sh" "format-code"; do
+        if [[ -x "${formatter}" ]]; then
+            echo -e "    ${BLUE}Calling secondary formatter:${NORMAL} ${formatter}"
+            "./${formatter}"
+            if [ -z "$OPTION_NO_DIFF" ]; then
+                git --no-pager diff --exit-code
+            fi
         fi
-    fi
-done
+    done
+fi
