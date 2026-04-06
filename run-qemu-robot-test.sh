@@ -45,9 +45,9 @@
 #                       of obmc-phosphor-image. If you don't find the sysroots
 #                       folder, run `bitbake build-sysroots`.
 #
-#  MACHINE            = Machine to run test against. The options are "witherspoon",
-#                       "palmetto", "romulus", or undefined (default).  Default
-#                       will use the versatilepb model.
+#  MACHINE            = Machine to run test against. The options are "palmetto",
+#                       "romulus", or undefined (default).  Default will use
+#                       the versatilepb model.
 #
 #  DEFAULT_IMAGE_LOC  = The image location of the target MACHINE. Default to
 #                       "./tmp/deploy/images/"

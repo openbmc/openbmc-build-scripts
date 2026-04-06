@@ -27,8 +27,8 @@
 #                       which is the default location when doing a bitbake
 #                       of obmc-phosphor-image
 #
-#  MACHINE            = Machine to run test against. Options are "witherspoon",
-#                       "palmetto", "romulus", or undefined (default).  Default
+#  MACHINE            = Machine to run test against. Options are "palmetto",
+#                       "romulus", or undefined (default).  Default
 #                       will use the versatilepb model.
 ###############################################################################
 
