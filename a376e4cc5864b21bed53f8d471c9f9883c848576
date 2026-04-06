@@ -16,6 +16,24 @@
       "message": "nit: should include help message for new option",
       "revId": "a376e4cc5864b21bed53f8d471c9f9883c848576",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "27c45089_f58f6427",
+        "filename": "scripts/format-code.sh",
+        "patchSetId": 1
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2026-04-06T19:50:53Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9b9a1e34_7e42be0d",
+      "revId": "a376e4cc5864b21bed53f8d471c9f9883c848576",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
