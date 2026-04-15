@@ -93,6 +93,7 @@ GERRIT_CI_GROUPS=( \
         nineelements/ci-authorized \
         nuvoton/ci-authorized \
         nvidia/ci-authorized \
+        nxp/ci-authorized \
         openbmc/ci-authorized \
         pcpartner/ci-authorized \
         phytium/ci-authorized \
