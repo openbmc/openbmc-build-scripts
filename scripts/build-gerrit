@@ -1,0 +1,214 @@
+#!/bin/bash -xe
+###############################################################################
+# Script used to create a gerrit instance that can run amd64 or ppc64le.
+#
+# To persist your gerrit data, it's recommended you mount these folders:
+#  /var/gerrit/etc
+#  /var/gerrit/git
+#  /var/gerrit/index
+#  /var/gerrit/cache
+#  /var/gerrit/db
+###############################################################################
+# Build Variables:
+#  DOCKER_REG         The URL of a docker registry to utilize for base images
+#                     Default: "public.ecr.aws/docker/library"
+#                     Examples: "docker.io", "public.ecr.aws/ubuntu"
+#  g_vrsn             The version of the gerrit war file you wish to use
+#                     Default: "3.11.7"
+#  g_user             Username tag the container will use to run Gerrit
+#                     Default: "gerrit"
+#  g_group            Group name tag the container will use to run Gerrit
+#                     Default: "gerrit"
+#  g_uid              Gerrit user ID the container will use to run Gerrit
+#                     Default: "1001"
+#  g_gid              Gerrit group ID the container will use to run Gerrit
+#                     Default: "1001"
+#  g_gerrit_dir       Directory used as the Gerrit Home in the container
+#                     Default: "/var/gerrit"
+#  http_port          The port used for gerrit UI
+#                     Default: "8080"
+#  ssh_port           The port used for gerrit ssh
+#                     Default: "29418"
+#  out_img            The name given to the Docker image when it is built
+#                     Default: "openbmc/gerrit-master-${ARCH}:${g_vrsn}"
+#
+###############################################################################
+
+set -xeo pipefail
+
+###############################################################################
+# Configuration Section - Update these for new Gerrit versions
+###############################################################################
+
+# Docker registry configuration
+# Override with DOCKER_REG environment variable if needed
+# Default: public.ecr.aws/docker/library (AWS public ECR)
+# Alternative examples: docker.io, public.ecr.aws/ubuntu
+docker_reg=${DOCKER_REG:-"public.ecr.aws/docker/library"}
+
+# Gerrit version configuration
+GERRIT_VERSION=${g_vrsn:-3.11.7}
+GERRIT_MAJOR_MINOR="3.11"  # Used for plugin compatibility
+
+# Java base image
+JAVA_BASE_IMAGE="${docker_reg}/eclipse-temurin:21.0.5_11-jdk-noble"
+
+# Plugin versions and URLs
+# Update these URLs when upgrading Gerrit versions
+# Plugin repository: https://gerrit-ci.gerritforge.com/plugin-manager/
+OWNERS_PLUGIN_BASE="https://gerrit-ci.gerritforge.com/job/plugin-owners-bazel-stable-${GERRIT_MAJOR_MINOR}/lastSuccessfulBuild/artifact/bazel-bin/plugins/owners"
+GITHUB_PLUGIN_VERSION="3.10.3"
+GITHUB_PLUGIN_BASE="https://archive-ci.gerritforge.com/job/plugin-github-mvn-stable-3.10/lastSuccessfulBuild/artifact"
+GRAVATAR_PLUGIN_URL="https://gerrit-ci.gerritforge.com/job/plugin-avatars-gravatar-bazel-stable-${GERRIT_MAJOR_MINOR}/lastSuccessfulBuild/artifact/bazel-bin/plugins/avatars-gravatar/avatars-gravatar.jar"
+
+# Yocto branches to mirror (update as new releases are added)
+# Reference: https://wiki.yoctoproject.org/wiki/Releases
+YOCTO_BRANCHES=(
+    "master"
+    "dunfell"
+    "gatesgarth"
+    "hardknott"
+    "honister"
+    "kirkstone"
+    "langdale"
+    "mickledore"
+    "nanbield"
+    "scarthgap"
+    "styhead"
+    "walnascar"
+)
+
+###############################################################################
+# Runtime Configuration
+###############################################################################
+
+ARCH=$(uname -m)
+workspace=${workspace:-/tmp/gerrit-build-${RANDOM}}
+
+# Container configuration
+g_user=${g_user:-gerrit}
+g_group=${g_group:-gerrit}
+g_uid=${g_uid:-1001}
+g_gid=${g_gid:-1001}
+g_gerrit_dir=${g_gerrit_dir:-/var/gerrit}
+http_port=${http_port:-8080}
+ssh_port=${ssh_port:-29418}
+out_img=${out_img:-openbmc/gerrit-master-${ARCH}:${GERRIT_VERSION}}
+
+# Gerrit WAR download URL
+# Reference: https://gerrit-releases.storage.googleapis.com/index.html
+gerrit_war_url="https://gerrit-releases.storage.googleapis.com/gerrit-${GERRIT_VERSION}.war"
+
+###############################################################################
+# Functions
+###############################################################################
+
+prepare_workspace() {
+    if [[ -d ${workspace} ]]; then
+        rm -rf "${workspace}/Dockerfile" "${workspace}/docker-gerrit"
+    else
+        mkdir -p "${workspace}"
+    fi
+    cd "${workspace}"
+}
+
+generate_dockerfile() {
+    cat > Dockerfile << EOF
+FROM ${JAVA_BASE_IMAGE}
+
+ARG DEBIAN_FRONTEND=noninteractive
+ENV DEBIAN_FRONTEND=noninteractive
+
+# Install required packages
+RUN apt-get update && apt-get install -y \\
+    git \\
+    curl \\
+    vim \\
+    openssh-client \\
+    sudo \\
+    software-properties-common \\
+    wget \\
+    cron \\
+    apt-transport-https \\
+    gnupg2 \\
+    && rm -rf /var/lib/apt/lists/*
+
+RUN update-alternatives --install /usr/bin/java java /opt/java/openjdk/bin/java 2222
+
+# Create gerrit user and group
+RUN groupadd -g ${g_gid} ${g_group} && \\
+    useradd -d ${g_gerrit_dir} -u ${g_uid} -g ${g_gid} -m -s /bin/bash ${g_user}
+
+USER ${g_user}
+
+# Download and install Gerrit
+RUN cd /tmp && \\
+    wget ${gerrit_war_url} && \\
+    mkdir ${g_gerrit_dir}/bin/ && \\
+    mv gerrit-${GERRIT_VERSION}.war ${g_gerrit_dir}/bin/gerrit.war && \\
+    java -jar ${g_gerrit_dir}/bin/gerrit.war init --batch --install-all-plugins -d ${g_gerrit_dir}
+
+# Expose ports
+EXPOSE ${ssh_port} ${http_port}
+
+# Install Gerrit plugins
+RUN cd ${g_gerrit_dir}/plugins/ && \\
+    wget ${OWNERS_PLUGIN_BASE}/owners.jar && \\
+    wget ${OWNERS_PLUGIN_BASE}/owners-autoassign.jar
+
+RUN cd ${g_gerrit_dir}/lib/ && \\
+    wget ${OWNERS_PLUGIN_BASE}/owners-api.jar
+
+RUN cd ${g_gerrit_dir}/lib/ && \\
+    wget ${GITHUB_PLUGIN_BASE}/github-oauth/target/github-oauth-${GITHUB_PLUGIN_VERSION}.jar
+
+RUN cd ${g_gerrit_dir}/plugins/ && \\
+    wget ${GITHUB_PLUGIN_BASE}/github-plugin/target/github-plugin-${GITHUB_PLUGIN_VERSION}.jar
+
+RUN cd ${g_gerrit_dir}/plugins/ && \\
+    wget ${GRAVATAR_PLUGIN_URL}
+
+# Configure cron jobs for Yocto branch mirroring
+$(generate_cron_jobs)
+
+# Install robots.txt to prevent web crawler indexing
+RUN echo '# Directions for web crawlers.\\n\\
+# See http://www.robotstxt.org/wc/norobots.html.\\n\\
+\\n\\
+User-agent: AhrefsBot\\n\\
+User-agent: Bytespider\\n\\
+User-agent: DotBot\\n\\
+User-agent: FriendlyCrawler\\n\\
+User-agent: HTTrack\\n\\
+User-agent: MSIECrawler\\n\\
+User-agent: Nutch\\n\\
+User-agent: SemrushBot\\n\\
+User-agent: bingbot\\n\\
+User-agent: puf\\n\\
+Disallow: /' \\
+    >> ${g_gerrit_dir}/static/robots.txt
+
+USER root
+
+CMD ["/bin/bash", "-c", "/etc/init.d/cron start && sudo -i -u ${g_user} JAVA=/usr/bin/java ${g_gerrit_dir}/bin/gerrit.sh start && tail -f ${g_gerrit_dir}/logs/error_log"]
+EOF
+}
+
+generate_cron_jobs() {
+    for branch in "${YOCTO_BRANCHES[@]}"; do
+        echo "RUN ( crontab -l ; echo \"0 * * * * git -C ~/git/openbmc/openbmc.git push --follow-tags ssh://git@github.com/openbmc/openbmc ${branch}\" ) | crontab"
+    done
+}
+
+build_docker_image() {
+    docker build -t "${out_img}" .
+}
+
+###############################################################################
+# Main Execution
+###############################################################################
+
+prepare_workspace
+generate_dockerfile
+build_docker_image
+
