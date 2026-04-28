@@ -85,6 +85,7 @@ GERRIT_CI_GROUPS=( \
         inspur/ci-authorized \
         intel/ci-authorized \
         inventec/ci-authorized \
+        jabil/ci-authorized \
         lenovo/ci-authorized \
         microsoft/ci-authorized \
         mitac/ci-authorized \
