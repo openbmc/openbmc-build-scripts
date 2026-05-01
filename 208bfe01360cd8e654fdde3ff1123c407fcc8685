@@ -16,6 +16,24 @@
       "message": "Could you add a bit more on the why here? Just feels like this container keeps growing and growing (which means CI infrastructure needs to be cleaned more and more often) so would just like to be sure we really need this and understand if other repos could find it useful.",
       "revId": "208bfe01360cd8e654fdde3ff1123c407fcc8685",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d71b01e6_d7c3a743",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1000009
+      },
+      "writtenOn": "2026-05-01T00:52:47Z",
+      "side": 1,
+      "message": "I\u0027ve expanded on why it\u0027s desirable to me in PS2, along with adding details such as the necessary meson cross-file configuration.",
+      "parentUuid": "fa34e195_68754d52",
+      "revId": "208bfe01360cd8e654fdde3ff1123c407fcc8685",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
