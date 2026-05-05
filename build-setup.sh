@@ -206,7 +206,7 @@ if [[ "${distro}" == fedora ]];then
   RUN grep -q ${UID} /etc/passwd || useradd -d ${HOME} -m -u ${UID} -g ${GROUPS[0]} ${USER}
 
   USER ${USER}
-  ENV HOME ${HOME}
+  ENV HOME=${HOME}
 EOF
     )
 
@@ -222,7 +222,7 @@ elif [[ "${distro}" == ubuntu ]]; then
   ${PROXY}
   ${MIRROR}
 
-  ENV DEBIAN_FRONTEND noninteractive
+  ENV DEBIAN_FRONTEND=noninteractive
 
   RUN apt-get update && apt-get install -yy \
       build-essential \
@@ -249,9 +249,9 @@ elif [[ "${distro}" == ubuntu ]]; then
 
   # Set the locale
   RUN locale-gen en_US.UTF-8
-  ENV LANG en_US.UTF-8
-  ENV LANGUAGE en_US:en
-  ENV LC_ALL en_US.UTF-8
+  ENV LANG=en_US.UTF-8
+  ENV LANGUAGE=en_US:en
+  ENV LC_ALL=en_US.UTF-8
 
   # Latest Ubuntu added a default user (ubuntu), which takes 1000 UID.
   # If the user calling this build script happens to also have a UID of 1000
@@ -262,7 +262,7 @@ elif [[ "${distro}" == ubuntu ]]; then
   RUN grep -q ${UID} /etc/passwd || useradd -d ${HOME} -m -u ${UID} -g ${GROUPS[0]} ${USER}
 
   USER ${USER}
-  ENV HOME ${HOME}
+  ENV HOME=${HOME}
 EOF
     )
 fi
