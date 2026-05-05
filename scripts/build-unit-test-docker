@@ -851,9 +851,9 @@ FROM {docker_reg}/{distro}
 
 {mirror}
 
-ENV DEBIAN_FRONTEND noninteractive
+ENV DEBIAN_FRONTEND=noninteractive
 
-ENV PYTHONPATH "/usr/local/lib/python3.10/site-packages/"
+ENV PYTHONPATH="/usr/local/lib/python3.10/site-packages/"
 
 # Sometimes the ubuntu key expires and we need a way to force an execution
 # of the apt-get commands for the dbgsym-keyring.  When this happens we see

@@ -49,7 +49,7 @@ FROM ${docker_reg}/${DISTRO}
 ${PROXY}
 ${MIRROR}
 
-ENV DEBIAN_FRONTEND noninteractive
+ENV DEBIAN_FRONTEND=noninteractive
 
 RUN apt-get update && apt-get install -yy \
     python3 \
