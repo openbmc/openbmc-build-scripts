@@ -784,9 +784,7 @@ class CMake(BuildSystem):
                     "-B" + build_dir,
                 )
 
-                check_call_cmd(
-                    "run-clang-tidy", "-header-filter=.*", "-p", build_dir
-                )
+                check_call_cmd("run-clang-tidy", "-header-filter=.*", "-p", build_dir)
 
         maybe_make_valgrind()
         maybe_make_coverage()
@@ -907,8 +905,9 @@ class Meson(BuildSystem):
             "-Dcpp_args='-DBOOST_USE_VALGRIND'",
         ]
         if build_for_testing:
-            # -Ddebug=true -Doptimization=g is helpful for abi-dumper but isn't a combination that
-            # is supported by meson's build types. Configure it manually.
+            # -Ddebug=true -Doptimization=g is helpful for abi-dumper but isn't
+            # a combination that is supported by meson's build types.
+            # Configure it manually.
             meson_flags.append("-Ddebug=true")
             meson_flags.append("-Doptimization=g")
         else:
@@ -938,9 +937,7 @@ class Meson(BuildSystem):
     def configure(self, build_for_testing):
         meson_flags = self.get_configure_flags(build_for_testing)
         try:
-            check_call_cmd(
-                "meson", "setup", "--reconfigure", "build", *meson_flags
-            )
+            check_call_cmd("meson", "setup", "--reconfigure", "build", *meson_flags)
         except Exception:
             shutil.rmtree("build", ignore_errors=True)
             check_call_cmd("meson", "setup", "build", *meson_flags)
@@ -1052,9 +1049,7 @@ class Meson(BuildSystem):
             with TemporaryDirectory(prefix="build", dir=".") as build_dir:
                 check_call_cmd("meson", "setup", build_dir, env=clang_env)
                 if not os.path.isfile(".openbmc-no-clang"):
-                    check_call_cmd(
-                        "meson", "compile", "-C", build_dir, env=clang_env
-                    )
+                    check_call_cmd("meson", "compile", "-C", build_dir, env=clang_env)
                 try:
                     check_call_cmd(
                         "ninja",
@@ -1086,9 +1081,7 @@ class Meson(BuildSystem):
             meson_flags = self.get_configure_flags(self.build_for_testing)
             meson_flags.append("-Db_sanitize=address,undefined")
             try:
-                check_call_cmd(
-                    "meson", "setup", "--reconfigure", "build", *meson_flags
-                )
+                check_call_cmd("meson", "setup", "--reconfigure", "build", *meson_flags)
             except Exception:
                 shutil.rmtree("build", ignore_errors=True)
                 check_call_cmd("meson", "setup", "build", *meson_flags)
@@ -1102,15 +1095,11 @@ class Meson(BuildSystem):
                 "testlog-ubasan",
             )
             meson_flags = [
-                s.replace(
-                    "-Db_sanitize=address,undefined", "-Db_sanitize=none"
-                )
+                s.replace("-Db_sanitize=address,undefined", "-Db_sanitize=none")
                 for s in meson_flags
             ]
             try:
-                check_call_cmd(
-                    "meson", "setup", "--reconfigure", "build", *meson_flags
-                )
+                check_call_cmd("meson", "setup", "--reconfigure", "build", *meson_flags)
             except Exception:
                 shutil.rmtree("build", ignore_errors=True)
                 check_call_cmd("meson", "setup", "build", *meson_flags)
@@ -1123,9 +1112,905 @@ class Meson(BuildSystem):
         # Only build coverage HTML if coverage files were produced
         for root, dirs, files in os.walk("build"):
             if any([f.endswith(".gcda") for f in files]):
-                check_call_cmd("ninja", "-C", "build", "coverage-html")
+                self._generate_coverage_reports()
                 break
         check_call_cmd("meson", "configure", "build", "-Db_coverage=false")
+
+    # ── Coverage report helper utilities ──────────────────────────────
+
+    @staticmethod
+    def _pct(hit, found):
+        """Safe percentage: returns 0.0 when *found* is zero."""
+        return (100.0 * hit / found) if found else 0.0
+
+    @staticmethod
+    def _make_metric(found, hit):
+        """Return a {found, hit, percent} dict used in every coverage entry."""
+        return {"found": found, "hit": hit, "percent": Meson._pct(hit, found)}
+
+    @staticmethod
+    def _compute_function_ranges(sorted_funcs):
+        """Return list of (start, end) line-ranges for *sorted_funcs*."""
+        ranges = []
+        for idx, fn in enumerate(sorted_funcs):
+            start = fn.get("line") or fn.get("__tmp_line")
+            end = 10**9
+            if idx + 1 < len(sorted_funcs):
+                nxt = sorted_funcs[idx + 1]
+                end = (nxt.get("line") or nxt.get("__tmp_line")) - 1
+            ranges.append((start, end))
+        return ranges
+
+    @staticmethod
+    def _accumulate_in_range(mapping, start, end, keys=("found", "hit")):
+        """Sum *keys* from dict-valued *mapping* for entries whose key is in
+        [start, end]."""
+        totals = {k: 0 for k in keys}
+        for ln, val in mapping.items():
+            if start <= ln <= end:
+                if isinstance(val, dict):
+                    for k in keys:
+                        totals[k] += val.get(k, 0)
+        return totals
+
+    @staticmethod
+    def _count_lines_in_range(line_cov, start, end):
+        """Count instrumented / hit lines in [start, end]."""
+        found = hit = 0
+        for ln, cnt in line_cov.items():
+            if start <= ln <= end:
+                found += 1
+                if cnt > 0:
+                    hit += 1
+        return found, hit
+
+    @staticmethod
+    def _build_enriched_entry(
+        name,
+        line,
+        count,
+        hit_flag,
+        line_found,
+        line_hit,
+        br_found,
+        br_hit,
+        cond_found,
+        cond_hit,
+        blk_found=0,
+        blk_hit=0,
+    ):
+        """Build the enriched function dict with all convenience keys."""
+        # Fallback: mirror branch coverage when no condition data
+        if cond_found == 0 and br_found > 0:
+            cond_found, cond_hit = br_found, br_hit
+        pct = Meson._pct
+        return {
+            "name": name,
+            "line": line,
+            "count": count,
+            "hit": hit_flag,
+            "lines": Meson._make_metric(line_found, line_hit),
+            "branches": Meson._make_metric(br_found, br_hit),
+            "conditions": Meson._make_metric(cond_found, cond_hit),
+            "blocks": Meson._make_metric(blk_found, blk_hit),
+            "Total Line": line_found,
+            "Covered lines": line_hit,
+            "Line coverage:": f"{pct(line_hit, line_found):.2f}%",
+            "Total Branch": br_found,
+            "Covered Branch": br_hit,
+            "Branch Coverage Percentage:": f"{pct(br_hit, br_found):.2f}%",
+            "Total Condition": cond_found,
+            "Covered Condition": cond_hit,
+            "Condition Coverage Percentage": f"{pct(cond_hit, cond_found):.2f}%",
+            "Total Block": blk_found,
+            "Covered Block": blk_hit,
+            "blocks_percent": f"{pct(blk_hit, blk_found):.2f}%",
+        }
+
+    @staticmethod
+    def _enrich_functions_from_maps(
+        sorted_funcs, line_cov, line_br, line_cond, line_blk=None
+    ):
+        """Compute per-function enriched entries from coverage maps."""
+        ranges = Meson._compute_function_ranges(sorted_funcs)
+        enriched = []
+        for fn, (start, end) in zip(sorted_funcs, ranges):
+            lf, lh = Meson._count_lines_in_range(line_cov, start, end)
+            br = Meson._accumulate_in_range(line_br, start, end)
+            cd = Meson._accumulate_in_range(line_cond, start, end)
+            blk_found = blk_hit = 0
+            if line_blk:
+                blk = Meson._accumulate_in_range(line_blk, start, end)
+                blk_found, blk_hit = blk["found"], blk["hit"]
+
+            name = fn.get("name") or fn.get("__tmp_name")
+            line = fn.get("line") or fn.get("__tmp_line")
+            count = fn["count"]
+            hit_flag = fn.get("hit", count > 0)
+
+            enriched.append(
+                Meson._build_enriched_entry(
+                    name,
+                    line,
+                    count,
+                    hit_flag,
+                    lf,
+                    lh,
+                    br["found"],
+                    br["hit"],
+                    cd["found"],
+                    cd["hit"],
+                    blk_found,
+                    blk_hit,
+                )
+            )
+        return enriched
+
+    @staticmethod
+    def _write_file_json(path, rel, enriched, summary):
+        """Write a per-file coverage JSON."""
+        os.makedirs(os.path.dirname(path), exist_ok=True)
+        with open(path, "w") as f:
+            json.dump(
+                {"file": rel, "functions": enriched, "summary": summary},
+                f,
+                indent=2,
+            )
+
+    @staticmethod
+    def _write_hashed_json(coverage_dir, rel, enriched, summary):
+        """Write hashed per-file JSON in json-coverage dir alongside HTML."""
+        import hashlib
+
+        sanitized = rel.replace(os.sep, ".")
+        digest = hashlib.md5(rel.encode("utf-8")).hexdigest()
+        hashed_name = f"index.{sanitized}.{digest}.json"
+        json_dir = os.path.join(coverage_dir, "json-coverage")
+        os.makedirs(json_dir, exist_ok=True)
+        hashed_out = os.path.join(json_dir, hashed_name)
+        with open(hashed_out, "w") as f:
+            json.dump(
+                {"file": rel, "functions": enriched, "summary": summary},
+                f,
+                indent=2,
+            )
+
+    @staticmethod
+    def _write_aggregate_json(
+        agg_path,
+        all_files_enriched,
+        total_lines,
+        covered_lines,
+        total_branches,
+        covered_branches,
+        extra_keys=False,
+    ):
+        """Write the aggregate index.functions.json."""
+        pct = Meson._pct
+        line_coverage = pct(covered_lines, total_lines)
+        branch_coverage = pct(covered_branches, total_branches)
+        data = {
+            "files": all_files_enriched,
+            "total_lines": total_lines,
+            "covered_lines": covered_lines,
+            "line_coverage": line_coverage,
+            "total_branches": total_branches,
+            "covered_branches": covered_branches,
+            "branch_coverage": branch_coverage,
+        }
+        if extra_keys:
+            data.update(
+                {
+                    "Total Line": total_lines,
+                    "Total Line:": total_lines,
+                    "Covered line": covered_lines,
+                    "Covered line:": covered_lines,
+                    "Line coverage": f"{line_coverage:.2f}%",
+                    "Line coverage:": f"{line_coverage:.2f}%",
+                    "Total Branch": total_branches,
+                    "Total Branch:": total_branches,
+                    "Covered Branch": covered_branches,
+                    "Covered Branch:": covered_branches,
+                    "Branch Coverage Percentage": f"{branch_coverage:.2f}%",
+                    "Branch Coverage Percentage:": f"{branch_coverage:.2f}%",
+                }
+            )
+        else:
+            data["Line coverage %"] = f"{line_coverage:.2f}%"
+            data["Branch coverage %"] = f"{branch_coverage:.2f}%"
+        with open(agg_path, "w") as f:
+            json.dump(data, f, indent=2)
+
+    @staticmethod
+    def _inject_conditions_into_html(coverage_dir, all_files_enriched):
+        """Inject Condition coverage column into index.functions.html."""
+        functions_html = os.path.join(coverage_dir, "index.functions.html")
+        if not os.path.exists(functions_html):
+            return
+
+        with open(functions_html, "r", encoding="utf-8") as fh:
+            html_txt = fh.read()
+
+        # Build lookup of computed metrics by (file, line)
+        func_index = {}
+        for fe in all_files_enriched:
+            frel = fe.get("file", "")
+            for fn in fe.get("functions", []):
+                func_index[(frel, int(fn.get("line", 0)))] = fn
+
+        # Add Conditions column header if missing
+        if not re.search(
+            r'<div role="rowheader"[^>]*>\s*Conditions\s*</div>', html_txt
+        ):
+            header_pat = (
+                r'(?P<func><div role="rowheader"[^>]*>Function \(File:Line\)</div>)\s*'
+                r'(?P<calls><div role="rowheader"[^>]*>Calls</div>)\s*'
+                r'(?P<lines><div role="rowheader"[^>]*>Lines</div>)\s*'
+                r'(?P<branches><div role="rowheader"(?P<br_attrs>[^>]*)>Branches</div>)\s*'
+                r'(?P<blocks><div role="rowheader"[^>]*>Blocks</div>)'
+            )
+
+            def _header_inject(m):
+                cond_header = (
+                    f'<div role="rowheader"{m.group("br_attrs")}>Conditions</div>'
+                )
+                return (
+                    m.group("func")
+                    + "\n    "
+                    + m.group("calls")
+                    + "\n    "
+                    + m.group("lines")
+                    + "\n    "
+                    + m.group("branches")
+                    + "\n    "
+                    + cond_header
+                    + "\n    "
+                    + m.group("blocks")
+                )
+
+            html_txt = re.sub(header_pat, _header_inject, html_txt, count=1)
+
+        def _strip_tags(s):
+            return re.sub(r"<[^>]+>", "", s or "").strip()
+
+        def _open_tag(cell_html, default_class="color-fg-muted flex-auto min-width-0"):
+            m_open = re.match(r'\s*(<div role="gridcell"[^>]*>)', cell_html or "")
+            if m_open:
+                return m_open.group(1)
+            return f'<div role="gridcell" class="{default_class}">'
+
+        def _get_metric_int(entry, metric, key):
+            """Safely extract int from entry's nested metric dict."""
+            if entry is None:
+                return 0
+            info = entry.get(metric, {}) or {}
+            try:
+                return int(info.get(key, 0) or 0)
+            except Exception:
+                return 0
+
+        def _row_inject(m):
+            fpath = m.group("file")
+            line_no = int(m.group("line"))
+            entry = func_index.get((fpath, line_no))
+
+            calls_txt_raw = _strip_tags(m.group("calls"))
+            lines_pct_text = _strip_tags(m.group("lines")) or "-%"
+            branches_pct_text = _strip_tags(m.group("branches")) or "-%"
+            blocks_pct_text = _strip_tags(m.group("blocks")) or "-%"
+
+            calls = 0
+            m_calls = re.search(r"called\s+(\d+)\s+time", calls_txt_raw)
+            if m_calls:
+                calls = int(m_calls.group(1))
+
+            # Line coverage
+            line_found = _get_metric_int(entry, "lines", "found")
+            line_hit = _get_metric_int(entry, "lines", "hit")
+            if entry is not None and line_found:
+                line_cov_text = (
+                    f"Line coverage: {Meson._pct(line_hit, line_found):.1f}%"
+                    f"<br/>Total Line: {line_found}<br/>Covered lines: {line_hit}"
+                )
+            elif entry is not None:
+                line_cov_text = f"Line coverage: {lines_pct_text}<br/>Total Line: {line_found}<br/>Covered lines: {line_hit}"
+            else:
+                line_cov_text = f"Line coverage: {lines_pct_text}"
+
+            # Branch coverage
+            br_found = _get_metric_int(entry, "branches", "found")
+            br_hit = _get_metric_int(entry, "branches", "hit")
+            if entry is not None and br_found:
+                branch_cov_text = (
+                    f"Branch Coverage Percentage: {Meson._pct(br_hit, br_found):.1f}%"
+                    f"<br/>Total Branch: {br_found}<br/>Covered Branch: {br_hit}"
+                )
+            elif entry is not None:
+                branch_cov_text = f"Branch Coverage Percentage: {branches_pct_text}<br/>Total Branch: {br_found}<br/>Covered Branch: {br_hit}"
+            else:
+                branch_cov_text = f"Branch Coverage Percentage: {branches_pct_text}"
+
+            # Condition coverage
+            cond_found = _get_metric_int(entry, "conditions", "found")
+            cond_hit = _get_metric_int(entry, "conditions", "hit")
+            cond_pct_text = "-%"
+            if cond_found:
+                cond_pct_text = f"{Meson._pct(cond_hit, cond_found):.1f}%"
+            elif entry is not None:
+                br_found2 = _get_metric_int(entry, "branches", "found")
+                if br_found2 and branches_pct_text and branches_pct_text != "-%":
+                    cond_pct_text = branches_pct_text
+            cond_cov_text = (
+                f"Condition Coverage Percentage: {cond_pct_text}"
+                f"<br/>Total Condition: {cond_found}<br/>Covered Condition: {cond_hit}"
+            )
+
+            calls_cell = _open_tag(m.group("calls")) + str(calls) + "</div>"
+            lines_cell = _open_tag(m.group("lines")) + line_cov_text + "</div>"
+            branches_cell = _open_tag(m.group("branches")) + branch_cov_text + "</div>"
+            conditions_cell = _open_tag(m.group("branches")) + cond_cov_text + "</div>"
+
+            blk_cov_text = f"blocks_percent: {blocks_pct_text}"
+            m_blk = re.search(r"([0-9.]+)%\s*\((\d+)\s*/\s*(\d+)\)", blocks_pct_text)
+            if m_blk:
+                blk_hit = int(m_blk.group(2))
+                blk_found = int(m_blk.group(3))
+                blk_cov_text = (
+                    f"blocks_percent: {float(m_blk.group(1)):.1f}%"
+                    f"<br/>Total Block: {blk_found}<br/>Covered Block: {blk_hit}"
+                )
+            blocks_cell = _open_tag(m.group("blocks")) + blk_cov_text + "</div>"
+
+            return (
+                m.group(1)
+                + m.group("func")
+                + "\n    "
+                + calls_cell
+                + "\n    "
+                + lines_cell
+                + "\n    "
+                + branches_cell
+                + "\n    "
+                + conditions_cell
+                + "\n    "
+                + blocks_cell
+                + "\n  </div>"
+            )
+
+        row_pat = (
+            r'(<div class="Box-row[^\n>]*>\s*)'
+            r'(?P<func><div role="gridcell"[^>]*>.*?\((?P<file>[^:]+):(?P<line>\d+)\).*?</div>)\s*'
+            r'(?P<calls><div role="gridcell"[^>]*>.*?</div>)\s*'
+            r'(?P<lines><div role="gridcell"[^>]*>.*?</div>)\s*'
+            r'(?P<branches><div role="gridcell"[^>]*>.*?</div>)\s*'
+            r'(?P<blocks><div role="gridcell"[^>]*>.*?</div>)\s*'
+            r"</div>"
+        )
+        html_txt = re.sub(row_pat, _row_inject, html_txt, flags=re.S)
+        with open(functions_html, "w", encoding="utf-8") as fh:
+            fh.write(html_txt)
+
+    # ── Main coverage report orchestration ────────────────────────────
+
+    @staticmethod
+    def _read_gcovr_excludes():
+        """Parse exclude patterns from the project's gcovr.cfg if present.
+
+        Returns a list of gcovr CLI args, e.g.
+        ['--exclude', 'test/*', '--exclude', 'src/main.cpp'].
+        Also returns the raw patterns for use with lcov --remove.
+        """
+        gcovr_args = []
+        raw_patterns = []
+        cfg_path = "gcovr.cfg"
+        if not os.path.isfile(cfg_path):
+            return gcovr_args, raw_patterns
+        try:
+            with open(cfg_path, "r") as f:
+                for line in f:
+                    line = line.strip()
+                    if line.startswith("exclude") and "=" in line:
+                        # Handle both 'exclude = pattern' and 'exclude=pattern'
+                        _, _, val = line.partition("=")
+                        val = val.strip()
+                        if val and not val.startswith("#"):
+                            # Skip exclude-unreachable-branches etc. (they
+                            # are boolean flags, not path patterns)
+                            key = line.split("=", 1)[0].strip()
+                            if key == "exclude":
+                                gcovr_args.extend(["--exclude", val])
+                                raw_patterns.append(val)
+        except Exception:
+            pass
+        return gcovr_args, raw_patterns
+
+    def _generate_coverage_reports(self):
+        """Generate all coverage report artefacts (JSON, HTML, per-file)."""
+        cpu_count = str(multiprocessing.cpu_count())
+        gcovr_bin = shutil.which("gcovr")
+        lcov_bin = shutil.which("lcov")
+
+        cov_out_dir = os.path.join("build", "coverage")
+        os.makedirs(cov_out_dir, exist_ok=True)
+
+        # Read project-specific exclude patterns from gcovr.cfg
+        gcovr_excludes, exclude_patterns = self._read_gcovr_excludes()
+
+        # Build gcovr base command matching Meson's invocation style:
+        #  - Use absolute source root with -r and build root as a
+        #    positional search directory (how Meson passes them).
+        #  - Always pass exclude patterns explicitly so they are
+        #    applied regardless of whether gcovr auto-reads gcovr.cfg.
+        source_root = os.path.abspath(".")
+        build_root = os.path.abspath("build")
+
+        gcovr_cfg_args = [
+            "--exclude-directories",
+            "subprojects",
+            *gcovr_excludes,
+        ]
+
+        # ── 1. Initial gcovr JSON export ──
+        if gcovr_bin is not None:
+            try:
+                check_call_cmd(
+                    "gcovr",
+                    "-r",
+                    source_root,
+                    build_root,
+                    "-j",
+                    cpu_count,
+                    *gcovr_cfg_args,
+                    "--json",
+                    os.path.join(cov_out_dir, "coverage.json"),
+                    "--json-pretty",
+                    "--print-summary",
+                )
+            except subprocess.CalledProcessError:
+                print("gcovr JSON export failed")
+        else:
+            print("gcovr not found; skipping JSON coverage export")
+
+        # ── 2. Meson HTML coverage ──
+        check_call_cmd("ninja", "-C", "build", "coverage-html")
+
+        # Locate directory containing index.html
+        coverage_dir = None
+        for d in [
+            os.path.join("build", "meson-logs", "coverage"),
+            os.path.join("build", "meson-logs", "coveragereport"),
+        ]:
+            if os.path.exists(os.path.join(d, "index.html")):
+                coverage_dir = d
+                break
+        if coverage_dir is None:
+            coverage_dir = os.path.join("build", "meson-logs", "coverage")
+            os.makedirs(coverage_dir, exist_ok=True)
+
+        json_root_dir = os.path.join(coverage_dir, "json-coverage")
+        os.makedirs(json_root_dir, exist_ok=True)
+
+        # ── 3. Detect gcovr --conditions support ──
+        supports_conditions = False
+        if gcovr_bin is not None:
+            try:
+                help_out = subprocess.run(
+                    ["gcovr", "--help"],
+                    stdout=subprocess.PIPE,
+                    stderr=subprocess.STDOUT,
+                    text=True,
+                    check=False,
+                )
+                supports_conditions = "--conditions" in (help_out.stdout or "")
+            except Exception:
+                pass
+
+        # Shared gcovr base args
+        gcovr_base = [
+            "gcovr",
+            "-r",
+            source_root,
+            build_root,
+            "-j",
+            cpu_count,
+            *gcovr_cfg_args,
+        ]
+
+        def _maybe_add_conditions(cmd):
+            if supports_conditions:
+                cmd.insert(-1, "--conditions")
+
+        # ── 4. Regenerate HTML with branch/condition metrics ──
+        if gcovr_bin is not None:
+            try:
+                html_cmd = [
+                    "gcovr",
+                    "-r",
+                    source_root,
+                    build_root,
+                    "-j",
+                    cpu_count,
+                    *gcovr_cfg_args,
+                    "--html",
+                    "--html-details",
+                    "--print-summary",
+                    "-o",
+                    os.path.join(coverage_dir, "index.html"),
+                ]
+                if supports_conditions:
+                    html_cmd.insert(-2, "--conditions")
+                else:
+                    print(
+                        "gcovr without --conditions; generating HTML "
+                        "without condition metrics"
+                    )
+                check_call_cmd(*html_cmd)
+            except Exception:
+                print(
+                    "Skipping HTML regeneration with condition metrics "
+                    "due to unexpected error"
+                )
+        else:
+            print(
+                "gcovr not found; using Meson-generated HTML "
+                "without condition metrics"
+            )
+
+        # ── 5. JSON summary (index.json) ──
+        try:
+            json_summary_cmd = gcovr_base + [
+                "--json-summary",
+                os.path.join(json_root_dir, "index.json"),
+            ]
+            _maybe_add_conditions(json_summary_cmd)
+            check_call_cmd(*json_summary_cmd)
+        except CalledProcessError:
+            print("gcovr JSON summary export failed")
+
+        # ── 6. Per-file function-wise JSON ──
+        try:
+            if lcov_bin is not None:
+                self._generate_lcov_function_json(
+                    cov_out_dir, coverage_dir, json_root_dir, exclude_patterns
+                )
+            else:
+                self._generate_gcovr_fallback_json(coverage_dir, json_root_dir)
+        except Exception:
+            print("Skipping function-wise JSON export due to unexpected error")
+
+    # ── lcov-based per-file function JSON ─────────────────────────────
+
+    def _generate_lcov_function_json(
+        self, cov_out_dir, coverage_dir, json_root_dir, exclude_patterns=None
+    ):
+        """Parse lcov.info and produce per-file + aggregate function JSON."""
+        raw_info = os.path.join(cov_out_dir, "lcov_raw.info")
+        info = os.path.join(cov_out_dir, "lcov.info")
+
+        check_call_cmd(
+            "lcov",
+            "--capture",
+            "--rc",
+            "lcov_branch_coverage=1",
+            "--directory",
+            "build",
+            "--output-file",
+            raw_info,
+        )
+        # Build lcov --remove patterns: always exclude subprojects and
+        # system paths, plus any project-specific patterns from gcovr.cfg
+        lcov_remove_patterns = ["*/subprojects/*", "/usr/*"]
+        if exclude_patterns:
+            for pat in exclude_patterns:
+                # Convert gcovr glob patterns to lcov-style patterns:
+                # gcovr uses paths relative to root (e.g. 'test/*'),
+                # lcov expects shell-style wildcards (e.g. '*/test/*')
+                if not pat.startswith("*"):
+                    lcov_remove_patterns.append("*/" + pat)
+                else:
+                    lcov_remove_patterns.append(pat)
+        try:
+            check_call_cmd(
+                "lcov",
+                "--remove",
+                raw_info,
+                *lcov_remove_patterns,
+                "--output-file",
+                info,
+            )
+        except subprocess.CalledProcessError:
+            shutil.copyfile(raw_info, info)
+
+        func_json_root = os.path.join(cov_out_dir, "functions-json")
+        os.makedirs(func_json_root, exist_ok=True)
+
+        all_files_enriched = []
+
+        def _flush_file_record(sf, fn_map, fn_counts, line_cov, line_br, line_cond):
+            rel = os.path.relpath(sf, ".")
+            hit = 0
+            functions = []
+            for name, line_no in fn_map.items():
+                count = int(float(fn_counts.get(name, 0)))
+                if count > 0:
+                    hit += 1
+                functions.append(
+                    {
+                        "__tmp_name": name,
+                        "__tmp_line": int(line_no),
+                        "count": count,
+                        "hit": count > 0,
+                    }
+                )
+            summary = self._make_metric(len(fn_map), hit)
+
+            sorted_funcs = sorted(
+                functions, key=lambda x: (x["__tmp_line"], x["__tmp_name"])
+            )
+            enriched = self._enrich_functions_from_maps(
+                sorted_funcs, line_cov, line_br, line_cond
+            )
+
+            out_path = os.path.join(func_json_root, rel + ".json")
+            self._write_file_json(out_path, rel, enriched, summary)
+
+            try:
+                self._write_hashed_json(coverage_dir, rel, enriched, summary)
+            except Exception:
+                pass
+
+            try:
+                all_files_enriched.append(
+                    {
+                        "file": rel,
+                        "functions": enriched,
+                        "summary": summary,
+                        "_lines_found": len(line_cov),
+                        "_lines_hit": sum(1 for v in line_cov.values() if v > 0),
+                        "_branches_found": sum(
+                            br.get("found", 0) for br in line_br.values()
+                        ),
+                        "_branches_hit": sum(
+                            br.get("hit", 0) for br in line_br.values()
+                        ),
+                    }
+                )
+            except Exception:
+                pass
+
+        # Parse lcov.info
+        current_file = None
+        fn_map = fn_counts = line_cov = line_br = line_cond = None
+
+        def _reset_state():
+            return {}, {}, {}, {}, {}
+
+        fn_map, fn_counts, line_cov, line_br, line_cond = _reset_state()
+
+        with open(info, "r") as f:
+            for line in f:
+                s = line.strip()
+                if s.startswith("SF:"):
+                    if current_file is not None:
+                        _flush_file_record(
+                            current_file,
+                            fn_map,
+                            fn_counts,
+                            line_cov,
+                            line_br,
+                            line_cond,
+                        )
+                    current_file = s[3:]
+                    fn_map, fn_counts, line_cov, line_br, line_cond = _reset_state()
+                elif s.startswith("FN:"):
+                    try:
+                        ln, name = s[3:].split(",", 1)
+                        fn_map[name] = int(ln)
+                    except Exception:
+                        pass
+                elif s.startswith("FNDA:"):
+                    try:
+                        cnt, name = s[5:].split(",", 1)
+                        fn_counts[name] = int(float(cnt))
+                    except Exception:
+                        pass
+                elif s.startswith("DA:"):
+                    try:
+                        parts = s[3:].split(",")
+                        line_cov[int(parts[0])] = int(float(parts[1]))
+                    except Exception:
+                        pass
+                elif s.startswith("BRDA:"):
+                    try:
+                        parts = s[5:].split(",")
+                        ln = int(parts[0])
+                        taken = parts[3]
+                        if ln not in line_br:
+                            line_br[ln] = {"found": 0, "hit": 0}
+                        line_br[ln]["found"] += 1
+                        if taken != "-" and int(float(taken)) > 0:
+                            line_br[ln]["hit"] += 1
+                    except Exception:
+                        pass
+                elif s == "end_of_record":
+                    if current_file is not None:
+                        _flush_file_record(
+                            current_file,
+                            fn_map,
+                            fn_counts,
+                            line_cov,
+                            line_br,
+                            line_cond,
+                        )
+                        current_file = None
+                        fn_map, fn_counts, line_cov, line_br, line_cond = _reset_state()
+        if current_file is not None:
+            _flush_file_record(
+                current_file, fn_map, fn_counts, line_cov, line_br, line_cond
+            )
+
+        # Write aggregate
+        try:
+            total_lines = covered_lines = total_branches = covered_branches = 0
+            for entry in all_files_enriched:
+                total_lines += entry.pop("_lines_found", 0)
+                covered_lines += entry.pop("_lines_hit", 0)
+                total_branches += entry.pop("_branches_found", 0)
+                covered_branches += entry.pop("_branches_hit", 0)
+
+            agg_path = os.path.join(json_root_dir, "index.functions.json")
+            self._write_aggregate_json(
+                agg_path,
+                all_files_enriched,
+                total_lines,
+                covered_lines,
+                total_branches,
+                covered_branches,
+            )
+
+            try:
+                self._inject_conditions_into_html(coverage_dir, all_files_enriched)
+            except Exception:
+                print("Failed to inject Condition coverage into index.functions.html")
+        except Exception:
+            print("Failed to write aggregate index.functions.json (lcov path)")
+
+    # ── gcovr fallback per-file function JSON ─────────────────────────
+
+    def _generate_gcovr_fallback_json(self, coverage_dir, json_root_dir):
+        """Derive per-file function JSONs from gcovr detailed JSON."""
+        detailed_json = os.path.join(json_root_dir, "index.function.json")
+        if not os.path.exists(detailed_json):
+            print("gcovr detailed JSON not found for fallback export")
+            return
+
+        try:
+            with open(detailed_json, "r") as dj:
+                report = json.load(dj)
+        except Exception:
+            print("Fallback per-file JSON export from gcovr failed")
+            return
+
+        all_files_enriched = []
+        for file_data in report.get("files", []):
+            rel = file_data.get("file") or file_data.get("filename")
+            if not rel:
+                continue
+
+            line_cov, line_br, line_cond, line_blk = {}, {}, {}, {}
+
+            for ln in file_data.get("lines", []):
+                ln_no = ln.get("line_number") or ln.get("line")
+                if ln_no is None:
+                    continue
+                try:
+                    line_cov[int(ln_no)] = int(ln.get("count", 0))
+                except Exception:
+                    pass
+
+                # Branch details
+                brs = ln.get("branches") or []
+                if isinstance(brs, list) and brs:
+                    found = len(brs)
+                    hit = sum(1 for b in brs if (b.get("count", 0) or 0) > 0)
+                    line_br[int(ln_no)] = {"found": found, "hit": hit}
+
+                # Condition coverage extraction
+                cond_found = cond_hit = 0
+                conds = ln.get("conditions")
+                if isinstance(conds, list) and conds:
+                    for c in conds:
+                        nested = c.get("conditions")
+                        if isinstance(nested, list) and nested:
+                            cond_found += len(nested)
+                            for nc in nested:
+                                cov = nc.get("coverage")
+                                cnt2 = nc.get("count", nc.get("hits", 0))
+                                if (cov is not None and float(cov) > 0) or (
+                                    cnt2 and int(cnt2) > 0
+                                ):
+                                    cond_hit += 1
+                        else:
+                            cov = c.get("coverage")
+                            cnt2 = c.get("count", c.get("hits", 0))
+                            cond_found += 1
+                            if (cov is not None and float(cov) > 0) or (
+                                cnt2 and int(cnt2) > 0
+                            ):
+                                cond_hit += 1
+                line_cond[int(ln_no)] = {"found": cond_found, "hit": cond_hit}
+
+                # Block coverage
+                try:
+                    blks = ln.get("blocks")
+                    blk_found = blk_hit = 0
+                    if isinstance(blks, list) and blks:
+                        blk_found = len(blks)
+                        blk_hit = sum(1 for b in blks if (b.get("count", 0) or 0) > 0)
+                    line_blk[int(ln_no)] = {"found": blk_found, "hit": blk_hit}
+                except Exception:
+                    line_blk[int(ln_no)] = {"found": 0, "hit": 0}
+
+            # Build function list
+            fun_list = []
+            for fn in file_data.get("functions", []):
+                name = fn.get("name")
+                start = fn.get("start_line") or fn.get("lineno") or fn.get("line")
+                cnt = fn.get("execution_count") or fn.get("count") or 0
+                if name is None or start is None:
+                    continue
+                fun_list.append({"name": name, "line": int(start), "count": int(cnt)})
+            fun_list.sort(key=lambda x: (x["line"], x["name"]))
+
+            enriched = self._enrich_functions_from_maps(
+                fun_list, line_cov, line_br, line_cond, line_blk
+            )
+
+            hit_funcs = sum(1 for e in enriched if e["hit"])
+            summary = self._make_metric(len(fun_list), hit_funcs)
+
+            # Write per-file JSON
+            out_plain = os.path.join(
+                "build", "coverage", "functions-json", rel + ".json"
+            )
+            self._write_file_json(out_plain, rel, enriched, summary)
+            self._write_hashed_json(coverage_dir, rel, enriched, summary)
+
+            all_files_enriched.append(
+                {
+                    "file": rel,
+                    "functions": enriched,
+                    "summary": summary,
+                }
+            )
+
+        # Write aggregate
+        try:
+            total_lines = covered_lines = total_branches = covered_branches = 0
+            for entry in all_files_enriched:
+                for fn in entry.get("functions", []):
+                    total_lines += fn.get("lines", {}).get("found", 0)
+                    covered_lines += fn.get("lines", {}).get("hit", 0)
+                    total_branches += fn.get("branches", {}).get("found", 0)
+                    covered_branches += fn.get("branches", {}).get("hit", 0)
+
+            agg_path = os.path.join(json_root_dir, "index.functions.json")
+            self._write_aggregate_json(
+                agg_path,
+                all_files_enriched,
+                total_lines,
+                covered_lines,
+                total_branches,
+                covered_branches,
+                extra_keys=True,
+            )
+
+            try:
+                self._inject_conditions_into_html(coverage_dir, all_files_enriched)
+            except Exception:
+                print("Failed to inject Condition coverage into index.functions.html")
+        except Exception:
+            print("Failed to write aggregate index.functions.json (gcovr fallback)")
 
     def _extra_meson_checks(self):
         with open(os.path.join(self.path, "meson.build"), "rt") as f:
@@ -1143,9 +2028,7 @@ class Meson(BuildSystem):
         # get a meson.build missing this.
         pattern = r"'cpp_std=c\+\+20'"
         for match in re.finditer(pattern, build_contents):
-            if not meson_version or not meson_version_compare(
-                meson_version, ">=0.57"
-            ):
+            if not meson_version or not meson_version_compare(meson_version, ">=0.57"):
                 raise Exception(
                     "C++20 support requires specifying in meson.build: "
                     + "meson_version: '>=0.57'"
@@ -1156,30 +2039,22 @@ class Meson(BuildSystem):
         # get a meson.build missing this.
         pattern = r"'cpp_std=c\+\+23'"
         for match in re.finditer(pattern, build_contents):
-            if not meson_version or not meson_version_compare(
-                meson_version, ">=1.1.1"
-            ):
+            if not meson_version or not meson_version_compare(meson_version, ">=1.1.1"):
                 raise Exception(
                     "C++23 support requires specifying in meson.build: "
                     + "meson_version: '>=1.1.1'"
                 )
 
         if "get_variable(" in build_contents:
-            if not meson_version or not meson_version_compare(
-                meson_version, ">=0.58"
-            ):
+            if not meson_version or not meson_version_compare(meson_version, ">=0.58"):
                 raise Exception(
                     "dep.get_variable() with positional argument requires "
                     + "meson_version: '>=0.58'"
                 )
 
         if "relative_to(" in build_contents:
-            if not meson_version or not meson_version_compare(
-                meson_version, ">=1.3.0"
-            ):
-                raise Exception(
-                    "fs.relative_to() requires meson_version: '>=1.3.0'"
-                )
+            if not meson_version or not meson_version_compare(meson_version, ">=1.3.0"):
+                raise Exception("fs.relative_to() requires meson_version: '>=1.3.0'")
 
 
 class Package(object):
@@ -1410,9 +2285,7 @@ if __name__ == "__main__":
         )
 
         # Check to see if any files changed
-        check_call_cmd(
-            "git", "-C", CODE_SCAN_DIR, "--no-pager", "diff", "--exit-code"
-        )
+        check_call_cmd("git", "-C", CODE_SCAN_DIR, "--no-pager", "diff", "--exit-code")
 
     # Check if this repo has a supported make infrastructure
     pkg = Package(UNIT_TEST_PKG, CODE_SCAN_DIR)
