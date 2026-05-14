@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d8ca3c89_cb5e71b1",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2026-05-14T17:52:21Z",
+      "side": 1,
+      "message": "Are you using a different version of Black?  Not sure what\u0027s going on here but you\u0027ve made a lot of Python changes that are failing in CI.",
+      "revId": "f8d9d2ebee1be4910ef8043f1d49c496606aa572",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "44a529df_00e5ea65",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2026-05-14T17:52:21Z",
+      "side": 1,
+      "message": "Are you",
+      "revId": "f8d9d2ebee1be4910ef8043f1d49c496606aa572",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
