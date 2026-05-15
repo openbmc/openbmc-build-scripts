@@ -16,6 +16,24 @@
       "message": "Now you have 900+ lines of code change unrelated to this commit message.",
       "revId": "384f94032f7899b78fe42f7539563402263213c2",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5c44a545_347bc202",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 5
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1002398
+      },
+      "writtenOn": "2026-05-15T05:49:29Z",
+      "side": 1,
+      "message": "I have corrected the commit message for all the code changes made in this PR",
+      "parentUuid": "0bca68e9_27e69b3f",
+      "revId": "384f94032f7899b78fe42f7539563402263213c2",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
