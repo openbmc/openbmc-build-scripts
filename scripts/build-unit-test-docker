@@ -801,8 +801,38 @@ if username == "root":
 
 # Special flags if setting up a deb mirror.
 mirror = ""
+skip_debug_repos = False
 if "ubuntu" in distro and ubuntu_mirror:
-    mirror = f"""
+    # If using HTTPS mirror, we need to switch to it first, then install ca-certificates
+    # We configure apt to skip certificate verification initially, then install ca-certificates
+    if ubuntu_mirror.startswith("https://"):
+        # Skip debug repos when using HTTPS since ddebs.ubuntu.com only supports HTTP
+        skip_debug_repos = True
+        mirror = f"""
+RUN echo "deb {ubuntu_mirror} \
+        $(. /etc/os-release && echo $VERSION_CODENAME) \
+        main restricted universe multiverse" > /etc/apt/sources.list && \\
+    echo "deb {ubuntu_mirror} \
+        $(. /etc/os-release && echo $VERSION_CODENAME)-updates \
+            main restricted universe multiverse" >> /etc/apt/sources.list && \\
+    echo "deb {ubuntu_mirror} \
+        $(. /etc/os-release && echo $VERSION_CODENAME)-security \
+            main restricted universe multiverse" >> /etc/apt/sources.list && \\
+    echo "deb {ubuntu_mirror} \
+        $(. /etc/os-release && echo $VERSION_CODENAME)-proposed \
+            main restricted universe multiverse" >> /etc/apt/sources.list && \\
+    echo "deb {ubuntu_mirror} \
+        $(. /etc/os-release && echo $VERSION_CODENAME)-backports \
+            main restricted universe multiverse" >> /etc/apt/sources.list
+
+# Temporarily disable certificate verification to install ca-certificates
+RUN echo 'Acquire::https::Verify-Peer "false";' > /etc/apt/apt.conf.d/99temp-no-verify && \\
+    apt-get update && \\
+    apt-get install -y --no-install-recommends ca-certificates && \\
+    rm /etc/apt/apt.conf.d/99temp-no-verify
+"""
+    else:
+        mirror = f"""
 RUN echo "deb {ubuntu_mirror} \
         $(. /etc/os-release && echo $VERSION_CODENAME) \
         main restricted universe multiverse" > /etc/apt/sources.list && \\
@@ -845,6 +875,33 @@ EOF_WGETRC
         ]
     )
 
+# Conditionally set up debug repos (skip if using HTTPS mirror since ddebs only supports HTTP)
+debug_repos = ""
+if not skip_debug_repos:
+    debug_repos = """
+# We need the keys to be imported for dbgsym repos
+# New releases have a package, older ones fall back to manual fetching
+# https://wiki.ubuntu.com/Debug%20Symbol%20Packages
+# Known issue with gpg to get keys via proxy -
+# https://bugs.launchpad.net/ubuntu/+source/gnupg2/+bug/1788190, hence using
+# curl to get keys.
+RUN apt-get update && apt-get dist-upgrade -yy && \\
+    ( apt-get install -yy gpgv ubuntu-dbgsym-keyring || \\
+        ( apt-get install -yy dirmngr curl && \\
+          curl -sSL \\
+          'https://keyserver.ubuntu.com/pks/lookup?op=get&search=0xF2EDC64DC5AEE1F6B9C621F0C8CAB6595FDFF622' \\
+          | apt-key add - ))
+
+# Parse the current repo list into a debug repo list
+RUN sed -n '/^deb /s,^deb [^ ]* ,deb http://ddebs.ubuntu.com ,p' \\
+        /etc/apt/sources.list >/etc/apt/sources.list.d/debug.list
+
+# Remove non-existent debug repos
+RUN sed -i '/-\\\\(backports\\\\|security\\\\) /d' /etc/apt/sources.list.d/debug.list
+
+RUN cat /etc/apt/sources.list.d/debug.list
+"""
+
 # Create base Dockerfile.
 dockerfile_base = f"""
 FROM {docker_reg}/{distro}
@@ -862,27 +919,7 @@ ENV PYTHONPATH="/usr/local/lib/python3.10/site-packages/"
 # the update.
 RUN echo "ubuntu keyserver rev as of 2025-11-17"
 
-# We need the keys to be imported for dbgsym repos
-# New releases have a package, older ones fall back to manual fetching
-# https://wiki.ubuntu.com/Debug%20Symbol%20Packages
-# Known issue with gpg to get keys via proxy -
-# https://bugs.launchpad.net/ubuntu/+source/gnupg2/+bug/1788190, hence using
-# curl to get keys.
-RUN apt-get update && apt-get dist-upgrade -yy && \
-    ( apt-get install -yy gpgv ubuntu-dbgsym-keyring || \
-        ( apt-get install -yy dirmngr curl && \
-          curl -sSL \
-          'https://keyserver.ubuntu.com/pks/lookup?op=get&search=0xF2EDC64DC5AEE1F6B9C621F0C8CAB6595FDFF622' \
-          | apt-key add - ))
-
-# Parse the current repo list into a debug repo list
-RUN sed -n '/^deb /s,^deb [^ ]* ,deb http://ddebs.ubuntu.com ,p' \
-        /etc/apt/sources.list >/etc/apt/sources.list.d/debug.list
-
-# Remove non-existent debug repos
-RUN sed -i '/-\\(backports\\|security\\) /d' /etc/apt/sources.list.d/debug.list
-
-RUN cat /etc/apt/sources.list.d/debug.list
+{debug_repos}
 
 RUN apt-get update && apt-get dist-upgrade -yy && apt-get install -yy \
     abi-compliance-checker \
