@@ -72,6 +72,7 @@ GERRIT_CI_GROUPS=( \
         equinix/ci-authorized \
         facebook/ci-authorized \
         fii/ci-authorized \
+        flex/ci-authorized \
         gagar-in/ci-authorized \
         google/ci-authorized \
         hcl/ci-authorized \
