@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "26329df9_b94b1767",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 9
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1002398
+      },
+      "writtenOn": "2026-05-22T10:37:22Z",
+      "side": 1,
+      "message": "Updated the commit message with detailed description of the changes. Please review",
+      "revId": "013f011be7ebc2ec3219dfd9c6046f266fb9d486",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
