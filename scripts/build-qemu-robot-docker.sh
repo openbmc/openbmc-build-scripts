@@ -21,7 +21,7 @@ set -uo pipefail
 http_proxy=${http_proxy:-}
 
 DOCKER_IMG_NAME=${1:-"openbmc/ubuntu-robot-qemu"}
-DISTRO=${2:-"ubuntu:plucky"}
+DISTRO=${2:-"ubuntu:resolute"}
 UBUNTU_MIRROR=${UBUNTU_MIRROR:-""}
 PIP_MIRROR=${PIP_MIRROR:-""}
 docker_reg=${DOCKER_REG:-"public.ecr.aws/ubuntu"}
@@ -85,7 +85,7 @@ RUN apt-get update && apt-get install -yy \
     sshpass \
     liboss4-salsa-asound2 \
     libfdt1 \
-    libpcre3 \
+    libpcre2-dev \
     libslirp-dev \
     openssl \
     libxml2-dev \
