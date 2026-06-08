@@ -1,0 +1,108 @@
+pipeline {
+    agent { label 'docker-builder' }
+
+    parameters {
+        string(name: 'GERRIT_REFSPEC', defaultValue: 'refs/heads/master')
+        string(name: 'GERRIT_PROJECT', defaultValue: '')
+    }
+
+    options {
+        buildDiscarder(logRotator(daysToKeepStr: '3'))
+        timestamps()
+        skipDefaultCheckout(true)
+        throttleJobProperty(
+            categories: ['ci-openbmc'],
+            maxConcurrentTotal: 3,
+            maxConcurrentPerNode: 1,
+            throttleEnabled: true,
+            throttleOption: 'project'
+        )
+    }
+
+    stages {
+        stage('Set Build Name') {
+            steps {
+                script {
+                    currentBuild.displayName = "#${BUILD_NUMBER}-${env.GERRIT_PATCHSET_UPLOADER_NAME}-${env.GERRIT_PROJECT}"
+                }
+            }
+        }
+
+        stage('Checkout') {
+            steps {
+                checkout([
+                    $class: 'GitSCM',
+                    userRemoteConfigs: [[
+                        url: "http://gerrit.openbmc.org/${params.GERRIT_PROJECT}",
+                        name: 'gerrit',
+                        refspec: params.GERRIT_REFSPEC
+                    ]],
+                    branches: [[name: env.GERRIT_BRANCH ?: 'master']],
+                    extensions: [
+                        [$class: 'BuildChooserSetting',
+                         buildChooser: [$class: 'GerritTriggerBuildChooser', separator: '#']],
+                        [$class: 'WipeWorkspace'],
+                        [$class: 'CleanBeforeCheckout'],
+                        [$class: 'RelativeTargetDirectory', relativeTargetDir: 'openbmc'],
+                        [$class: 'CloneOption', shallow: false, noTags: false, depth: 1]
+                    ]
+                ])
+            }
+        }
+
+        stage('Build Matrix') {
+            matrix {
+                axes {
+                    axis('target', [
+                        'anacapa', 'bletchley', 'bletchley15', 'catalina',
+                        'clemente', 'e3c246d4i', 'evb-npcm845', 'gb200nvl-obmc',
+                        'gbs', 'harma', 'minerva', 'p10bmc', 'romulus',
+                        'santabarbara', 'ventura', 'ventura2', 'yosemite4',
+                        'yosemite5', 'repotest'
+                    ])
+                }
+                stages {
+                    stage('Build') {
+                        steps {
+                            sh '''#!/bin/sh -xe
+                            export LANG=en_US.UTF8
+                            echo "BUILDING TARGET: ${target}"
+                            cd "${WORKSPACE}" && rm -rf openbmc-build-scripts
+                            git clone https://github.com/openbmc/openbmc-build-scripts.git
+                            cd openbmc-build-scripts
+                            export obmc_dir="${WORKSPACE}/openbmc/"
+                            export build_dir="${WORKSPACE}/build"
+                            export num_cpu=$((`nproc` / 2))
+                            [ "$num_cpu" -gt 12 ] && num_cpu=12
+                            export SDKMACHINE=x86_64
+                            export img_tag=25.04
+                            ./build-setup.sh
+                            '''
+                        }
+                    }
+                    stage('QEMU Test') {
+                        when {
+                            expression { target in ['romulus'] }
+                        }
+                        steps {
+                            build job: './CI-MISC/run-ci-in-qemu',
+                                parameters: [
+                                    string(name: 'image_location',
+                                           value: "${WORKSPACE}/openbmc/build/tmp/deploy/images/${target}/obmc-phosphor-image-${target}.static.mtd")
+                                ],
+                                wait: true
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    post {
+        always {
+            archiveArtifacts artifacts: 'openbmc/build/tmp/deploy/images/**',
+                            allowEmptyArchive: true
+            cleanWs()
+        }
+    }
+}
