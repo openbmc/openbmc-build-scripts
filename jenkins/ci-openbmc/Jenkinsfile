@@ -1,3 +1,7 @@
+def branch = ''
+def config = [:]
+def buildTargets = []
+
 pipeline {
     agent { label 'docker-builder' }
 
@@ -9,7 +13,6 @@ pipeline {
     options {
         buildDiscarder(logRotator(daysToKeepStr: '3'))
         timestamps()
-        skipDefaultCheckout(true)
         throttleJobProperty(
             categories: ['ci-openbmc'],
             maxConcurrentTotal: 3,
@@ -20,6 +23,22 @@ pipeline {
     }
 
     stages {
+        stage('Init') {
+            steps {
+                script {
+                    config = readJSON file: 'jenkins/machines.json'
+                    branch = env.GERRIT_BRANCH ?: 'master'
+                    def machines = config[branch]
+                    if (machines == null) {
+                        error "Unknown branch: ${branch}"
+                    }
+                    buildTargets = machines.findAll { k, v -> v.build }.keySet() as List
+                    buildTargets.add('repotest')
+                    echo "Building targets for ${branch}: ${buildTargets}"
+                }
+            }
+        }
+
         stage('Set Build Name') {
             steps {
                 script {
@@ -37,7 +56,7 @@ pipeline {
                         name: 'gerrit',
                         refspec: params.GERRIT_REFSPEC
                     ]],
-                    branches: [[name: env.GERRIT_BRANCH ?: 'master']],
+                    branches: [[name: branch]],
                     extensions: [
                         [$class: 'BuildChooserSetting',
                          buildChooser: [$class: 'GerritTriggerBuildChooser', separator: '#']],
@@ -53,13 +72,7 @@ pipeline {
         stage('Build Matrix') {
             matrix {
                 axes {
-                    axis('target', [
-                        'anacapa', 'bletchley', 'bletchley15', 'catalina',
-                        'clemente', 'e3c246d4i', 'evb-npcm845', 'gb200nvl-obmc',
-                        'gbs', 'harma', 'minerva', 'p10bmc', 'romulus',
-                        'santabarbara', 'ventura', 'ventura2', 'yosemite4',
-                        'yosemite5', 'repotest'
-                    ])
+                    axis('target', buildTargets)
                 }
                 stages {
                     stage('Build') {
@@ -82,15 +95,20 @@ pipeline {
                     }
                     stage('QEMU Test') {
                         when {
-                            expression { target in ['romulus'] }
+                            expression { config[branch][target]?.qemu != null }
                         }
                         steps {
-                            build job: './CI-MISC/run-ci-in-qemu',
-                                parameters: [
-                                    string(name: 'image_location',
-                                           value: "${WORKSPACE}/openbmc/build/tmp/deploy/images/${target}/obmc-phosphor-image-${target}.static.mtd")
-                                ],
-                                wait: true
+                            script {
+                                def qemu = config[branch][target].qemu
+                                def image = "${WORKSPACE}/openbmc/build/tmp/deploy/images/${target}/${qemu.image}"
+                                if (qemu.pad) {
+                                    sh "cp '${image}' '${image}.padded' && truncate -s ${qemu.pad} '${image}.padded'"
+                                    image = "${image}.padded"
+                                }
+                                build job: './CI-MISC/run-ci-in-qemu',
+                                    parameters: [string(name: 'image_location', value: image)],
+                                    wait: true
+                            }
                         }
                     }
                 }

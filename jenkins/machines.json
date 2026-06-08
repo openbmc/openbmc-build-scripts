@@ -1,0 +1,51 @@
+{
+    "master": {
+        "anacapa": { "seed": true, "build": true },
+        "bletchley": { "seed": true, "build": true },
+        "bletchley15": { "seed": true, "build": true },
+        "catalina": { "seed": true, "build": true },
+        "clemente": { "seed": true, "build": true },
+        "e3c246d4i": { "seed": true, "build": true },
+        "evb-npcm845": { "seed": true, "build": true },
+        "gb200nvl-obmc": { "seed": true, "build": true },
+        "gbs": { "seed": true, "build": true },
+        "harma": { "seed": true, "build": true },
+        "minerva": { "seed": true, "build": true },
+        "p10bmc": { "seed": true, "build": true },
+        "romulus": {
+            "seed": true,
+            "build": true,
+            "qemu": { "image": "obmc-phosphor-image-romulus.static.mtd" }
+        },
+        "santabarbara": { "seed": true, "build": true },
+        "sanmiguel": { "seed": true, "build": false },
+        "ventura": { "seed": true, "build": true },
+        "ventura2": { "seed": true, "build": true },
+        "yosemite4": { "seed": true, "build": true },
+        "yosemite5": { "seed": true, "build": true }
+    },
+    "wrynose": {
+        "anacapa": { "seed": true, "build": true },
+        "bletchley": { "seed": true, "build": true },
+        "bletchley15": { "seed": true, "build": true },
+        "catalina": { "seed": true, "build": true },
+        "clemente": { "seed": true, "build": true },
+        "e3c246d4i": { "seed": true, "build": true },
+        "evb-npcm845": { "seed": true, "build": true },
+        "gb200nvl-obmc": { "seed": true, "build": true },
+        "gbs": { "seed": true, "build": true },
+        "harma": { "seed": true, "build": true },
+        "minerva": { "seed": true, "build": true },
+        "p10bmc": { "seed": true, "build": true },
+        "romulus": {
+            "seed": true,
+            "build": true,
+            "qemu": { "image": "obmc-phosphor-image-romulus.static.mtd" }
+        },
+        "santabarbara": { "seed": true, "build": true },
+        "ventura": { "seed": true, "build": true },
+        "ventura2": { "seed": true, "build": true },
+        "yosemite4": { "seed": true, "build": true },
+        "yosemite5": { "seed": true, "build": true }
+    }
+}

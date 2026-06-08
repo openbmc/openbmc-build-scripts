@@ -23,27 +23,9 @@ fi
 # Ensure everything is built on same filesystem
 export build_dir="${WORKSPACE}/build"
 
-SEED_MACHINES=(
-    anacapa
-    bletchley
-    bletchley15
-    catalina
-    clemente
-    e3c246d4i
-    evb-npcm845
-    gb200nvl-obmc
-    gbs
-    harma
-    minerva
-    p10bmc
-    romulus
-    sanmiguel
-    santabarbara
-    ventura
-    ventura2
-    yosemite4
-    yosemite5
-)
+mapfile -t SEED_MACHINES < <(jq -r \
+        '.[env.GERRIT_BRANCH // "master"] | to_entries[] | select(.value.seed) | .key' \
+    "${WORKSPACE}/openbmc-build-scripts/jenkins/machines.json")
 
 for m in "${SEED_MACHINES[@]}"; do
     echo "Seeding $m"
