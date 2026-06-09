@@ -1,54 +1,39 @@
+properties([
+    buildDiscarder(logRotator(daysToKeepStr: '3')),
+    parameters([
+        string(name: 'GERRIT_REFSPEC', defaultValue: 'refs/heads/master'),
+        string(name: 'GERRIT_PROJECT', defaultValue: '')
+    ])
+])
+
 def branch = ''
 def config = [:]
 def buildTargets = []
 
-pipeline {
-    agent { label 'docker-builder' }
-
-    parameters {
-        string(name: 'GERRIT_REFSPEC', defaultValue: 'refs/heads/master')
-        string(name: 'GERRIT_PROJECT', defaultValue: '')
-    }
-
-    options {
-        buildDiscarder(logRotator(daysToKeepStr: '3'))
-        timestamps()
-        throttleJobProperty(
-            categories: ['ci-openbmc'],
-            maxConcurrentTotal: 3,
-            maxConcurrentPerNode: 1,
-            throttleEnabled: true,
-            throttleOption: 'project'
-        )
-    }
-
-    stages {
-        stage('Init') {
-            steps {
-                script {
-                    config = readJSON file: 'jenkins/machines.json'
-                    branch = env.GERRIT_BRANCH ?: 'master'
-                    def machines = config[branch]
-                    if (machines == null) {
-                        error "Unknown branch: ${branch}"
-                    }
-                    buildTargets = machines.findAll { k, v -> v.build }.keySet() as List
-                    buildTargets.add('repotest')
-                    echo "Building targets for ${branch}: ${buildTargets}"
-                }
+timestamps {
+    node('docker-builder') {
+        try {
+            stage('Checkout Scripts') {
+                checkout scm
             }
-        }
 
-        stage('Set Build Name') {
-            steps {
-                script {
-                    currentBuild.displayName = "#${BUILD_NUMBER}-${env.GERRIT_PATCHSET_UPLOADER_NAME}-${env.GERRIT_PROJECT}"
+            stage('Init') {
+                config = readJSON file: 'jenkins/machines.json'
+                branch = env.GERRIT_BRANCH ?: 'master'
+                def machines = config[branch]
+                if (machines == null) {
+                    error "Unknown branch: ${branch}"
                 }
+                buildTargets = machines.findAll { k, v -> v.build }.keySet() as List
+                buildTargets.add('repotest')
+                echo "Building targets for ${branch}: ${buildTargets}"
             }
-        }
 
-        stage('Checkout') {
-            steps {
+            stage('Set Build Name') {
+                currentBuild.displayName = "#${BUILD_NUMBER}-${env.GERRIT_PATCHSET_UPLOADER_NAME}-${env.GERRIT_PROJECT}"
+            }
+
+            stage('Checkout') {
                 checkout([
                     $class: 'GitSCM',
                     userRemoteConfigs: [[
@@ -67,59 +52,75 @@ pipeline {
                     ]
                 ])
             }
-        }
 
-        stage('Build Matrix') {
-            matrix {
-                axes {
-                    axis('target', buildTargets)
+            stage('Build Matrix') {
+                def jobs = [:]
+                buildTargets.each { target ->
+                    def qemu = config[branch][target]?.qemu
+                    try {
+                        jobs[target] = build job: './CI-MISC/openbmc-build-target',
+                            parameters: [
+                                string(name: 'target', value: target),
+                                string(name: 'GERRIT_REFSPEC', value: params.GERRIT_REFSPEC),
+                                string(name: 'GERRIT_PROJECT', value: params.GERRIT_PROJECT),
+                                string(name: 'branch', value: branch),
+                                string(name: 'qemu_image', value: qemu?.image ?: ''),
+                                string(name: 'qemu_pad', value: qemu?.pad?.toString() ?: '')
+                            ],
+                            wait: false
+                    } catch (Exception e) {
+                        echo "Failed to launch build for ${target}: ${e.message}"
+                        jobs[target] = null
+                    }
                 }
-                stages {
-                    stage('Build') {
-                        steps {
-                            sh '''#!/bin/sh -xe
-                            export LANG=en_US.UTF8
-                            echo "BUILDING TARGET: ${target}"
-                            cd "${WORKSPACE}" && rm -rf openbmc-build-scripts
-                            git clone https://github.com/openbmc/openbmc-build-scripts.git
-                            cd openbmc-build-scripts
-                            export obmc_dir="${WORKSPACE}/openbmc/"
-                            export build_dir="${WORKSPACE}/build"
-                            export num_cpu=$((`nproc` / 2))
-                            [ "$num_cpu" -gt 12 ] && num_cpu=12
-                            export SDKMACHINE=x86_64
-                            export img_tag=25.04
-                            ./build-setup.sh
-                            '''
-                        }
+
+                currentBuild.description = buildTargets.collect { target ->
+                    def job = jobs[target]
+                    if (job == null) {
+                        "&#10007; ${target} (not launched)"
+                    } else {
+                        "<a href=\"${job.absoluteUrl}\">⏳ ${target}</a>"
                     }
-                    stage('QEMU Test') {
-                        when {
-                            expression { config[branch][target]?.qemu != null }
-                        }
-                        steps {
-                            script {
-                                def qemu = config[branch][target].qemu
-                                def image = "${WORKSPACE}/openbmc/build/tmp/deploy/images/${target}/${qemu.image}"
-                                if (qemu.pad) {
-                                    sh "cp '${image}' '${image}.padded' && truncate -s ${qemu.pad} '${image}.padded'"
-                                    image = "${image}.padded"
-                                }
-                                build job: './CI-MISC/run-ci-in-qemu',
-                                    parameters: [string(name: 'image_location', value: image)],
-                                    wait: true
-                            }
-                        }
+                }.join('<br/>')
+
+                def failures = []
+                buildTargets.each { target ->
+                    def job = jobs[target]
+                    if (job == null) {
+                        failures.add(target)
+                        return
                     }
+                    job.waitForCompletion()
+
+                    if (job.result != 'SUCCESS') {
+                        failures.add(target)
+                    }
+
+                    currentBuild.description = buildTargets.collect { t ->
+                        def j = jobs[t]
+                        def icon
+                        if (j == null) {
+                            icon = '&#10007;'
+                        } else if (j.isComplete()) {
+                            icon = j.result == 'SUCCESS' ? '&#10003;' : '&#10007;'
+                        } else {
+                            icon = '&#9203;'
+                        }
+                        "<a href=\"${j?.absoluteUrl ?: '#'}\">${icon} ${t}</a>"
+                    }.join('<br/>')
+                }
+
+                echo '=== Build Results ==='
+                buildTargets.each { target ->
+                    def job = jobs[target]
+                    echo "  ${target}: ${job?.result ?: 'NOT_LAUNCHED'}"
+                }
+
+                if (failures) {
+                    error "Failed targets: ${failures.join(', ')}"
                 }
             }
-        }
-    }
-
-    post {
-        always {
-            archiveArtifacts artifacts: 'openbmc/build/tmp/deploy/images/**',
-                            allowEmptyArchive: true
+        } finally {
             cleanWs()
         }
     }
