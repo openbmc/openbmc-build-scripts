@@ -13,23 +13,24 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                checkout([
-                    $class: 'GitSCM',
-                    userRemoteConfigs: [[
-                        url: "http://gerrit.openbmc.org/${params.GERRIT_PROJECT}",
-                        name: 'gerrit',
-                        refspec: params.GERRIT_REFSPEC
-                    ]],
-                    branches: [[name: params.branch]],
-                    extensions: [
-                        [$class: 'BuildChooserSetting',
-                         buildChooser: [$class: 'GerritTriggerBuildChooser', separator: '#']],
-                        [$class: 'WipeWorkspace'],
-                        [$class: 'CleanBeforeCheckout'],
-                        [$class: 'RelativeTargetDirectory', relativeTargetDir: 'openbmc'],
-                        [$class: 'CloneOption', shallow: false, noTags: false, depth: 1]
-                    ]
-                ])
+                deleteDir()
+                dir('openbmc') {
+                    checkout([
+                        $class: 'GitSCM',
+                        userRemoteConfigs: [[
+                            url: "http://gerrit.openbmc.org/${params.GERRIT_PROJECT}",
+                            name: 'gerrit',
+                            refspec: params.GERRIT_REFSPEC
+                        ]],
+                        branches: [[name: params.branch]],
+                        extensions: [
+                            [$class: 'BuildChooserSetting',
+                             buildChooser: [$class: 'GerritTriggerBuildChooser']],
+                            [$class: 'CleanBeforeCheckout'],
+                            [$class: 'CloneOption', shallow: false, noTags: false, depth: 1]
+                        ]
+                    ])
+                }
             }
         }
 

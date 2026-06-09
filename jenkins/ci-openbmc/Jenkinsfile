@@ -33,26 +33,6 @@ timestamps {
                 currentBuild.displayName = "#${BUILD_NUMBER}-${env.GERRIT_PATCHSET_UPLOADER_NAME}-${env.GERRIT_PROJECT}"
             }
 
-            stage('Checkout') {
-                checkout([
-                    $class: 'GitSCM',
-                    userRemoteConfigs: [[
-                        url: "http://gerrit.openbmc.org/${params.GERRIT_PROJECT}",
-                        name: 'gerrit',
-                        refspec: params.GERRIT_REFSPEC
-                    ]],
-                    branches: [[name: branch]],
-                    extensions: [
-                        [$class: 'BuildChooserSetting',
-                         buildChooser: [$class: 'GerritTriggerBuildChooser', separator: '#']],
-                        [$class: 'WipeWorkspace'],
-                        [$class: 'CleanBeforeCheckout'],
-                        [$class: 'RelativeTargetDirectory', relativeTargetDir: 'openbmc'],
-                        [$class: 'CloneOption', shallow: false, noTags: false, depth: 1]
-                    ]
-                ])
-            }
-
             stage('Build Matrix') {
                 def jobs = [:]
                 buildTargets.each { target ->
