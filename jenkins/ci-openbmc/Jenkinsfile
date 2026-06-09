@@ -49,7 +49,8 @@ timestamps {
                                     string(name: 'qemu_image', value: qemu?.image ?: ''),
                                     string(name: 'qemu_pad', value: qemu?.pad?.toString() ?: '')
                                 ],
-                                wait: true
+                                wait: true,
+                                propagate: false
                             results[target] = run.result
                         } catch (Exception e) {
                             results[target] = 'NOT_LAUNCHED'
