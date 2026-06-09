@@ -13,13 +13,6 @@ pipeline {
     options {
         buildDiscarder(logRotator(daysToKeepStr: '3'))
         timestamps()
-        throttleJobProperty(
-            categories: ['ci-openbmc'],
-            maxConcurrentTotal: 3,
-            maxConcurrentPerNode: 1,
-            throttleEnabled: true,
-            throttleOption: 'project'
-        )
     }
 
     stages {
@@ -70,47 +63,26 @@ pipeline {
         }
 
         stage('Build Matrix') {
-            matrix {
-                axes {
-                    axis('target', buildTargets)
-                }
-                stages {
-                    stage('Build') {
-                        steps {
-                            sh '''#!/bin/sh -xe
-                            export LANG=en_US.UTF8
-                            echo "BUILDING TARGET: ${target}"
-                            cd "${WORKSPACE}" && rm -rf openbmc-build-scripts
-                            git clone https://github.com/openbmc/openbmc-build-scripts.git
-                            cd openbmc-build-scripts
-                            export obmc_dir="${WORKSPACE}/openbmc/"
-                            export build_dir="${WORKSPACE}/build"
-                            export num_cpu=$((`nproc` / 2))
-                            [ "$num_cpu" -gt 12 ] && num_cpu=12
-                            export SDKMACHINE=x86_64
-                            export img_tag=25.04
-                            ./build-setup.sh
-                            '''
+            steps {
+                script {
+                    def branches = [:]
+                    buildTargets.each { target ->
+                        def t = target
+                        def qemu = config[branch][t]?.qemu
+                        branches[t] = {
+                            build job: './CI-MISC/openbmc-build-target',
+                                parameters: [
+                                    string(name: 'target', value: t),
+                                    string(name: 'GERRIT_REFSPEC', value: params.GERRIT_REFSPEC),
+                                    string(name: 'GERRIT_PROJECT', value: params.GERRIT_PROJECT),
+                                    string(name: 'branch', value: branch),
+                                    string(name: 'qemu_image', value: qemu?.image ?: ''),
+                                    string(name: 'qemu_pad', value: qemu?.pad?.toString() ?: '')
+                                ],
+                                wait: true
                         }
                     }
-                    stage('QEMU Test') {
-                        when {
-                            expression { config[branch][target]?.qemu != null }
-                        }
-                        steps {
-                            script {
-                                def qemu = config[branch][target].qemu
-                                def image = "${WORKSPACE}/openbmc/build/tmp/deploy/images/${target}/${qemu.image}"
-                                if (qemu.pad) {
-                                    sh "cp '${image}' '${image}.padded' && truncate -s ${qemu.pad} '${image}.padded'"
-                                    image = "${image}.padded"
-                                }
-                                build job: './CI-MISC/run-ci-in-qemu',
-                                    parameters: [string(name: 'image_location', value: image)],
-                                    wait: true
-                            }
-                        }
-                    }
+                    parallel branches
                 }
             }
         }
@@ -118,8 +90,6 @@ pipeline {
 
     post {
         always {
-            archiveArtifacts artifacts: 'openbmc/build/tmp/deploy/images/**',
-                            allowEmptyArchive: true
             cleanWs()
         }
     }
