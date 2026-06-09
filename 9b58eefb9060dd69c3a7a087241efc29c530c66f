@@ -1,4 +1,45 @@
 {
-  "comments": [],
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "feb11b96_9a62c6b3",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000153
+      },
+      "writtenOn": "2026-06-09T16:14:58Z",
+      "side": 1,
+      "message": "one minor question that I didn\u0027t understand, but otherwise LGTM.",
+      "revId": "9b58eefb9060dd69c3a7a087241efc29c530c66f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e97fea71_c0ddeb9a",
+        "filename": "jenkins/machines.json",
+        "patchSetId": 2
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 1000153
+      },
+      "writtenOn": "2026-06-09T16:14:58Z",
+      "side": 1,
+      "message": "if seed is never false, do we need to store it?",
+      "range": {
+        "startLine": 41,
+        "startChar": 13,
+        "endLine": 41,
+        "endChar": 17
+      },
+      "revId": "9b58eefb9060dd69c3a7a087241efc29c530c66f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ],
   "submitRequirementResults": []
 }
