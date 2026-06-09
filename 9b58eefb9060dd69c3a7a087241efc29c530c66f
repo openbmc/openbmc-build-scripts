@@ -39,6 +39,30 @@
       },
       "revId": "9b58eefb9060dd69c3a7a087241efc29c530c66f",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8193a634_f33225e4",
+        "filename": "jenkins/machines.json",
+        "patchSetId": 2
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2026-06-09T17:55:02Z",
+      "side": 1,
+      "message": "I think this is mostly an implicit vs explicit statement.  For now I\u0027m going to leave it explicit, but I might pull that back.\n\n@geissonator@yahoo.com was also asking me why we need seed... there is a small window when we add a new server type when we need to seed-but-not-build so that we can get the sstate caches pushed out.",
+      "parentUuid": "e97fea71_c0ddeb9a",
+      "range": {
+        "startLine": 41,
+        "startChar": 13,
+        "endLine": 41,
+        "endChar": 17
+      },
+      "revId": "9b58eefb9060dd69c3a7a087241efc29c530c66f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ],
   "submitRequirementResults": []
