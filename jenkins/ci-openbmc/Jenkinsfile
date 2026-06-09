@@ -34,66 +34,49 @@ timestamps {
             }
 
             stage('Build Matrix') {
-                def jobs = [:]
+                def results = [:]
+                def branches = [:]
                 buildTargets.each { target ->
                     def qemu = config[branch][target]?.qemu
-                    try {
-                        jobs[target] = build job: './CI-MISC/openbmc-build-target',
-                            parameters: [
-                                string(name: 'target', value: target),
-                                string(name: 'GERRIT_REFSPEC', value: params.GERRIT_REFSPEC),
-                                string(name: 'GERRIT_PROJECT', value: params.GERRIT_PROJECT),
-                                string(name: 'branch', value: branch),
-                                string(name: 'qemu_image', value: qemu?.image ?: ''),
-                                string(name: 'qemu_pad', value: qemu?.pad?.toString() ?: '')
-                            ],
-                            wait: false
-                    } catch (Exception e) {
-                        echo "Failed to launch build for ${target}: ${e.message}"
-                        jobs[target] = null
-                    }
-                }
-
-                currentBuild.description = buildTargets.collect { target ->
-                    def job = jobs[target]
-                    if (job == null) {
-                        "&#10007; ${target} (not launched)"
-                    } else {
-                        "<a href=\"${job.absoluteUrl}\">&#9203; ${target}</a>"
-                    }
-                }.join('<br/>')
-
-                def failures = []
-                buildTargets.each { target ->
-                    def job = jobs[target]
-                    if (job == null) {
-                        failures.add(target)
-                        return
-                    }
-                    job.waitForCompletion()
-
-                    if (job.result != 'SUCCESS') {
-                        failures.add(target)
-                    }
-
-                    currentBuild.description = buildTargets.collect { t ->
-                        def j = jobs[t]
-                        def icon
-                        if (j == null) {
-                            icon = '&#10007;'
-                        } else if (j.isComplete()) {
-                            icon = j.result == 'SUCCESS' ? '&#10003;' : '&#10007;'
-                        } else {
-                            icon = '&#9203;'
+                    branches[target] = {
+                        try {
+                            def run = build job: './CI-MISC/openbmc-build-target',
+                                parameters: [
+                                    string(name: 'target', value: target),
+                                    string(name: 'GERRIT_REFSPEC', value: params.GERRIT_REFSPEC),
+                                    string(name: 'GERRIT_PROJECT', value: params.GERRIT_PROJECT),
+                                    string(name: 'branch', value: branch),
+                                    string(name: 'qemu_image', value: qemu?.image ?: ''),
+                                    string(name: 'qemu_pad', value: qemu?.pad?.toString() ?: '')
+                                ],
+                                wait: true
+                            results[target] = run.result
+                        } catch (Exception e) {
+                            results[target] = 'NOT_LAUNCHED'
                         }
-                        "<a href=\"${j?.absoluteUrl ?: '#'}\">${icon} ${t}</a>"
-                    }.join('<br/>')
+                        currentBuild.description = buildTargets.collect { t ->
+                            def r = results[t]
+                            def icon
+                            if (r == null) {
+                                icon = '&#9203;'
+                            } else if (r == 'SUCCESS') {
+                                icon = '&#10003;'
+                            } else {
+                                icon = '&#10007;'
+                            }
+                            "${icon} ${t}"
+                        }.join('<br/>')
+                    }
                 }
+                parallel branches
+
+                def failures = results.findAll { target, result ->
+                    result != 'SUCCESS'
+                }.collect { it.key }
 
                 echo '=== Build Results ==='
-                buildTargets.each { target ->
-                    def job = jobs[target]
-                    echo "  ${target}: ${job?.result ?: 'NOT_LAUNCHED'}"
+                results.each { target, result ->
+                    echo "  ${target}: ${result}"
                 }
 
                 if (failures) {
