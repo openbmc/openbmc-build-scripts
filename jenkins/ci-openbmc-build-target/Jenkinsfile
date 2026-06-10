@@ -36,6 +36,7 @@ pipeline {
 
         stage('Build') {
             steps {
+                script { currentBuild.description = "Target: ${params.target}" }
                 sh '''#!/bin/sh -xe
                 export LANG=en_US.UTF8
                 echo "BUILDING TARGET: ${target}"
@@ -64,7 +65,7 @@ pipeline {
                         sh "cp '${image}' '${image}.padded' && truncate -s ${params.qemu_pad} '${image}.padded'"
                         image = "${image}.padded"
                     }
-                    build job: './CI-MISC/run-ci-in-qemu',
+                    build job: 'run-ci-in-qemu',
                         parameters: [string(name: 'image_location', value: image)],
                         wait: true
                 }
