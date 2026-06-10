@@ -35,6 +35,7 @@ timestamps {
 
             stage('Build Matrix') {
                 def results = [:]
+                def urls = [:]
                 def branches = [:]
                 buildTargets.each { target ->
                     def qemu = config[branch][target]?.qemu
@@ -52,6 +53,7 @@ timestamps {
                                 wait: true,
                                 propagate: false
                             results[target] = run.result
+                            urls[target] = run.absoluteUrl
                         } catch (Exception e) {
                             results[target] = 'NOT_LAUNCHED'
                         }
@@ -65,7 +67,7 @@ timestamps {
                             } else {
                                 icon = '&#10007;'
                             }
-                            "${icon} ${t}"
+                            urls[t] ? "${icon} <a href='${urls[t]}'>${t}</a>" : "${icon} ${t}"
                         }.join('<br/>')
                     }
                 }
