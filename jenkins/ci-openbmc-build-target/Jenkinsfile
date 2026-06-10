@@ -59,16 +59,28 @@ pipeline {
                 expression { params.qemu_image != '' }
             }
             steps {
-                script {
-                    def image = "${WORKSPACE}/openbmc/build/tmp/deploy/images/${params.target}/${params.qemu_image}"
-                    if (params.qemu_pad != '') {
-                        sh "cp '${image}' '${image}.padded' && truncate -s ${params.qemu_pad} '${image}.padded'"
-                        image = "${image}.padded"
-                    }
-                    build job: 'run-ci-in-qemu',
-                        parameters: [string(name: 'image_location', value: image)],
-                        wait: true
-                }
+                sh '''#!/bin/sh -xe
+                export UPSTREAM_WORKSPACE="${WORKSPACE}/openbmc/build"
+                export MACHINE="${target}"
+                export LAUNCH=local
+                export QEMU_RUN_TIMER=900
+                export QEMU_LOGIN_TIMER=600
+
+                ARCH=$(uname -m)
+                case ${ARCH} in
+                    "x86_64")   QEMU_LINK="x86" ;;
+                    "ppc64le")  QEMU_LINK="ppc64le" ;;
+                    "aarch64")  QEMU_LINK="aarch64" ;;
+                    *) echo "Unsupported architecture: ${ARCH}"; exit 1 ;;
+                esac
+                wget -O "${UPSTREAM_WORKSPACE}/qemu-system-arm" \
+                    "https://jenkins.openbmc.org/job/latest-qemu-${QEMU_LINK}/lastSuccessfulBuild/artifact/qemu/build/qemu-system-arm"
+                chmod ugo+rwx "${UPSTREAM_WORKSPACE}/qemu-system-arm"
+                export QEMU_BIN=./qemu-system-arm
+
+                cd "${WORKSPACE}/openbmc-build-scripts"
+                ./run-qemu-robot-test.sh
+                '''
             }
         }
     }
