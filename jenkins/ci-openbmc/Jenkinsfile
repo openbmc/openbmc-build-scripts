@@ -2,7 +2,7 @@ properties([
     buildDiscarder(logRotator(daysToKeepStr: '3')),
     parameters([
         string(name: 'GERRIT_REFSPEC', defaultValue: 'refs/heads/master'),
-        string(name: 'GERRIT_PROJECT', defaultValue: '')
+        string(name: 'GERRIT_PROJECT', defaultValue: 'openbmc/openbmc')
     ])
 ])
 

@@ -4,7 +4,7 @@ pipeline {
     parameters {
         string(name: 'target', defaultValue: '')
         string(name: 'GERRIT_REFSPEC', defaultValue: 'refs/heads/master')
-        string(name: 'GERRIT_PROJECT', defaultValue: '')
+        string(name: 'GERRIT_PROJECT', defaultValue: 'openbmc/openbmc')
         string(name: 'branch', defaultValue: 'master')
         string(name: 'qemu_image', defaultValue: '')
         string(name: 'qemu_pad', defaultValue: '')
