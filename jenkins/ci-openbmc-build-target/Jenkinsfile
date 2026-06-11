@@ -8,6 +8,8 @@ pipeline {
         string(name: 'branch', defaultValue: 'master')
         string(name: 'qemu_image', defaultValue: '')
         string(name: 'qemu_pad', defaultValue: '')
+        string(name: 'build', defaultValue: 'required')
+        string(name: 'qemu_build', defaultValue: 'disabled')
     }
 
     stages {
@@ -36,21 +38,35 @@ pipeline {
 
         stage('Build') {
             steps {
-                script { currentBuild.description = "Target: ${params.target}" }
-                sh '''#!/bin/sh -xe
-                export LANG=en_US.UTF8
-                echo "BUILDING TARGET: ${target}"
-                cd "${WORKSPACE}" && rm -rf openbmc-build-scripts
-                git clone https://github.com/openbmc/openbmc-build-scripts.git
-                cd openbmc-build-scripts
-                export obmc_dir="${WORKSPACE}/openbmc/"
-                export build_dir="${WORKSPACE}/build"
-                export num_cpu=$((`nproc` / 2))
-                [ "$num_cpu" -gt 12 ] && num_cpu=12
-                export SDKMACHINE=x86_64
-                export img_tag=25.04
-                ./build-setup.sh
-                '''
+                script {
+                    def tag = params.build == 'advisory' ? ' (advisory)' : ''
+                    currentBuild.description = "Target: ${params.target}${tag}"
+                }
+                script {
+                    try {
+                        sh '''#!/bin/sh -xe
+                        export LANG=en_US.UTF8
+                        echo "BUILDING TARGET: ${target}"
+                        cd "${WORKSPACE}" && rm -rf openbmc-build-scripts
+                        git clone https://github.com/openbmc/openbmc-build-scripts.git
+                        cd openbmc-build-scripts
+                        export obmc_dir="${WORKSPACE}/openbmc/"
+                        export build_dir="${WORKSPACE}/build"
+                        export num_cpu=$((`nproc` / 2))
+                        [ "$num_cpu" -gt 12 ] && num_cpu=12
+                        export SDKMACHINE=x86_64
+                        export img_tag=25.04
+                        ./build-setup.sh
+                        '''
+                    } catch (Exception e) {
+                        if (params.build == 'advisory') {
+                            currentBuild.result = 'UNSTABLE'
+                            echo "Build failed for advisory target ${params.target}: ${e.message}"
+                        } else {
+                            throw e
+                        }
+                    }
+                }
             }
         }
 
@@ -59,28 +75,39 @@ pipeline {
                 expression { params.qemu_image != '' }
             }
             steps {
-                sh '''#!/bin/sh -xe
-                export UPSTREAM_WORKSPACE="${WORKSPACE}/openbmc/build"
-                export MACHINE="${target}"
-                export LAUNCH=local
-                export QEMU_RUN_TIMER=900
-                export QEMU_LOGIN_TIMER=600
+                script {
+                    try {
+                        sh '''#!/bin/sh -xe
+                        export UPSTREAM_WORKSPACE="${WORKSPACE}/openbmc/build"
+                        export MACHINE="${target}"
+                        export LAUNCH=local
+                        export QEMU_RUN_TIMER=900
+                        export QEMU_LOGIN_TIMER=600
 
-                ARCH=$(uname -m)
-                case ${ARCH} in
-                    "x86_64")   QEMU_LINK="x86" ;;
-                    "ppc64le")  QEMU_LINK="ppc64le" ;;
-                    "aarch64")  QEMU_LINK="aarch64" ;;
-                    *) echo "Unsupported architecture: ${ARCH}"; exit 1 ;;
-                esac
-                wget -O "${UPSTREAM_WORKSPACE}/qemu-system-arm" \
-                    "https://jenkins.openbmc.org/job/latest-qemu-${QEMU_LINK}/lastSuccessfulBuild/artifact/qemu/build/qemu-system-arm"
-                chmod ugo+rwx "${UPSTREAM_WORKSPACE}/qemu-system-arm"
-                export QEMU_BIN=./qemu-system-arm
+                        ARCH=$(uname -m)
+                        case ${ARCH} in
+                            "x86_64")   QEMU_LINK="x86" ;;
+                            "ppc64le")  QEMU_LINK="ppc64le" ;;
+                            "aarch64")  QEMU_LINK="aarch64" ;;
+                            *) echo "Unsupported architecture: ${ARCH}"; exit 1 ;;
+                        esac
+                        wget -O "${UPSTREAM_WORKSPACE}/qemu-system-arm" \
+                            "https://jenkins.openbmc.org/job/latest-qemu-${QEMU_LINK}/lastSuccessfulBuild/artifact/qemu/build/qemu-system-arm"
+                        chmod ugo+rwx "${UPSTREAM_WORKSPACE}/qemu-system-arm"
+                        export QEMU_BIN=./qemu-system-arm
 
-                cd "${WORKSPACE}/openbmc-build-scripts"
-                ./run-qemu-robot-test.sh
-                '''
+                        cd "${WORKSPACE}/openbmc-build-scripts"
+                        ./run-qemu-robot-test.sh
+                        '''
+                    } catch (Exception e) {
+                        if (params.qemu_build == 'advisory') {
+                            currentBuild.result = 'UNSTABLE'
+                            echo "QEMU test failed for advisory target ${params.target}: ${e.message}"
+                        } else {
+                            throw e
+                        }
+                    }
+                }
             }
         }
     }

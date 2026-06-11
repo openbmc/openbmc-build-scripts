@@ -24,7 +24,7 @@ fi
 export build_dir="${WORKSPACE}/build"
 
 mapfile -t SEED_MACHINES < <(jq -r \
-        '.[env.GERRIT_BRANCH // "master"] | to_entries[] | select(.value.seed) | .key' \
+        '.[env.GERRIT_BRANCH // "master"] | to_entries[] | select(.value.build != "disabled") | .key' \
     "${WORKSPACE}/openbmc-build-scripts/jenkins/machines.json")
 
 for m in "${SEED_MACHINES[@]}"; do

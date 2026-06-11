@@ -21,7 +21,7 @@ timestamps {
                 if (machines == null) {
                     error "Unknown branch: ${branch}"
                 }
-                buildTargets = machines.findAll { k, v -> v.build }.keySet() as List
+                buildTargets = machines.findAll { k, v -> v.build != "disabled" }.keySet() as List
                 buildTargets.add('repotest')
                 echo "Building targets for ${branch}: ${buildTargets}"
             } finally {
@@ -39,7 +39,10 @@ timestamps {
         def urls = [:]
         def branches = [:]
         buildTargets.each { target ->
-            def qemu = config[branch][target]?.qemu
+            def machine = config[branch][target]
+            def qemu = machine?.qemu
+            def buildStr = machine?.build ?: 'required'
+            def qemuBuildStr = qemu ? (qemu.build ?: 'required') : 'disabled'
             branches[target] = {
                 try {
                     def run = build job: './CI-MISC/openbmc-build-target',
@@ -49,7 +52,9 @@ timestamps {
                             string(name: 'GERRIT_PROJECT', value: params.GERRIT_PROJECT),
                             string(name: 'branch', value: branch),
                             string(name: 'qemu_image', value: qemu?.image ?: ''),
-                            string(name: 'qemu_pad', value: qemu?.pad?.toString() ?: '')
+                            string(name: 'qemu_pad', value: qemu?.pad?.toString() ?: ''),
+                            string(name: 'build', value: buildStr),
+                            string(name: 'qemu_build', value: qemuBuildStr)
                         ],
                         wait: true,
                         propagate: false
@@ -74,8 +79,14 @@ timestamps {
         }
         parallel branches
 
-        def failures = results.findAll { target, result ->
-            result != 'SUCCESS'
+        def requiredFailures = results.findAll { target, result ->
+            def buildStr = config[branch][target]?.build ?: 'required'
+            result != 'SUCCESS' && buildStr == 'required'
+        }.collect { it.key }
+
+        def advisoryFailures = results.findAll { target, result ->
+            def buildStr = config[branch][target]?.build ?: 'required'
+            result != 'SUCCESS' && buildStr == 'advisory'
         }.collect { it.key }
 
         echo '=== Build Results ==='
@@ -83,8 +94,11 @@ timestamps {
             echo "  ${target}: ${result}"
         }
 
-        if (failures) {
-            error "Failed targets: ${failures.join(', ')}"
+        if (advisoryFailures) {
+            echo "Warning - advisory failures: ${advisoryFailures.join(', ')}"
+        }
+        if (requiredFailures) {
+            error "Failed targets: ${requiredFailures.join(', ')}"
         }
     }
 }
