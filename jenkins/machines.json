@@ -16,7 +16,7 @@
             "qemu": { "image": "obmc-phosphor-image-romulus.static.mtd" }
         },
         "santabarbara": {},
-        "sanmiguel": { "build": "advisory" },
+        "sanmiguel": {},
         "ventura": {},
         "ventura2": {},
         "yosemite4": {},
