@@ -3,26 +3,6 @@ properties([
     parameters([
         string(name: 'GERRIT_REFSPEC', defaultValue: 'refs/heads/master'),
         string(name: 'GERRIT_PROJECT', defaultValue: 'openbmc/openbmc')
-    ]),
-    pipelineTriggers([
-        [
-            $class: 'GerritTrigger',
-            silentMode: false,
-            serverName: 'gerrit.openbmc.org',
-            gerritProjects: [[
-                compareType: 'PLAIN',
-                pattern: 'openbmc/openbmc',
-                branches: [
-                    [compareType: 'PLAIN', pattern: 'master'],
-                    [compareType: 'PLAIN', pattern: 'wrynose']
-                ]
-            ]],
-            triggerOnEvents: [[
-                $class: 'PluginCommentAddedEvent',
-                verdictCategory: 'Ok-To-Test',
-                commentAddedTriggerApprovalValue: '1'
-            ]]
-        ]
     ])
 ])
 
