@@ -23,26 +23,14 @@
         "yosemite5": {}
     },
     "wrynose": {
-        "anacapa": {},
-        "bletchley": {},
-        "bletchley15": {},
         "catalina": {},
-        "clemente": {},
         "e3c246d4i": {},
         "evb-npcm845": {},
-        "gb200nvl-obmc": {},
-        "gbs": {},
-        "harma": {},
-        "minerva": {},
         "p10bmc": {},
         "romulus": {
             "qemu": { "image": "obmc-phosphor-image-romulus.static.mtd" }
         },
-        "santabarbara": {},
-        "ventura": {},
-        "ventura2": {},
-        "yosemite4": {},
-        "yosemite5": {}
+        "yosemite4": {}
     },
     "_schema": {
         "build": "required|advisory|disabled (default: required)",
