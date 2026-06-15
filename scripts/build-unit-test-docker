@@ -1042,7 +1042,9 @@ RUN apt-get update && apt-get dist-upgrade -yy
 """
 
 dockerfile_base += """
-RUN pip3 install --break-system-packages \
+# Use --ignore-installed cryptography to avoid conflicts with system-installed
+# cryptography package that lacks pip RECORD file and cannot be uninstalled.
+RUN pip3 install --break-system-packages --ignore-installed cryptography \
         ast-grep-cli \
         beautysh \
         black \
