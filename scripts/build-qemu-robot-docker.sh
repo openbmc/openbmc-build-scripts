@@ -107,7 +107,7 @@ ENV HOME=${HOME}
 
 ${PIP_MIRROR_CMD}
 
-RUN pip3 install --break-system-packages \
+RUN pip3 install --break-system-packages --ignore-installed cryptography \
     tox \
     requests \
     retrying \
