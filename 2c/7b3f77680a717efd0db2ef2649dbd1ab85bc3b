@@ -1,0 +1,8 @@
+Code-Review+1: Rick Yazwinski <rickyaz@meta.com>
+Code-Review+2: Patrick Williams <patrick@stwcx.xyz>
+Verified+1: OpenBMC CI <openbmcbump-ci@yahoo.com>
+Submitted-by: Patrick Williams <patrick@stwcx.xyz>
+Submitted-at: Mon, 15 Jun 2026 17:12:37 +0000
+Reviewed-on: https://gerrit.openbmc.org/c/openbmc/openbmc-build-scripts/+/91271
+Project: openbmc/openbmc-build-scripts
+Branch: refs/heads/master
