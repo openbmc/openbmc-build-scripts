@@ -23,9 +23,12 @@ fi
 # Ensure everything is built on same filesystem
 export build_dir="${WORKSPACE}/build"
 
-mapfile -t SEED_MACHINES < <(jq -r \
-        '.[env.GERRIT_BRANCH // "master"] | to_entries[] | select(.value.build != "disabled") | .key' \
-    "${WORKSPACE}/openbmc-build-scripts/jenkins/machines.json")
+mapfile -t SEED_MACHINES < <(python3 -c "
+import json, os, sys
+branch = os.environ.get('GERRIT_BRANCH', 'master')
+data = json.load(sys.stdin)
+[print(k) for k, v in data.get(branch, {}).items() if v.get('build') != 'disabled']
+" < "${WORKSPACE}/openbmc-build-scripts/jenkins/machines.json")
 
 for m in "${SEED_MACHINES[@]}"; do
     echo "Seeding $m"
