@@ -17,11 +17,16 @@ properties([
                     [compareType: 'PLAIN', pattern: 'wrynose']
                 ]
             ]],
-            triggerOnEvents: [[
-                $class: 'PluginCommentAddedEvent',
-                verdictCategory: 'Ok-To-Test',
-                commentAddedTriggerApprovalValue: '1'
-            ]]
+            triggerOnEvents: [
+                [
+                    $class: 'PluginCommentAddedEvent',
+                    verdictCategory: 'Ok-To-Test',
+                    commentAddedTriggerApprovalValue: '1'
+                ],
+                [
+                    $class: 'PluginChangeMergedEvent'
+                ]
+            ]
         ]
     ])
 ])
@@ -29,6 +34,10 @@ properties([
 def branch = ''
 def config = [:]
 def buildTargets = []
+
+def UBUNTU_IMG_TAG    = '24.04'
+def GITHUB_USER       = 'jenkins-openbmc-ci'
+def ARCHS             = ['aarch64', 'x86_64']
 
 timestamps {
     stage('Setup') {
@@ -119,6 +128,243 @@ timestamps {
         }
         if (requiredFailures) {
             error "Failed targets: ${requiredFailures.join(', ')}"
+        }
+    }
+
+    stage('Build Upstream Containers') {
+        if (env.GERRIT_EVENT_TYPE != 'change-merged') {
+            echo "Skipping — not a merge event"
+            return
+        }
+        def skipBuild = false
+        node('docker-builder') {
+            def lastBuildFile = "${env.HOME}/sstate-last-build-${branch}"
+            def now = currentBuild.startTimeInMillis.intdiv(1000)
+            def lastBuild = 0
+            if (fileExists(lastBuildFile)) {
+                lastBuild = readFile(lastBuildFile).trim().toLong()
+            }
+            if ((now - lastBuild) < 3600) {
+                skipBuild = true
+            }
+        }
+        if (skipBuild) {
+            echo "Skipping — last sstate build was less than 1 hour ago"
+            return
+        }
+        def containerCells = [:]
+        def machines = config[branch]
+
+        machines.each { target, machine ->
+            def buildStr = machine?.build ?: 'required'
+            if (buildStr == 'disabled') { return }
+
+            ARCHS.each { arch ->
+                def cellKey = "${branch}-${target}-${arch}"
+
+                containerCells[cellKey] = {
+                    def nodeLabel    = arch == 'aarch64' ? 'aarch64' : 'x86'
+                    def targetImage  = "openbmc/ubuntu:${UBUNTU_IMG_TAG}-${target}-${branch}-${arch}"
+                    def containerTag = "ghcr.io/openbmc/sstate:${branch}-${arch}-${target}-raw"
+                    def genericTag   = "ghcr.io/openbmc/sstate:${branch}-${arch}-${target}-latest"
+
+                    node(nodeLabel) {
+                        def jenkinsHome   = env.HOME
+                        def cleanWs       = "${jenkinsHome}/workspace/openbmc-containers-${branch}-${target}-${arch}"
+                        def buildBase     = "${cleanWs}/hashservertest-${branch}-${target}-${arch}"
+                        def SHARED_DL_DIR = "${jenkinsHome}/shared-downloads"
+                        ws(cleanWs) {
+
+                            stage("${cellKey} Checkout") {
+                                sh """
+                                    rm -rf openbmc-${branch}
+                                    git clone --depth 1 --branch ${branch} \
+                                        http://gerrit.openbmc.org/${params.GERRIT_PROJECT} openbmc-${branch}
+
+                                    rm -rf build-scripts
+                                    git clone https://github.com/openbmc/openbmc-build-scripts.git build-scripts
+                                """
+                            }
+
+                            stage("${cellKey} Build Target Container") {
+                                sh """
+                                    cd build-scripts
+                                    export USER=jenkins
+                                    export CONTAINER_ONLY=true
+                                    export target=${target}
+                                    export img_tag=${UBUNTU_IMG_TAG}
+                                    export img_name=${targetImage}
+                                    if [ "${arch}" = "aarch64" ]; then
+                                        export UBUNTU_MIRROR="http://ports.ubuntu.com/ubuntu-ports/"
+                                    fi
+                                    ./build-setup.sh
+                                """
+                                sh """
+                                    mkdir -p ${SHARED_DL_DIR}
+                                    docker run --rm \
+                                        -v ${SHARED_DL_DIR}:/data \
+                                        alpine:latest chown -R 1000:1000 /data
+                                """
+                            }
+
+                            stage("${cellKey} Prepare Build Dir") {
+                                sh """
+                                    set -e
+                                    rm -rf ${buildBase}
+                                    mkdir -p ${buildBase}/openbmc
+                                    cp -a ${cleanWs}/openbmc-${branch}/. ${buildBase}/openbmc/
+                                    docker run --rm \
+                                        -v ${buildBase}:/data \
+                                        alpine:latest chown -R 1000:1000 /data
+                                """
+                            }
+
+                            try {
+
+                                stage("${cellKey} BitBake Build") {
+                                    sh """
+                                        set -e
+                                        docker run --rm --network=host \
+                                            --pids-limit=4000 \
+                                            -u 1000:1000 \
+                                            -v ${jenkinsHome}:${jenkinsHome} \
+                                            -w ${buildBase}/openbmc \
+                                            ${targetImage} \
+                                            bash -c "
+                                                set -ex
+                                                . ./setup ${target}
+                                                JOBS=\\\$(nproc --all | awk '{print int(\\\$1/4)}')
+                                                echo 'BB_SIGNATURE_HANDLER = \\"OEBasicHash\\"'           >> conf/local.conf
+                                                echo 'DL_DIR = \\"${SHARED_DL_DIR}\\"'                    >> conf/local.conf
+                                                echo \"BB_NUMBER_THREADS = \\\\\"\\\${JOBS}\\\\\"\"      >> conf/local.conf
+                                                echo \"PARALLEL_MAKE = \\\\\"-j \\\${JOBS}\\\\\"\"       >> conf/local.conf
+
+                                                MAX_RETRIES=5
+                                                RETRY_COUNT=0
+                                                BUILD_EXIT=1
+
+                                                while [ \\\$RETRY_COUNT -lt \\\$MAX_RETRIES ] && [ \\\$BUILD_EXIT -ne 0 ]; do
+                                                    [ \\\$RETRY_COUNT -gt 0 ] && sleep 10
+                                                    MACHINE=${target} bitbake obmc-phosphor-image
+                                                    BUILD_EXIT=\\\$?
+                                                    RETRY_COUNT=\\\$((RETRY_COUNT + 1))
+                                                done
+
+                                                exit \\\$BUILD_EXIT
+                                            "
+                                    """
+                                }
+
+                                stage("${cellKey} Create Container") {
+                                    sh """
+                                        set -e
+                                        CONTAINER_ID=\$(docker run -d \
+                                            --pids-limit=4000 \
+                                            -u \$(id -u):\$(id -g) \
+                                            -v ${jenkinsHome}:${jenkinsHome} \
+                                            -w ${jenkinsHome} \
+                                            ${targetImage} sleep infinity)
+
+                                        trap "docker stop \${CONTAINER_ID}; docker rm \${CONTAINER_ID}" EXIT
+
+                                        docker exec -u root \${CONTAINER_ID} bash -c "
+                                            rm -rf ${buildBase}/openbmc/build/${target}/tmp
+                                            rm -rf ${buildBase}/openbmc/build/${target}/downloads
+                                            rm -rf /var/lib/openbmc/sstate-cache
+                                            mkdir -p /var/lib/openbmc/sstate-cache
+                                            cp -r ${buildBase}/openbmc/build/${target}/sstate-cache/* \
+                                                  /var/lib/openbmc/sstate-cache/
+                                            chmod -R 777 /var/lib/openbmc
+                                        "
+
+                                        docker commit \${CONTAINER_ID} local-sstate-${branch}-${target}-${arch}
+                                        docker tag local-sstate-${branch}-${target}-${arch} ${containerTag}
+                                    """
+                                }
+
+                                stage("${cellKey} Add Entrypoint") {
+                                    sh """
+                                        set -e
+                                        BUILD_DIR=\$(mktemp -d)
+                                        cd \${BUILD_DIR}
+
+                                        cat << 'ENTRYEOF' > entrypoint.sh
+#!/bin/bash
+USER_ID=\${LOCAL_UID:-1000}
+GROUP_ID=\${LOCAL_GID:-1000}
+
+if getent group "\$GROUP_ID" >/dev/null; then
+    GROUP_NAME=\$(getent group "\$GROUP_ID" | cut -d: -f1)
+else
+    GROUP_NAME="hostgroup"
+    groupadd -g "\$GROUP_ID" "\$GROUP_NAME"
+fi
+
+if getent passwd "\$USER_ID" >/dev/null; then
+    CURRENT_NAME=\$(getent passwd "\$USER_ID" | cut -d: -f1)
+    if [ -n "\$LOCAL_USER" ] && [ "\$CURRENT_NAME" != "\$LOCAL_USER" ]; then
+        usermod -l "\$LOCAL_USER" "\$CURRENT_NAME"
+        USER_NAME="\$LOCAL_USER"
+    else
+        USER_NAME="\$CURRENT_NAME"
+    fi
+else
+    USER_NAME=\${LOCAL_USER:-hostuser}
+    useradd -u "\$USER_ID" -g "\$GROUP_ID" -s /bin/bash -m "\$USER_NAME"
+fi
+
+export HOME=\$(getent passwd "\$USER_NAME" | cut -d: -f6)
+export USER="\$USER_NAME"
+export LOGNAME="\$USER_NAME"
+
+exec gosu "\$USER_NAME" "\$@"
+ENTRYEOF
+                                        chmod +x entrypoint.sh
+
+                                        cat << EOF > Dockerfile
+FROM ${containerTag}
+USER root
+RUN apt-get update && \\
+    apt-get install -y --no-install-recommends gosu && \\
+    rm -rf /var/lib/apt/lists/*
+COPY entrypoint.sh /usr/local/bin/entrypoint.sh
+RUN chmod +x /usr/local/bin/entrypoint.sh
+ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
+CMD ["bash"]
+EOF
+
+                                        docker build --network=host -t ${genericTag} .
+                                        cd - && rm -rf \${BUILD_DIR}
+                                    """
+                                }
+
+                                stage("${cellKey} Push") {
+                                    withCredentials([string(credentialsId: 'github-ghcr-token', variable: 'GHCR_TOKEN')]) {
+                                        sh """
+                                            set -e
+                                            echo "\${GHCR_TOKEN}" | docker login ghcr.io \
+                                                -u ${GITHUB_USER} --password-stdin
+                                            docker push ${genericTag}
+                                            docker logout ghcr.io
+                                        """
+                                    }
+                                }
+
+                            } finally {
+                                sh """
+                                    docker rmi local-sstate-${branch}-${target}-${arch} || true
+                                    rm -rf ${buildBase}
+                                """
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        parallel containerCells
+        node('docker-builder') {
+            writeFile file: "${env.HOME}/sstate-last-build-${branch}", text: "${currentBuild.startTimeInMillis.intdiv(1000)}"
         }
     }
 }
