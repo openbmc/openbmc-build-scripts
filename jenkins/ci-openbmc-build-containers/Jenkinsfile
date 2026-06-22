@@ -1,0 +1,124 @@
+// Post-merge sstate container build pipeline.
+// Triggered on change-merged events only — completely separate from patchset
+// verification so slow container builds never block CI feedback on open patchsets.
+
+properties([
+    buildDiscarder(logRotator(daysToKeepStr: '7')),
+    parameters([
+        string(name: 'GERRIT_PROJECT', defaultValue: 'openbmc/openbmc')
+    ]),
+    pipelineTriggers([
+        [
+            $class: 'GerritTrigger',
+            silentMode: false,
+            serverName: 'gerrit.openbmc.org',
+            gerritProjects: [[
+                compareType: 'PLAIN',
+                pattern: 'openbmc/openbmc',
+                branches: [
+                    [compareType: 'PLAIN', pattern: 'master'],
+                    [compareType: 'PLAIN', pattern: 'wrynose']
+                ]
+            ]],
+            triggerOnEvents: [
+                [ $class: 'PluginChangeMergedEvent' ]
+            ]
+        ]
+    ])
+])
+
+def branch        = ''
+def config        = [:]
+def lastBuildFile = ''
+
+def ARCHS            = ['aarch64', 'x86_64']
+def COOLDOWN_SECONDS = 3600
+
+timestamps {
+    stage('Setup') {
+        node('docker-builder') {
+            try {
+                checkout scm
+                config = readJSON file: 'jenkins/machines.json'
+                branch = env.GERRIT_BRANCH ?: 'master'
+                if (config[branch] == null) {
+                    error "Unknown branch: ${branch}"
+                }
+                echo "Building containers for branch: ${branch}"
+            } finally {
+                cleanWs()
+            }
+        }
+    }
+
+    stage('Set Build Name') {
+        currentBuild.displayName = "#${BUILD_NUMBER}-containers-${branch}"
+    }
+
+    stage('Build Upstream Containers') {
+        // Pin the cooldown check to the built-in control node so the
+        // time-tracking file has a single, reliable source of truth
+        // regardless of which transient worker nodes are online.
+        def skipBuild = false
+        node('built-in') {
+            lastBuildFile = "${env.HOME}/sstate-last-build-${branch}"
+            def now  = currentBuild.startTimeInMillis.intdiv(1000)
+            def lastBuild = 0
+            if (fileExists(lastBuildFile)) {
+                lastBuild = readFile(lastBuildFile).trim().toLong()
+            }
+            if ((now - lastBuild) < COOLDOWN_SECONDS) {
+                skipBuild = true
+            }
+        }
+        if (skipBuild) {
+            echo "Skipping — last sstate build was less than 1 hour ago"
+            return
+        }
+
+        def cells   = [:]
+        def results = [:]
+
+        config[branch].each { target, machine ->
+            def buildStr = machine?.build ?: 'required'
+            if (buildStr == 'disabled') { return }
+
+            ARCHS.each { arch ->
+                def cellKey = "${branch}-${target}-${arch}"
+                cells[cellKey] = {
+                    try {
+                        def run = build job: './CI-MISC/openbmc-build-sstate-container',
+                            parameters: [
+                                string(name: 'target',         value: target),
+                                string(name: 'arch',           value: arch),
+                                string(name: 'branch',         value: branch),
+                                string(name: 'GERRIT_PROJECT', value: params.GERRIT_PROJECT)
+                            ],
+                            wait: true,
+                            propagate: false
+                        results[cellKey] = run.result
+                    } catch (Exception e) {
+                        results[cellKey] = 'NOT_LAUNCHED'
+                    }
+                }
+            }
+        }
+
+        parallel cells
+
+        echo '=== Container Build Results ==='
+        results.each { cell, result -> echo "  ${cell}: ${result}" }
+
+        def failures = results.findAll { cell, result -> result != 'SUCCESS' }.collect { it.key }
+        if (failures) {
+            error "Failed cells: ${failures.join(', ')}"
+        }
+
+        // Write the cooldown timestamp back to the control node after all
+        // cells complete so the next triggered build can check it reliably.
+        node('built-in') {
+            writeFile file: lastBuildFile,
+                      text: "${currentBuild.startTimeInMillis.intdiv(1000)}"
+        }
+    }
+}
