@@ -1,0 +1,206 @@
+// Post-merge sstate container build pipeline.
+// Triggered on change-merged events only — completely separate from patchset
+// verification so slow container builds never block CI feedback on open patchsets.
+
+properties([
+    buildDiscarder(logRotator(daysToKeepStr: '7')),
+    parameters([
+        string(name: 'GERRIT_PROJECT', defaultValue: 'openbmc/openbmc')
+    ]),
+    pipelineTriggers([
+        [
+            $class: 'GerritTrigger',
+            silentMode: false,
+            serverName: 'gerrit.openbmc.org',
+            gerritProjects: [[
+                compareType: 'PLAIN',
+                pattern: 'openbmc/openbmc',
+                branches: [
+                    [compareType: 'PLAIN', pattern: 'master'],
+                    [compareType: 'PLAIN', pattern: 'wrynose']
+                ]
+            ]],
+            triggerOnEvents: [
+                [ $class: 'PluginChangeMergedEvent' ]
+            ]
+        ]
+    ])
+])
+
+def branch  = ''
+def config  = [:]
+def SCRIPT_DIR = ''
+
+def UBUNTU_IMG_TAG = '24.04'
+def GITHUB_USER    = 'jenkins-openbmc-ci'
+def ARCHS          = ['aarch64', 'x86_64']
+
+timestamps {
+    stage('Setup') {
+        node('docker-builder') {
+            checkout scm
+            config     = readJSON file: 'jenkins/machines.json'
+            SCRIPT_DIR = "${env.WORKSPACE}/jenkins/ci-openbmc"
+            branch     = env.GERRIT_BRANCH ?: 'master'
+            if (config[branch] == null) {
+                error "Unknown branch: ${branch}"
+            }
+            echo "Building containers for branch: ${branch}"
+            // Keep workspace — SCRIPT_DIR must stay accessible to cell stages.
+        }
+    }
+
+    stage('Set Build Name') {
+        currentBuild.displayName = "#${BUILD_NUMBER}-containers-${branch}"
+    }
+
+    stage('Build Upstream Containers') {
+        // Pin the cooldown check to the built-in control node so the
+        // time-tracking file has a single, reliable source of truth
+        // regardless of which transient worker nodes are online.
+        def skipBuild = false
+        node('built-in') {
+            def lastBuildFile = "${env.HOME}/sstate-last-build-${branch}"
+            def now  = currentBuild.startTimeInMillis.intdiv(1000)
+            def lastBuild = 0
+            if (fileExists(lastBuildFile)) {
+                lastBuild = readFile(lastBuildFile).trim().toLong()
+            }
+            if ((now - lastBuild) < 3600) {
+                skipBuild = true
+            }
+        }
+        if (skipBuild) {
+            echo "Skipping — last sstate build was less than 1 hour ago"
+            return
+        }
+
+        def containerCells = [:]
+        def machines = config[branch]
+
+        machines.each { target, machine ->
+            def buildStr = machine?.build ?: 'required'
+            if (buildStr == 'disabled') { return }
+
+            ARCHS.each { arch ->
+                def cellKey      = "${branch}-${target}-${arch}"
+                def nodeLabel    = arch == 'aarch64' ? 'aarch64' : 'x86'
+                def targetImage  = "openbmc/ubuntu:${UBUNTU_IMG_TAG}-${target}-${branch}-${arch}"
+                def containerTag = "ghcr.io/openbmc/sstate:${branch}-${arch}-${target}-raw"
+                def genericTag   = "ghcr.io/openbmc/sstate:${branch}-${arch}-${target}-latest"
+                def localTag     = "local-sstate-${branch}-${target}-${arch}"
+
+                containerCells[cellKey] = {
+                    node(nodeLabel) {
+                        def buildBase = "${env.WORKSPACE}/openbmc"
+
+                        stage("${cellKey} Checkout") {
+                            sh """
+                                rm -rf openbmc build-scripts
+                                git clone --depth 1 --branch ${branch} \
+                                    http://gerrit.openbmc.org/${params.GERRIT_PROJECT} openbmc
+                                git clone https://github.com/openbmc/openbmc-build-scripts.git build-scripts
+                            """
+                        }
+
+                        stage("${cellKey} Build Target Container") {
+                            sh """
+                                cd build-scripts
+                                export USER=jenkins
+                                export CONTAINER_ONLY=true
+                                export target=${target}
+                                export img_tag=${UBUNTU_IMG_TAG}
+                                export img_name=${targetImage}
+                                if [ "${arch}" = "aarch64" ]; then
+                                    export UBUNTU_MIRROR="http://ports.ubuntu.com/ubuntu-ports/"
+                                fi
+                                ./build-setup.sh
+                            """
+                        }
+
+                        try {
+
+                            stage("${cellKey} Bitbake") {
+                                def buildCmd = """
+                                    docker run --rm --network=host \
+                                        --pids-limit=4000 \
+                                        -u 1000:1000 \
+                                        -v ${env.WORKSPACE}:${env.WORKSPACE} \
+                                        -w ${buildBase} \
+                                        -e TARGET=${target} \
+                                        -e BUILD_BASE=${buildBase} \
+                                        IMAGE_PLACEHOLDER \
+                                        ${SCRIPT_DIR}/bitbake-build.sh
+                                """
+
+                                def pullExit = sh(script: "docker pull ${genericTag}", returnStatus: true)
+                                if (pullExit == 0) {
+                                    echo "Seed image found (${genericTag}), attempting seeded build"
+                                    def seedExit = sh(
+                                        script: buildCmd.replace('IMAGE_PLACEHOLDER', genericTag),
+                                        returnStatus: true
+                                    )
+                                    if (seedExit != 0) {
+                                        echo "Seeded build failed (exit ${seedExit}), falling back to fresh targetImage"
+                                        sh buildCmd.replace('IMAGE_PLACEHOLDER', targetImage)
+                                    }
+                                } else {
+                                    echo "No seed image found for ${genericTag}, building from scratch with targetImage"
+                                    sh buildCmd.replace('IMAGE_PLACEHOLDER', targetImage)
+                                }
+                            }
+
+                            stage("${cellKey} Create Container") {
+                                sh """
+                                    TARGET_IMAGE=${targetImage} \
+                                    BUILD_BASE=${buildBase} \
+                                    TARGET=${target} \
+                                    CONTAINER_TAG=${containerTag} \
+                                    LOCAL_TAG=${localTag} \
+                                    WORKSPACE=${env.WORKSPACE} \
+                                    ${SCRIPT_DIR}/create-container.sh
+                                """
+                            }
+
+                            stage("${cellKey} Add Entrypoint") {
+                                sh """
+                                    CONTAINER_TAG=${containerTag} \
+                                    GENERIC_TAG=${genericTag} \
+                                    SCRIPT_DIR=${SCRIPT_DIR} \
+                                    ${SCRIPT_DIR}/add-entrypoint.sh
+                                """
+                            }
+
+                            stage("${cellKey} Push") {
+                                withCredentials([string(credentialsId: 'github-ghcr-token', variable: 'GHCR_TOKEN')]) {
+                                    sh """
+                                        set -e
+                                        set +x
+                                        echo "\${GHCR_TOKEN}" | docker login ghcr.io \
+                                            -u ${GITHUB_USER} --password-stdin
+                                        set -x
+                                        docker push ${genericTag}
+                                        docker logout ghcr.io
+                                    """
+                                }
+                            }
+
+                        } finally {
+                            sh "docker rmi ${localTag} || true"
+                            cleanWs()
+                        }
+                    }
+                }
+            }
+        }
+
+        parallel containerCells
+
+        // Write the cooldown timestamp back to the control node after all
+        // cells complete so the next triggered build can check it reliably.
+        node('built-in') {
+            writeFile file: "${env.HOME}/sstate-last-build-${branch}",
+                      text: "${currentBuild.startTimeInMillis.intdiv(1000)}"
+        }
+    }
+}
