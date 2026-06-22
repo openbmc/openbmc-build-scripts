@@ -1,0 +1,129 @@
+// Per-target sstate container build sub-job.
+// Dispatched by ci-openbmc-build-containers/Jenkinsfile for each target+arch cell.
+
+properties([
+    buildDiscarder(logRotator(daysToKeepStr: '7')),
+    parameters([
+        string(name: 'target',         defaultValue: ''),
+        string(name: 'arch',           defaultValue: ''),
+        string(name: 'branch',         defaultValue: 'master'),
+        string(name: 'GERRIT_PROJECT', defaultValue: 'openbmc/openbmc')
+    ])
+])
+
+def UBUNTU_IMG_TAG = 'resolute'
+def GITHUB_USER    = 'jenkins-openbmc-ci'
+def SCRIPT_DIR     = ''
+
+def target      = params.target
+def arch        = params.arch
+def branch      = params.branch
+def nodeLabel   = arch == 'aarch64' ? 'aarch64 && openbmc-ci' : 'x86 && openbmc-ci'
+def targetImage = "openbmc/ubuntu:${UBUNTU_IMG_TAG}-${target}-${branch}-${arch}"
+def containerTag = "ghcr.io/openbmc/sstate:${branch}-${arch}-${target}-raw"
+def genericTag   = "ghcr.io/openbmc/sstate:${branch}-${arch}-${target}-latest"
+
+timestamps {
+    stage('Set Build Name') {
+        currentBuild.displayName = "#${BUILD_NUMBER}-${branch}-${target}-${arch}"
+    }
+
+    node(nodeLabel) {
+        def buildBase = "${env.WORKSPACE}/openbmc"
+        SCRIPT_DIR    = "${env.WORKSPACE}/jenkins/ci-openbmc-build-containers"
+
+        stage('Checkout') {
+            checkout scm
+            sh """
+                rm -rf openbmc build-scripts
+                git clone --depth 1 --branch ${branch} \
+                    http://gerrit.openbmc.org/${params.GERRIT_PROJECT} openbmc
+                git clone https://github.com/openbmc/openbmc-build-scripts.git build-scripts
+            """
+        }
+
+        stage('Build Target Container') {
+            sh """
+                cd build-scripts
+                export USER=jenkins
+                export CONTAINER_ONLY=true
+                export target=${target}
+                export img_tag=${UBUNTU_IMG_TAG}
+                export img_name=${targetImage}
+                if [ "${arch}" = "aarch64" ]; then
+                    export UBUNTU_MIRROR="http://ports.ubuntu.com/ubuntu-ports/"
+                fi
+                ./build-setup.sh
+            """
+        }
+
+        try {
+
+            stage('Bitbake') {
+                def buildCmd = """
+                    docker run --rm --network=host \
+                        --pids-limit=4000 \
+                        -u 1000:1000 \
+                        -v ${env.WORKSPACE}:${env.WORKSPACE} \
+                        -w ${buildBase} \
+                        -e TARGET=${target} \
+                        -e BUILD_BASE=${buildBase} \
+                        IMAGE_PLACEHOLDER \
+                        ${SCRIPT_DIR}/bitbake-build.sh
+                """
+
+                def pullExit = sh(script: "docker pull ${genericTag}", returnStatus: true)
+                if (pullExit == 0) {
+                    echo "Seed image found (${genericTag}), attempting seeded build"
+                    def seedExit = sh(
+                        script: buildCmd.replace('IMAGE_PLACEHOLDER', genericTag),
+                        returnStatus: true
+                    )
+                    if (seedExit != 0) {
+                        echo "Seeded build failed (exit ${seedExit}), falling back to fresh targetImage"
+                        sh buildCmd.replace('IMAGE_PLACEHOLDER', targetImage)
+                    }
+                } else {
+                    echo "No seed image found for ${genericTag}, building from scratch with targetImage"
+                    sh buildCmd.replace('IMAGE_PLACEHOLDER', targetImage)
+                }
+            }
+
+            stage('Create Container') {
+                sh """
+                    TARGET_IMAGE=${targetImage} \
+                    BUILD_BASE=${buildBase} \
+                    TARGET=${target} \
+                    CONTAINER_TAG=${containerTag} \
+                    ${SCRIPT_DIR}/create-container.sh
+                """
+            }
+
+            stage('Add Entrypoint') {
+                sh """
+                    CONTAINER_TAG=${containerTag} \
+                    GENERIC_TAG=${genericTag} \
+                    SCRIPT_DIR=${SCRIPT_DIR} \
+                    ${SCRIPT_DIR}/add-entrypoint.sh
+                """
+            }
+
+            stage('Push') {
+                withCredentials([string(credentialsId: 'github-ghcr-token', variable: 'GHCR_TOKEN')]) {
+                    sh """
+                        set -e
+                        set +x
+                        echo "\${GHCR_TOKEN}" | docker login ghcr.io \
+                            -u ${GITHUB_USER} --password-stdin
+                        set -x
+                        docker push ${genericTag}
+                        docker logout ghcr.io
+                    """
+                }
+            }
+
+        } finally {
+            cleanWs()
+        }
+    }
+}
