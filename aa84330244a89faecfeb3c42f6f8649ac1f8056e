@@ -35,6 +35,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "45d821cf_69090e8e",
+        "filename": "jenkins/ci-openbmc/Jenkinsfile",
+        "patchSetId": 1
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 1002985
+      },
+      "writtenOn": "2026-06-23T19:05:25Z",
+      "side": 1,
+      "message": "Fixed this and now all paths now derive from env.HOME resolved inside each node() block.",
+      "parentUuid": "6535fbfd_32293f82",
+      "revId": "aa84330244a89faecfeb3c42f6f8649ac1f8056e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7876bc86_092d73af",
@@ -48,6 +66,24 @@
       "writtenOn": "2026-06-23T13:44:45Z",
       "side": 1,
       "message": "I\u0027m curious about this, we\u0027ve never needed this before, even when doing multiple bitbakes on a single build machine. Why is it needed now? I see a lot of complexity around this hash server and I\u0027m not sure why we need it?\n\nI figured we\u0027d just start with the previous container (if available), build using the older containers sstate, and then run something like upstream-layers/openembedded-core/scripts/sstate-cache-management.py to clean out all the older sstates so we only have the most recent in the container.",
+      "revId": "aa84330244a89faecfeb3c42f6f8649ac1f8056e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e5aeae62_87154625",
+        "filename": "jenkins/ci-openbmc/Jenkinsfile",
+        "patchSetId": 1
+      },
+      "lineNbr": 166,
+      "author": {
+        "id": 1002985
+      },
+      "writtenOn": "2026-06-23T19:05:25Z",
+      "side": 1,
+      "message": "Agreed and removed. Tested with just BB_SIGNATURE_HANDLER \u003d \"OEBasicHash\" and hit 99% cache including nodejs/rust at the same commit. Hash server was unnecessary complexity and I used it initally due to extremely different commits upon pushing and pulling.",
+      "parentUuid": "7876bc86_092d73af",
       "revId": "aa84330244a89faecfeb3c42f6f8649ac1f8056e",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -69,6 +105,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "21ee6878_dc06c20b",
+        "filename": "jenkins/ci-openbmc/Jenkinsfile",
+        "patchSetId": 1
+      },
+      "lineNbr": 198,
+      "author": {
+        "id": 1002985
+      },
+      "writtenOn": "2026-06-23T19:05:25Z",
+      "side": 1,
+      "message": "MIRROR is only set for aarch64 nodes since they need ports.ubuntu.com (the ARM-specific Ubuntu mirror). x86 uses the default. Fixed to be conditional on arch.",
+      "parentUuid": "19b9008a_feb923da",
+      "revId": "aa84330244a89faecfeb3c42f6f8649ac1f8056e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "00da6022_684a0eaa",
@@ -86,6 +140,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2f648190_1caf365c",
+        "filename": "jenkins/ci-openbmc/Jenkinsfile",
+        "patchSetId": 1
+      },
+      "lineNbr": 255,
+      "author": {
+        "id": 1002985
+      },
+      "writtenOn": "2026-06-23T19:05:25Z",
+      "side": 1,
+      "message": "I set BB_NUMBER_THREADS and PARALLEL_MAKE both set to nproc/4.",
+      "parentUuid": "00da6022_684a0eaa",
+      "revId": "aa84330244a89faecfeb3c42f6f8649ac1f8056e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9c9e9e56_3cd1c6a8",
@@ -99,6 +171,24 @@
       "writtenOn": "2026-06-23T13:44:45Z",
       "side": 1,
       "message": "Why something special for nodejs?",
+      "revId": "aa84330244a89faecfeb3c42f6f8649ac1f8056e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "35165fcc_b83e7920",
+        "filename": "jenkins/ci-openbmc/Jenkinsfile",
+        "patchSetId": 1
+      },
+      "lineNbr": 256,
+      "author": {
+        "id": 1002985
+      },
+      "writtenOn": "2026-06-23T19:05:25Z",
+      "side": 1,
+      "message": "Leftover from testing when the build was crashing.",
+      "parentUuid": "9c9e9e56_3cd1c6a8",
       "revId": "aa84330244a89faecfeb3c42f6f8649ac1f8056e",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
