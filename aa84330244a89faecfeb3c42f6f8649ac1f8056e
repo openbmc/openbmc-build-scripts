@@ -1,0 +1,106 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8a7e9c31_75d8cda2",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2026-06-23T13:44:45Z",
+      "side": 1,
+      "message": "I think a few more comments throughout the file could be useful.",
+      "revId": "aa84330244a89faecfeb3c42f6f8649ac1f8056e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6535fbfd_32293f82",
+        "filename": "jenkins/ci-openbmc/Jenkinsfile",
+        "patchSetId": 1
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2026-06-23T13:44:45Z",
+      "side": 1,
+      "message": "This assumes /var/jenkins_home is present and writeable on the jenkins host node. Can we just use $HOME?",
+      "revId": "aa84330244a89faecfeb3c42f6f8649ac1f8056e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7876bc86_092d73af",
+        "filename": "jenkins/ci-openbmc/Jenkinsfile",
+        "patchSetId": 1
+      },
+      "lineNbr": 166,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2026-06-23T13:44:45Z",
+      "side": 1,
+      "message": "I\u0027m curious about this, we\u0027ve never needed this before, even when doing multiple bitbakes on a single build machine. Why is it needed now? I see a lot of complexity around this hash server and I\u0027m not sure why we need it?\n\nI figured we\u0027d just start with the previous container (if available), build using the older containers sstate, and then run something like upstream-layers/openembedded-core/scripts/sstate-cache-management.py to clean out all the older sstates so we only have the most recent in the container.",
+      "revId": "aa84330244a89faecfeb3c42f6f8649ac1f8056e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "19b9008a_feb923da",
+        "filename": "jenkins/ci-openbmc/Jenkinsfile",
+        "patchSetId": 1
+      },
+      "lineNbr": 198,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2026-06-23T13:44:45Z",
+      "side": 1,
+      "message": "Why is a MIRROR needed?",
+      "revId": "aa84330244a89faecfeb3c42f6f8649ac1f8056e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "00da6022_684a0eaa",
+        "filename": "jenkins/ci-openbmc/Jenkinsfile",
+        "patchSetId": 1
+      },
+      "lineNbr": 255,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2026-06-23T13:44:45Z",
+      "side": 1,
+      "message": "This should be something like $nproc%4 (i.e. utilize 25% of systems processors).",
+      "revId": "aa84330244a89faecfeb3c42f6f8649ac1f8056e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9c9e9e56_3cd1c6a8",
+        "filename": "jenkins/ci-openbmc/Jenkinsfile",
+        "patchSetId": 1
+      },
+      "lineNbr": 256,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2026-06-23T13:44:45Z",
+      "side": 1,
+      "message": "Why something special for nodejs?",
+      "revId": "aa84330244a89faecfeb3c42f6f8649ac1f8056e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
