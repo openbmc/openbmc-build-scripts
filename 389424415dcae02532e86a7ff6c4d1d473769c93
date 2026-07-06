@@ -1,0 +1,152 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "00c7cbe8_d7e7ef8d",
+        "filename": "jenkins/ci-openbmc/Jenkinsfile",
+        "patchSetId": 4
+      },
+      "lineNbr": 141,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2026-07-06T18:39:50Z",
+      "side": 1,
+      "message": "Hmm, so this is going to use the local filesystem of our build nodes to remember when the last run occurred. I think we have an issue here in that any of our 8 nodes could get used. How do we ensure we have one node in charge of keeping track of time? There\u0027s no other way to do this without writing a persistent file? If not we probably need to use the https://jenkins.openbmc.org/label/built-in/ node for this time tracking.",
+      "revId": "389424415dcae02532e86a7ff6c4d1d473769c93",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "faa7f7b6_2308b677",
+        "filename": "jenkins/ci-openbmc/Jenkinsfile",
+        "patchSetId": 4
+      },
+      "lineNbr": 173,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2026-07-06T18:39:50Z",
+      "side": 1,
+      "message": "Jenkins provides a distinct \"WORKSPACE\" variable for each job, ensuring we don\u0027t run into conflicts. Any reason we\u0027re not using that as a part of our base?",
+      "revId": "389424415dcae02532e86a7ff6c4d1d473769c93",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b12e2a4f_d1495e1f",
+        "filename": "jenkins/ci-openbmc/Jenkinsfile",
+        "patchSetId": 4
+      },
+      "lineNbr": 202,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2026-07-06T18:39:50Z",
+      "side": 1,
+      "message": "Please provide comment on why this is needed. What if multiple containers are being built on the same system, any conflict issues with changing this global dir?",
+      "revId": "389424415dcae02532e86a7ff6c4d1d473769c93",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4e0dc220_909c52b6",
+        "filename": "jenkins/ci-openbmc/Jenkinsfile",
+        "patchSetId": 4
+      },
+      "lineNbr": 210,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2026-07-06T18:39:50Z",
+      "side": 1,
+      "message": "More comments needed on what\u0027s going on here. The chown stuff seems a bit hacky.",
+      "revId": "389424415dcae02532e86a7ff6c4d1d473769c93",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e769f855_3fe3beac",
+        "filename": "jenkins/ci-openbmc/Jenkinsfile",
+        "patchSetId": 4
+      },
+      "lineNbr": 224,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2026-07-06T18:39:50Z",
+      "side": 1,
+      "message": "nit: It\u0027s just Bitbake",
+      "range": {
+        "startLine": 224,
+        "startChar": 50,
+        "endLine": 224,
+        "endChar": 58
+      },
+      "revId": "389424415dcae02532e86a7ff6c4d1d473769c93",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "94f3d8bc_a80005f2",
+        "filename": "jenkins/ci-openbmc/Jenkinsfile",
+        "patchSetId": 4
+      },
+      "lineNbr": 246,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2026-07-06T18:39:50Z",
+      "side": 1,
+      "message": "We don\u0027t have this in our main build CI. Certain issues in this path requiring retries?",
+      "range": {
+        "startLine": 246,
+        "startChar": 48,
+        "endLine": 246,
+        "endChar": 59
+      },
+      "revId": "389424415dcae02532e86a7ff6c4d1d473769c93",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "65a881d5_d0e3f9f1",
+        "filename": "jenkins/ci-openbmc/Jenkinsfile",
+        "patchSetId": 4
+      },
+      "lineNbr": 309,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2026-07-06T18:39:50Z",
+      "side": 1,
+      "message": "Could you add a high level comment on what this entrypoint.sh is for?",
+      "revId": "389424415dcae02532e86a7ff6c4d1d473769c93",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4a8d0600_b90ca92f",
+        "filename": "jenkins/ci-openbmc/Jenkinsfile",
+        "patchSetId": 4
+      },
+      "lineNbr": 368,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2026-07-06T18:39:50Z",
+      "side": 1,
+      "message": "Should this be unset? Don\u0027t want to echo the GHCR_TOKEN to the console.",
+      "revId": "389424415dcae02532e86a7ff6c4d1d473769c93",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
