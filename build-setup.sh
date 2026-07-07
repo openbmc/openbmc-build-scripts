@@ -36,15 +36,18 @@
 #                     container, path cannot be located on network storage.
 #                     Default: "$WORKSPACE/build"
 #  distro             The distro used as the base image for the build image:
-#                     fedora|ubuntu. Note that if you chose fedora, you will
-#                     need to also update DOCKER_REG to a supported fedora reg.
+#                     ubi|ubuntu. Note that if you chose ubi, you will
+#                     need to also update DOCKER_REG to a supported ubi reg.
 #                     Default: "ubuntu"
 #  img_name           The name given to the target build's docker image.
 #                     Default: "openbmc/${distro}:${imgtag}-${target}"
 #  img_tag            The base docker image distro tag:
 #                     ubuntu: latest|16.04|14.04|trusty|xenial
-#                     fedora: 23|24|25
+#                     ubi: latest|10.2
 #                     Default: "latest"
+#  ubi_ver            The version of ubi that we aim to build on if we
+#                     are going to be building in a ubi container.
+#                     Default: "10"
 #  target             The target we aim to build.  Any system supported by
 #                     the openbmc/openbmc `setup` script is an option.
 #                     repotest is a target to specifically run the CI checks
@@ -85,7 +88,7 @@
 set -xeo pipefail
 
 # Script Variables:
-build_scripts_dir=${build_scripts_dir:-"$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"}
+build_scripts_dir=${build_scripts_dir:-"$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"}
 http_proxy=${http_proxy:-}
 WORKSPACE=${WORKSPACE:-${HOME}/${RANDOM}${RANDOM}}
 num_cpu=${num_cpu:-$(nproc)}
@@ -98,6 +101,7 @@ docker_reg=${DOCKER_REG:-"public.ecr.aws/ubuntu"}
 build_dir=${build_dir:-${WORKSPACE}/build}
 distro=${distro:-ubuntu}
 img_tag=${img_tag:-latest}
+ubi_ver=${ubi_ver:-10}
 target=${target:-qemuarm}
 no_tar=${no_tar:-false}
 nice_priority=${nice_priority:-}
@@ -114,24 +118,24 @@ PROXY=""
 
 MIRROR=""
 if [[ -n "${UBUNTU_MIRROR}" ]]; then
-    # Common apt sources configuration for all mirror types
-    MIRROR="RUN echo \"deb ${UBUNTU_MIRROR} \$(. /etc/os-release && echo \$VERSION_CODENAME) main restricted universe multiverse\" > /etc/apt/sources.list && \
+  # Common apt sources configuration for all mirror types
+  MIRROR="RUN echo \"deb ${UBUNTU_MIRROR} \$(. /etc/os-release && echo \$VERSION_CODENAME) main restricted universe multiverse\" > /etc/apt/sources.list && \
         echo \"deb ${UBUNTU_MIRROR} \$(. /etc/os-release && echo \$VERSION_CODENAME)-updates main restricted universe multiverse\" >> /etc/apt/sources.list && \
         echo \"deb ${UBUNTU_MIRROR} \$(. /etc/os-release && echo \$VERSION_CODENAME)-security main restricted universe multiverse\" >> /etc/apt/sources.list && \
         echo \"deb ${UBUNTU_MIRROR} \$(. /etc/os-release && echo \$VERSION_CODENAME)-proposed main restricted universe multiverse\" >> /etc/apt/sources.list && \
         echo \"deb ${UBUNTU_MIRROR} \$(. /etc/os-release && echo \$VERSION_CODENAME)-backports main restricted universe multiverse\" >> /etc/apt/sources.list"
 
-    # If using HTTPS mirror, we need to switch to it first, then install ca-certificates
-    # We configure apt to skip certificate verification initially, then install ca-certificates
-    if [[ "${UBUNTU_MIRROR}" == https://* ]]; then
-        MIRROR="${MIRROR}
+  # If using HTTPS mirror, we need to switch to it first, then install ca-certificates
+  # We configure apt to skip certificate verification initially, then install ca-certificates
+  if [[ "${UBUNTU_MIRROR}" == https://* ]]; then
+    MIRROR="${MIRROR}
 
         # Temporarily disable certificate verification to install ca-certificates
         RUN echo 'Acquire::https::Verify-Peer \"false\";' > /etc/apt/apt.conf.d/99temp-no-verify && \
             apt-get update && \
             apt-get install -y --no-install-recommends ca-certificates && \
         rm /etc/apt/apt.conf.d/99temp-no-verify"
-    fi
+  fi
 fi
 
 # Timestamp for job
@@ -139,25 +143,25 @@ echo "Build started, $(date)"
 
 # If the obmc_dir directory doesn't exist clone it in
 if [ ! -d "${obmc_dir}" ] && [ "${container_only}" = false ]; then
-    echo "Clone in openbmc master to ${obmc_dir}"
-    git clone https://github.com/openbmc/openbmc "${obmc_dir}"
+  echo "Clone in openbmc master to ${obmc_dir}"
+  git clone https://github.com/openbmc/openbmc "${obmc_dir}"
 fi
 
 if [[ "$target" = repotest ]]; then
-    DOCKER_IMAGE_NAME=$(./scripts/build-unit-test-docker)
-    docker run --cap-add=sys_admin --rm=true \
-        --network host \
-        --privileged=true \
-        -u "$USER" \
-        -w "${obmc_dir}" -v "${obmc_dir}:${obmc_dir}" \
-        -t "${DOCKER_IMAGE_NAME}" \
-        "${obmc_dir}"/meta-phosphor/scripts/run-repotest
-    exit
+  DOCKER_IMAGE_NAME=$(./scripts/build-unit-test-docker)
+  docker run --cap-add=sys_admin --rm=true \
+    --network host \
+    --privileged=true \
+    -u "$USER" \
+    -w "${obmc_dir}" -v "${obmc_dir}:${obmc_dir}" \
+    -t "${DOCKER_IMAGE_NAME}" \
+    "${obmc_dir}"/meta-phosphor/scripts/run-repotest
+  exit
 fi
 
 # Make and chown the xtrct_path directory to avoid permission errors
 if [ ! -d "${xtrct_path}" ]; then
-    mkdir -p "${xtrct_path}"
+  mkdir -p "${xtrct_path}"
 fi
 chown "${UID}:${GROUPS[0]}" "${xtrct_path}"
 
@@ -169,47 +173,73 @@ MACHINE="${target}"
 BITBAKE_CMD="source ./setup ${MACHINE} ${build_dir}"
 
 # Configure Docker build
-if [[ "${distro}" == fedora ]];then
+if [[ "${distro}" == ubi ]]; then
 
-    if [[ -n "${http_proxy}" ]]; then
-        PROXY="RUN echo \"proxy=${http_proxy}\" >> /etc/dnf/dnf.conf"
-    fi
+  if [[ -n "${http_proxy}" ]]; then
+    PROXY="RUN echo \"proxy=${http_proxy}\" >> /etc/dnf/dnf.conf"
+  fi
 
-    Dockerfile=$(cat << EOF
-  FROM ${docker_reg}/${distro}:${img_tag}
+  Dockerfile=$(
+    cat <<EOF
+  FROM ${docker_reg}/${distro}${ubi_ver}/${distro}:${img_tag}
 
   ${PROXY}
+
+  RUN dnf install -y https://dl.fedoraproject.org/pub/epel/epel-release-latest-10.noarch.rpm || true
 
   RUN dnf --refresh install -y \
       bzip2 \
       chrpath \
       cpio \
-      diffstat \
+      diffutils \
       file \
       findutils \
       gcc \
       gcc-c++ \
       git \
+      glibc-langpack-en \
+      glibc-locale-source \
+      hostname \
       lz4 \
       make \
+      ncurses-devel \
       patch \
       perl-bignum \
+      perl-core \
       perl-Data-Dumper \
+      perl-File-Compare \
+      perl-File-Copy \
+      perl-FindBin \
+      perl-libs \
+      perl-locale \
+      perl-open \
       perl-Thread-Queue \
       python3-devel \
-      SDL-devel \
       socat \
       subversion \
       tar \
-      texinfo \
       wget \
       which \
-      file \
-      hostname \
-      rpcgen \
-      glibc-langpack-en \
-      glibc-locale-source \
+      xz \
       zstd
+
+  # diffstat and rpcgen are not available in UBI repositories so build from source
+  RUN curl -LO https://invisible-island.net/datafiles/release/diffstat.tar.gz && \
+    tar xzf diffstat.tar.gz && \
+    cd diffstat-* && \
+    ./configure && \
+    make && \
+    make install
+
+  RUN RPCSVC_VERSION=\$(curl -s https://api.github.com/repos/thkukuk/rpcsvc-proto/releases/latest | grep -oP '"tag_name": "\K(.*)(?=")') && \
+    curl -LO https://github.com/thkukuk/rpcsvc-proto/releases/download/\${RPCSVC_VERSION}/rpcsvc-proto-\${RPCSVC_VERSION#v}.tar.xz && \
+    tar xf rpcsvc-proto-\${RPCSVC_VERSION#v}.tar.xz && \
+    cd rpcsvc-proto-\${RPCSVC_VERSION#v} && \
+    ./configure && \
+    make && \
+    make install && \
+    cd .. && \
+    rm -rf rpcsvc-proto-\${RPCSVC_VERSION}*
 
   # Set the locale
   ENV LANG=en_US.utf8
@@ -221,15 +251,16 @@ if [[ "${distro}" == fedora ]];then
   USER ${USER}
   ENV HOME=${HOME}
 EOF
-    )
+  )
 
 elif [[ "${distro}" == ubuntu ]]; then
 
-    if [[ -n "${http_proxy}" ]]; then
-        PROXY="RUN echo \"Acquire::http::Proxy \\"\"${http_proxy}/\\"\";\" > /etc/apt/apt.conf.d/000apt-cacher-ng-proxy"
-    fi
+  if [[ -n "${http_proxy}" ]]; then
+    PROXY="RUN echo \"Acquire::http::Proxy \\"\"${http_proxy}/\\"\";\" > /etc/apt/apt.conf.d/000apt-cacher-ng-proxy"
+  fi
 
-    Dockerfile=$(cat << EOF
+  Dockerfile=$(
+    cat <<EOF
   FROM ${docker_reg}/${distro}:${img_tag}
 
   ${PROXY}
@@ -277,22 +308,22 @@ elif [[ "${distro}" == ubuntu ]]; then
   USER ${USER}
   ENV HOME=${HOME}
 EOF
-    )
+  )
 fi
 
 # Create the Docker run script
-export PROXY_HOST=${http_proxy/#http*:\/\/}
-export PROXY_HOST=${PROXY_HOST/%:[0-9]*}
-export PROXY_PORT=${http_proxy/#http*:\/\/*:}
+export PROXY_HOST=${http_proxy/#http*:\/\//}
+export PROXY_HOST=${PROXY_HOST/%:[0-9]*/}
+export PROXY_PORT=${http_proxy/#http*:\/\/*:/}
 
 mkdir -p "${WORKSPACE}"
 
 # Determine command for bitbake image build
 if [ "$no_tar" = "false" ]; then
-    bitbake_target="${bitbake_target} obmc-phosphor-debug-tarball"
+  bitbake_target="${bitbake_target} obmc-phosphor-debug-tarball"
 fi
 
-cat > "${WORKSPACE}"/build.sh << EOF_SCRIPT
+cat >"${WORKSPACE}"/build.sh <<EOF_SCRIPT
 #!/bin/bash
 
 set -xeo pipefail
@@ -408,24 +439,24 @@ img_name=${img_name:-openbmc/${distro}:${img_tag}-${target}}
 export BUILDKIT_PROGRESS=plain
 
 # Build the Docker image
-docker build --network=host -t "${img_name}" - <<< "${Dockerfile}"
+docker build --network=host -t "${img_name}" - <<<"${Dockerfile}"
 
 if [[ "$container_only" = "true" ]]; then
-    exit 0
+  exit 0
 fi
 
 # If obmc_dir or ssc_dir are ${HOME} or a subdirectory they will not be mounted
 mount_obmc_dir="-v ""${obmc_dir}"":""${obmc_dir}"" "
 mount_ssc_dir="-v ""${ssc_dir}"":""${ssc_dir}"" "
 mount_workspace_dir="-v ""${WORKSPACE}"":""${WORKSPACE}"" "
-if [[ "${obmc_dir}" = "${HOME}/"* || "${obmc_dir}" = "${HOME}" ]];then
-    mount_obmc_dir=""
+if [[ "${obmc_dir}" = "${HOME}/"* || "${obmc_dir}" = "${HOME}" ]]; then
+  mount_obmc_dir=""
 fi
-if [[ "${ssc_dir}" = "${HOME}/"* || "${ssc_dir}" = "${HOME}" ]];then
-    mount_ssc_dir=""
+if [[ "${ssc_dir}" = "${HOME}/"* || "${ssc_dir}" = "${HOME}" ]]; then
+  mount_ssc_dir=""
 fi
-if [[ "${WORKSPACE}" = "${HOME}/"* || "${WORKSPACE}" = "${HOME}" ]];then
-    mount_workspace_dir=""
+if [[ "${WORKSPACE}" = "${HOME}/"* || "${WORKSPACE}" = "${HOME}" ]]; then
+  mount_workspace_dir=""
 fi
 
 # If we are building on a podman based machine, need to have this set in
@@ -435,19 +466,19 @@ export PODMAN_USERNS="keep-id"
 # Run the Docker container, execute the build.sh script
 # shellcheck disable=SC2086 # mount commands word-split purposefully
 docker run \
-    --cap-add=sys_admin \
-    --cap-add=sys_nice \
-    --net=host \
-    --rm=true \
-    -e WORKSPACE="${WORKSPACE}" \
-    -w "${HOME}" \
-    -v "${HOME}:${HOME}" \
-    ${EXTRA_DOCKER_RUN_ARGS:-} \
-    ${mount_obmc_dir} \
-    ${mount_ssc_dir} \
-    ${mount_workspace_dir} \
-    "${img_name}" \
-    "${WORKSPACE}/build.sh"
+  --cap-add=sys_admin \
+  --cap-add=sys_nice \
+  --net=host \
+  --rm=true \
+  -e WORKSPACE="${WORKSPACE}" \
+  -w "${HOME}" \
+  -v "${HOME}:${HOME}" \
+  ${EXTRA_DOCKER_RUN_ARGS:-} \
+  ${mount_obmc_dir} \
+  ${mount_ssc_dir} \
+  ${mount_workspace_dir} \
+  "${img_name}" \
+  "${WORKSPACE}/build.sh"
 
 # To maintain function of resources that used an older path, add a link
 ln -sf "${xtrct_path}/deploy" "${WORKSPACE}/deploy"
