@@ -3,6 +3,23 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "63b24e33_8ee1b145",
+        "filename": "jenkins/ci-openbmc/Jenkinsfile",
+        "patchSetId": 4
+      },
+      "lineNbr": 134,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2026-07-07T15:50:20Z",
+      "side": 1,
+      "message": "Can we make a new Jenkins job for this?  I don\u0027t see the point in a adding a new trigger and then cutting out part of it for the trigger.",
+      "revId": "389424415dcae02532e86a7ff6c4d1d473769c93",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "00c7cbe8_d7e7ef8d",
         "filename": "jenkins/ci-openbmc/Jenkinsfile",
         "patchSetId": 4
@@ -14,6 +31,23 @@
       "writtenOn": "2026-07-06T18:39:50Z",
       "side": 1,
       "message": "Hmm, so this is going to use the local filesystem of our build nodes to remember when the last run occurred. I think we have an issue here in that any of our 8 nodes could get used. How do we ensure we have one node in charge of keeping track of time? There\u0027s no other way to do this without writing a persistent file? If not we probably need to use the https://jenkins.openbmc.org/label/built-in/ node for this time tracking.",
+      "revId": "389424415dcae02532e86a7ff6c4d1d473769c93",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "313bc077_459b7837",
+        "filename": "jenkins/ci-openbmc/Jenkinsfile",
+        "patchSetId": 4
+      },
+      "lineNbr": 171,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2026-07-07T15:50:20Z",
+      "side": 1,
+      "message": "Please move a bunch of this stuff to shell or python scripts.  There is way too much shell-like content in here to review adequately.",
       "revId": "389424415dcae02532e86a7ff6c4d1d473769c93",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -128,6 +162,23 @@
       "writtenOn": "2026-07-06T18:39:50Z",
       "side": 1,
       "message": "Could you add a high level comment on what this entrypoint.sh is for?",
+      "revId": "389424415dcae02532e86a7ff6c4d1d473769c93",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5df56638_c6b83cce",
+        "filename": "jenkins/ci-openbmc/Jenkinsfile",
+        "patchSetId": 4
+      },
+      "lineNbr": 315,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2026-07-07T15:50:20Z",
+      "side": 1,
+      "message": "Shell in shell in Jenkinsfile and Docker in shell in Jenkinsfile is ... a bit much.",
       "revId": "389424415dcae02532e86a7ff6c4d1d473769c93",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
