@@ -34,6 +34,24 @@
       "parentUuid": "a50a06c2_41aa2219",
       "revId": "24c4196ace97efdb28b0df9e759470e4bada3e7e",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c0cd3a4a_80710ebe",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2026-07-08T20:33:29Z",
+      "side": 1,
+      "message": "Yocto doesn\u0027t really claim that RHEL will work but they do claim Fedora will work.  We don\u0027t actually use Fedora anyhow so I\u0027m not really caring too much about this branch in the script, but it seems like we get better support with Fedora.  You need to reconcile IBM/RH\u0027s philosophy with the OSS world to justify this move...\n\nhttps://git.yoctoproject.org/meta-yocto/tree/meta-poky/conf/distro/poky.conf?id\u003d366fa2f21bfb0d9c4de492e0204a0dd38ce241ab",
+      "parentUuid": "07645ff7_09e1cf00",
+      "revId": "24c4196ace97efdb28b0df9e759470e4bada3e7e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
