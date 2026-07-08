@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a50a06c2_41aa2219",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2026-07-08T18:10:04Z",
+      "side": 1,
+      "message": "I think we need to sell this a bit more. I know at IBM we\u0027re pushing people towards UBI because of the security aspects (same rigorous testing and security patching as RHEL). So lets drop the \"Ideally\" and replace \"would\" with \"will\".\n\nAlso we recently ran into some very painful issues with Ubuntu and how it uses http for a lot of it\u0027s default updates (more and more environments are dropping http support for security reasons).\n\nMy main concern is that OpenBMC tends to be fairly cutting edge so we may run into situations where UBI does not have the latest package required by OpenBMC but as this script is also used for our older releases, it will be nice to have a more stable and supported container distro like UBI.",
+      "revId": "24c4196ace97efdb28b0df9e759470e4bada3e7e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
