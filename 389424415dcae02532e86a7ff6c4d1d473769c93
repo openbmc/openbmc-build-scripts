@@ -36,6 +36,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "190d6f53_ff957756",
+        "filename": "jenkins/ci-openbmc/Jenkinsfile",
+        "patchSetId": 4
+      },
+      "lineNbr": 134,
+      "author": {
+        "id": 1002985
+      },
+      "writtenOn": "2026-07-13T16:14:45Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "350c27f4_834d245a",
+      "revId": "389424415dcae02532e86a7ff6c4d1d473769c93",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "00c7cbe8_d7e7ef8d",
@@ -67,6 +85,24 @@
       "side": 1,
       "message": "Done, I just used built-in for time tracking.",
       "parentUuid": "00c7cbe8_d7e7ef8d",
+      "revId": "389424415dcae02532e86a7ff6c4d1d473769c93",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c5ed69f2_c17492d2",
+        "filename": "jenkins/ci-openbmc/Jenkinsfile",
+        "patchSetId": 4
+      },
+      "lineNbr": 141,
+      "author": {
+        "id": 1002985
+      },
+      "writtenOn": "2026-07-13T16:14:45Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8b6f6f26_c65c42ed",
       "revId": "389424415dcae02532e86a7ff6c4d1d473769c93",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -106,6 +142,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6f1a2fef_7011810e",
+        "filename": "jenkins/ci-openbmc/Jenkinsfile",
+        "patchSetId": 4
+      },
+      "lineNbr": 171,
+      "author": {
+        "id": 1002985
+      },
+      "writtenOn": "2026-07-13T16:14:45Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "46a160b2_944de831",
+      "revId": "389424415dcae02532e86a7ff6c4d1d473769c93",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "faa7f7b6_2308b677",
@@ -137,6 +191,24 @@
       "side": 1,
       "message": "Done, I was using the previous iteration because Yocto does not like the @ symbol but you informed me that you dealt with this before and changed that to an a.",
       "parentUuid": "faa7f7b6_2308b677",
+      "revId": "389424415dcae02532e86a7ff6c4d1d473769c93",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "333518fc_46f46874",
+        "filename": "jenkins/ci-openbmc/Jenkinsfile",
+        "patchSetId": 4
+      },
+      "lineNbr": 173,
+      "author": {
+        "id": 1002985
+      },
+      "writtenOn": "2026-07-13T16:14:45Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "845ad6ac_eedd376f",
       "revId": "389424415dcae02532e86a7ff6c4d1d473769c93",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -176,6 +248,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a7085abc_c30de83a",
+        "filename": "jenkins/ci-openbmc/Jenkinsfile",
+        "patchSetId": 4
+      },
+      "lineNbr": 202,
+      "author": {
+        "id": 1002985
+      },
+      "writtenOn": "2026-07-13T16:14:45Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9a0ba5aa_6f42b8f8",
+      "revId": "389424415dcae02532e86a7ff6c4d1d473769c93",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4e0dc220_909c52b6",
@@ -207,6 +297,24 @@
       "side": 1,
       "message": "Done, part of the shared dir and that was removed entirely.",
       "parentUuid": "4e0dc220_909c52b6",
+      "revId": "389424415dcae02532e86a7ff6c4d1d473769c93",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4a4f446a_69597bd0",
+        "filename": "jenkins/ci-openbmc/Jenkinsfile",
+        "patchSetId": 4
+      },
+      "lineNbr": 210,
+      "author": {
+        "id": 1002985
+      },
+      "writtenOn": "2026-07-13T16:14:45Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c78ca8d1_2bdc7238",
       "revId": "389424415dcae02532e86a7ff6c4d1d473769c93",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -305,6 +413,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "428c2254_66735be3",
+        "filename": "jenkins/ci-openbmc/Jenkinsfile",
+        "patchSetId": 4
+      },
+      "lineNbr": 246,
+      "author": {
+        "id": 1002985
+      },
+      "writtenOn": "2026-07-13T16:14:45Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ecf0749e_1920d7f3",
+      "range": {
+        "startLine": 246,
+        "startChar": 48,
+        "endLine": 246,
+        "endChar": 59
+      },
+      "revId": "389424415dcae02532e86a7ff6c4d1d473769c93",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "65a881d5_d0e3f9f1",
@@ -336,6 +468,24 @@
       "side": 1,
       "message": "Done, added a comment to explain that it is there such that a UID is not baked in to the container.",
       "parentUuid": "65a881d5_d0e3f9f1",
+      "revId": "389424415dcae02532e86a7ff6c4d1d473769c93",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7e343258_648596c9",
+        "filename": "jenkins/ci-openbmc/Jenkinsfile",
+        "patchSetId": 4
+      },
+      "lineNbr": 309,
+      "author": {
+        "id": 1002985
+      },
+      "writtenOn": "2026-07-13T16:14:45Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d9899747_d07f8373",
       "revId": "389424415dcae02532e86a7ff6c4d1d473769c93",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -375,6 +525,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "047e2ee5_5cfd2521",
+        "filename": "jenkins/ci-openbmc/Jenkinsfile",
+        "patchSetId": 4
+      },
+      "lineNbr": 315,
+      "author": {
+        "id": 1002985
+      },
+      "writtenOn": "2026-07-13T16:14:45Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fa480771_07172b3d",
+      "revId": "389424415dcae02532e86a7ff6c4d1d473769c93",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4a8d0600_b90ca92f",
@@ -406,6 +574,24 @@
       "side": 1,
       "message": "Done, it was unset.",
       "parentUuid": "4a8d0600_b90ca92f",
+      "revId": "389424415dcae02532e86a7ff6c4d1d473769c93",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6590a71e_2e00e9ac",
+        "filename": "jenkins/ci-openbmc/Jenkinsfile",
+        "patchSetId": 4
+      },
+      "lineNbr": 368,
+      "author": {
+        "id": 1002985
+      },
+      "writtenOn": "2026-07-13T16:14:45Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ec5797e1_40eb4f8e",
       "revId": "389424415dcae02532e86a7ff6c4d1d473769c93",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
