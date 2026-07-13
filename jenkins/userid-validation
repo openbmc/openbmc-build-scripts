@@ -107,6 +107,7 @@ GERRIT_CI_GROUPS=( \
         scaleway/ci-authorized \
         sipearl/ci-authorized \
         supermicro/ci-authorized \
+        techdesign/ci-authorized \
         tencent/ci-authorized \
         tenstorrent/ci-authorized \
         triple-crown/ci-authorized \
