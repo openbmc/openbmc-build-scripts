@@ -70,6 +70,24 @@
       "parentUuid": "c0cd3a4a_80710ebe",
       "revId": "24c4196ace97efdb28b0df9e759470e4bada3e7e",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "434b5359_e9a96a61",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2026-07-13T15:28:33Z",
+      "side": 1,
+      "message": "Yeah I think the only path forward here is to convince upstream yocto to put UBI in that poky.conf.",
+      "parentUuid": "ed2b8369_5aecbdcb",
+      "revId": "24c4196ace97efdb28b0df9e759470e4bada3e7e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
