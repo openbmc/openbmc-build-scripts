@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "771d6583_967bbbd9",
+        "filename": "jenkins/ci-openbmc/Jenkinsfile",
+        "patchSetId": 10
+      },
+      "lineNbr": 124,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2026-07-13T20:14:42Z",
+      "side": 1,
+      "message": "nit: diff should show no changes to this file",
+      "revId": "9df8bc5b7fede7d45fdb78ff013e36ce0164ca38",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0fd26a18_cdd603d6",
+        "filename": "jenkins/ci-openbmc/Jenkinsfile.change-merged",
+        "patchSetId": 10
+      },
+      "lineNbr": 202,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2026-07-13T20:14:42Z",
+      "side": 1,
+      "message": "Would be ideal to have this defined in one place (i.e. use lastBuildFile from above). Then if file name is ever changed, it\u0027s changed in one spot.",
+      "revId": "9df8bc5b7fede7d45fdb78ff013e36ce0164ca38",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
