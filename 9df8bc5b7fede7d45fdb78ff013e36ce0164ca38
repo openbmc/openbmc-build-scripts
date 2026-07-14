@@ -18,6 +18,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "96dba9dc_62e8348e",
+        "filename": "jenkins/ci-openbmc/Jenkinsfile",
+        "patchSetId": 10
+      },
+      "lineNbr": 124,
+      "author": {
+        "id": 1002985
+      },
+      "writtenOn": "2026-07-14T15:54:15Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "771d6583_967bbbd9",
+      "revId": "9df8bc5b7fede7d45fdb78ff013e36ce0164ca38",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "0fd26a18_cdd603d6",
