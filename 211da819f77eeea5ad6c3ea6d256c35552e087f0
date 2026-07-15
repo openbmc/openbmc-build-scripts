@@ -20,6 +20,24 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "3fddc922_1767a8bc",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 12
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 1002985
+      },
+      "writtenOn": "2026-07-15T15:15:11Z",
+      "side": 1,
+      "message": "Done!",
+      "parentUuid": "ec251c6d_f573ac36",
+      "revId": "211da819f77eeea5ad6c3ea6d256c35552e087f0",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "2cf091ed_5fcaa004",
         "filename": "/PATCHSET_LEVEL",
         "patchSetId": 12
@@ -48,6 +66,24 @@
       "writtenOn": "2026-07-14T21:26:31Z",
       "side": 1,
       "message": "Still seeing a change to this file. I think you just need to add the line feed back?",
+      "revId": "211da819f77eeea5ad6c3ea6d256c35552e087f0",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d0c00f45_6e093aa7",
+        "filename": "jenkins/ci-openbmc/Jenkinsfile",
+        "patchSetId": 12
+      },
+      "lineNbr": 124,
+      "author": {
+        "id": 1002985
+      },
+      "writtenOn": "2026-07-15T15:15:11Z",
+      "side": 1,
+      "message": "I added the newline at the end of the file, was not published earlier.",
+      "parentUuid": "c9d8ac9d_36fa7284",
       "revId": "211da819f77eeea5ad6c3ea6d256c35552e087f0",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
