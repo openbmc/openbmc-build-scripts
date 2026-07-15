@@ -33,6 +33,18 @@ if [[ -n "${UBUNTU_MIRROR}" ]]; then
         echo \"deb ${UBUNTU_MIRROR} \$(. /etc/os-release && echo \$VERSION_CODENAME)-security main restricted universe multiverse\" >> /etc/apt/sources.list && \
         echo \"deb ${UBUNTU_MIRROR} \$(. /etc/os-release && echo \$VERSION_CODENAME)-proposed main restricted universe multiverse\" >> /etc/apt/sources.list && \
         echo \"deb ${UBUNTU_MIRROR} \$(. /etc/os-release && echo \$VERSION_CODENAME)-backports main restricted universe multiverse\" >> /etc/apt/sources.list"
+
+    # If the mirror uses HTTPS, the minimal base image has no ca-certificates,
+    # so TLS verification will fail.  Temporarily disable peer verification just
+    # long enough to install ca-certificates, then remove the override so all
+    # subsequent apt operations run with full certificate checking.
+    if [[ "${UBUNTU_MIRROR}" == https://* ]]; then
+        MIRROR="${MIRROR}
+RUN echo 'Acquire::https::Verify-Peer \"false\";' > /etc/apt/apt.conf.d/99temp-no-verify && \\
+    apt-get update && \\
+    apt-get install -y --no-install-recommends ca-certificates && \\
+    rm /etc/apt/apt.conf.d/99temp-no-verify"
+    fi
 fi
 
 PIP_MIRROR_CMD=""
