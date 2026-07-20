@@ -18,6 +18,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "864c2c67_39e8a237",
+        "filename": "jenkins/ci-openbmc/Jenkinsfile.change-merged",
+        "patchSetId": 14
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1002985
+      },
+      "writtenOn": "2026-07-20T21:55:47Z",
+      "side": 1,
+      "message": "Done, moved everything into ci-openbmc-sstate-containers/ and the sub-job into openbmc-build-sstate-container-target/ to match the existing naming convention.",
+      "parentUuid": "06b83f4d_8d4d31d1",
+      "revId": "679202fa5ab6381d4e6a214d49e2f70d322e692e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "66417871_3e15227a",
@@ -53,6 +71,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4d50560f_b5a6775a",
+        "filename": "jenkins/ci-openbmc/Jenkinsfile.change-merged",
+        "patchSetId": 14
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 1002985
+      },
+      "writtenOn": "2026-07-20T21:55:47Z",
+      "side": 1,
+      "message": "Done.",
+      "parentUuid": "66417871_3e15227a",
+      "revId": "679202fa5ab6381d4e6a214d49e2f70d322e692e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7ab6063d_855e34bb",
@@ -66,6 +102,24 @@
       "writtenOn": "2026-07-20T16:34:46Z",
       "side": 1,
       "message": "I see in here you basically have 1 big stage and then you try to run substages in parallel.  I purposefully broke out into a sub-job (ci-openbmc-build-target) because otherwise you get one gigantic log that is nearly impossible to read and debug.  bitbake builds are already very chatty and now you\u0027re combining a dozen of them into a single log.",
+      "revId": "679202fa5ab6381d4e6a214d49e2f70d322e692e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e1eef490_66f63493",
+        "filename": "jenkins/ci-openbmc/Jenkinsfile.change-merged",
+        "patchSetId": 14
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 1002985
+      },
+      "writtenOn": "2026-07-20T21:55:47Z",
+      "side": 1,
+      "message": "Refactored to match the ci-openbmc pattern, orchestrator in ci-openbmc-sstate-containers/Jenkinsfile dispatches a sub-job per target+arch in parallel with the per-cell work in openbmc-build-sstate-container-target/Jenkinsfile. Note: a Jenkins job at CI-MISC/openbmc-build-sstate-container needs to be configured pointing at that sub-job Jenkinsfile before this can run.",
+      "parentUuid": "7ab6063d_855e34bb",
       "revId": "679202fa5ab6381d4e6a214d49e2f70d322e692e",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -93,6 +147,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1c944327_63ab7e8a",
+        "filename": "jenkins/ci-openbmc/Jenkinsfile.change-merged",
+        "patchSetId": 14
+      },
+      "lineNbr": 70,
+      "author": {
+        "id": 1002985
+      },
+      "writtenOn": "2026-07-20T21:55:47Z",
+      "side": 1,
+      "message": "Done.",
+      "parentUuid": "80d442e9_087e6456",
+      "range": {
+        "startLine": 70,
+        "startChar": 36,
+        "endLine": 70,
+        "endChar": 40
+      },
+      "revId": "679202fa5ab6381d4e6a214d49e2f70d322e692e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "03cb9fd8_fa4fbe54",
@@ -110,6 +188,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "aa5995af_ad034d44",
+        "filename": "jenkins/ci-openbmc/Jenkinsfile.change-merged",
+        "patchSetId": 14
+      },
+      "lineNbr": 95,
+      "author": {
+        "id": 1002985
+      },
+      "writtenOn": "2026-07-20T21:55:47Z",
+      "side": 1,
+      "message": "Done.",
+      "parentUuid": "03cb9fd8_fa4fbe54",
+      "revId": "679202fa5ab6381d4e6a214d49e2f70d322e692e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "95c36134_a3fcdaec",
@@ -123,6 +219,30 @@
       "writtenOn": "2026-07-20T16:34:46Z",
       "side": 1,
       "message": "This still feels like a lot of shell-like content here.",
+      "range": {
+        "startLine": 124,
+        "startChar": 0,
+        "endLine": 152,
+        "endChar": 29
+      },
+      "revId": "679202fa5ab6381d4e6a214d49e2f70d322e692e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1d845021_a383f745",
+        "filename": "jenkins/ci-openbmc/Jenkinsfile.change-merged",
+        "patchSetId": 14
+      },
+      "lineNbr": 152,
+      "author": {
+        "id": 1002985
+      },
+      "writtenOn": "2026-07-20T21:55:47Z",
+      "side": 1,
+      "message": "The build logic is already in bitbake-build.sh, this is just the docker run to launch it. Extracting further would just be a wrapper calling a wrapper.",
+      "parentUuid": "95c36134_a3fcdaec",
       "range": {
         "startLine": 124,
         "startChar": 0,
@@ -235,6 +355,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "3b92f3c0_7c314f6a",
+        "filename": "jenkins/ci-openbmc/create-container.sh",
+        "patchSetId": 14
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 1002985
+      },
+      "writtenOn": "2026-07-20T21:55:47Z",
+      "side": 1,
+      "message": "Good call, replaced the run/exec/commit dance with a 2-line Dockerfile.",
+      "parentUuid": "e4599564_51153e77",
+      "revId": "679202fa5ab6381d4e6a214d49e2f70d322e692e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4a42881a_2581f17f",
@@ -248,6 +386,24 @@
       "writtenOn": "2026-07-20T16:34:46Z",
       "side": 1,
       "message": "Why do we want everyone to read/write and execute the entire sstate cache??",
+      "revId": "679202fa5ab6381d4e6a214d49e2f70d322e692e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7e118d52_bb0f34e1",
+        "filename": "jenkins/ci-openbmc/create-container.sh",
+        "patchSetId": 14
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 1002985
+      },
+      "writtenOn": "2026-07-20T21:55:47Z",
+      "side": 1,
+      "message": "Dropped, COPY preserves BitBake\u0027s existing 644/755 permissions which is sufficient for the build user to read sstate.",
+      "parentUuid": "4a42881a_2581f17f",
       "revId": "679202fa5ab6381d4e6a214d49e2f70d322e692e",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -275,6 +431,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "684cfc76_8f07342b",
+        "filename": "jenkins/ci-openbmc/entrypoint.sh",
+        "patchSetId": 14
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 1002985
+      },
+      "writtenOn": "2026-07-20T21:55:47Z",
+      "side": 1,
+      "message": "Fair point. you are right, podman handles this natively with --userns\u003dkeep-id. Happy to revisit this later.",
+      "parentUuid": "180d8a8e_167ac5e2",
+      "range": {
+        "startLine": 2,
+        "startChar": 0,
+        "endLine": 3,
+        "endChar": 67
+      },
+      "revId": "679202fa5ab6381d4e6a214d49e2f70d322e692e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6c5ecfbf_a2a618c6",
@@ -288,6 +468,24 @@
       "writtenOn": "2026-07-20T16:34:46Z",
       "side": 1,
       "message": "When did gosu get installed?",
+      "revId": "679202fa5ab6381d4e6a214d49e2f70d322e692e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6a316620_4fd1c0c3",
+        "filename": "jenkins/ci-openbmc/entrypoint.sh",
+        "patchSetId": 14
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 1002985
+      },
+      "writtenOn": "2026-07-20T21:55:47Z",
+      "side": 1,
+      "message": "It\u0027s installed in add-entrypoint.sh via apt-get install -y gosu.",
+      "parentUuid": "6c5ecfbf_a2a618c6",
       "revId": "679202fa5ab6381d4e6a214d49e2f70d322e692e",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
