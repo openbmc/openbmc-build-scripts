@@ -63,6 +63,26 @@ if [ ! -d "${WORKSPACE}/${UNIT_TEST_PKG}" ]; then
     exit 1
 fi
 
+# If the package under test is a linked git worktree, its real git metadata
+# (.git/worktrees/<name>/...) lives under the worktree's original checkout,
+# which is not necessarily under WORKSPACE and so would not be visible in
+# the container. Detect that and bind-mount the common git dir too, so
+# git commands run against the package (e.g. `git diff` in format-code.sh)
+# still work inside the container.
+if [ -f "${WORKSPACE}/${UNIT_TEST_PKG}/.git" ]; then
+    GIT_COMMON_DIR="$(
+        cd "${WORKSPACE}/${UNIT_TEST_PKG}" &&
+            cd "$(git rev-parse --git-common-dir)" &&
+            pwd
+    )"
+    case "${GIT_COMMON_DIR}" in
+        "${WORKSPACE}"/*) ;; # Already visible via the WORKSPACE mount.
+        *)
+            EXTRA_WORKTREE_MOUNT_ARGS="-v ${GIT_COMMON_DIR}:${GIT_COMMON_DIR}"
+            ;;
+    esac
+fi
+
 # Configure docker build
 cd "${WORKSPACE}"/${OBMC_BUILD_SCRIPTS}
 echo "Building docker image with build-unit-test-docker"
@@ -104,13 +124,14 @@ fi
 # the env to allow the home mount to work (no impact on non-podman systems)
 export PODMAN_USERNS="keep-id"
 
-# shellcheck disable=SC2086 # ${PROXY_ENV} and ${EXTRA_DOCKER_RUN_ARGS} are
-# meant to be split
+# shellcheck disable=SC2086 # ${PROXY_ENV}, ${EXTRA_WORKTREE_MOUNT_ARGS}, and
+# ${EXTRA_DOCKER_RUN_ARGS} are meant to be split
 docker run --cap-add=sys_admin --rm=true \
     --privileged=true \
     ${PROXY_ENV} \
     -u "$USER" \
     -w "${DOCKER_WORKDIR}" -v "${WORKSPACE}":"${DOCKER_WORKDIR}" \
+    ${EXTRA_WORKTREE_MOUNT_ARGS:-} \
     -e "MAKEFLAGS=${MAKEFLAGS}" \
     ${EXTRA_DOCKER_RUN_ARGS:-} \
     -${INTERACTIVE:+i}t "${DOCKER_IMG_NAME}" \
