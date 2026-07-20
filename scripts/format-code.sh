@@ -118,8 +118,9 @@ fi
 export CLANG_FORMAT="clang-format"
 
 # Path to default config files for linters.
-CONFIG_PATH="$(git -C "$(dirname "${BASH_SOURCE[0]}")" rev-parse --show-toplevel)/config"
-TOOLS_PATH="$(git -C "$(dirname "${BASH_SOURCE[0]}")" rev-parse --show-toplevel)/tools"
+REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+CONFIG_PATH="${REPO_ROOT}/config"
+TOOLS_PATH="${REPO_ROOT}/tools"
 
 
 # Find repository root for `pwd` or $1.
