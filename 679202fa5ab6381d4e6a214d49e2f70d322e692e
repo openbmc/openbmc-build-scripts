@@ -1,0 +1,192 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "06b83f4d_8d4d31d1",
+        "filename": "jenkins/ci-openbmc/Jenkinsfile.change-merged",
+        "patchSetId": 14
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2026-07-20T16:34:46Z",
+      "side": 1,
+      "message": "Why not put this in a separate directory for this specific jenkins job?  The current jenkins subfolders are named off the job we create for them.",
+      "revId": "679202fa5ab6381d4e6a214d49e2f70d322e692e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "66417871_3e15227a",
+        "filename": "jenkins/ci-openbmc/Jenkinsfile.change-merged",
+        "patchSetId": 14
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2026-07-20T16:34:46Z",
+      "side": 1,
+      "message": "Why are we using a 2 year old distribution?  Every other build script uses `ubuntu:resolute` (26.04).  \n\nI\u0027d prefer you use the name for consistency.",
+      "revId": "679202fa5ab6381d4e6a214d49e2f70d322e692e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7ab6063d_855e34bb",
+        "filename": "jenkins/ci-openbmc/Jenkinsfile.change-merged",
+        "patchSetId": 14
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2026-07-20T16:34:46Z",
+      "side": 1,
+      "message": "I see in here you basically have 1 big stage and then you try to run substages in parallel.  I purposefully broke out into a sub-job (ci-openbmc-build-target) because otherwise you get one gigantic log that is nearly impossible to read and debug.  bitbake builds are already very chatty and now you\u0027re combining a dozen of them into a single log.",
+      "revId": "679202fa5ab6381d4e6a214d49e2f70d322e692e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "80d442e9_087e6456",
+        "filename": "jenkins/ci-openbmc/Jenkinsfile.change-merged",
+        "patchSetId": 14
+      },
+      "lineNbr": 70,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2026-07-20T16:34:46Z",
+      "side": 1,
+      "message": "Can you put this constant somewhere earlier?",
+      "range": {
+        "startLine": 70,
+        "startChar": 36,
+        "endLine": 70,
+        "endChar": 40
+      },
+      "revId": "679202fa5ab6381d4e6a214d49e2f70d322e692e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "03cb9fd8_fa4fbe54",
+        "filename": "jenkins/ci-openbmc/Jenkinsfile.change-merged",
+        "patchSetId": 14
+      },
+      "lineNbr": 95,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2026-07-20T16:34:46Z",
+      "side": 1,
+      "message": "I\u0027d suggest we do more to the label than just \"does the architecture match\".  We have tags for openbmc-ci.  We also need to ensure that label is applied.",
+      "revId": "679202fa5ab6381d4e6a214d49e2f70d322e692e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "95c36134_a3fcdaec",
+        "filename": "jenkins/ci-openbmc/Jenkinsfile.change-merged",
+        "patchSetId": 14
+      },
+      "lineNbr": 152,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2026-07-20T16:34:46Z",
+      "side": 1,
+      "message": "This still feels like a lot of shell-like content here.",
+      "range": {
+        "startLine": 124,
+        "startChar": 0,
+        "endLine": 152,
+        "endChar": 29
+      },
+      "revId": "679202fa5ab6381d4e6a214d49e2f70d322e692e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e4599564_51153e77",
+        "filename": "jenkins/ci-openbmc/create-container.sh",
+        "patchSetId": 14
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2026-07-20T16:34:46Z",
+      "side": 1,
+      "message": "Can\u0027t this be done with a single 2 line dockerfile?\n\n```\nFROM base-image:latest\nCOPY foo/ /var/lib/foo/\n```",
+      "revId": "679202fa5ab6381d4e6a214d49e2f70d322e692e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4a42881a_2581f17f",
+        "filename": "jenkins/ci-openbmc/create-container.sh",
+        "patchSetId": 14
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2026-07-20T16:34:46Z",
+      "side": 1,
+      "message": "Why do we want everyone to read/write and execute the entire sstate cache??",
+      "revId": "679202fa5ab6381d4e6a214d49e2f70d322e692e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "180d8a8e_167ac5e2",
+        "filename": "jenkins/ci-openbmc/entrypoint.sh",
+        "patchSetId": 14
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2026-07-20T16:34:46Z",
+      "side": 1,
+      "message": "I\u0027m ok with us doing this initially, but I feel like this is an antiquated problem that we\u0027re still working around and missing something modern about docker builds.  How does anything ever work with podman if you have to try to map users and groups?",
+      "range": {
+        "startLine": 2,
+        "startChar": 0,
+        "endLine": 3,
+        "endChar": 67
+      },
+      "revId": "679202fa5ab6381d4e6a214d49e2f70d322e692e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6c5ecfbf_a2a618c6",
+        "filename": "jenkins/ci-openbmc/entrypoint.sh",
+        "patchSetId": 14
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2026-07-20T16:34:46Z",
+      "side": 1,
+      "message": "When did gosu get installed?",
+      "revId": "679202fa5ab6381d4e6a214d49e2f70d322e692e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
