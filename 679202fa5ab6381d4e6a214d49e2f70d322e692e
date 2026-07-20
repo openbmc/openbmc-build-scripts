@@ -270,6 +270,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "afc5626d_28713cba",
+        "filename": "jenkins/ci-openbmc/add-entrypoint.sh",
+        "patchSetId": 14
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 1002985
+      },
+      "writtenOn": "2026-07-20T22:19:18Z",
+      "side": 1,
+      "message": "Keeping it as env vars, since that\u0027s the standard pattern for gosu-based uid/gid entrypoint scripts (postgres, jenkins images, etc. all do it this way via docker run -e). Args would mean hardcoding positional order into every call site.",
+      "parentUuid": "22f5dbb0_a370445e",
+      "revId": "679202fa5ab6381d4e6a214d49e2f70d322e692e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a76107c3_66ebf1d6",
@@ -283,6 +301,24 @@
       "writtenOn": "2026-07-20T21:44:27Z",
       "side": 1,
       "message": "I\u0027m not sure what this means",
+      "revId": "679202fa5ab6381d4e6a214d49e2f70d322e692e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ca41d11f_39569c0e",
+        "filename": "jenkins/ci-openbmc/add-entrypoint.sh",
+        "patchSetId": 14
+      },
+      "lineNbr": 6,
+      "author": {
+        "id": 1002985
+      },
+      "writtenOn": "2026-07-20T22:19:18Z",
+      "side": 1,
+      "message": "The raw sstate image is the output of create-container.sh. It\u0027s the base Ubuntu build container (TARGET_IMAGE) with the sstate cache baked in via COPY. add-entrypoint.sh then layers gosu and the entrypoint on top of it to produce the final usable image (GENERIC_TAG) which does not have a UID baked in.",
+      "parentUuid": "a76107c3_66ebf1d6",
       "revId": "679202fa5ab6381d4e6a214d49e2f70d322e692e",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
