@@ -37,6 +37,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "32b4211d_7f7750e3",
+        "filename": "jenkins/ci-openbmc/Jenkinsfile.change-merged",
+        "patchSetId": 14
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 1002303
+      },
+      "writtenOn": "2026-07-20T21:44:27Z",
+      "side": 1,
+      "message": "I\u0027m just wondering if we considered centos",
+      "parentUuid": "66417871_3e15227a",
+      "revId": "679202fa5ab6381d4e6a214d49e2f70d322e692e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "7ab6063d_855e34bb",
         "filename": "jenkins/ci-openbmc/Jenkinsfile.change-merged",
         "patchSetId": 14
@@ -111,6 +129,91 @@
         "endLine": 152,
         "endChar": 29
       },
+      "revId": "679202fa5ab6381d4e6a214d49e2f70d322e692e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "22f5dbb0_a370445e",
+        "filename": "jenkins/ci-openbmc/add-entrypoint.sh",
+        "patchSetId": 14
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 1002303
+      },
+      "writtenOn": "2026-07-20T21:44:27Z",
+      "side": 1,
+      "message": "nit: why are you going with env variable instead of args to the script?",
+      "revId": "679202fa5ab6381d4e6a214d49e2f70d322e692e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a76107c3_66ebf1d6",
+        "filename": "jenkins/ci-openbmc/add-entrypoint.sh",
+        "patchSetId": 14
+      },
+      "lineNbr": 6,
+      "author": {
+        "id": 1002303
+      },
+      "writtenOn": "2026-07-20T21:44:27Z",
+      "side": 1,
+      "message": "I\u0027m not sure what this means",
+      "revId": "679202fa5ab6381d4e6a214d49e2f70d322e692e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "795e5100_b1cb0550",
+        "filename": "jenkins/ci-openbmc/add-entrypoint.sh",
+        "patchSetId": 14
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 1002303
+      },
+      "writtenOn": "2026-07-20T21:44:27Z",
+      "side": 1,
+      "message": "Can\u0027t we derive that in bash:\n`SCRIPT_DIR\u003d\"$(cd \"$(dirname \"${BASH_SOURCE[0]}\")\" \u0026\u0026 pwd)\"`",
+      "revId": "679202fa5ab6381d4e6a214d49e2f70d322e692e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "94c4d943_0a00df17",
+        "filename": "jenkins/ci-openbmc/add-entrypoint.sh",
+        "patchSetId": 14
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 1002303
+      },
+      "writtenOn": "2026-07-20T21:44:27Z",
+      "side": 1,
+      "message": "instead of a bash heredoc, can we make a separate static docker file? Docker allows specifying an ARG which should make this cleaner",
+      "revId": "679202fa5ab6381d4e6a214d49e2f70d322e692e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b0af626d_b1223107",
+        "filename": "jenkins/ci-openbmc/create-container.sh",
+        "patchSetId": 14
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 1002303
+      },
+      "writtenOn": "2026-07-20T21:44:27Z",
+      "side": 1,
+      "message": "Why are we running this in a daemon? Can we build in (or mount) a script that has all the commands you run below so this becomes a simple `run --rm`\n\nIs BUILD_BASE being expanded in the shell running the command? I feel like that could be a source of confusion in the future",
       "revId": "679202fa5ab6381d4e6a214d49e2f70d322e692e",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
