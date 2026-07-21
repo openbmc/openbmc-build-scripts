@@ -392,6 +392,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ca06f8b0_a943586f",
+        "filename": "jenkins/ci-openbmc/create-container.sh",
+        "patchSetId": 14
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 1002985
+      },
+      "writtenOn": "2026-07-21T14:09:47Z",
+      "side": 1,
+      "message": "The daemon/sleep infinity/trap pattern is completely gone, replaced by the Dockerfile build. No running container at all. See latest patch.",
+      "parentUuid": "b0af626d_b1223107",
+      "revId": "679202fa5ab6381d4e6a214d49e2f70d322e692e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e4599564_51153e77",
