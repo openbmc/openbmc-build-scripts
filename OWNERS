@@ -33,7 +33,6 @@
 
 owners:
 - geissonator@yahoo.com
-- joel@jms.id.au
 - patrick@stwcx.xyz
 
 reviewers:
@@ -48,9 +47,6 @@ openbmc:
 - name: Andrew Jeffery
   email: andrew@codeconstruct.com.au
   discord: arj
-- name: Joel Stanley
-  email: joel@jms.id.au
-  discord: joel
 - name: Patrick Williams
   email: patrick@stwcx.xyz
   discord: stwcx
