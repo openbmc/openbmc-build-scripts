@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "32dff322_68a6642c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2026-08-31T20:06:15Z",
+      "side": 1,
+      "message": "Need to figure out how to test this. And also we need to fix the current failures as all romulus QEMU CI jobs are actually failing with this:\n\n\nTest Get Self Test Results via IPMI Raw Command :: Get self test r... | \u001b[31mFAIL\u001b[0m |\n\u002757 a0\u0027 does not contain any of \u002755 00\u0027 or \u002756 00\u0027\n-------------------------------------------------------",
+      "revId": "e044fd29ce18b83331ecdf8a1d8a04e54840dcd4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
