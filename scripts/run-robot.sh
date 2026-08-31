@@ -16,8 +16,6 @@
 #   MACHINE          Type of system to run tests against
 #                    Default is qemu
 
-# we don't want to fail on bad rc since robot tests may fail
-
 MACHINE=${MACHINE:-"qemu"}
 ROBOT_CODE_HOME=${ROBOT_CODE_HOME:-/tmp/$(whoami)/${RANDOM}/obmc-robot/}
 ROBOT_TEST_CMD="${ROBOT_TEST_CMD:-"python3 -m robot\
@@ -36,13 +34,16 @@ cd "${ROBOT_CODE_HOME}" || exit
 
 chmod ugo+rw -R "${ROBOT_CODE_HOME}"/*
 
-# Execute the CI tests
+# Execute the CI tests; capture rc so we can copy artifacts before exiting
 eval "${ROBOT_TEST_CMD}"
+robot_rc=$?
 
 cp "${ROBOT_CODE_HOME}"/*.xml "${HOME}/"
 cp "${ROBOT_CODE_HOME}"/*.html "${HOME}/"
 if [ -d logs ] ; then
     cp -Rf "${ROBOT_CODE_HOME}"/logs "${HOME}"/ ;
 fi
+
+exit "${robot_rc}"
 
 #rm -rf ${ROBOT_CODE_HOME}
