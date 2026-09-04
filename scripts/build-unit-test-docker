@@ -233,7 +233,7 @@ packages = {
         config_flags=["--enable-bindings-cxx"],
     ),
     "NVIDIA/stdexec": PackageDef(
-        rev="e92245d53dfc37f9bc2a7ef0cc44d570bb7b3386",
+        rev="1b73ba4ef6818ae29741b4aefcbd52d2e6373f81",
         build_type="meson",
     ),
     "open-power/pdbg": PackageDef(build_type="autoconf"),
