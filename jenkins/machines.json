@@ -12,6 +12,8 @@
         "harma": {},
         "minerva": {},
         "p10bmc": {},
+        "rainiera6": { "build": "disabled" },
+        "rainiera7": { "build": "disabled" },
         "romulus": {
             "qemu": { "image": "obmc-phosphor-image-romulus.static.mtd" }
         },
