@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1c7dc9f3_4302f1a6",
+        "filename": "jenkins/machines.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2026-09-15T18:08:54Z",
+      "side": 1,
+      "message": "I think we need to do this in two stages.  There should be a \"build: false\" or something like that so we can then seed it and then we should follow up with this commit.",
+      "revId": "b7957a69ac60c4b665bf7d0528b36b5352a75a1e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
