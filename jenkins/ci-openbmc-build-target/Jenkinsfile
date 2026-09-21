@@ -116,10 +116,14 @@ pipeline {
         always {
             archiveArtifacts artifacts: 'openbmc/build/tmp/deploy/images/**',
                             allowEmptyArchive: true
-            archiveArtifacts artifacts: '*.xml,*.html,logs/**',
-                            allowEmptyArchive: true
-            robot outputPath: '.', logFileName: 'log.html',
-                  reportFileName: 'report.html', passThreshold: 100.0
+            script {
+                if (params.qemu_image != '') {
+                    archiveArtifacts artifacts: '*.xml,*.html,logs/**',
+                                    allowEmptyArchive: true
+                    robot outputPath: '.', logFileName: 'log.html',
+                          reportFileName: 'report.html', passThreshold: 100.0
+                }
+            }
             cleanWs()
         }
     }
