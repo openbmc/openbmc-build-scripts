@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c8ed5975_071b7b34",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000004
+      },
+      "writtenOn": "2026-09-21T20:43:34Z",
+      "side": 1,
+      "message": "Did a manual replay with this change over in https://jenkins.openbmc.org/job/CI-MISC/job/openbmc-build-target/43377/console to verify all is good.",
+      "revId": "96114eb45879d44993eff4e72f07243d725c7864",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
