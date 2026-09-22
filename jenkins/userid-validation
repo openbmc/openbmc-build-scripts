@@ -69,6 +69,7 @@ GERRIT_CI_GROUPS=( \
         cornelis/ci-authorized \
         dell/ci-authorized \
         depo/ci-authorized \
+        einfochips/ci-authorized \
         erg/ci-authorized \
         equinix/ci-authorized \
         facebook/ci-authorized \
