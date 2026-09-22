@@ -1,0 +1,67 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3afcb0b0_5b082a88",
+        "filename": "scripts/add-new-cla-company",
+        "patchSetId": 4
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2026-09-22T17:48:48Z",
+      "side": 1,
+      "message": "Don\u0027t we have documentation telling people to use `openbmc.gerrit` as an alias or is that just something that I\u0027ve always done...",
+      "range": {
+        "startLine": 27,
+        "startChar": 0,
+        "endLine": 29,
+        "endChar": 108
+      },
+      "revId": "ed63f041d1c9dc1b67bc698115ab48168f8e8d54",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1f06b8e0_627e11d1",
+        "filename": "scripts/add-new-cla-company",
+        "patchSetId": 4
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2026-09-22T17:48:48Z",
+      "side": 1,
+      "message": "This is a little strange to pick that key in particular.  Why don\u0027t you just drop the `-i` and let ssh decide which key(s) it will use?",
+      "range": {
+        "startLine": 30,
+        "startChar": 20,
+        "endLine": 30,
+        "endChar": 38
+      },
+      "revId": "ed63f041d1c9dc1b67bc698115ab48168f8e8d54",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5dc96c0d_0562377d",
+        "filename": "scripts/add-new-cla-company",
+        "patchSetId": 4
+      },
+      "lineNbr": 84,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2026-09-22T17:48:48Z",
+      "side": 1,
+      "message": "Maybe we should change groups to be in a separate JSON file...",
+      "revId": "ed63f041d1c9dc1b67bc698115ab48168f8e8d54",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
