@@ -1,0 +1,112 @@
+#!/bin/bash -e
+#
+# Purpose:
+#  This script creates the Gerrit groups required for a new CLA company and
+#  updates jenkins/userid-validation to include the new company in CI checks.
+#
+# Usage:
+#  add-new-cla-company <company-name>
+#
+#  Example: add-new-cla-company acmexyz
+#
+# Notes:
+#  - Requires the openbmc.gerrit SSH alias in ~/.ssh/config:
+#      Host openbmc.gerrit
+#          Hostname gerrit.openbmc.org
+#          Port 29418
+#          User <your-gerrit-username>
+#
+#  - Two groups are created via the Gerrit SSH interface:
+#      <company>/ci-authorized-owners  (owner group, visible to all)
+#      <company>/ci-authorized         (visible to all, owned by the above)
+#  - jenkins/userid-validation is updated to include the new
+#    <company>/ci-authorized entry in GERRIT_CI_GROUPS (alphabetical order).
+#  - A git commit is created summarising the change.
+
+set -euo pipefail
+
+USERID_VALIDATION="$(dirname "$0")/../jenkins/userid-validation"
+
+GERRIT_SSH=(
+    ssh openbmc.gerrit
+    gerrit
+)
+
+###############################################################################
+# Helpers
+###############################################################################
+
+function die() {
+    echo "ERROR: $*" >&2
+    exit 1
+}
+
+function usage() {
+    echo "Usage: $0 <company-name>" >&2
+    echo "  company-name: lowercase identifier, e.g. acmexyz" >&2
+    exit 1
+}
+
+###############################################################################
+# Main
+###############################################################################
+
+[[ $# -eq 1 ]] || usage
+COMPANY="$1"
+
+# Basic sanity check on the company name.
+if [[ ! "$COMPANY" =~ ^[a-z0-9_-]+$ ]]; then
+    die "Company name must contain only lowercase letters, digits, hyphens, or underscores."
+fi
+
+OWNERS_GROUP="${COMPANY}/ci-authorized-owners"
+CI_GROUP="${COMPANY}/ci-authorized"
+
+echo "==> Creating group: ${OWNERS_GROUP}"
+"${GERRIT_SSH[@]}" create-group \
+    --visible-to-all \
+    "${OWNERS_GROUP}"
+
+echo "==> Creating group: ${CI_GROUP} (owner: ${OWNERS_GROUP})"
+"${GERRIT_SSH[@]}" create-group \
+    --owner "${OWNERS_GROUP}" \
+    --visible-to-all \
+    "${CI_GROUP}"
+
+echo "==> Updating jenkins/userid-validation"
+
+# Find the insertion point: the first existing ci-authorized entry that sorts
+# after COMPANY, then insert before it (preserving alphabetical order).
+# shellcheck disable=SC1003  # '\\' is a literal backslash in the grep pattern, not an escape.
+INSERTION_LINE=$(grep -n '/ci-authorized \\' "$USERID_VALIDATION" | \
+    awk -F: -v company="$COMPANY" '
+{ gsub(/^[[:space:]]+/, "", $2); gsub(/\/ci-authorized[[:space:]\\]+$/, "", $2) }
+$2 > company { print $1; exit }
+')
+
+if [[ -z "$INSERTION_LINE" ]]; then
+    # New company sorts last — append before the closing parenthesis of the array.
+    INSERTION_LINE=$(grep -n '^\s*)$' "$USERID_VALIDATION" | head -1 | cut -d: -f1)
+fi
+sed -i "${INSERTION_LINE}i\\        ${CI_GROUP} \\\\" "$USERID_VALIDATION"
+
+echo "==> Committing changes"
+REPO_ROOT=$(git -C "$(dirname "$0")" rev-parse --show-toplevel)
+git -C "$REPO_ROOT" add jenkins/userid-validation
+git -C "$REPO_ROOT" commit --file=- <<EOF
+Add CLA company: ${COMPANY}
+
+Create Gerrit groups:
+  - ${OWNERS_GROUP} (owner group, visible to all)
+  - ${CI_GROUP} (visible to all,
+    owned by ${OWNERS_GROUP})
+
+Add ${CI_GROUP} to GERRIT_CI_GROUPS in
+jenkins/userid-validation so that members of the new
+company are authorized to trigger CI.
+EOF
+
+echo ""
+echo "Done. Groups created and userid-validation updated."
+echo "  ${OWNERS_GROUP}"
+echo "  ${CI_GROUP}"
