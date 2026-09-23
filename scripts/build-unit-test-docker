@@ -959,6 +959,7 @@ RUN apt-get update && apt-get dist-upgrade -yy && apt-get install -yy \
     libsystemd-dev \
     libtool \
     liburing-dev \
+    libxml2-dev \
     libxml2-utils \
     libxml-simple-perl \
     lsb-release \
