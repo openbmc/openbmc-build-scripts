@@ -992,27 +992,27 @@ RUN apt-get update && apt-get dist-upgrade -yy && apt-get install -yy \
 RUN add-apt-repository ppa:ubuntu-toolchain-r/ppa && \
     apt-get update && \
     apt-get install -y \
-        gcc-15 \
-        gcc-15-arm-linux-gnueabihf \
-        gcc-15-x86-64-linux-gnu \
-        g++-15 \
-        g++-15-arm-linux-gnueabihf \
-        g++-15-x86-64-linux-gnu \
-        libstdc++-15-dev
+        gcc-16 \
+        gcc-16-arm-linux-gnueabihf \
+        gcc-16-x86-64-linux-gnu \
+        g++-16 \
+        g++-16-arm-linux-gnueabihf \
+        g++-16-x86-64-linux-gnu \
+        libstdc++-16-dev
 
-RUN update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-15 15 \
-  --slave /usr/bin/g++ g++ /usr/bin/g++-15 \
-  --slave /usr/bin/gcov gcov /usr/bin/gcov-15 \
-  --slave /usr/bin/gcov-dump gcov-dump /usr/bin/gcov-dump-15 \
-  --slave /usr/bin/gcov-tool gcov-tool /usr/bin/gcov-tool-15
+RUN update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-16 16 \
+  --slave /usr/bin/g++ g++ /usr/bin/g++-16 \
+  --slave /usr/bin/gcov gcov /usr/bin/gcov-16 \
+  --slave /usr/bin/gcov-dump gcov-dump /usr/bin/gcov-dump-16 \
+  --slave /usr/bin/gcov-tool gcov-tool /usr/bin/gcov-tool-16
 RUN update-alternatives --remove cpp /usr/bin/cpp && \
-    update-alternatives --install /usr/bin/cpp cpp /usr/bin/cpp-15 15
-RUN update-alternatives --install /usr/bin/x86_64-linux-gnu-gcc x86_64-linux-gnu-gcc /usr/bin/x86_64-linux-gnu-gcc-15 15 \
-  --slave /usr/bin/x86_64-linux-gnu-g++ x86_64-linux-gnu-g++ /usr/bin/x86_64-linux-gnu-g++-15 \
-  --slave /usr/bin/x86_64-linux-gnu-cpp x86_64-linux-gnu-cpp /usr/bin/x86_64-linux-gnu-cpp-15
-RUN update-alternatives --install /usr/bin/arm-linux-gnueabihf-gcc arm-linux-gnueabihf-gcc /usr/bin/arm-linux-gnueabihf-gcc-15 15 \
-  --slave /usr/bin/arm-linux-gnueabihf-g++ arm-linux-gnueabihf-g++ /usr/bin/arm-linux-gnueabihf-g++-15 \
-  --slave /usr/bin/arm-linux-gnueabihf-cpp arm-linux-gnueabihf-cpp /usr/bin/arm-linux-gnueabihf-cpp-15
+    update-alternatives --install /usr/bin/cpp cpp /usr/bin/cpp-16 16
+RUN update-alternatives --install /usr/bin/x86_64-linux-gnu-gcc x86_64-linux-gnu-gcc /usr/bin/x86_64-linux-gnu-gcc-16 16 \
+  --slave /usr/bin/x86_64-linux-gnu-g++ x86_64-linux-gnu-g++ /usr/bin/x86_64-linux-gnu-g++-16 \
+  --slave /usr/bin/x86_64-linux-gnu-cpp x86_64-linux-gnu-cpp /usr/bin/x86_64-linux-gnu-cpp-16
+RUN update-alternatives --install /usr/bin/arm-linux-gnueabihf-gcc arm-linux-gnueabihf-gcc /usr/bin/arm-linux-gnueabihf-gcc-16 16 \
+  --slave /usr/bin/arm-linux-gnueabihf-g++ arm-linux-gnueabihf-g++ /usr/bin/arm-linux-gnueabihf-g++-16 \
+  --slave /usr/bin/arm-linux-gnueabihf-cpp arm-linux-gnueabihf-cpp /usr/bin/arm-linux-gnueabihf-cpp-16
 
 # Set up LLVM apt repository.
 RUN bash -c "$(wget -O - https://apt.llvm.org/llvm.sh)" -- 21 -m https://apt.llvm.org
