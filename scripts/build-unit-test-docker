@@ -276,6 +276,10 @@ packages = {
             "-Dtests=disabled",
         ],
     ),
+    "openbmc/libcper": PackageDef(
+        build_type="meson",
+        config_flags=["-Dfuzz=disabled", "-Dpython=disabled"],
+    ),
     "openbmc/libpeci": PackageDef(
         build_type="meson",
         config_flags=[
