@@ -282,7 +282,11 @@ packages = {
             "nlohmann/json",
         ],
         build_type="meson",
-        config_flags=["-Dfuzz=disabled", "-Dpython=disabled"],
+        config_flags=[
+            "-Dfuzz=disabled",
+            "-Dpython=disabled",
+            "-Dtests=disabled",
+        ],
     ),
     "openbmc/libpeci": PackageDef(
         build_type="meson",
