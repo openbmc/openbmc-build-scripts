@@ -277,6 +277,10 @@ packages = {
         ],
     ),
     "openbmc/libcper": PackageDef(
+        depends=[
+            "json-c/json-c",
+            "nlohmann/json",
+        ],
         build_type="meson",
         config_flags=["-Dfuzz=disabled", "-Dpython=disabled"],
     ),
