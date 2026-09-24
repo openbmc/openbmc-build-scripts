@@ -1069,7 +1069,7 @@ RUN pip3 install --break-system-packages --ignore-installed cryptography \
         isoduration \
         isort \
         jsonschema \
-        meson==1.11.2 \
+        meson==1.12.0 \
         redfish_service_validator \
         referencing \
         requests
