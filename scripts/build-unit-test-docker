@@ -1016,25 +1016,25 @@ RUN update-alternatives --install /usr/bin/arm-linux-gnueabihf-gcc arm-linux-gnu
   --slave /usr/bin/arm-linux-gnueabihf-cpp arm-linux-gnueabihf-cpp /usr/bin/arm-linux-gnueabihf-cpp-16
 
 # Set up LLVM apt repository.
-RUN bash -c "$(wget -O - https://apt.llvm.org/llvm.sh)" -- 21 -m https://apt.llvm.org
+RUN bash -c "$(wget -O - https://apt.llvm.org/llvm.sh)" -- 23 -m https://apt.llvm.org
 
 # Install extra clang tools
 RUN apt-get install -y \
-        clang-21 \
-        clang-format-21 \
-        clang-tidy-21 \
-        lld-21
+        clang-23 \
+        clang-format-23 \
+        clang-tidy-23 \
+        lld-23
 
-RUN update-alternatives --install /usr/bin/clang clang /usr/bin/clang-21 1000 \
-  --slave /usr/bin/clang++ clang++ /usr/bin/clang++-21 \
-  --slave /usr/bin/clang-tidy clang-tidy /usr/bin/clang-tidy-21 \
+RUN update-alternatives --install /usr/bin/clang clang /usr/bin/clang-23 1000 \
+  --slave /usr/bin/clang++ clang++ /usr/bin/clang++-23 \
+  --slave /usr/bin/clang-tidy clang-tidy /usr/bin/clang-tidy-23 \
   --slave /usr/bin/clang-apply-replacements clang-apply-replacements \
-        /usr/bin/clang-apply-replacements-21 \
-  --slave /usr/bin/clang-format clang-format /usr/bin/clang-format-21 \
+        /usr/bin/clang-apply-replacements-23 \
+  --slave /usr/bin/clang-format clang-format /usr/bin/clang-format-23 \
   --slave /usr/bin/run-clang-tidy run-clang-tidy.py \
-        /usr/bin/run-clang-tidy-21 \
-  --slave /usr/bin/scan-build scan-build /usr/bin/scan-build-21 \
-  --slave /usr/bin/lld lld /usr/bin/lld-21
+        /usr/bin/run-clang-tidy-23 \
+  --slave /usr/bin/scan-build scan-build /usr/bin/scan-build-23 \
+  --slave /usr/bin/lld lld /usr/bin/lld-23
 
 # Install later versions of nodejs.
 RUN curl -fsSL https://deb.nodesource.com/gpgkey/nodesource.gpg.key | \
