@@ -1258,7 +1258,10 @@ if __name__ == "__main__":
             "-Ddata_com_ibm=true",
             "-Ddata_org_open_power=true",
         ],
-        "phosphor-logging": ["-Dopenpower-pel-extension=enabled"],
+        "phosphor-logging": [
+            "-Dopenpower-pel-extension=enabled",
+            "-Damd-event-log=enabled",
+        ],
     }
 
     # DEPENDENCIES = [MACRO]:[library/header]:[GIT REPO]
