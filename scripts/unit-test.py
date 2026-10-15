@@ -690,9 +690,6 @@ class Autotools(BuildSystem):
                 self._configure_feature("valgrind", build_for_testing),
             ]
         )
-        # Add any necessary configure flags for package
-        if CONFIGURE_FLAGS.get(self.package) is not None:
-            conf_flags.extend(CONFIGURE_FLAGS.get(self.package))
         for bootstrap in ["bootstrap.sh", "bootstrap", "autogen.sh"]:
             if os.path.exists(bootstrap):
                 check_call_cmd("./" + bootstrap)
@@ -1254,14 +1251,6 @@ def find_file(filename, basedir):
 
 
 if __name__ == "__main__":
-    # CONFIGURE_FLAGS = [GIT REPO]:[CONFIGURE FLAGS]
-    CONFIGURE_FLAGS = {
-        "phosphor-logging": [
-            "--enable-metadata-processing",
-            "--enable-openpower-pel-extension",
-            "YAML_DIR=/usr/local/share/phosphor-dbus-yaml/yaml",
-        ]
-    }
 
     # MESON_FLAGS = [GIT REPO]:[MESON FLAGS]
     MESON_FLAGS = {
