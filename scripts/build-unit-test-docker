@@ -470,7 +470,7 @@ FROM {docker_base_img_name}
 
     @classmethod
     def depcache(cls) -> str:
-        """Create the contents of the '/tmp/depcache'.
+        """Create the contents of '/etc/depcache'.
         This file is a comma-separated list of "<pkg>:<rev>".
         """
 
@@ -1096,7 +1096,8 @@ FROM {docker_base_img_name}
 # Some of our infrastructure still relies on the presence of this file
 # even though it is no longer needed to rebuild the docker environment
 # NOTE: The file is sorted to ensure the ordering is stable.
-RUN echo '{Package.depcache()}' > /tmp/depcache
+RUN echo '{Package.depcache()}' > /etc/depcache && \\
+    ln -sf /etc/depcache /tmp/depcache
 
 # Ensure the group, user, and home directory are created (or rename them if
 # they already exist).
