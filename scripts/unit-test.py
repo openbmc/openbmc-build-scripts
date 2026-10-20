@@ -335,8 +335,12 @@ def build_dep_tree(name, pkgdir, dep_added, head, branch, dep_tree=None):
     if not dep_tree:
         dep_tree = head
 
-    with open("/tmp/depcache", "r") as depcache:
-        cache = depcache.readline()
+    cache = ""
+    for path in ["/var/lib/depcache", "/tmp/depcache"]:
+        if os.path.exists(path):
+            with open(path, "r") as depcache:
+                cache = depcache.readline()
+            break
 
     # Read out pkg dependencies
     pkg = Package(name, pkgdir)

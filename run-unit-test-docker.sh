@@ -107,6 +107,7 @@ export PODMAN_USERNS="keep-id"
 # shellcheck disable=SC2086 # ${PROXY_ENV} and ${EXTRA_DOCKER_RUN_ARGS} are
 # meant to be split
 docker run --cap-add=sys_admin --rm=true \
+    --tmpfs /tmp:rw,exec,mode=1777 \
     --privileged=true \
     ${PROXY_ENV} \
     -u "$USER" \
