@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ec31f4b4_356a4728",
+        "filename": "run-unit-test-docker.sh",
+        "patchSetId": 2
+      },
+      "lineNbr": 110,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2026-10-21T20:40:25Z",
+      "side": 1,
+      "message": "From manpage:\n\n       See also --mount, which is the successor of --tmpfs and --volume.\n          Even though there is no plan to deprecate --tmpfs, usage of --mount is recommended.",
+      "revId": "8899f73d87974507131278483a2d80205b56a16d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cb670c0a_9f75693a",
+        "filename": "scripts/build-unit-test-docker",
+        "patchSetId": 2
+      },
+      "lineNbr": 1099,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2026-10-21T20:40:25Z",
+      "side": 1,
+      "message": "I don\u0027t mean to bikeshed but would something like /var/lib or /opt be better?",
+      "revId": "8899f73d87974507131278483a2d80205b56a16d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
