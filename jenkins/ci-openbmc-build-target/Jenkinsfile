@@ -16,22 +16,37 @@ pipeline {
         stage('Checkout') {
             steps {
                 deleteDir()
-                dir('openbmc') {
-                    checkout([
-                        $class: 'GitSCM',
-                        userRemoteConfigs: [[
-                            url: "http://gerrit.openbmc.org/${params.GERRIT_PROJECT}",
-                            name: 'gerrit',
-                            refspec: params.GERRIT_REFSPEC
-                        ]],
-                        branches: [[name: params.branch]],
-                        extensions: [
-                            [$class: 'BuildChooserSetting',
-                             buildChooser: [$class: 'GerritTriggerBuildChooser']],
-                            [$class: 'CleanBeforeCheckout'],
-                            [$class: 'CloneOption', shallow: false, noTags: false, depth: 1]
-                        ]
-                    ])
+                script {
+                    // Intermittent "early EOF" / "invalid index-pack output"
+                    // failures have been seen on cloud-hosted nodes, so retry
+                    // from a clean directory with a pause between attempts.
+                    retry(3) {
+                        try {
+                            dir('openbmc') {
+                                deleteDir()
+                                checkout([
+                                    $class: 'GitSCM',
+                                    userRemoteConfigs: [[
+                                        url: "https://gerrit.openbmc.org/${params.GERRIT_PROJECT}",
+                                        name: 'gerrit',
+                                        refspec: params.GERRIT_REFSPEC
+                                    ]],
+                                    branches: [[name: params.branch]],
+                                    extensions: [
+                                        [$class: 'BuildChooserSetting',
+                                         buildChooser: [$class: 'GerritTriggerBuildChooser']],
+                                        [$class: 'CleanBeforeCheckout'],
+                                        // Only the tip commit is needed (bitbake
+                                        // derives the os-release hash from HEAD).
+                                        [$class: 'CloneOption', shallow: true, noTags: true, depth: 1]
+                                    ]
+                                ])
+                            }
+                        } catch (Exception e) {
+                            sleep time: 30, unit: 'SECONDS'
+                            throw e
+                        }
+                    }
                 }
             }
         }
