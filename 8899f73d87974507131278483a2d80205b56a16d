@@ -18,6 +18,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a467bfc7_d98f4e74",
+        "filename": "run-unit-test-docker.sh",
+        "patchSetId": 2
+      },
+      "lineNbr": 110,
+      "author": {
+        "id": 1003197
+      },
+      "writtenOn": "2026-10-21T20:52:05Z",
+      "side": 1,
+      "message": "While I\u0027m open to suggestions I\u0027m not sure `--mount` can be used here. `--mount type\u003dtmpfs` only supports `tmpfs-size` and `tmpfs-mode`, and dockerd always applies noexec to tmpfs mounts (moby daemon/oci_linux.go). We need exec on /tmp: for example, is_valgrind_safe() in unit-test.py compiles and runs a binary in a TemporaryDirectory(). So I kept `--tmpfs` and explained why in the commit message.",
+      "parentUuid": "ec31f4b4_356a4728",
+      "revId": "8899f73d87974507131278483a2d80205b56a16d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "cb670c0a_9f75693a",
@@ -31,6 +49,24 @@
       "writtenOn": "2026-10-21T20:40:25Z",
       "side": 1,
       "message": "I don\u0027t mean to bikeshed but would something like /var/lib or /opt be better?",
+      "revId": "8899f73d87974507131278483a2d80205b56a16d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fda63191_4e48e047",
+        "filename": "scripts/build-unit-test-docker",
+        "patchSetId": 2
+      },
+      "lineNbr": 1099,
+      "author": {
+        "id": 1003197
+      },
+      "writtenOn": "2026-10-21T20:52:05Z",
+      "side": 1,
+      "message": "Done. Moved it to /var/lib/depcache.",
+      "parentUuid": "cb670c0a_9f75693a",
       "revId": "8899f73d87974507131278483a2d80205b56a16d",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
