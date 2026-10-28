@@ -984,6 +984,7 @@ RUN apt-get update && apt-get dist-upgrade -yy && apt-get install -yy \
     sudo \
     systemd \
     systemd-dev \
+    universal-ctags \
     valgrind \
     vim \
     wget \
