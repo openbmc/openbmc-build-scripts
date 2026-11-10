@@ -217,7 +217,7 @@ packages = {
         build_type="cmake",
     ),
     "tristanpenman/valijson": PackageDef(
-        rev="v1.0.5",
+        rev="v1.1.3",
         build_type="cmake",
         config_flags=[
             "-Dvalijson_BUILD_TESTS=0",
