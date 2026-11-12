@@ -203,7 +203,7 @@ packages = {
         ],
     ),
     "json-c/json-c": PackageDef(
-        rev="json-c-0.18-20240915",
+        rev="json-c-0.19-20260627",
         build_type="cmake",
         config_flags=["-DCMAKE_POLICY_VERSION_MINIMUM=3.5"],
     ),
