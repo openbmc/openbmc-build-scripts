@@ -170,7 +170,7 @@ packages = {
         ],
     ),
     "Naios/function2": PackageDef(
-        rev="4.2.4",
+        rev="4.2.5",
         build_type="custom",
         build_steps=[
             f"mkdir {prefix}/include/function2",
