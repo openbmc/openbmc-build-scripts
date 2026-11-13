@@ -35,6 +35,16 @@
         },
         "yosemite4": {}
     },
+    "blacksail": {
+        "catalina": {},
+        "e3c246d4i": {},
+        "evb-npcm845": {},
+        "p10bmc": {},
+        "romulus": {
+            "qemu": { "image": "obmc-phosphor-image-romulus.static.mtd" }
+        },
+        "yosemite4": {}
+    },
     "_schema": {
         "build": "required|advisory|disabled (default: required)",
         "qemu": {

@@ -14,7 +14,8 @@ properties([
                 pattern: 'openbmc/openbmc',
                 branches: [
                     [compareType: 'PLAIN', pattern: 'master'],
-                    [compareType: 'PLAIN', pattern: 'wrynose']
+                    [compareType: 'PLAIN', pattern: 'wrynose'],
+                    [compareType: 'PLAIN', pattern: 'blacksail'],
                 ]
             ]],
             triggerOnEvents: [[
