@@ -76,6 +76,8 @@ YOCTO_BRANCHES=(
     "scarthgap"
     "styhead"
     "walnascar"
+    "wrynose"
+    "blacksail"
 )
 
 ###############################################################################
