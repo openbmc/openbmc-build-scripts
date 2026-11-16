@@ -14,7 +14,7 @@
 #                     Default: "public.ecr.aws/docker/library"
 #                     Examples: "docker.io", "public.ecr.aws/ubuntu"
 #  g_vrsn             The version of the gerrit war file you wish to use
-#                     Default: "3.11.7"
+#                     Default: "3.11.11"
 #  g_user             Username tag the container will use to run Gerrit
 #                     Default: "gerrit"
 #  g_group            Group name tag the container will use to run Gerrit
@@ -47,7 +47,7 @@ set -xeo pipefail
 docker_reg=${DOCKER_REG:-"public.ecr.aws/docker/library"}
 
 # Gerrit version configuration
-GERRIT_VERSION=${g_vrsn:-3.11.7}
+GERRIT_VERSION=${g_vrsn:-3.11.11}
 GERRIT_MAJOR_MINOR="3.11"  # Used for plugin compatibility
 
 # Java base image
