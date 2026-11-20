@@ -24,6 +24,7 @@
 #   TEST_ONLY:       Optional, do not run analysis tools
 #   NO_FORMAT_CODE:  Optional, do not run format-code.sh
 #   EXTRA_DOCKER_RUN_ARGS:  Optional, pass arguments to docker run
+#                           (e.g. -t to keep colors when piping output)
 #   EXTRA_UNIT_TEST_ARGS:  Optional, pass arguments to unit-test.py
 #   INTERACTIVE: Optional, run a bash shell instead of unit-test.py
 #   http_proxy: Optional, run the container with proxy environment
@@ -104,6 +105,17 @@ fi
 # the env to allow the home mount to work (no impact on non-podman systems)
 export PODMAN_USERNS="keep-id"
 
+# Only give the container a TTY when someone is watching. In CI stdout is a
+# pipe; a TTY there makes every tool (meson, ninja, format-code.sh, ...) write
+# ANSI color and cursor codes into the console log. Without a TTY Python
+# block-buffers stdout, so keep it unbuffered to preserve log ordering.
+DOCKER_TTY=""
+if [ -n "${INTERACTIVE}" ]; then
+    DOCKER_TTY="-it"
+elif [ -t 1 ]; then
+    DOCKER_TTY="-t"
+fi
+
 # shellcheck disable=SC2086 # ${PROXY_ENV} and ${EXTRA_DOCKER_RUN_ARGS} are
 # meant to be split
 docker run --cap-add=sys_admin --rm=true \
@@ -113,8 +125,9 @@ docker run --cap-add=sys_admin --rm=true \
     -u "$USER" \
     -w "${DOCKER_WORKDIR}" -v "${WORKSPACE}":"${DOCKER_WORKDIR}" \
     -e "MAKEFLAGS=${MAKEFLAGS}" \
+    -e PYTHONUNBUFFERED=1 \
     ${EXTRA_DOCKER_RUN_ARGS:-} \
-    -${INTERACTIVE:+i}t "${DOCKER_IMG_NAME}" \
+    ${DOCKER_TTY:+"${DOCKER_TTY}"} "${DOCKER_IMG_NAME}" \
     "${UNIT_TEST_SCRIPT_DIR}/${DBUS_UNIT_TEST_PY}" -u "${UNIT_TEST}" \
     -f "${DBUS_SYS_CONFIG_FILE}"
 
