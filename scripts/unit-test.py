@@ -1051,7 +1051,13 @@ class Meson(BuildSystem):
             clang_env["CC_LD"] = "lld"
             clang_env["CXX_LD"] = "lld"
             with TemporaryDirectory(prefix="build", dir=".") as build_dir:
-                check_call_cmd("meson", "setup", build_dir, env=clang_env)
+                check_call_cmd(
+                    "meson",
+                    "setup",
+                    "-Db_colorout=never",
+                    build_dir,
+                    env=clang_env,
+                )
                 if not os.path.isfile(".openbmc-no-clang"):
                     check_call_cmd(
                         "meson", "compile", "-C", build_dir, env=clang_env
