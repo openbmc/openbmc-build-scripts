@@ -125,11 +125,18 @@ if ! docker build -t ${img_name} - <<< "${Dockerfile}" ; then
     exit 1
 fi
 
+# Only give the container a TTY when stdout is one. In CI stdout is a pipe
+# and a TTY would make the tools write ANSI color codes into the log.
+DOCKER_TTY=""
+if [ -t 1 ]; then
+    DOCKER_TTY="-t"
+fi
+
 docker run \
     --userns host \
     --user "$UID:${GROUPS[0]}" \
     --rm=true \
     -e WORKSPACE="${WORKSPACE}" \
     -v "${WORKSPACE}":"${WORKSPACE}" \
-    -t ${img_name} \
+    ${DOCKER_TTY:+"${DOCKER_TTY}"} ${img_name} \
     "${WORKSPACE}"/build.sh

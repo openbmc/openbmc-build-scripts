@@ -145,12 +145,19 @@ fi
 
 if [[ "$target" = repotest ]]; then
     DOCKER_IMAGE_NAME=$(./scripts/build-unit-test-docker)
+    # Only give the container a TTY when stdout is one. In CI stdout is a pipe
+    # and a TTY would make the tools write ANSI color codes into the log.
+    DOCKER_TTY=""
+    if [ -t 1 ]; then
+        DOCKER_TTY="-t"
+    fi
+
     docker run --cap-add=sys_admin --rm=true \
         --network host \
         --privileged=true \
         -u "$USER" \
         -w "${obmc_dir}" -v "${obmc_dir}:${obmc_dir}" \
-        -t "${DOCKER_IMAGE_NAME}" \
+        ${DOCKER_TTY:+"${DOCKER_TTY}"} "${DOCKER_IMAGE_NAME}" \
         "${obmc_dir}"/meta-phosphor/scripts/run-repotest
     exit
 fi

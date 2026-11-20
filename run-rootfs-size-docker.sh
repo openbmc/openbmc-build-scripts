@@ -66,6 +66,13 @@ export DOCKER_IMG_NAME
 export DISTRO
 ./build-rootfs-size-docker.sh
 
+# Only give the container a TTY when stdout is one. In CI stdout is a pipe
+# and a TTY would make the tools write ANSI color codes into the log.
+DOCKER_TTY=""
+if [ -t 1 ]; then
+    DOCKER_TTY="-t"
+fi
+
 # Run the docker container with the rootfs_size execution script
 echo "Executing docker image"
 docker run --cap-add=sys_admin --rm=true \
@@ -73,7 +80,8 @@ docker run --cap-add=sys_admin --rm=true \
     --privileged=true \
     -u "$USER" \
     -w "${WORKSPACE}" -v "${WORKSPACE}":"${WORKSPACE}" \
-    -t "${DOCKER_IMG_NAME}" \
+    -e PYTHONUNBUFFERED=1 \
+    ${DOCKER_TTY:+"${DOCKER_TTY}"} "${DOCKER_IMG_NAME}" \
     "${WORKSPACE}"/${ROOTFS_SIZE_PY} --build_dir "${WORKSPACE}"/ \
     --squashfs_file "${SQUASHFS_FILE}"
 
